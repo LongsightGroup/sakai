@@ -1,0 +1,68 @@
+
+$font-family-url: !important;
+$font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$header-font-family: GalaxiePolarisCondensedBook, "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+
+$nd-official-blue: #002b5b;
+$nd-official-gold: #dcb439;
+
+$background-color: 			 #FFF;
+$background-color-secondary: #002b5b;
+$tool-background-color: #fff;
+$button-color-background-color: $nd-official-blue;
+
+$primary-color: #002b5b;
+$secondary-color: #dcb439;
+
+$toolMenuBGColor: #e4e8ec;
+$toolMenuColor: #424242;
+$toolTabBGColor: #e4e8ec;
+$toolBorderColor: #ced4db;
+
+$okcolor: #5aabbc;
+$errorcolor: #5f1709;
+$warncolor: #999623;
+
+$logo: 'images/ndlogo.png';
+
+.Mrphs-siteHierarchy{
+	background: linear-gradient( to right, $nd-official-gold, lighten($nd-official-gold, 25%) ) !important;
+}
+.Mrphs-mainHeader{
+	.Mrphs-headerLogo{
+		width: 		auto;
+		.Mrphs-headerLogo--institution{
+			background: url($logo) no-repeat center center;
+			width: 		400px !important;
+			height: 	26px !important;
+		}
+	}
+}
+
+@mixin nd-bs-callout($color, $bgcolor) {
+  display: block;
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border: 1px solid;
+  border-left-width: 5px;
+  border-color: lighten($color, 25%) !important;
+  border-left-color: $color !important;
+  background-color: $bgcolor !important;
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    color: $color;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+  code, .highlight {
+    background-color: #fff;
+  }
+}
+
+.bs-callout-primary, .bs-callout-info {
+  @include nd-bs-callout($primary-color, lighten($secondary-color, 45%));
+}
+.instruction{
+	@include nd-bs-callout($secondary_color, lighten($secondary-color, 45%));
+}
