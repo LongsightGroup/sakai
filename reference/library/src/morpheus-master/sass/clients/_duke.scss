@@ -1,0 +1,29 @@
+$background-color: #FFF;
+$background-color-secondary: #001757;
+$tool-background-color: #fff;
+$button-color-background-color: #868686;
+$btn-default-bg: #1F3392;
+$primary-color: #001757 ;
+$secondary-color: #001757 ;
+
+$toolMenuBGColor: #e4e8ec ;
+$toolMenuColor: #424242 ;
+$toolTabBGColor: #e4e8ec ;
+$toolBorderColor: #CCCCCC ;
+
+$okcolor: #5aabbc ;
+$errorcolor: #5f1709 ;
+$warncolor: #999623 ;
+
+.Mrphs-mainHeader{
+	.Mrphs-headerLogo{
+		width: 		auto;
+		.Mrphs-headerLogo--institution{
+			background: url($logo) no-repeat center center;
+			width: 		87px !important;
+			height: 	43px !important;
+		}
+	}
+}
+
+$logo: 'images/dukeLogo.png';
