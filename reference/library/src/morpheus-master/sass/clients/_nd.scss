@@ -24,6 +24,7 @@ $errorcolor: #5f1709;
 $warncolor: #999623;
 
 $logo: 'images/ndlogo.png';
+$footerLogo: 'images/ND_mark_blue_S.png';
 
 .Mrphs-siteHierarchy{
 	background: linear-gradient( to right, $nd-official-gold, lighten($nd-official-gold, 25%) ) !important;
@@ -65,4 +66,18 @@ $logo: 'images/ndlogo.png';
 }
 .instruction{
 	@include nd-bs-callout($secondary_color, lighten($secondary-color, 45%));
+}
+
+.#{$namespace}footer{
+        color: $background-color-secondary;
+	background-image:url($footerLogo);
+	background-repeat:no-repeat;
+	background-position:100% 10%;
+        padding: 0.8em;
+        font-size: 0.8em;
+        #footer-links{
+                li{
+                        display: inline-block;
+                }
+        }
 }
