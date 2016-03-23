@@ -90,3 +90,11 @@ $footerLogo: 'images/ND_mark_blue_S.png';
     width: 100%;
     margin: 0.5em 0.05em 0 0 !important;
 }
+
+.login th, .join th {
+    background-color: $secondary-color;
+    padding: .5em;
+    border-bottom: 1px solid #555;
+}
+
+.icon-sakai-gradebook-gwt-rpc{                          @extend .fa-check-square-o;}
