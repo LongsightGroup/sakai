@@ -1,0 +1,59 @@
+##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/sitesetup/chef_site-type.vm,v 1.3 2005/06/04 02:41:16 ggolden.umich.edu Exp $ -->
+
+#*
+	routing logic
+
+	1 - if user selects a template with site type not course --> go to site after title is entered
+	2 - if user selects a template with site type course --> force term selection, go to roster selection, offer the choice there
+		of going to site when done
+	3 - if build own selected --> as usual
+
+	in cases 1 and 2 site should be unpublished so that user can adjust before others have access
+
+*#
+
+<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery.js"></script>
+<script type="text/javascript" src="/sakai-site-manage-tool/js/site-manage.js"></script>
+<link type="text/css" href="/sakai-site-manage-tool/css/site-manage.css" rel="stylesheet" media="screen" />
+<script type="text/javascript" language="JavaScript">
+    $(document).ready(function(){
+    	sakai.setupTos("$primaryUse", "$tosAccept");
+    });
+
+</script>
+<div class ="portletBody">
+	<h3>
+		$tlang.getString("sitegen.tos.title")
+	</h3>
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("sitetype.alert") $validator.escapeHtml($alertMessage)</div>	#end
+	<form name="tosForm" id="tosForm" action="#toolForm("$action")" method="post">
+		<input type="hidden" name="cancelIndex" value="$continueIndex" />
+		<input type="hidden" name="back" value="$!backIndex" />
+		<input type="hidden" name="templateIndex" value="$!templateIndex" />
+		<input type="hidden" name="continue" value="$continueIndex" />
+		<p class="indnt1">
+			<textarea name="termOfService" id="termOfService" readonly="readonly" rows="27" cols="80">$tosText</textarea>
+		</p>
+		<p id="tosAccept" class="checkbox indnt1">
+			<input type="radio" name="tosAccept" id="tosAskAccept" value="accept" />
+			<label for = "accept">$tlang.getString("sitegen.tos.accept")</label>
+			<input type="radio" name="tosAccept" id="tosAskDecline" value="decline"/>
+			<label for = "accept">$tlang.getString("sitegen.tos.decline")</label>
+		</p>
+		<p class="checkbox indnt1">
+			<label for="primaryUse" class="skip">$tlang.getString("sitegen.tos.primaryUse"):</label>
+			<select id="primaryUse" name="primaryUse">
+				<option value="-1" #if ($primaryUse == "-1") selected="selected" #end>$tlang.getString("sitegen.tos.primaryUseSelect")</option>
+				#foreach($primaryUseOption in $primaryUseList)
+					<option #if ($primaryUse == $primaryUseOption) selected="selected" #end>$primaryUseOption</option>
+				#end
+			</select>
+		</p>
+		<p class="act">
+				<input type="submit" accesskey="s" id="submitContinue" class="active" disabled="disabled" name="eventSubmit_doAccept_TOS" value="$tlang.getString("sitegen.tos.createSite")"/>
+				<input type="submit" accesskey="b" name="eventSubmit_doBack" value="$tlang.getString("ediacc.bac")" />
+				<input type="submit" accesskey="x" name="eventSubmit_doCancel_create" value="$tlang.getString("ediacc.can")" />
+		</p>
+		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+	</form>
+</div>
