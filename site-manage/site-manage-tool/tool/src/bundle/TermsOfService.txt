@@ -1,0 +1,13 @@
+By setting up a Sakai Project site, you are personally agreeing to the following Terms and Conditions:
+
+(1) I understand that use of Duke’s instance of Sakai requires adherence to Duke’s acceptable use guidelines and that access may be revoked for any participant (whether from Duke or from outside of Duke) who does not follow these guidelines or the Duke Sakai Terms and Conditions.
+
+(2) I understand that as the project site administrator, I have sole responsibility for informing participants in the project site about the nature of its availability – i.e. whether it is generally available, viewable by authorized users, etc. - and about any changes I may make at a later time to its availability. 
+
+(3) I understand that use of Duke's Sakai instance is subject to university data retention policies, and that Sakai project sites may be removed or archived by the university at a later time in accordance with published, formal guidelines. Furthermore, I understand that Sakai is not an archival repository and should not be used with the intent of providing open-ended, long-term storage for project site contents. 
+
+(4) PLACEHOLDER: I understand that I will be responsible for providing support to any third party, non-Duke participants in my Duke Sakai project site. 
+
+(5) I understand that these Terms and Conditions may be modified at a future date in accordance with formal Duke Sakai governance procedures.
+
+By clicking “Create Site” you are indicating that you have read and agree to the above Terms and Conditions. 

@@ -16,7 +16,7 @@
 		   #if ($selectedProviderCourse || $cmRequestedSections)
 				<p>
 					$tlang.getString("sitegen.addcourse.you")
-				</p>	
+				</p>
 				<form name = "removeSectionForm" id="removeSectionForm" method="post" action="#toolForm($action)">
 					<input type="hidden" name="eventSubmit_doFind_course" value="x" />
 					<input type="hidden" name="option" value="remove" />
@@ -32,9 +32,9 @@
 										<span class="itemAction">
 											<a href="#" onclick="submitRemoveSection('$item', 'removeSectionForm');">$tlang.getString("man.remove")</a>
 											<input type="hidden" id="removeSection$item" name="removeSection$item" value="" />
-										</span>	
+										</span>
 									</td>
-								</tr>	
+								</tr>
 							#end
 							#if (!$!editSite)
 								#foreach($section in $!cmRequestedSections)
@@ -47,9 +47,9 @@
 											<span class="itemAction">
 												<a href="#" onclick="submitRemoveSection('$section.eid', 'removeSectionForm');">$tlang.getString("man.remove")</a>
 												<input type="hidden" id="removeSection$section.eid" name="removeSection$section.eid" value="" />
-											</span>	
+											</span>
 										</td>
-									</tr>	
+									</tr>
 								#end
 							#else
 								#foreach($s in $!cmSelectedSections)
@@ -62,9 +62,9 @@
 											<span class="itemAction">
 												<a href="#" onclick="submitRemoveSection('$s.eid', 'removeSectionForm');">$tlang.getString("man.remove")</a>
 												<input type="hidden" id="removeSection$s.eid" name="removeSection$s.eid" value="" />
-											</span>	
+											</span>
 										</td>
-									</tr>	
+									</tr>
 								#end
 							#end
 						</table>
@@ -75,23 +75,23 @@
 			<!-- end if section for selected courses -->
 		<p class="instruction">$tlang.getString("nscourse.findInstruction")</p>
 	<form name="findCourseForm" id="findCourseForm" method="post" action="#toolForm($action)">
-		
+
 		<!-- loop through course identifier fields -->
 		<!-- these are place holders for the actual fields - they should
 		      be dynamically labelled based on the config. -->
 		#set ($i=0)
 		#set($maxLevel = $cmLevels.size() - 1)
-		
+
 		#foreach ($level in $cmLevels)
 			<div class="form-group row ">
-				
+
 					#set($fieldName="idField_$i")
 					<label for="id-$fieldName" class="col-sm-3 form-control-label">
 				  		<!-- label for this level in CM -->
 				  		${level}
 					</label>
-				
-				
+
+
 	##   Removed the manual entry page.  This is handled instead by template #37 from within
 	##   SiteAction.  This was preserved because of its ability to handle multiple levels
 	##   of ID fields, whereas find course is spec'd to use more than three levels:
@@ -124,12 +124,12 @@
 						    #end
 	                        #foreach ($coursething in $cmLevelOptions.get($i))
 								## down at the final three levels: CourseSet, CourseOffering, Section
-								<option value="$coursething.eid" 
-							   		#if (($i == $maxLevel && $cmLevelSelections.lastIndexOf($coursething.eid) >= $i) || ($i < $maxLevel && $coursething.eid == $selectedItem))						   ###if ($i < $cmLevelSelections.size() && $!selectedItem.contains($coursething.eid))) 
-							    		selected="true" 
+								<option value="$coursething.eid"
+							   		#if (($i == $maxLevel && $cmLevelSelections.lastIndexOf($coursething.eid) >= $i) || ($i < $maxLevel && $coursething.eid == $selectedItem))						   ###if ($i < $cmLevelSelections.size() && $!selectedItem.contains($coursething.eid)))
+							    		selected="true"
 							 		#end
 								>
-									$coursething.title 
+									$coursething.title
 								</option>
 					    	#end
 					     #end
@@ -140,8 +140,8 @@
 			  #set($i = $i + 1)
 			  </div>
 		   #end
-		
-	
+
+
 		   <div class="shorttext">
 		   	<label for ="selectedSections">
 		    	$tlang.getString("nscourse.findCourse.selected")
@@ -169,9 +169,9 @@
 		#if ($requireAuthorizer)
 			<div id="sectionInfo" #if ($selectedCourse && !($!authGroupSet && !$!authGroupSet.isEmpty())) style="display:block;clear:both" #else style="display:none" #end>
 
-					<div class="shorttext required form-group row ">						
-						<label for="uniqname" class="col-sm-3 form-control-label">		
-							<span class="reqStar">*</span>						
+					<div class="shorttext required form-group row ">
+						<label for="uniqname" class="col-sm-3 form-control-label">
+							<span class="reqStar">*</span>
 						   $tlang.getString("man.authoriz")
 						</label>
 						<div class="col-sm-6">
@@ -197,7 +197,7 @@
 			<input type="hidden" name="uniqname"  value="admin" />
 			<input type="hidden" name="additional" value="" />
 		#end
-		<a href="#" #if (!$selectedCourse || ($!authGroupSet && !$!authGroupSet.isEmpty())) disabled="true"#end onclick="javascript:blur();document.findCourseForm.option.value='add';document.findCourseForm.submit();">$tlang.getString('nscourse.findCourse.addAnotherSection')</a>				
+		<a href="#" #if (!$selectedCourse || ($!authGroupSet && !$!authGroupSet.isEmpty())) disabled="true"#end onclick="javascript:blur();document.findCourseForm.option.value='add';document.findCourseForm.submit();">$tlang.getString('nscourse.findCourse.addAnotherSection')</a>
 			<br />
 			<!-- end loop through fields-->
 		 
@@ -209,13 +209,13 @@
 				</a>
 			</p>
 		#end
-		 
+
 		<input type="hidden" name="back" value="$!backIndex" />
 		<input id="index" type="hidden" name="templateIndex" value="$!templateIndex" />
 		<input type="hidden" name="eventSubmit_doFind_course" value="x" />
 		<input type="hidden" name="option" value="find"/>
 		## if site creation is based on template, this could be the final step!
-		#if ($!basedOnTemplate) 
+		#if ($!basedOnTemplate)
 			<div class="instruction" id ="nextInstructions">
 				<span id="templateNonCourseInstruction" style="display:block">$tlang.getString("sitetype.templatefinalstepinstruction")</span>
 			</div>
@@ -225,8 +225,9 @@
 				#if (!$selectedCourse || ($!authGroupSet && !$!authGroupSet.isEmpty()))
   			disabled="true"
 				#end
-			 type="submit" class="active" accesskey="s" name="eventSubmit_doContinue" 
+			 type="submit" class="active" accesskey="s" name="eventSubmit_doContinue"
 				value="$tlang.getString('gen.continue')"
+				#if ($!basedOnTemplate) value="$tlang.getString('sitetype.doneOnly')" #else value="$tlang.getString('gen.continue')" #end
 				onclick="SPNR.disableControlsAndSpin( this, null ); resetOption('continue', 'findCourseForm');" />
 			<input type="submit" accesskey="b" name="eventSubmit_doBack" value="$tlang.getString('gen.back')" 
 				onclick="SPNR.disableControlsAndSpin( this, null ); resetOption('back', 'findCourseForm');" />
