@@ -241,7 +241,7 @@ public class MenuBuilder
         if( allowUpdateSiteMembership && !isMyWorkspace && !TM.isStealthed( SiteAction.getAddUserHelper( site ) ) )
         {
             // 'Add Participants'
-            menu.add( buildMenuEntry( rl.getString( "java.addp" ), "doParticipantHelper", activeTab.equals( SiteInfoActiveTab.ADD_PARTICIPANTS ) ) );
+            menu.add( buildMenuEntry( rl.getString( "java.addp" ), "doMenu_toolkits", activeTab.equals( SiteInfoActiveTab.ADD_PARTICIPANTS ) ) );
         }
 
         if( allowViewRoster && !isMyWorkspace )

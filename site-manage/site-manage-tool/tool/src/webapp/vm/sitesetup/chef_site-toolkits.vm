@@ -1,0 +1,33 @@
+##<!-- $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/sitesetup/chef_site-type.vm,v 1.3 2005/06/04 02:41:16 ggolden.umich.edu Exp $ -->
+
+#*
+	routing logic
+
+
+*#
+
+<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery.js"></script>
+<script type="text/javascript" src="/sakai-site-manage-tool/js/site-manage.js"></script>
+<link type="text/css" href="/sakai-site-manage-tool/css/site-manage.css" rel="stylesheet" media="screen" />
+<div class ="portletBody">
+	<div class="clear">
+		<h3>$toolkitsHeader</h3>
+		<span>$tlang.getString("add.official1")</span><br/>
+		<span class="instruction">$tlang.getString("add.official.instruction")</span>
+	</div>
+		<input type="hidden" name="option" value="cancel" />
+		<iframe id="wciframe" width="100%" scrolling="auto" frameborder="0"
+			onload="updateMainFrameHeight();"
+			src="$toolkitsUrl"
+			marginheight="0" marginwidth="0"
+			style="width: 100%; padding: 0pt ! important; height: 600px;"
+			title="Duke Toolkits">
+		</iframe>
+	<form name="toolkitsForm" action="#toolForm("SiteAction")" method="post">
+		<p class="act">
+			<input type="submit" accesskey="x" name="eventSubmit_doCancel" value="$tlang.getString("gen.finish")" />
+		</p>
+                <input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+	</form>
+
+</div>
