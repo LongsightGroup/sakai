@@ -231,7 +231,7 @@
 					accesskey="s"
 					name="Continue" 
 					id="continueButton" 
-					#if ($!basedOnTemplate) value="$tlang.getString('sitetype.done')" #else value="$tlang.getString('gen.continue')" #end
+					#if ($!basedOnTemplate) value="$tlang.getString('sitetype.doneOnly')" #else value="$tlang.getString('gen.continue')" #end
 					onclick="SPNR.disableControlsAndSpin( this, null );document.addCourseForm.option.value='continue'; document.addCourseForm.submit(); return false;"
 					/>
 				<input

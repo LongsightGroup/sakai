@@ -188,8 +188,18 @@
 							$!email
 						#end
 					#end
-				</div>					
+				</div>
 			</div>
+			#if ($!primaryUse)
+            <div class="form-group row">
+                <label class="col-sm-2 form-control-label">
+					$tlang.getString("sitegen.tos.primaryUse")
+                </label>
+            	<div class="col-sm-8">
+					$!primaryUse
+				</div>
+			</div>
+			#end
             #if ($isMathJaxInstalled)
             <div class="form-group row">
                 <label class="col-sm-2 form-control-label">

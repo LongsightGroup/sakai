@@ -304,7 +304,16 @@
 					#end						
 				</td>
 			</tr>
-			
+			#if ($!primaryUse)
+ 			<tr>
+				<th>
+					$tlang.getString("sitegen.tos.primaryUse")
+				</th>
+				<td>
+					$!primaryUse
+				</td>
+			</tr>
+			#end	
 			
 			<tr>
 					<th colspan="2">
