@@ -12,11 +12,15 @@
 
 *#
 
-#set($multipleTypes = ($templateSites.size() > 0) || ($canImportArchive))
+#set($dukeTemplateFeature = false)
+#set($dukeTemplateFeature = $!enableDukeTemplateFeature)
 
 <script type="text/javascript" language="JavaScript">
     $(document).ready(function(){
         sakai.siteTypeSetup()
+		#if ($!dukeTemplateFeature)
+		  sakai.enableDukeFeatures(); 
+		#end
     });
 </script>
 <div class ="portletBody">
@@ -29,30 +33,34 @@
         <input type="text" id="courseSiteTypes" style="display:none" value="$courseSiteTypeStrings">
         
     #if ($alertMessage)<div class="alertMessage">$tlang.getString("sitetype.alert") $alertMessage</div>  #end
-    #if ($multipleTypes)
-        <p class="instruction">
-            $tlang.getString("sitetype.chothetyp.different.ways")
-        </p>
-    #end
+    <p class="instruction">
+        $tlang.getString("sitetype.chothetyp.withouttemplate")
+    </p>
     <form name="typeform" id="typeform" action="#toolForm("$action")&special=upload" method="post">
-        #if ($multipleTypes)
-            <p class="checkbox indnt1">
-                ## only show the radio button when there is any template site defined
-                <input type="radio" name="createMode" id="buildOwn" value="buildOwn" checked="checked"/>
-                <label for="buildOwn">$tlang.getString("sitetype.buildown")</label>
-            </p>
-            <p class="indnt4 textPanelFooter" style="margin-bottom:5px;">$tlang.getString("sitetype.chothetyp.withtemplate.build.own.info")</p>
-        #else
-            ## otherwise, default to the choice
-            <input type="hidden" name="createMode" id="buildOwn" value="buildOwn" />
-            <p>$tlang.getString("sitetype.chothetyp.withouttemplate")</p>
-        #end
-
+		  #if ($!dukeTemplateFeature) 
+		    ## if the duketemplate feature is enabled, copy or buildYourOwn is determined by the course type.
+			<input type="hidden" name="createMode" id="buildOwn" value=""/>
+		  #else 
+        <p class="checkbox indnt1">
+            ## only show the radio button when there is any template site defined
+            <input type="radio" name="createMode" id="buildOwn" value="buildOwn" checked="checked"/>    
+            <label for="buildOwn">$tlang.getString("sitetype.buildown")</label>
+        </p>
+		  #end
+        <p class="indnt4 textPanelFooter" style="margin-bottom:5px;">$tlang.getString("sitetype.chothetyp.withtemplate.build.own.info")</p>
+   
         ## NOTE: end if create from template enabled
         #* following block should show if "build own" has been selected,
          a site type has been picked, and then the user (from the next screen) hits "back"  - the "Build own" radio
          should be checked, as well as the selected site type
          *#
+
+		## only allow the build your won, if the template size == 0  or dukeTemplateFeature is not enabled
+	    #if ($!dukeTemplateFeature)  
+			<input type="hidden" name="copyUsers" id="copyUsers" value="false"/>	
+			<input type="hidden" name="copyContent" id="copyContent" value="true"/>
+		#end	
+
         <div id="siteTypeList" class="indnt3">
             #foreach ($type in $siteTypes)
 				#set($courseTypeWithPerm    = (($courseSiteTypeStrings.contains($type) || $type == "course")    && $canAddCourse ))
@@ -77,7 +85,13 @@
                                 <label for="selectTerm">
                                     $tlang.getString("sitetype.acater")
                                 </label>    
+
+							#if ($!dukeTemplateFeature)
+   						        <select name="selectTermTemplate" id="selectTermTemplate">
+   						    #else 
                                 <select name="selectTerm" id="selectTerm">  ## onclick="selectSiteType('$type')"
+   						    #end
+                                    <option value ="0">$tlang.getString("sitetype.selectTerm")</option>
                                     #foreach($term in $termList)
                                         <option value ="$term.eid"
                                             #if ($!selectedTerm)
@@ -93,7 +107,28 @@
                                         $term.title
                                         </option>
                                     #end
+
+								</select>
+							    #if ($templateSites.size() > 0 && $!dukeTemplateFeature)
+								<label for="selectTemplateCourse">
+									$tlang.getString("sitetype.siteTemplate")
+								</label>	
+								<select name="templateSiteId" id="templateSiteIdDuke">
+									#foreach($templateSite in $templateSites)
+										#set($siteType = false)
+										#set($siteType = $!templateSite.type)
+										#set($lowcaseTitle = $templateSite.title.toLowerCase())
+										#if ($!siteType == 'course') 
+										    <option value ="$templateSite.id" class="$templateSite.type" 
+										    	#if ($lowcaseTitle.contains('default')) selected='selected' #end 
+										    >
+										        $templateSite.title
+										    </option>
+										#end
+									#end									
+
                                 </select> 
+								#end ## if ($templateSites.size() > 0 && $!dukeTemplateFeature)
                             </p>
                         #end
                         </div>  
@@ -101,7 +136,7 @@
                 #end ## end of #if (courseTypeWithPerm || portfolioTypeWithPerm || projectTypeWithPerm))
             #end  ##end of #foreach ($type in $siteTypes)
         </div>
-        #if ($templateSites.size() > 0)
+        #if ($templateSites.size() > 0 && !$!dukeTemplateFeature)
             ## if templates enabled
             <p class="checkbox indnt1">
                 <input type="radio" name="itemType" id="copy" value="copy"/>
@@ -310,7 +345,7 @@
              it should be set style="display:none" if user is coming back
              ot this template from building own flow
              *#
-            <input type="submit" accesskey="s" id="submitFromTemplate" disabled="disabled" style="display:none" class="active" name="submitFromTemplate" value="$tlang.getString('sitetype.done')" onclick="SPNR.disableControlsAndSpin( this, null ); document.typeform.option.value='createOnTemplate'; document.typeform.submit(); return false;" />
+            <input type="submit" accesskey="s" id="submitFromTemplate" disabled="disabled" style="display:none" class="active" name="submitFromTemplate" value="$tlang.getString('sitetype.doneOnly')" onclick="SPNR.disableControlsAndSpin( this, null ); document.typeform.option.value='createOnTemplate'; document.typeform.submit(); return false;" />
             <input type="submit" accesskey="s" id="submitFromTemplateCourse" disabled="disabled" style="display:none" class="active" name="submitFromTemplateCourse" value="$tlang.getString('sitetype.donecourse')" onclick="SPNR.disableControlsAndSpin( this, null ); document.typeform.option.value='createCourseOnTemplate'; document.typeform.submit(); return false;"/>
             <input type="submit" accesskey="s" id="submitFromArchive" style="display:none" class="active" name="submitFromArchive" value="$tlang.getString('sitetype.con')" onclick="SPNR.disableControlsAndSpin( this, null );  document.typeform.option.value='createFromArchive'; document.typeform.submit(); return false;" />
             ## this submit should be ther normal one
