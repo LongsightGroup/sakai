@@ -157,6 +157,7 @@ public class SiteManageServiceImpl implements SiteManageService {
         Set<String> toolsCopied = new HashSet<>();
 
         Map<String, String> transversalMap = new HashMap<>();
+        Set<String> copiedToolIds = new HashSet<>();
 
         if (pageList != null) {
             for (SitePage page : pageList) {
@@ -177,7 +178,13 @@ public class SiteManageServiceImpl implements SiteManageService {
                         // handle Home tool specially, need to update the site infomration display url if needed
                         String newSiteInfoUrl = transferSiteResource(oSiteId, nSiteId, site.getInfoUrl());
                         site.setInfoUrl(newSiteInfoUrl);
-                        saveSite(site);
+                    } else if (toolId.equalsIgnoreCase("sakai.iframe")) {
+                        // for multipe instance only copy once.
+                        if (!copiedToolIds.contains(toolId)) {
+                            // other tools
+                            transferCopyEntities(toolId, oSiteId, nSiteId, false);
+                            copiedToolIds.add(toolId);
+                        }
                     } else {
                         // other
                         // tools

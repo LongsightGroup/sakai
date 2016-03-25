@@ -289,10 +289,24 @@
 			<label for="siteContactEmail" class="col-sm-2 form-control-label">
 				$tlang.getString("sitediinf.sitconema")
 			</label>	
-			<div class="col-sm-6">			
+			<div class="col-sm-6">
 				<input type="text" name="siteContactEmail" id="siteContactEmail" size="20" maxlength="99" value="$!form_site_contact_email" />
 			</div>
 		</div>
+                #if ($!primaryUse)
+                    <div class="form-group row">
+                        <label for="primaryUse" class="col-sm-2 form-control-label">
+                            $tlang.getString("sitegen.tos.primaryUse")
+                        </label>
+                        <div class="col-sm-6">
+                            <select id="primaryUse" name="primaryUse">
+                                #foreach($primaryUseOption in $primaryUseList)
+                                    <option #if ($primaryUse == $primaryUseOption) selected="selected" #end>$primaryUseOption</option>
+                                #end
+                            </select>
+                        </div>
+                    </div>
+                #end
 		#if ($isMathJaxInstalled)
 			#if ($isMathJaxEnabledForSite)
 				<input type="hidden" name="isMathJaxEnabledForSite" id="isMathJaxEnabledForSite" value="on"/>

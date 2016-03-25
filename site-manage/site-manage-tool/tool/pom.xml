@@ -163,7 +163,8 @@
                 <directory>${basedir}/src/bundle</directory>
                 <includes>
                     <include>**/*.properties</include>
-                </includes>
+            	    <include>**/*.txt</include>
+		</includes>
             </resource>
             <resource>
                 <directory>${basedir}/src/config</directory>

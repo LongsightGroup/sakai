@@ -169,4 +169,12 @@
 			<value>quartz.seedsites.autorun</value>
 		</property>
 	</bean>
+    
+    <!-- EST-64 Duke custom -->
+    <bean id="org.sakaiproject.sitemanage.api.TermsOfServiceHelper"
+          class="org.sakaiproject.sitemanage.impl.TermsOfServiceHelperImpl">
+        <property name="tosFileLocation" value="contentResource:/user/admin/TermsOfService.txt"/>
+        <property name="primaryUseFileLocation" value="contentResource:/user/admin/PrimaryUse.txt"/>
+        <property name="contentHostingService" ref="org.sakaiproject.content.api.ContentHostingService"/>
+    </bean>
 </beans>
