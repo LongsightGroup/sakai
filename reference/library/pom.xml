@@ -18,23 +18,6 @@
 	<inceptionYear>2003</inceptionYear>
 	<packaging>war</packaging>
 	<dependencies>
-		<dependency>
-			<groupId>org.sakaiproject.kernel</groupId>
-			<artifactId>sakai-kernel-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.sakaiproject.kernel</groupId>
-			<artifactId>sakai-kernel-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.sakaiproject.kernel</groupId>
-			<artifactId>sakai-component-manager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.sakaiproject</groupId>
-			<artifactId>sakai-fck-connector</artifactId>
-			<type>war</type>
-		</dependency>
 		<!-- At the moment we're unpacking the webjars, so we don't want them bundled into the WAR
 		     but we still need them as dependencies so the plugin unpacks them, that's why they
 		     have a scope of runtime -->
