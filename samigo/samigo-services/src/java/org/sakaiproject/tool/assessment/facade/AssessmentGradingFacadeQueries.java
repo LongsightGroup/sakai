@@ -1,3 +1,4 @@
+
 /**********************************************************************************
  * $URL$
  * $Id$
@@ -260,6 +261,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
         return list;
       }
       else {
+        if(list.isEmpty()) {
+             return new ArrayList();
+        }
         // only take highest or latest
         Iterator items = list.iterator();
         ArrayList newlist = new ArrayList();
@@ -967,7 +971,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	    List list = getHibernateTemplate().executeFind(hcb);
 
 	    for (int i=0;i<list.size();i++){
-	      a.add((MediaData)list.get(i));
+	      MediaData mediaData = (MediaData)list.get(i);
+	      mediaData.setContentResource(getMediaContentResource(mediaData));
+	      a.add(mediaData);
 	    }
 	    log.debug("*** no. of media ="+a.size());
 	    return a;
@@ -1051,7 +1057,16 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     			//return criteria.setMaxResults(10000).list();
     		}
     	};
-    	return (List) getHibernateTemplate().execute(hcb);
+
+       ArrayList a = new ArrayList();
+       List hbmList = (List) getHibernateTemplate().execute(hcb);
+       for (int i=0;i<hbmList.size();i++){
+               MediaData mediaData = (MediaData)hbmList.get(i);
+               mediaData.setContentResource(getMediaContentResource(mediaData));
+               a.add(mediaData);
+       }
+       return a;
+
     	} catch (Exception e) {
     		e.printStackTrace();
     		return new ArrayList();
@@ -1967,6 +1982,18 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	    return getHibernateTemplate().executeFind(hcb);
   }
   
+  public List getItemGradingIds(final Long assessmentGradingId){
+	    final HibernateCallback hcb = new HibernateCallback(){
+	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
+	    		Query q = session.createQuery("select i.itemGradingId from "+
+	    		         " ItemGradingData i where i.assessmentGradingId=?");
+	    		q.setLong(0, assessmentGradingId.longValue());
+	    		return q.list();
+	    	};
+	    };
+	    return getHibernateTemplate().executeFind(hcb);
+}
+  
   public HashSet getItemSet(final Long publishedAssessmentId, final Long sectionId) {
 	  HashSet itemSet = new HashSet();
 
@@ -2202,11 +2229,14 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {
 	    		Query q = session.createQuery(
 	    				"select a.publishedAssessmentId, a.agentId, count(*) " +
-	    				" from AssessmentGradingData a, StudentGradingSummaryData s, AuthorizationData au " +
+	    				" from AssessmentGradingData a, StudentGradingSummaryData s, AuthorizationData au, PublishedAssessmentData p " +
 	    				" where a.forGrade=? and au.functionId = ? and au.agentIdString = ? and a.publishedAssessmentId = au.qualifierId" +
 	    				" and a.publishedAssessmentId = s.publishedAssessmentId and a.agentId = s.agentId " +
 	    				" and a.submittedDate > s.createdDate" +
-	    				" group by a.publishedAssessmentId, a.agentId");
+	    				" and a.publishedAssessmentId = p.publishedAssessmentId" +
+	    				" and p.status != 2" +
+	    				" group by a.publishedAssessmentId, a.agentId" +
+	    				" order by a.publishedAssessmentId");
 	    		q.setBoolean(0, true);
 	    		q.setString(1, "OWN_PUBLISHED_ASSESSMENT");
 	    		q.setString(2, siteId);
@@ -3440,7 +3470,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 						" where a.publishedAssessmentId = c.assessment.publishedAssessmentId " +
 						" and c.retractDate <= ?" +
 						" and a.status not in (5) and (a.hasAutoSubmissionRun = 0 or a.hasAutoSubmissionRun is null) and c.autoSubmit = 1 " +
-						" and a.submittedDate is not null " +
+						" and a.attemptDate is not null " +
 						" and (a.attemptDate <= c.retractDate or (c.dueDate <= ? and c.lateHandling = 2)) " +
 						" order by a.publishedAssessmentId, a.agentId, a.forGrade desc, a.assessmentGradingId", values);
 		
@@ -3478,20 +3508,29 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	    		adata = (AssessmentGradingData) iter.next();
 	    		adata.setHasAutoSubmissionRun(Boolean.TRUE);
 	    		
-	    		if (Boolean.FALSE.equals(adata.getForGrade())){
+				Date endDate = new Date();
+				if (Boolean.FALSE.equals(adata.getForGrade())){
 
-    				adata.setForGrade(Boolean.TRUE);
-    				if (adata.getTotalAutoScore() == null) {
-    					adata.setTotalAutoScore(0d);
-    				}
-    				if (adata.getFinalScore() == null) {
-    					adata.setFinalScore(0d);
-    				}
-    				// SAM-1088
-    				if (adata.getSubmittedDate() != null && assessment != null && assessment.getDueDate() != null &&
-    						adata.getSubmittedDate().after(assessment.getDueDate())) {
-    					adata.setIsLate(true);
-    				}
+						adata.setForGrade(Boolean.TRUE);
+						if (adata.getTotalAutoScore() == null) {
+								adata.setTotalAutoScore(0d);
+						}
+						if (adata.getFinalScore() == null) {
+								adata.setFinalScore(0d);
+						}
+						if (adata.getAttemptDate() != null && assessment != null && assessment.getDueDate() != null &&
+										adata.getAttemptDate().after(assessment.getDueDate())) {
+								adata.setIsLate(true);
+						}
+						// SAM-1088
+						else if (adata.getSubmittedDate() != null && assessment != null && assessment.getDueDate() != null &&
+										adata.getSubmittedDate().after(assessment.getDueDate())) {
+								adata.setIsLate(true);
+						}
+						// SAM-2729 user probably opened assessment and then never submitted a question
+						if (adata.getSubmittedDate() == null && adata.getAttemptDate() != null) {
+								adata.setSubmittedDate(endDate);
+						}
 
     				updateCurrentGrade = true;
     				adata.setIsAutoSubmitted(Boolean.TRUE);
@@ -3522,7 +3561,6 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     					EventLogData eventLogData= (EventLogData) eventLogDataList.get(0);
     					//will do the i18n issue later.
     					eventLogData.setErrorMsg("No Errors (Auto submit)");
-    					Date endDate = new Date();
     					eventLogData.setEndDate(endDate);
     					if(endDate != null && eventLogData.getStartDate() != null) {
     						double minute= 1000*60;

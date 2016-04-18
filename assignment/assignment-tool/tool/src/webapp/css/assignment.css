@@ -124,7 +124,7 @@ a.toggleAnchor > h3 {
 .assignmentAttachRadio
 {
     margin: 2px;
-    height: 2.5em;
+    padding: 0 1em;
 }
 
 .assignmentAttachRadio input, .assignmentAttachRadio img, .assignmentAttachRadio span
@@ -173,6 +173,10 @@ a.toggleAnchor > h3 {
 
 .groupsContainer h4.collapse {
     background: url('/library/image/sakai/expand.gif') no-repeat left !important;
+}
+
+.collapse{
+    display: block !important;
 }
 
 label.disabled {
@@ -288,19 +292,6 @@ fieldset .alertMessageInline,fieldset .alertMessage {
 
 .itemAction.spinnerBesideContainer a {
     margin: 0 4px;
-}
-
-div#pagingHeader {
-    height: 20px;
-    display: flex;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    justify-content: center;
 }
 
 .itemAction a:link {
