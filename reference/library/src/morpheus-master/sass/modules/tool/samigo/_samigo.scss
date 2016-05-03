@@ -54,4 +54,34 @@
 			}
 		}
 	}
+
+	.samigo-inline-radio {
+		label {
+			margin-right: 1em;
+		}
+	}
+	
+	.samigo-checkbox {
+		label {
+			margin: 0 0 0 0.5em;
+		}
+	}
+
+	.samigo-radio {
+		label {
+			margin: 0 0 0 0.5em;
+		}
+	}
+
+	.disabledField{
+		color: darken( $errorcolor, 30% );
+		text-decoration: line-through;
+	}
+
+	form{
+		ul{
+			list-style: none;
+			padding: 0 0 0 0;
+		}
+	}
 }

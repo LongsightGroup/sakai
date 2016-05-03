@@ -1157,6 +1157,15 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 				    UIBranchContainer tableRow = UIBranchContainer.make(tableContainer, "item:");
 				    tableRow.decorate(new UIFreeAttributeDecorator("class", "break" + i.getFormat()));
+				    if (canEditPage) {
+					// usual case is this is a break
+					if (i.getType() == SimplePageItem.BREAK)
+					    UIOutput.make(tableRow, "itemid", String.valueOf(i.getId()));
+					else {
+					    // page doesn't start with a break. have to use pageid
+					    UIOutput.make(tableRow, "itemid", "p" + currentPage.getPageId());
+					}
+				    }
 
 				    first = false;
 				    if (i.getType() == SimplePageItem.BREAK)
@@ -1218,7 +1227,6 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 				tableRow.decorate(new UIFreeAttributeDecorator("class", itemClassName));
 
-
 				if (canEditPage)
 				    UIOutput.make(tableRow, "itemid", String.valueOf(i.getId()));
 
@@ -1270,13 +1278,13 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 					    UIOutput itemicon = UIOutput.make(linkdiv,"item-icon");
 					    switch (i.getType()) {
 					    case SimplePageItem.FORUM:
-						itemicon.decorate(new UIStyleDecorator("fa-comments"));
+						itemicon.decorate(new UIStyleDecorator("icon-sakai-forums"));
 						break;
 					    case SimplePageItem.ASSIGNMENT:
-						itemicon.decorate(new UIStyleDecorator("fa-tasks"));
+						itemicon.decorate(new UIStyleDecorator("icon-sakai-assignment-grades"));
 						break;
 					    case SimplePageItem.ASSESSMENT:
-						itemicon.decorate(new UIStyleDecorator("fa-puzzle-piece"));
+						itemicon.decorate(new UIStyleDecorator("icon-sakai-samigo"));
 						break;
 					    case SimplePageItem.BLTI:
 						itemicon.decorate(new UIStyleDecorator("fa-globe"));
@@ -2162,7 +2170,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								gp.pageItemId = pageItem.getId();
 								gp.siteId = simplePageBean.getCurrentSiteId();
 								
-								UIInternalLink.make(tableRow, "gradingPaneLink", messageLocator.getMessage("simplepage.show-grading-pane-comments"), gp)
+								UIInternalLink.make(tableRow, "gradingPaneLink", gp)
 								    .decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.show-grading-pane-comments")));
 							}
 
@@ -2585,7 +2593,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								gp.pageItemId = pageItem.getId();
 								gp.studentContentItem = true;
 							
-								UIInternalLink.make(tableRow, "studentGradingPaneLink", messageLocator.getMessage("simplepage.show-grading-pane-content"), gp)
+								UIInternalLink.make(tableRow, "studentGradingPaneLink", gp)
 								    .decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.show-grading-pane-content")));
 							}
 							
@@ -2804,7 +2812,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 							gp.pageId = currentPage.getPageId();
 							gp.pageItemId = pageItem.getId();
 						
-							UIInternalLink.make(tableRow, "questionGradingPaneLink", messageLocator.getMessage("simplepage.show-grading-pane"), gp)
+							UIInternalLink.make(tableRow, "questionGradingPaneLink", gp)
 							    .decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.show-grading-pane")));
 						}
 						

@@ -44,6 +44,21 @@
 
 /* end override */
 
+/* wrap unbreakable words */
+#content {
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+}
+/* without this, these divs expand beyond the width of the column if there's an unbreakable word */
+.right-col, .contentCol {
+  max-width:100%;
+}
+
+.gradingPane {
+  padding-top: 20px;
+  padding-left: 10px;
+}
+
 .title-tools h2{
 	padding-top: 0px;
 }
@@ -382,29 +397,68 @@ a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merg
    against the WebAIM Color Contrast Checker. I've tried to
    make them subjectively the same darkness.
 */
+/* default */
+.column .commentDiv, .column .studentContentTable, .column .questionDiv .contentCol, .column .checklistDiv {
+  background-color: #b3ecff;
+}
+.column a[href]{
+  color: #004860;
+}
 .colgray {
    background-color: #f0f0f0;
    border-color: #222;
 }
+.colgray .commentDiv, .colgray .studentContentTable, .colgray .questionDiv .contentCol, .colgray .checklistDiv {
+  background-color: #b8b8b8;
+}
+.colgray a[href]{
+  color:black;
+}
 .colred {
    background-color: #fff0f0;
    border-color: #600;
-   color: #600;
+   color: #4660000;
+}
+.colred .commentDiv, .colred .studentContentTable, .colred .questionDiv .contentCol, .colred .checklistDiv {
+  background-color: #ffb3b3;
+}
+.colred a[href], .colred h3.author {
+  color: black;
 }
 .colblue {
    background-color: #f4f4ff;
+   background-color: #e6f9ff;
    border-color: #004;
    color: #004;
+}
+.colblue .commentDiv, .colblue .studentContentTable, .colblue .questionDiv .contentCol, .colblue .checklistDiv {
+  background-color: #b3d9ff;
+  background-color: #99e7ff;
+}
+.colblue a[href] {
+  color: black;
 }
 .colgreen {
    background-color: #f6fff6;
    border-color: #030;
    color: #030;
 }
+.colgreen .commentDiv, .colgreen .studentContentTable, .colgreen .questionDiv .contentCol, .colgreen .checklistDiv {
+  background-color: #9fc;
+}
+.colgreen a[href] {
+  color: black;
+}
 .colyellow {
    background-color: #ffffe8;
    border-color: #840;
-   color: #840;
+   color: #4b2600;
+}
+.colyellow .commentDiv, .colyellow .studentContentTable, .colyellow .questionDiv .contentCol, .colyellow .checklistDiv {
+  background-color:  #ffd480
+}
+.colyellow a[href],.colyellow h3.author {
+  color: black;
 }
 
 
@@ -508,7 +562,7 @@ a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merg
     border: 1px solid #ccc;
     margin:5px 0;
     position:relative;
-    padding:5px;
+    padding: 0px 0px 0px 0px;
 }
 .flc-reorderer-module:focus {
     outline:1px dashed #000
@@ -519,13 +573,14 @@ a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merg
 .reordSeqContainer {
     position: absolute;
     width:50px;
-    top:5;
-    left:0;
-    padding:5px;
+    top:2px;
+    left:5px;
+    padding:0px;
     
 }
+
 .reordItemContainer {
-     padding: 5px 20px 5px 30px;
+     padding: 0px 20px 0px 30px;
 }
 .reordItemContainerDesc {
     margin-top:5px;
@@ -548,7 +603,7 @@ a.edit-link:link, a.edit-link:visited, a.section-merge-link:link, a.section-merg
 .reordDeleteContainer {
     position: absolute;
     width:17px;
-    top:5px;
+    top:1px;
     right:5px;
 
 }
@@ -834,6 +889,9 @@ ul#toolbar li em {
 .dropDownDiv li div {
     font-size: .85em !important
 }
+.Mrphs-siteHierarchy span.nextprev {
+   float:right
+}
 span.nextprev {
 }
 a.nextprev {
@@ -856,7 +914,7 @@ img {
 .unsubmitted {
 	background-color: #FFC9D7
 }
-.gradingPaneLink span, .showPollGraph span {
+.showPollGraph span {
 	font-size: 70%;
 	font-weight: normal;
 }
@@ -1358,6 +1416,15 @@ font-size: 90%;
   padding-right: 7px;
 }
 }
+/* 480 is boundary of most phones */
+@media only screen and (max-width: 480px) {
+.col1{
+   width: 100%;
+}
+.col2 {
+   width: calc(100% - 15px);
+}
+}
 .lessonsToolButton {
   border-radius:15px !important;
 }
@@ -1365,6 +1432,12 @@ font-size: 90%;
   line-height:25px; 
   vertical-align:-3px;
   font-size:200%
+}
+.bottomButtons {
+  width:100%
+}
+.bottomRight {
+  float:right
 }
 .contentButton span {
   padding: 0px !important;
@@ -1424,7 +1497,7 @@ font-size: 90%;
   padding-right: 10px;
 }
 .startupHelp {
-  margin-top: 20px;
+  margin-top: 45px;
 }
 /* this section is to make things work when lessons is in an iframe */
 .contentButton span a {
