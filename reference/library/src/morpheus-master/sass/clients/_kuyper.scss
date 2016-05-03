@@ -1,0 +1,52 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/kuyperLogo.png';
+$logo-height: 57px;
+$logo-width: 311px;
+
+$header-gradient-a: #4F234B;
+$header-gradient-b: #4F234B;
+$header-gradient-c: #4F234B;
+$header-gradient-d: #4F234B;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #A39161;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #4F234B;
+$toolBorderColor:			 #8A6D83;
+
+$primary-color:    			 #A39161;
+$secondary-color:  			 #A39161;
+
+$text-color:				 #A9A9A9;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #8A6D83;
+$button-background-color: #A39161;
+$button-background-secondary-color: #4F234B;
+
+$button-color-text-color: #4F234B;
+$button-color-border-color: #8A6D83;
+$button-color-background-color: #8A6D83;
+$button-color-background-secondary-color: #4F234B;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #A39161 !important;
+}
+
+.Mrphs-topHeader {
+background: #4F234B !important;
+}

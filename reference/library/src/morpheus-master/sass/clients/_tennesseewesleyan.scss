@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/TWC.LAMP.Banner.Graphic.2013.jpg';
+$logo-height: 80px;
+$logo-width: 299px;
+
+$header-gradient-a: #032853;
+$header-gradient-b: #032853;
+$header-gradient-c: #032853;
+$header-gradient-d: #032853;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #98885B;
+$toolMenuColor: 			 #032853;
+$toolTabBGColor: 			 #98885B;
+$toolBorderColor:			 #98885B;
+
+$primary-color:    			 #98885B;
+$secondary-color:  			 #AB7438;
+
+$text-color:				 #032853;
+
+$button-text-color:	 #032853;
+$button-border-color: #032853;
+$button-background-color: #98885B;
+$button-background-secondary-color: #98885B;
+
+$button-color-text-color: #98885B;
+$button-color-border-color: #032853;
+$button-color-background-color: #032853;
+$button-color-background-secondary-color: #98885B;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #032853;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #98885B !important;
+}
+

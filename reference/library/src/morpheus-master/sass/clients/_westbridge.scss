@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/Westbridge logo 228x92.png';
+$logo-height: 92px;
+$logo-width: 228px;
+
+$header-gradient-a: #B33D20;
+$header-gradient-b: #B33D20;
+$header-gradient-c: #B33D20;
+$header-gradient-d: #B33D20;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #838D45;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #A2AA6C;
+$toolBorderColor:			 #A2AA6C;
+
+$primary-color:    			 #C16145;
+$secondary-color:  			 #C16145;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #B33D20;
+$button-background-color: #922D16;
+$button-background-secondary-color: #B33D20;
+
+$button-color-text-color: #B33D20;
+$button-color-border-color: #B33D20;
+$button-color-background-color: #B33D20;
+$button-color-background-secondary-color: #B33D20;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: false;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #922D16 !important;
+}
+

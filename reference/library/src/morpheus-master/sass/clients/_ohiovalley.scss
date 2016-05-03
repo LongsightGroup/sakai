@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/OVU-Logo_on-Blue_280x80.png';
+$logo-height: 80px;
+$logo-width: 280px;
+
+$header-gradient-a: #011D62;
+$header-gradient-b: #011D62;
+$header-gradient-c: #011D62;
+$header-gradient-d: #011D62;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #FFFFFF;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #262626;
+$toolBorderColor:			 #FFFFFF;
+
+$primary-color:    			 #474747;
+$secondary-color:  			 #7B92C8;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #011D62;
+$button-background-color: #6B6B6B;
+$button-background-secondary-color: #4F6DAA;
+
+$button-color-text-color: #4F6DAA;
+$button-color-border-color: #011D62;
+$button-color-background-color: #011D62;
+$button-color-background-secondary-color: #102B6A;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #6B6B6B !important;
+}
+

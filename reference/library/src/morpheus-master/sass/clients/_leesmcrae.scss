@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/LMC logo 310x80.png';
+$logo-height: 80px;
+$logo-width: 310px;
+
+$header-gradient-a: #6E8C3F;
+$header-gradient-b: #6E8C3F;
+$header-gradient-c: #6E8C3F;
+$header-gradient-d: #6E8C3F;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #A39161;
+$toolMenuColor: 			 #6E8C3F;
+$toolTabBGColor: 			 #4F234B;
+$toolBorderColor:			 #8A6D83;
+
+$primary-color:    			 #FFFFFF;
+$secondary-color:  			 #6E8C3F;
+
+$text-color:				 #6E8C3F;
+
+$button-text-color:	 #6E8C3F;
+$button-border-color: #FFFFFF;
+$button-background-color: #FFFFFF;
+$button-background-secondary-color: #6E8C3F;
+
+$button-color-text-color: #6E8C3F;
+$button-color-border-color: #6E8C3F;
+$button-color-background-color: #6E8C3F;
+$button-color-background-secondary-color: #6E8C3F;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #6E8C3F;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #FFFFFF !important;
+}
+

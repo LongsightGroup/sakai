@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/lamp_brevard_logo29.png';
+$logo-height: 80px;
+$logo-width: 142px;
+
+$header-gradient-a: #001642;
+$header-gradient-b: #001642;
+$header-gradient-c: #00319E;
+$header-gradient-d: #00319E;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #3A4F11;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #E85100;
+$toolBorderColor:			 #FFFFFF;
+
+$primary-color:    			 #EA4F11;
+$secondary-color:  			 #E85100;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #FFFFFF;
+$button-background-color: #EA4F11;
+$button-background-secondary-color: #00319E;
+
+$button-color-text-color: #00319E;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #000000;
+$button-color-background-secondary-color: #00319E;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #EA4F11 !important;
+}
+

@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/Sakai-Seal.gif';
+$logo-height: 80px;
+$logo-width: 80px;
+
+$header-gradient-a: #0D2B50;
+$header-gradient-b: #0D2B50;
+$header-gradient-c: #0D2B50;
+$header-gradient-d: #0D2B50;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #FFFFFF;
+$toolMenuColor: 			 #0D2B50;
+$toolTabBGColor: 			 #0D2B50;
+$toolBorderColor:			 #8A6D83;
+
+$primary-color:    			 #C0C3C1;
+$secondary-color:  			 #0D2B50;
+
+$text-color:				 #000000;
+
+$button-text-color:	 #000000;
+$button-border-color: #0D2B50;
+$button-background-color: #9C9A9C;
+$button-background-secondary-color: #0D2B50;
+
+$button-color-text-color: #0D2B50;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #0D2B50;
+$button-color-background-secondary-color: #0D2B50;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #000000;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #9C9A9C !important;
+}
+
