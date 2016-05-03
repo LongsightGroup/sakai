@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/ccbbc_lamp.png';
+$logo-height: 80px;
+$logo-width: 277px;
+
+$header-gradient-a: #0D341B;
+$header-gradient-b: #0D341B;
+$header-gradient-c: #0C4220;
+$header-gradient-d: #0C4220;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #D5D5D5;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #91A172;
+$toolBorderColor:			 #231F20;
+
+$primary-color:    			 #D5D5D5;
+$secondary-color:  			 #7F7F7F;
+
+$text-color:				 #231F20;
+
+$button-text-color:	 #231F20;
+$button-border-color: #231F20;
+$button-background-color: #D5D5D5;
+$button-background-secondary-color: #284C35;
+
+$button-color-text-color: #284C35;
+$button-color-border-color: #231F20;
+$button-color-background-color: #231F20;
+$button-color-background-secondary-color: #91A172;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #231F20;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #D5D5D5 !important;
+}
+

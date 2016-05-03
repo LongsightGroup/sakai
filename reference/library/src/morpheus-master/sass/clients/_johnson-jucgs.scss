@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/jucgsLogo.png';
+$logo-height: 80px;
+$logo-width: 234px;
+
+$header-gradient-a: #FFF3C0;
+$header-gradient-b: #FFF3C0;
+$header-gradient-c: #FFF3C0;
+$header-gradient-d: #FFF3C0;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #F0F0F0;
+$toolMenuColor: 			 #551A64;
+$toolTabBGColor: 			 #6C809D;
+$toolBorderColor:			 #C1C1C1;
+
+$primary-color:    			 #063386;
+$secondary-color:  			 #FFF3C0;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #FFFFFF;
+$button-background-color: #05204C;
+$button-background-secondary-color: #FFF3C0;
+
+$button-color-text-color: #FFF3C0;
+$button-color-border-color: #000000;
+$button-color-background-color: #000000;
+$button-color-background-secondary-color: #FFF3C0;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #05204C !important;
+}
+

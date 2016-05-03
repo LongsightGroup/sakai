@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/EFA logo.jpg';
+$logo-height: 80px;
+$logo-width: 242px;
+
+$header-gradient-a: #FFFFFF;
+$header-gradient-b: #FFFFFF;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #7A7B7A;
+$toolMenuColor: 			 #000000;
+$toolTabBGColor: 			 #000000;
+$toolBorderColor:			 #7A7B7A;
+
+$primary-color:    			 #BD231F;
+$secondary-color:  			 #7A7B7A;
+
+$text-color:				 #000000;
+
+$button-text-color:	 #000000;
+$button-border-color: #FFFFFF;
+$button-background-color: #BD231F;
+$button-background-secondary-color: #000000;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #FFFFFF;
+$button-color-background-secondary-color: #000000;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #000000;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #BD231F !important;
+}
+

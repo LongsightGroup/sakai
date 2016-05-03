@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/Bethel University Logo.png';
+$logo-height: 80px;
+$logo-width: 208px;
+
+$header-gradient-a: #E1CE9E;
+$header-gradient-b: #E1CE9E;
+$header-gradient-c: #E1CE9E;
+$header-gradient-d: #E1CE9E;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #F0F0F0;
+$toolMenuColor: 			 #000000;
+$toolTabBGColor: 			 #6C0560;
+$toolBorderColor:			 #000000;
+
+$primary-color:    			 #6C0560;
+$secondary-color:  			 #E1CE9E;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #42083C;
+$button-background-color: #6C0560;
+$button-background-secondary-color: #E1CE9E;
+
+$button-color-text-color: #E1CE9E;
+$button-color-border-color: #42083C;
+$button-color-background-color: #E1CE9E;
+$button-color-background-secondary-color: #E1CE9E;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #6C0560 !important;
+}
+

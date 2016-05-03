@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/Logo_trans.png';
+$logo-height: 80px;
+$logo-width: 350px;
+
+$header-gradient-a: #B1B1B1;
+$header-gradient-b: #B1B1B1;
+$header-gradient-c: #B1B1B1;
+$header-gradient-d: #B1B1B1;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #B1B1B1;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #B1B1B1;
+$toolBorderColor:			 #FFFFFF;
+
+$primary-color:    			 #4E4E4E;
+$secondary-color:  			 #6D6D6D;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #B1B1B1;
+$button-background-color: #4E4E4E;
+$button-background-secondary-color: #6D6D6D;
+
+$button-color-text-color: #6D6D6D;
+$button-color-border-color: #B1B1B1;
+$button-color-background-color: #B1B1B1;
+$button-color-background-secondary-color: #6D6D6D;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #4E4E4E !important;
+}
+

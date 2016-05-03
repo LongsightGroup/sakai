@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/simmonslogo-for-web.jpg';
+$logo-height: 80px;
+$logo-width: 246px;
+
+$header-gradient-a: #FFFFFF;
+$header-gradient-b: #FFFFFF;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #414141;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #000000;
+$toolBorderColor:			 #414141;
+
+$primary-color:    			 #940012;
+$secondary-color:  			 #000000;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #FFFFFF;
+$button-background-color: #940012;
+$button-background-secondary-color: #414141;
+
+$button-color-text-color: #414141;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #FFFFFF;
+$button-color-background-secondary-color: #414141;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #940012 !important;
+}
+

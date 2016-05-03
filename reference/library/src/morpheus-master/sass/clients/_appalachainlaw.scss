@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/ASL Official Seal 663x617.jpg';
+$logo-height: 80px;
+$logo-width: 80px;
+
+$header-gradient-a: #3D6D4D;
+$header-gradient-b: #3D6D4D;
+$header-gradient-c: #3D6D4D;
+$header-gradient-d: #3D6D4D;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #C6CAC6;
+$toolMenuColor: 			 #3D6D4D;
+$toolTabBGColor: 			 #E3F5E6;
+$toolBorderColor:			 #D0D7D0;
+
+$primary-color:    			 #FFFFFF;
+$secondary-color:  			 #E3F5E6;
+
+$text-color:				 #3D6D4D;
+
+$button-text-color:	 #3D6D4D;
+$button-border-color: #3D6D4D;
+$button-background-color: #FFFFFF;
+$button-background-secondary-color: #C6CAC6;
+
+$button-color-text-color: #C6CAC6;
+$button-color-border-color: #3D6D4D;
+$button-color-background-color: #3D6D4D;
+$button-color-background-secondary-color: #C6CAC6;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #3D6D4D;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #FFFFFF !important;
+}
+

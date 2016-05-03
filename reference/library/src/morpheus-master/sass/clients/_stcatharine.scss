@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/Saint Catharine Logo 280x80.png';
+$logo-height: 80px;
+$logo-width: 280px;
+
+$header-gradient-a: #3B1C3E;
+$header-gradient-b: #3B1C3E;
+$header-gradient-c: #3B1C3E;
+$header-gradient-d: #3B1C3E;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #FFFFFF;
+$toolMenuColor: 			 #000000;
+$toolTabBGColor: 			 #3B1C3E;
+$toolBorderColor:			 #FFFFFF;
+
+$primary-color:    			 #672C6C;
+$secondary-color:  			 #3B1C3E;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #3B1C3E;
+$button-background-color: #3E1E40;
+$button-background-secondary-color: #3B1C3E;
+
+$button-color-text-color: #3B1C3E;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #3B1C3E;
+$button-color-background-secondary-color: #3B1C3E;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #3E1E40 !important;
+}
+

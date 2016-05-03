@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/Point_logo_LAMP_80x546.png';
+$logo-height: 80px;
+$logo-width: 546px;
+
+$header-gradient-a: #021C44;
+$header-gradient-b: #021C44;
+$header-gradient-c: #022894;
+$header-gradient-d: #022894;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #ACD0E6;
+$toolMenuColor: 			 #FFFFFF;
+$toolTabBGColor: 			 #032993;
+$toolBorderColor:			 #ACD0E6;
+
+$primary-color:    			 #FEBD23;
+$secondary-color:  			 #032993;
+
+$text-color:				 #001C43;
+
+$button-text-color:	 #001C43;
+$button-border-color: #FEBD23;
+$button-background-color: #FEBD23;
+$button-background-secondary-color: #000000;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #032993;
+$button-color-background-color: #000000;
+$button-color-background-secondary-color: #000000;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #001C43;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #FEBD23 !important;
+}
+

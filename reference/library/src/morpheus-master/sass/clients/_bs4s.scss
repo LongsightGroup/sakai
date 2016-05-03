@@ -1,0 +1,49 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/ByS4S.logo.1.PNG';
+$logo-height: 80px;
+$logo-width: 109px;
+
+$header-gradient-a: #FFFFFF;
+$header-gradient-b: #FFFFFF;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #0E73C0;
+$toolMenuColor: 			 #0E73C0;
+$toolTabBGColor: 			 #0E73C0;
+$toolBorderColor:			 #FFFFFF;
+
+$primary-color:    			 #FFFFFF;
+$secondary-color:  			 #0E73C0;
+
+$text-color:				 #0E73C0;
+
+$button-text-color:	 #0E73C0;
+$button-border-color: #0E73C0;
+$button-background-color: #FFFFFF;
+$button-background-secondary-color: #0E73C0;
+
+$button-color-text-color: #0E73C0;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #0E73C0;
+$button-color-background-secondary-color: #0E73C0;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #0E73C0;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #FFFFFF !important;
+}
+

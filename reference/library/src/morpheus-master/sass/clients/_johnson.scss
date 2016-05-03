@@ -1,0 +1,60 @@
+
+$background-color: #FFFFFF;
+$logo: 'images/JohnsonLogo.png';
+$logo-height: 88px;
+$logo-width: 200px;
+
+$header-gradient-a: #031D49;
+$header-gradient-b: #031D49;
+$header-gradient-c: #031D49;
+$header-gradient-d: #031D49;
+
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:			 #F0F0F0;
+$toolMenuColor: 			 #551A64;
+$toolTabBGColor: 			 #6C809D;
+$toolBorderColor:			 #C1C1C1;
+
+$primary-color:    			 #6C809D;
+$secondary-color:  			 #031D49;
+
+$text-color:				 #FFFFFF;
+
+$button-text-color:	 #FFFFFF;
+$button-border-color: #FFFFFF;
+$button-background-color: #6C809D;
+$button-background-secondary-color: #031D49;
+
+$button-color-text-color: #FFFFFF;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #031D49;
+$button-color-background-secondary-color: #031D49;
+
+$okcolor: 					 #dff0d8 !default;
+$errorcolor: 			 	 #f2dede !default;
+$warncolor: 			 	 #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #031D49;
+}
+
+.navIntraTool li span a {
+color: #031D49 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: $background-color !important;
+  color: #6C809D !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+background: #031D49 !important;
+}
