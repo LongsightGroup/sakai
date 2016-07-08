@@ -1,0 +1,70 @@
+$background-color: #FFFFFF;
+$logo: 'images/reggienet.svg';
+$logo-height: 60px;
+$logo-width: 260px;
+
+$header-gradient-a: #171717;
+$header-gradient-b: #171717;
+$header-gradient-c: #171717;
+$header-gradient-d: #171717;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #d6d6d6;
+$toolMenuColor:                          #373737;
+$toolTabBGColor:                         #f3f3f3;
+$toolBorderColor:                        #9a0000;
+
+$primary-color:                          #af0000;
+
+$text-color:                             #282828;
+
+$button-text-color:      #282828;
+$button-border-color: #cccccc;
+$button-background-color: #f3f3f3;
+$button-background-secondary-color: #f3f3f3;
+
+$button-color-text-color: #282828;
+$button-color-border-color: #CCCCCC;
+$button-color-background-color: #f3f3f3;
+$button-color-background-secondary-color: #f3f3f3;
+
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #282828;
+}
+
+.navIntraTool li span a {
+color: #171717 !important;
+}
+
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #8091a4 !important;
+  color: #FFFFFF !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+background: #af0000 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #cc0000 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
+}
