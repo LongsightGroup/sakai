@@ -1,49 +1,40 @@
+$background-color: 			#CCCCCC;
+$primary-color: 			#F1F3FA;
+$text-color: 				#000000;
+$toolMenuBGColor: 			#C3CDE8;
+$toolMenuColor: 			#000000;
+$button-background-color: 		#f0f0f0;
+$button-text-color: 			#000000;
+$button-border-color: 			#000000;
+$button-background-secondary-color: 	#C3CDE8;
+$toolTabBGColor: 			#F1F3FA;
+$toolBorderColor: 			#C3CDE8;
 
-$background-color: #FFFFFF;
-$logo: 'images/FABEaglebanner-01.png';
-$logo-height: 80px;
-$logo-width: 300px;
-
-$header-gradient-a: #C3CDE8;
-$header-gradient-b: #C3CDE8;
-$header-gradient-c: #C3CDE8;
-$header-gradient-d: #C3CDE8;
-
-$tool-background-color:	#FFFFFF;
-$toolMenuBGColor:			 #C3CDE8;
-$toolMenuColor: 			 #000000;
-$toolTabBGColor: 			 #F1F3FA;
-$toolBorderColor:			 #C3CDE8;
-
-$primary-color:    			 #F1F3FA;
-$secondary-color:  			 #F1F3FA;
-
-$text-color:				 #000000;
-
-$button-text-color:	 #000000;
-$button-border-color: #000000;
-$button-background-color: #F1F3FA;
-$button-background-secondary-color: #C3CDE8;
-
-$button-color-text-color: #C3CDE8;
-$button-color-border-color: #000000;
-$button-color-background-color: #C3CDE8;
-$button-color-background-secondary-color: #C3CDE8;
-
-$okcolor: 					 #dff0d8 !default;
-$errorcolor: 			 	 #f2dede !default;
-$warncolor: 			 	 #fcf8e3 !default;
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
 
 $skin-with-icons: true;
 
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #000000;
+  color: $secondary-color;
+}
+
+.navIntraTool li span a {
+color: $secondary-color !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
   background: $background-color !important;
-  color: #F1F3FA !important;
+  color: $primary-color !important;
 }
 
+.Mrphs-siteHierarchy a {
+  color: $primary-color !important;
+}
+
+.Mrphs-topHeader {
+background: $secondary-color !important;
+}

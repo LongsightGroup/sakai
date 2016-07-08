@@ -1,49 +1,40 @@
+$background-color: 			#CCCCCC;
+$primary-color: 			#E13237;
+$text-color: 				#FFFFFF;
+$toolMenuBGColor: 			#E2E2E2;
+$toolMenuColor: 			#000000;
+$button-background-color: 		#f0f0f0;
+$button-text-color: 			#FFFFFF;
+$button-border-color: 			#E13237;
+$button-background-secondary-color: 	#000000;
+$toolTabBGColor: 			#E2E2E2;
+/*$toolBorderColor: 			#*/
 
-$background-color: #FFFFFF;
-$logo: 'images/D_E_rgb.png';
-$logo-height: 80px;
-$logo-width: 112px;
-
-$header-gradient-a: #FFFFFF;
-$header-gradient-b: #FFFFFF;
-$header-gradient-c: #FFFFFF;
-$header-gradient-d: #FFFFFF;
-
-$tool-background-color:	#FFFFFF;
-$toolMenuBGColor:			 #E2E2E2;
-$toolMenuColor: 			 #000000;
-$toolTabBGColor: 			 #E2E2E2;
-$toolBorderColor:			 #000000;
-
-$primary-color:    			 #E13237;
-$secondary-color:  			 #000000;
-
-$text-color:				 #FFFFFF;
-
-$button-text-color:	 #FFFFFF;
-$button-border-color: #E13237;
-$button-background-color: #E13237;
-$button-background-secondary-color: #000000;
-
-$button-color-text-color: #000000;
-$button-color-border-color: #FFFFFF;
-$button-color-background-color: #000000;
-$button-color-background-secondary-color: #000000;
-
-$okcolor: 					 #dff0d8 !default;
-$errorcolor: 			 	 #f2dede !default;
-$warncolor: 			 	 #fcf8e3 !default;
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
 
 $skin-with-icons: true;
 
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #FFFFFF;
+  color: $secondary-color;
+}
+
+.navIntraTool li span a {
+color: $secondary-color !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
   background: $background-color !important;
-  color: #E13237 !important;
+  color: $primary-color !important;
 }
 
+.Mrphs-siteHierarchy a {
+  color: $primary-color !important;
+}
+
+.Mrphs-topHeader {
+background: $secondary-color !important;
+}

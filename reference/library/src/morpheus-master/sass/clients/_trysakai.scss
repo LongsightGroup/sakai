@@ -1,0 +1,70 @@
+$background-color: #FFFFFF;
+$logo: 'images/newlogowhite.png'; 
+$logo-height: 47px;
+$logo-width: 226px;
+
+$header-gradient-a: #444444;
+$header-gradient-b: #444444;
+$header-gradient-c: #444444;
+$header-gradient-d: #444444;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #F6F6F6;
+$toolMenuColor:                          #7C7C7C;
+$toolTabBGColor:                         #C2C2C2;
+$toolBorderColor:                        #F2F1F1;
+
+$primary-color:                          #444444;
+$secondary-color:                        #00ACDA;
+
+$text-color:                             #4A4A4A;
+
+$button-text-color:      #4A4A4A;
+$button-border-color: #FFFFFF;
+$button-background-color: #DDDDDD;
+$button-background-secondary-color: #DDDDDD;
+
+$button-color-text-color: #4A4A4A;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #DDDDDD;
+$button-color-background-secondary-color: #DDDDDD;
+
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #031D49;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #D3D3D3 !important;
+  color: #000000 !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+background: #444444 !important;
+}
+
+.select, select {
+color: #4A4A4A !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #00acda !important;
+    color: #FFFFFF !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
+}

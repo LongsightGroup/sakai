@@ -1,49 +1,40 @@
+$background-color: 			#CCCCCC;
+$primary-color: 			#BD231F;
+$text-color: 				#000000;
+$toolMenuBGColor: 			#7A7B7A;
+$toolMenuColor: 			#000000;
+$button-background-color: 		#f0f0f0;
+$button-text-color: 			#000000;
+$button-border-color: 			#FFFFFF;
+$button-background-secondary-color: 	#000000;
+$toolTabBGColor: 			#000000;
+$toolBorderColor: 			#7A7B7A;
 
-$background-color: #FFFFFF;
-$logo: 'images/EFA logo.jpg';
-$logo-height: 80px;
-$logo-width: 242px;
-
-$header-gradient-a: #FFFFFF;
-$header-gradient-b: #FFFFFF;
-$header-gradient-c: #FFFFFF;
-$header-gradient-d: #FFFFFF;
-
-$tool-background-color:	#FFFFFF;
-$toolMenuBGColor:			 #7A7B7A;
-$toolMenuColor: 			 #000000;
-$toolTabBGColor: 			 #000000;
-$toolBorderColor:			 #7A7B7A;
-
-$primary-color:    			 #BD231F;
-$secondary-color:  			 #7A7B7A;
-
-$text-color:				 #000000;
-
-$button-text-color:	 #000000;
-$button-border-color: #FFFFFF;
-$button-background-color: #BD231F;
-$button-background-secondary-color: #000000;
-
-$button-color-text-color: #000000;
-$button-color-border-color: #FFFFFF;
-$button-color-background-color: #FFFFFF;
-$button-color-background-secondary-color: #000000;
-
-$okcolor: 					 #dff0d8 !default;
-$errorcolor: 			 	 #f2dede !default;
-$warncolor: 			 	 #fcf8e3 !default;
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
 
 $skin-with-icons: true;
 
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #000000;
+  color: $secondary-color;
+}
+
+.navIntraTool li span a {
+color: $secondary-color !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
   background: $background-color !important;
-  color: #BD231F !important;
+  color: $primary-color !important;
 }
 
+.Mrphs-siteHierarchy a {
+  color: $primary-color !important;
+}
+
+.Mrphs-topHeader {
+background: $secondary-color !important;
+}
