@@ -3,19 +3,19 @@ package org.sakaiproject.gradebookng.tool.pages;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.RestartResponseException;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -38,13 +38,16 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.StringValue;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.gradebookng.business.GbGradingType;
 import org.sakaiproject.gradebookng.business.GbRole;
 import org.sakaiproject.gradebookng.business.model.GbGradeInfo;
 import org.sakaiproject.gradebookng.business.model.GbGroup;
 import org.sakaiproject.gradebookng.business.model.GbStudentGradeInfo;
-import org.sakaiproject.gradebookng.business.util.Temp;
+import org.sakaiproject.gradebookng.business.util.GbStopWatch;
+import org.sakaiproject.gradebookng.tool.component.GbAjaxButton;
 import org.sakaiproject.gradebookng.tool.component.GbHeadersToolbar;
 import org.sakaiproject.gradebookng.tool.model.GbModalWindow;
 import org.sakaiproject.gradebookng.tool.model.GradebookUiSettings;
@@ -60,6 +63,8 @@ import org.sakaiproject.gradebookng.tool.panels.StudentNameColumnHeaderPanel;
 import org.sakaiproject.gradebookng.tool.panels.ToggleGradeItemsToolbarPanel;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
+import org.sakaiproject.service.gradebook.shared.GraderPermission;
+import org.sakaiproject.service.gradebook.shared.PermissionDefinition;
 import org.sakaiproject.service.gradebook.shared.SortType;
 import org.sakaiproject.tool.gradebook.Gradebook;
 
@@ -88,20 +93,45 @@ public class GradebookPage extends BasePage {
 	GbModalWindow gradeStatisticsWindow;
 	GbModalWindow updateCourseGradeDisplayWindow;
 
+	Label liveGradingFeedback;
+	boolean hasAssignmentsAndGrades;
+
 	Form<Void> form;
+
+	List<PermissionDefinition> permissions = new ArrayList<>();
+	boolean showGroupFilter = true;
 
 	@SuppressWarnings({ "rawtypes", "unchecked", "serial" })
 	public GradebookPage() {
 		disableLink(this.gradebookPageLink);
 
-		// students cannot access this page
+		// students cannot access this page, they have their own
 		if (this.role == GbRole.STUDENT) {
 			throw new RestartResponseException(StudentPage.class);
 		}
 
-		final StopWatch stopwatch = new StopWatch();
+		//TAs with no permissions or in a roleswap situation
+		if(this.role == GbRole.TA){
+
+			//roleswapped?
+			if(this.businessService.isUserRoleSwapped()) {
+				final PageParameters params = new PageParameters();
+				params.add("message", getString("ta.roleswapped"));
+				throw new RestartResponseException(AccessDeniedPage.class, params);
+			}
+
+			// no perms
+			this.permissions = this.businessService.getPermissionsForUser(this.currentUserUuid);
+			if(this.permissions.isEmpty()) {
+				final PageParameters params = new PageParameters();
+				params.add("message", getString("ta.nopermission"));
+				throw new RestartResponseException(AccessDeniedPage.class, params);
+			}
+		}
+
+		final GbStopWatch stopwatch = new GbStopWatch();
 		stopwatch.start();
-		Temp.time("GradebookPage init", stopwatch.getTime());
+		stopwatch.time("GradebookPage init", stopwatch.getTime());
 
 		this.form = new Form<Void>("form");
 		add(this.form);
@@ -137,7 +167,7 @@ public class GradebookPage extends BasePage {
 		this.updateCourseGradeDisplayWindow = new GbModalWindow("updateCourseGradeDisplayWindow");
 		this.form.add(this.updateCourseGradeDisplayWindow);
 
-		final AjaxButton addGradeItem = new AjaxButton("addGradeItem") {
+		final GbAjaxButton addGradeItem = new GbAjaxButton("addGradeItem") {
 			@Override
 			public void onSubmit(final AjaxRequestTarget target, final Form form) {
 				final GbModalWindow window = getAddOrEditGradeItemWindow();
@@ -154,7 +184,6 @@ public class GradebookPage extends BasePage {
 				}
 				return true;
 			}
-
 		};
 		addGradeItem.setDefaultFormProcessing(false);
 		addGradeItem.setOutputMarkupId(true);
@@ -173,20 +202,27 @@ public class GradebookPage extends BasePage {
 		// get Gradebook to save additional calls later
 		final Gradebook gradebook = this.businessService.getGradebook();
 
-		// get list of assignments. this allows us to build the columns and then fetch the grades for each student for each assignment from
+		// get list of assignments. this allows us to build the columns and then
+		// fetch the grades for each student for each assignment from
 		// the map
 		final List<Assignment> assignments = this.businessService.getGradebookAssignments(sortBy);
-		Temp.time("getGradebookAssignments", stopwatch.getTime());
+		stopwatch.time("getGradebookAssignments", stopwatch.getTime());
 
 		// get the grade matrix. It should be sorted if we have that info
-		final List<GbStudentGradeInfo> grades = this.businessService.buildGradeMatrix(assignments,
-				settings.getAssignmentSortOrder(), settings.getNameSortOrder(), settings.getCategorySortOrder(),
-				settings.getGroupFilter());
+		final List<GbStudentGradeInfo> grades = this.businessService.buildGradeMatrix(assignments, settings);
 
-		Temp.time("buildGradeMatrix", stopwatch.getTime());
+		this.hasAssignmentsAndGrades = !assignments.isEmpty() && !grades.isEmpty();
+
+		// mark the current timestamp so we can use this date to check for any changes since now
+		final Date gradesTimestamp = new Date();
+
+		stopwatch.time("buildGradeMatrix", stopwatch.getTime());
 
 		// categories enabled?
 		final boolean categoriesEnabled = this.businessService.categoriesAreEnabled();
+
+		// grading type?
+		final GbGradingType gradingType = GbGradingType.valueOf(gradebook.getGrade_type());
 
 		// this could potentially be a sortable data provider
 		final ListDataProvider<GbStudentGradeInfo> studentGradeMatrix = new ListDataProvider<GbStudentGradeInfo>(grades);
@@ -212,7 +248,7 @@ public class GradebookPage extends BasePage {
 
 			@Override
 			public Component getHeader(final String componentId) {
-				return new StudentNameColumnHeaderPanel(componentId, Model.of(settings.getNameSortOrder())); // pass in the sort
+				return new StudentNameColumnHeaderPanel(componentId, Model.of(settings.getNameSortOrder()));
 			}
 
 			@Override
@@ -225,14 +261,15 @@ public class GradebookPage extends BasePage {
 				modelData.put("firstName", studentGradeInfo.getStudentFirstName());
 				modelData.put("lastName", studentGradeInfo.getStudentLastName());
 				modelData.put("displayName", studentGradeInfo.getStudentDisplayName());
-				modelData.put("nameSortOrder", settings.getNameSortOrder()); // pass in the sort
+				modelData.put("nameSortOrder", settings.getNameSortOrder());
 
 				cellItem.add(new StudentNameCellPanel(componentId, Model.ofMap(modelData)));
 				cellItem.add(new AttributeModifier("data-studentUuid", studentGradeInfo.getStudentUuid()));
 				cellItem.add(new AttributeModifier("abbr", studentGradeInfo.getStudentDisplayName()));
 				cellItem.add(new AttributeModifier("aria-label", studentGradeInfo.getStudentDisplayName()));
 
-				// TODO may need a subclass of Item that does the onComponentTag override and then tag.setName("th");
+				// TODO may need a subclass of Item that does the onComponentTag
+				// override and then tag.setName("th");
 			}
 
 			@Override
@@ -244,6 +281,7 @@ public class GradebookPage extends BasePage {
 		cols.add(studentNameColumn);
 
 		// course grade column
+		final boolean courseGradeVisible = this.businessService.isCourseGradeVisible(this.currentUserUuid);
 		final AbstractColumn courseGradeColumn = new AbstractColumn(new Model("")) {
 			@Override
 			public Component getHeader(final String componentId) {
@@ -252,7 +290,12 @@ public class GradebookPage extends BasePage {
 
 			@Override
 			public String getCssClass() {
-				return "gb-course-grade";
+				final String cssClass = "gb-course-grade";
+				if (settings.getShowPoints()) {
+					return cssClass + " points";
+				} else {
+					return cssClass;
+				}
 			}
 
 			@Override
@@ -262,15 +305,19 @@ public class GradebookPage extends BasePage {
 				cellItem.add(new AttributeModifier("tabindex", 0));
 
 				// setup model
-				// note we have additional fields here fornthe course grade model
+				// TODO we may not need to pass everything into this panel since we now use a display string
+				// however we do requre that the label can receive events and update itself, although this could be recalculated for each
+				// event
 				final Map<String, Object> modelData = new HashMap<>();
-				modelData.put("courseGrade", studentGradeInfo.getCourseGrade());
+				modelData.put("courseGradeDisplay", studentGradeInfo.getCourseGrade().getDisplayString());
+				modelData.put("hasCourseGradeOverride", studentGradeInfo.getCourseGrade().getCourseGrade().getEnteredGrade() != null);
 				modelData.put("studentUuid", studentGradeInfo.getStudentUuid());
 				modelData.put("currentUserUuid", GradebookPage.this.currentUserUuid);
 				modelData.put("currentUserRole", GradebookPage.this.role);
 				modelData.put("gradebook", gradebook);
 				modelData.put("showPoints", settings.getShowPoints());
 				modelData.put("showOverride", true);
+				modelData.put("courseGradeVisible", courseGradeVisible);
 
 				cellItem.add(new CourseGradeItemCellPanel(componentId, Model.ofMap(modelData)));
 				cellItem.setOutputMarkupId(true);
@@ -286,7 +333,7 @@ public class GradebookPage extends BasePage {
 				@Override
 				public Component getHeader(final String componentId) {
 					final AssignmentColumnHeaderPanel panel = new AssignmentColumnHeaderPanel(componentId,
-							new Model<Assignment>(assignment));
+							new Model<Assignment>(assignment), gradingType);
 
 					panel.add(new AttributeModifier("data-category", assignment.getCategoryName()));
 					panel.add(new AttributeModifier("data-category-id", assignment.getCategoryId()));
@@ -322,6 +369,7 @@ public class GradebookPage extends BasePage {
 					modelData.put("externalAppName", assignment.getExternalAppName());
 					modelData.put("gradeInfo", gradeInfo);
 					modelData.put("role", GradebookPage.this.role);
+					modelData.put("gradingType", gradingType);
 
 					cellItem.add(new GradeItemCellPanel(componentId, Model.ofMap(modelData)));
 
@@ -337,7 +385,8 @@ public class GradebookPage extends BasePage {
 		// Display rules:
 		// 1. only show categories if the global setting is enabled
 		// 2. only show categories if they have items
-		// TODO may be able to pass this list into the matrix to save another lookup in there)
+		// TODO may be able to pass this list into the matrix to save another
+		// lookup in there)
 
 		List<CategoryDefinition> categories = new ArrayList<>();
 
@@ -351,7 +400,8 @@ public class GradebookPage extends BasePage {
 
 			Collections.sort(categories, CategoryDefinition.orderComparator);
 
-			int currentColumnIndex = 3; // take into account first three header columns
+			int currentColumnIndex = 3; // take into account first three header
+										// columns
 
 			for (final CategoryDefinition category : categories) {
 
@@ -405,7 +455,7 @@ public class GradebookPage extends BasePage {
 			}
 		}
 
-		Temp.time("all Columns added", stopwatch.getTime());
+		stopwatch.time("all Columns added", stopwatch.getTime());
 
 		// TODO make this AjaxFallbackDefaultDataTable
 		final DataTable table = new DataTable("table", cols, studentGradeMatrix, 100) {
@@ -418,8 +468,8 @@ public class GradebookPage extends BasePage {
 
 						final Object modelObject = model.getObject();
 
-						if (modelObject instanceof AbstractColumn &&
-								"studentColumn".equals(((AbstractColumn) modelObject).getDisplayModel().getObject())) {
+						if (modelObject instanceof AbstractColumn && "studentColumn"
+								.equals(((AbstractColumn) modelObject).getDisplayModel().getObject())) {
 							tag.setName("th");
 							tag.getAttributes().put("role", "rowheader");
 							tag.getAttributes().put("scope", "row");
@@ -458,8 +508,10 @@ public class GradebookPage extends BasePage {
 
 		table.addTopToolbar(new GbHeadersToolbar(table, null, Model.ofMap(modelData)));
 		table.add(new AttributeModifier("data-siteid", this.businessService.getCurrentSiteId()));
+		table.add(new AttributeModifier("data-gradestimestamp", gradesTimestamp.getTime()));
 
-		// enable drag and drop based on user role (note: entity provider has role checks on exposed API)
+		// enable drag and drop based on user role (note: entity provider has
+		// role checks on exposed API)
 		table.add(new AttributeModifier("data-sort-enabled", this.businessService.getUserRole() == GbRole.INSTRUCTOR));
 
 		final WebMarkupContainer noAssignments = new WebMarkupContainer("noAssignments");
@@ -473,22 +525,27 @@ public class GradebookPage extends BasePage {
 		this.form.add(table);
 
 		// Populate the toolbar
-		this.form.add(constructTableSummaryLabel("studentSummary", table));
+		final WebMarkupContainer toolbar = new WebMarkupContainer("toolbar");
+		toolbar.setVisible(this.hasAssignmentsAndGrades);
+		this.form.add(toolbar);
 
-		final Label gradeItemSummary = new Label("gradeItemSummary", new StringResourceModel("label.toolbar.gradeitemsummary", null,
-				assignments.size() + categories.size(), assignments.size() + categories.size()));
+		toolbar.add(constructTableSummaryLabel("studentSummary", table));
+
+		final Label gradeItemSummary = new Label("gradeItemSummary",
+				new StringResourceModel("label.toolbar.gradeitemsummary", null, assignments.size() + categories.size(),
+						assignments.size() + categories.size()));
 		gradeItemSummary.setEscapeModelStrings(false);
-		this.form.add(gradeItemSummary);
+		toolbar.add(gradeItemSummary);
 
 		final WebMarkupContainer toggleGradeItemsToolbarItem = new WebMarkupContainer("toggleGradeItemsToolbarItem");
-		this.form.add(toggleGradeItemsToolbarItem);
+		toolbar.add(toggleGradeItemsToolbarItem);
 
 		final Button toggleCategoriesToolbarItem = new Button("toggleCategoriesToolbarItem") {
 			@Override
 			protected void onInitialize() {
 				super.onInitialize();
 				if (settings.isCategoriesEnabled()) {
-					add(new AttributeModifier("class", "on"));
+					add(new AttributeAppender("class", " on"));
 				}
 				add(new AttributeModifier("aria-pressed", settings.isCategoriesEnabled()));
 			}
@@ -507,17 +564,33 @@ public class GradebookPage extends BasePage {
 				return categoriesEnabled && !assignments.isEmpty();
 			}
 		};
-		this.form.add(toggleCategoriesToolbarItem);
+		toolbar.add(toggleCategoriesToolbarItem);
 
 		// section and group dropdown
 		final List<GbGroup> groups = this.businessService.getSiteSectionsAndGroups();
 
 		// if only one group, just show the title
 		// otherwise add the 'all groups' option
-		if (groups.size() == 1) {
-			this.form.add(new Label("groupFilterOnlyOne", Model.of(groups.get(0).getTitle())));
+		// cater for the case where there is only one group visible to TA but they can see everyone.
+		if (this.role == GbRole.TA) {
+
+			//if only one group, hide the filter
+			if (groups.size() == 1) {
+				this.showGroupFilter = false;
+
+				// but need to double check permissions to see if we have any permissions with no group reference
+				this.permissions.forEach(p -> {
+					if (!StringUtils.equalsIgnoreCase(p.getFunction(),GraderPermission.VIEW_COURSE_GRADE.toString()) && StringUtils.isBlank(p.getGroupReference())) {
+						this.showGroupFilter = true;
+					}
+				});
+			}
+		}
+
+		if(!this.showGroupFilter) {
+			toolbar.add(new Label("groupFilterOnlyOne", Model.of(groups.get(0).getTitle())));
 		} else {
-			this.form.add(new EmptyPanel("groupFilterOnlyOne").setVisible(false));
+			toolbar.add(new EmptyPanel("groupFilterOnlyOne").setVisible(false));
 
 			// add the default ALL group to the list
 			String allGroupsTitle = getString("groups.all");
@@ -525,16 +598,15 @@ public class GradebookPage extends BasePage {
 
 				// does the TA have any permissions set?
 				// we can assume that if they have any then there is probably some sort of group restriction so we can change the label
-				if (!this.businessService.getPermissionsForUser(this.currentUserUuid).isEmpty()) {
+				if (!this.permissions.isEmpty()) {
 					allGroupsTitle = getString("groups.available");
 				}
 			}
 			groups.add(0, new GbGroup(null, allGroupsTitle, null, GbGroup.Type.ALL));
-
 		}
 
-		final DropDownChoice<GbGroup> groupFilter = new DropDownChoice<GbGroup>("groupFilter", new Model<GbGroup>(), groups,
-				new ChoiceRenderer<GbGroup>() {
+		final DropDownChoice<GbGroup> groupFilter = new DropDownChoice<GbGroup>("groupFilter", new Model<GbGroup>(),
+				groups, new ChoiceRenderer<GbGroup>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -576,10 +648,10 @@ public class GradebookPage extends BasePage {
 			groupFilter.setVisible(false);
 		}
 
-		this.form.add(groupFilter);
+		toolbar.add(groupFilter);
 
-		final ToggleGradeItemsToolbarPanel gradeItemsTogglePanel = new ToggleGradeItemsToolbarPanel("gradeItemsTogglePanel",
-				Model.ofList(assignments));
+		final ToggleGradeItemsToolbarPanel gradeItemsTogglePanel = new ToggleGradeItemsToolbarPanel(
+				"gradeItemsTogglePanel", Model.ofList(assignments));
 		add(gradeItemsTogglePanel);
 
 		// hide/show components
@@ -597,7 +669,7 @@ public class GradebookPage extends BasePage {
 			noStudents.setVisible(true);
 		}
 
-		Temp.time("Gradebook page done", stopwatch.getTime());
+		stopwatch.time("Gradebook page done", stopwatch.getTime());
 	}
 
 	/**
@@ -667,20 +739,47 @@ public class GradebookPage extends BasePage {
 		final String version = ServerConfigurationService.getString("portal.cdn.version", "");
 
 		// Drag and Drop/Date Picker (requires jQueryUI)
-		response.render(
-				JavaScriptHeaderItem.forUrl(String.format("/library/webjars/jquery-ui/1.11.3/jquery-ui.min.js?version=%s", version)));
+		response.render(JavaScriptHeaderItem
+				.forUrl(String.format("/library/webjars/jquery-ui/1.11.3/jquery-ui.min.js?version=%s", version)));
 
 		// Include Sakai Date Picker
-		response.render(JavaScriptHeaderItem.forUrl(String.format("/library/js/lang-datepicker/lang-datepicker.js?version=%s", version)));
+		response.render(JavaScriptHeaderItem
+				.forUrl(String.format("/library/js/lang-datepicker/lang-datepicker.js?version=%s", version)));
+
+		// tablesorted used by student grade summary
+		response.render(CssHeaderItem
+			.forUrl(String.format("/library/js/jquery/tablesorter/2.1.17/css/theme.bootstrap.css?version=%s", version)));
+		response.render(JavaScriptHeaderItem
+			.forUrl(String.format("/library/js/jquery/tablesorter/2.1.17/jquery.tablesorter.min.js?version=%s", version)));
+		response.render(JavaScriptHeaderItem
+			.forUrl(String.format("/library/js/jquery/tablesorter/2.1.17/jquery.tablesorter.widgets.min.js?version=%s", version)));
 
 		// GradebookNG Grade specific styles and behaviour
-		response.render(CssHeaderItem.forUrl(String.format("/gradebookng-tool/styles/gradebook-grades.css?version=%s", version)));
-		response.render(CssHeaderItem.forUrl(String.format("/gradebookng-tool/styles/gradebook-print.css?version=%s", version), "print"));
-		response.render(JavaScriptHeaderItem.forUrl(String.format("/gradebookng-tool/scripts/gradebook-grades.js?version=%s", version)));
-		response.render(
-				JavaScriptHeaderItem.forUrl(String.format("/gradebookng-tool/scripts/gradebook-grade-summary.js?version=%s", version)));
-		response.render(
-				JavaScriptHeaderItem.forUrl(String.format("/gradebookng-tool/scripts/gradebook-update-ungraded.js?version=%s", version)));
+		response.render(CssHeaderItem
+				.forUrl(String.format("/gradebookng-tool/styles/gradebook-grades.css?version=%s", version)));
+		response.render(CssHeaderItem
+				.forUrl(String.format("/gradebookng-tool/styles/gradebook-print.css?version=%s", version), "print"));
+		response.render(JavaScriptHeaderItem
+				.forUrl(String.format("/gradebookng-tool/scripts/gradebook-grades.js?version=%s", version)));
+		response.render(JavaScriptHeaderItem
+				.forUrl(String.format("/gradebookng-tool/scripts/gradebook-grade-summary.js?version=%s", version)));
+		response.render(JavaScriptHeaderItem
+				.forUrl(String.format("/gradebookng-tool/scripts/gradebook-update-ungraded.js?version=%s", version)));
+	}
+
+	/**
+	 * Helper to generate a RGB CSS color string with values between 180-250 to ensure a lighter color e.g. rgb(181,222,199)
+	 */
+	public String generateRandomRGBColorString() {
+		final Random rand = new Random();
+		final int min = 180;
+		final int max = 250;
+
+		final int r = rand.nextInt((max - min) + 1) + min;
+		final int g = rand.nextInt((max - min) + 1) + min;
+		final int b = rand.nextInt((max - min) + 1) + min;
+
+		return String.format("rgb(%d,%d,%d)", r, g, b);
 	}
 
 	/**
@@ -709,13 +808,9 @@ public class GradebookPage extends BasePage {
 		StringResourceModel labelText;
 
 		if (verbose) {
-			labelText = new StringResourceModel("label.toolbar.studentsummarypaginated",
-					null,
-					from, to, of);
+			labelText = new StringResourceModel("label.toolbar.studentsummarypaginated", null, from, to, of);
 		} else {
-			labelText = new StringResourceModel("label.toolbar.studentsummary",
-					null,
-					to);
+			labelText = new StringResourceModel("label.toolbar.studentsummary", null, to);
 		}
 
 		final Label label = new Label(componentId, labelText);
@@ -763,5 +858,28 @@ public class GradebookPage extends BasePage {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void onBeforeRender() {
+		super.onBeforeRender();
+
+		// add simple feedback nofication to sit above the table
+		// which is reset every time the page renders
+		this.liveGradingFeedback = new Label("liveGradingFeedback", getString("feedback.saved"));
+		this.liveGradingFeedback.setVisible(this.hasAssignmentsAndGrades);
+		this.liveGradingFeedback.setOutputMarkupId(true);
+
+		// add the 'saving...' message to the DOM as the JavaScript will
+		// need to be the one that displays this message (Wicket will handle
+		// the 'saved' and 'error' messages when a grade is changed
+		this.liveGradingFeedback.add(new AttributeModifier("data-saving-message", getString("feedback.saving")));
+		this.form.addOrReplace(this.liveGradingFeedback);
+	}
+
+	public Component updateLiveGradingMessage(final String message) {
+		this.liveGradingFeedback.setDefaultModel(Model.of(message));
+
+		return this.liveGradingFeedback;
 	}
 }

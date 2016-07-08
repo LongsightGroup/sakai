@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.head.OnLoadHeaderItem;
@@ -16,13 +17,12 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.gradebookng.business.GbRole;
 import org.sakaiproject.gradebookng.business.GradebookNgBusinessService;
 import org.sakaiproject.gradebookng.tool.component.GbFeedbackPanel;
-import org.sakaiproject.service.gradebook.shared.PermissionDefinition;
 
 /**
  * Base page for our app
@@ -44,7 +44,7 @@ public class BasePage extends WebPage {
 	Link<Void> importExportPageLink;
 	Link<Void> permissionsPageLink;
 
-	final FeedbackPanel feedbackPanel;
+	public final GbFeedbackPanel feedbackPanel;
 
 	/**
 	 * The current user
@@ -96,23 +96,6 @@ public class BasePage extends WebPage {
 		this.gradebookPageLink.add(new Label("screenreaderlabel", getString("link.screenreader.tabnotselected")));
 		nav.add(this.gradebookPageLink);
 
-		// settings page
-		this.settingsPageLink = new Link<Void>("settingsPageLink") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onClick() {
-				setResponsePage(new SettingsPage());
-			}
-
-			@Override
-			public boolean isVisible() {
-				return (BasePage.this.role == GbRole.INSTRUCTOR);
-			}
-		};
-		this.settingsPageLink.add(new Label("screenreaderlabel", getString("link.screenreader.tabnotselected")));
-		nav.add(this.settingsPageLink);
-
 		// import/export page
 		this.importExportPageLink = new Link<Void>("importExportPageLink") {
 			private static final long serialVersionUID = 1L;
@@ -147,6 +130,23 @@ public class BasePage extends WebPage {
 		this.permissionsPageLink.add(new Label("screenreaderlabel", getString("link.screenreader.tabnotselected")));
 		nav.add(this.permissionsPageLink);
 
+		// settings page
+		this.settingsPageLink = new Link<Void>("settingsPageLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				setResponsePage(new SettingsPage());
+			}
+
+			@Override
+			public boolean isVisible() {
+				return (BasePage.this.role == GbRole.INSTRUCTOR);
+			}
+		};
+		this.settingsPageLink.add(new Label("screenreaderlabel", getString("link.screenreader.tabnotselected")));
+		nav.add(this.settingsPageLink);
+
 		add(nav);
 
 		// Add a FeedbackPanel for displaying our messages
@@ -156,14 +156,10 @@ public class BasePage extends WebPage {
 	}
 
 	/**
-	 * Helper to clear the feedbackpanel display.
-	 *
-	 * @param f FeedBackPanel
+	 * Helper to clear the feedback panel display from any child component
 	 */
-	public void clearFeedback(final FeedbackPanel f) {
-		if (!f.hasFeedbackMessage()) {
-			f.add(AttributeModifier.remove("class"));
-		}
+	public void clearFeedback() {
+		this.feedbackPanel.clear();
 	}
 
 	/**
@@ -175,17 +171,24 @@ public class BasePage extends WebPage {
 	public void renderHead(final IHeaderResponse response) {
 		super.renderHead(response);
 
+		final String version = ServerConfigurationService.getString("portal.cdn.version", "");
+
 		// get the Sakai skin header fragment from the request attribute
 		final HttpServletRequest request = (HttpServletRequest) getRequest().getContainerRequest();
 
-		response.render(new PriorityHeaderItem(
-				JavaScriptHeaderItem.forReference(getApplication().getJavaScriptLibrarySettings().getJQueryReference())));
+		response.render(new PriorityHeaderItem(JavaScriptHeaderItem
+				.forReference(getApplication().getJavaScriptLibrarySettings().getJQueryReference())));
 
 		response.render(StringHeaderItem.forString((String) request.getAttribute("sakai.html.head")));
 		response.render(OnLoadHeaderItem.forScript("setMainFrameHeight( window.name )"));
 
 		// Tool additions (at end so we can override if required)
-		response.render(StringHeaderItem.forString("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />"));
+		response.render(StringHeaderItem
+				.forString("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />"));
+
+		// Shared stylesheets
+		response.render(CssHeaderItem
+				.forUrl(String.format("/gradebookng-tool/styles/gradebook-shared.css?version=%s", version)));
 
 	}
 

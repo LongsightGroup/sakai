@@ -1181,7 +1181,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	 * processing and return null to the caller.
 	 *
 	 * If the reference is to the magical, indexical MyWorkspace site ('~')
-	 * then replace ~ by their My Workspace.  Give them a chance to login
+	 * then replace ~ by their Home.  Give them a chance to login
 	 * if necessary.
 	 */
 
@@ -1350,8 +1350,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		retval.setProperty("sakai.html.head", head);
 		retval.setProperty("sakai.html.head.css", headCss);
 		retval.setProperty("sakai.html.head.lang", rloader.getLocale().getLanguage());
-		req.setAttribute("sakai.html.head.css.base", CSSUtils.getCssToolBaseLink(skin,ToolUtils.isInlineRequest(req)));
-		req.setAttribute("sakai.html.head.css.skin", CSSUtils.getCssToolSkinLink(skin));
+		retval.setProperty("sakai.html.head.css.base", CSSUtils.getCssToolBaseLink(skin,ToolUtils.isInlineRequest(req)));
+		retval.setProperty("sakai.html.head.css.skin", CSSUtils.getCssToolSkinLink(skin));
 		retval.setProperty("sakai.html.head.js", headJs.toString());
 
 		return retval;
@@ -1509,7 +1509,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		// session and reinstance it
 
 		// generate the forward to the tool page placement
-		String portalPlacementUrl = portalPath + getPortalPageUrl(p);
+		String portalPlacementUrl = portalPath + getPortalPageUrl(p) + "?" + req.getQueryString();
 		res.sendRedirect(portalPlacementUrl);
 		return;
 	}
@@ -1752,7 +1752,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			String userWarning = (String) s.getAttribute("userWarning");
 			rcontext.put("userWarning", new Boolean(StringUtils.isNotEmpty(userWarning)));
 
-			if (ServerConfigurationService.getBoolean("pasystem.enabled", false)) {
+			if (ServerConfigurationService.getBoolean("pasystem.enabled", true)) {
 			    PASystem paSystem = (PASystem) ComponentManager.get(PASystem.class);
 			    rcontext.put("paSystemEnabled", true);
 			    rcontext.put("paSystem", paSystem);

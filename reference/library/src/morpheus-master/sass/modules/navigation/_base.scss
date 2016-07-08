@@ -114,6 +114,8 @@ body.is-logged-out{
 	width: #{ $tool-menu-width * 2.5 };
 	z-index: 99;
 	box-shadow: 0 0 4px rgba( $text-color ,0.35);
+	list-style: none;
+	padding: 0 0 0 0;
 	li{
 		display: block;
 		border: 0px none;
@@ -361,6 +363,8 @@ body.is-logged-out{
 		font-family: $header-font-family;
 		font-weight: $header-font-weight;
 		margin-left: 0.5em;
+		list-style: none;
+		padding: 0 0 0 0;
 		ul{
 			background-color: $toolTabBGColor;
 			text-align: left;
@@ -433,52 +437,9 @@ body.is-logged-out{
 	}
 }
 .#{$namespace}sitesNav__menu{
+	list-style: none;
+	padding: 0 0 0 0;
 	margin-bottom:0px;
-}
-.#{$namespace}sitesNav__menuitem--myworkspace{
-	font-size: 0.95em;
-	@media #{$phone}{
-		background: $primary-color;
-		border-right: 1px solid darken( $primary-color, 5% );
-	 	height:3.1em;
-		position: fixed;
-		top: 0;
-		z-index: 1000;
-		@include transition( top 0.25s linear 0s );
-		&.moving{
-			top: -4.5em;
-		}
-	}
-	span{
-		display: none;
-	}
-	.#{namespace}sitesNav__drop{
-		display: none;
-	}
-	&.is-selected{
-		@media #{$phone}{
-			background: $primary-color;
-		}
-		a{
-			color: $primary-color;
-		}
-	}
-	a{
-		display: inline-block;
-		border-right: 0px none;
-		color: $background-color;
-		@media #{$phone}{
-			color: $background-color-secondary;
-		}
-		padding: 0.6em 0.8em;
-		i{
-			font-size: 1.7em;
-		}
-		&:hover{
-			/*color: $background-color-secondary;*/
-			box-shadow: inset 0 9px 10px rgba(0,0,0,0.25);
-		}
-	}
 }
 
 .view-all-sites-btn{
@@ -516,6 +477,7 @@ body.is-logged-out{
 	ul{
 		font-family: $header-font-family;
 		margin: 0 0 0 0;
+		padding: 5px;
 		li.#{$namespace}sitesNav__menuitem{
 			display: inline-block;
 			margin: 0.5em 0 0 0;
@@ -528,6 +490,7 @@ body.is-logged-out{
 				position: relative;
 				text-decoration: none;
 				top: -3px;
+
 				&:hover{
 					color: $primary-color;
 				}
@@ -546,47 +509,95 @@ body.is-logged-out{
 				}
 			}
 			ul{
-				background: darken( $background-color-secondary, 5% );
+				background: $background-color;
 				display: none;
-				@extend .userNav__subnav;
+				font-family: $header-font-family;
+				position: absolute;
+				border-top: 1px solid black;
+				margin-top: -4px;
+				width: 26rem;
+				z-index: 99;
+				box-shadow: 0 3px 2px rgba( $text-color, 0.35);
+				li{
+					display: block;
+					border: 0px none;
+					@include border-radius( 0 );
+					margin: 0 0 0 0;
+					padding: 0 0 0 0;
+					min-height: 15px;
+					a{
+						display: block;
+						padding: 0.5em 0.65em;
+						text-decoration: none;
+						&:hover{
+							text-decoration: underline;
+						}
+						.toolMenuIcon{
+							vertical-align: sub;
+							margin: 0;
+						}
+					}
+					.#{$namespace}sitesNav__submenuitem-icon {
+						display: inline-block;
+						vertical-align: top;
+					}
+					.#{$namespace}sitesNav__submenuitem-title {
+						margin-bottom: 2px;
+						display: inline-block;
+						width: 80%;
+					}
+				}
+				&.is-visible{
+					display: block;
+				}
+				&.is-hidden{
+					display: none;
+				}
+
 			}
 			&.is-selected{
 				a{
 					background: $primary-color;
 					color: $background-color;
 					//padding: 0.8em 0.9em 0.8em 0.9em;
-					.#{$namespace}sitesNav__dropdown{
-						display: none;
-					}
 				}
 				ul{
-					background: $background-color;
+					background: $primary-color;
 				}
 			}
+
 			&.#{$namespace}sitesNav__menuitem--myworkspace{
-				font-size: 0.95em;
-				margin: 0 0 0 0;
-				span{
+				.#{$namespace}sitesNav__drop{
 					display: none;
 				}
-				.#{namespace}sitesNav__drop{
-					display: none;
-				}
-				&.is-selected{
+
+				&:not(.is-selected){
 					a{
-						color: $primary-color;
+						background-color: transparent;
+						color: $background-color;
 					}
 				}
+
 				a{
-					background: transparent;
-					border-right: 0px none;
-					color: $background-color;
-					top: 0;
 					i{
-						font-size: 1.7em;
+						font-size: 1.3em;
 					}
 				}
 			}
+
+			&.dropdown-is-visible {
+				> a{
+					border-bottom: 1px solid $background-color;
+					z-index: 150;
+				}
+			}
+
+			&.dropdown-is-visible.is-selected {
+				> a{
+					border-bottom: 1px solid $primary-color;
+				}
+			}
+
 		}
 	}
 	&.opened{
@@ -601,6 +612,13 @@ body.is-logged-out{
 	@media #{$phone}{
 		display: none;
 	}
+}
+
+.sitenav-dropdown-overlay{
+	height: 100%;
+	position: fixed;
+	width: 100%;
+	z-index: 20;
 }
 
 body.is-logged-out{

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TimeZone;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -84,6 +85,8 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.time.cover.TimeService;
+import org.sakaiproject.tool.assessment.util.ExtendedTimeService;
 
 /**
  *
@@ -150,7 +153,6 @@ public class AssessmentSettingsBean
   private SelectItem[] publishingTargets;
   private String[] targetSelected;
   private String firstTargetSelected;
-  private String username;
   private String password;
   private String finalPageUrl;
   private String ipAddresses;
@@ -204,7 +206,7 @@ public class AssessmentSettingsBean
   private String originalFeedbackDateString;
   
   private boolean isMarkForReview;
-  
+  private boolean honorPledge;
   private String releaseToGroupsAsString;
   private String blockDivs;
   
@@ -288,7 +290,8 @@ public class AssessmentSettingsBean
 			this.extendedTimes = "";
 			while ((assessment.getAssessmentMetaDataByLabel(extendedTimeLabel) != null)
 					&& (!assessment.getAssessmentMetaDataByLabel(extendedTimeLabel).equals(""))) {
-				String extendedTimeValue = assessment.getAssessmentMetaDataByLabel(extendedTimeLabel);
+				// server stores in JVM's time zone, convert to user's time zone
+				String extendedTimeValue = ExtendedTimeService.convertZones(assessment.getAssessmentMetaDataByLabel(extendedTimeLabel), TimeZone.getDefault(), TimeService.getLocalTimeZone());
 				this.extendedTimes = this.extendedTimes.concat(extendedTimeValue + "^");
 				extendedTimeCount++;
 				extendedTimeLabel = "extendedTime" + extendedTimeCount;
@@ -336,7 +339,8 @@ public class AssessmentSettingsBean
           this.submissionsSaved = accessControl.getSubmissionsSaved().toString();
 
         this.isMarkForReview = accessControl.getMarkForReview() != null && (Integer.valueOf(1)).equals(accessControl.getMarkForReview());
-        
+        if (accessControl.getHonorPledge() != null)
+          this.honorPledge = accessControl.getHonorPledge();
         // default to unlimited if control value is null
         if (accessControl.getUnlimitedSubmissions()!=null && !accessControl.getUnlimitedSubmissions()){
           this.unlimitedSubmissions=AssessmentAccessControlIfc.LIMITED_SUBMISSIONS.toString();
@@ -355,7 +359,6 @@ public class AssessmentSettingsBean
         if (accessControl.getSubmissionsSaved()!=null)
           this.submissionsSaved = accessControl.getSubmissionsSaved().toString();
         this.submissionMessage = accessControl.getSubmissionMessage();
-        this.username = accessControl.getUsername();
         this.password = accessControl.getPassword();
         this.finalPageUrl = accessControl.getFinalPageUrl();
       }
@@ -795,13 +798,6 @@ public class AssessmentSettingsBean
     return submissionMessage;
   }
 
-  public String getUsername() {
-    return this.username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
   public String getPassword() {
     return this.password;
   }
@@ -938,8 +934,11 @@ public class AssessmentSettingsBean
     this.scoringType = scoringType;
   }
 
+  public boolean isHonorPledge() { return honorPledge; }
 
-  public void setValue(String key, Object value){
+  public void setHonorPledge(boolean honorPledge) { this.honorPledge = honorPledge; }
+
+    public void setValue(String key, Object value){
     this.values.put(key, value);
   }
 

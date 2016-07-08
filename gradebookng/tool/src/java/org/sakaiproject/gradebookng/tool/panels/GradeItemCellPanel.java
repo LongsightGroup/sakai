@@ -15,7 +15,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.attributes.AjaxCallListener;
 import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.core.util.string.ComponentRenderer;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
@@ -26,8 +25,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.sakaiproject.gradebookng.business.GbGradingType;
 import org.sakaiproject.gradebookng.business.GbRole;
 import org.sakaiproject.gradebookng.business.GradeSaveResponse;
 import org.sakaiproject.gradebookng.business.GradebookNgBusinessService;
@@ -55,14 +54,18 @@ public class GradeItemCellPanel extends Panel {
 
 	TextField<String> gradeCell;
 	private String originalGrade;
-
+	
 	String rawGrade;
 	String formattedGrade;
+	String displayGrade;
+	
 	String comment;
 	boolean gradeable;
 	boolean showMenu;
 
 	GradeCellSaveStyle gradeSaveStyle;
+	
+	GbGradingType gradingType;
 
 	final List<GradeCellNotification> notifications = new ArrayList<GradeCellNotification>();
 
@@ -99,14 +102,15 @@ public class GradeItemCellPanel extends Panel {
 		// unpack model
 		this.modelData = this.model.getObject();
 		final Long assignmentId = (Long) this.modelData.get("assignmentId");
-		final String assignmentName = (String) this.modelData.get("assignmentName");
+		// final String assignmentName = (String) this.modelData.get("assignmentName");
 		final Double assignmentPoints = (Double) this.modelData.get("assignmentPoints");
 		final String studentUuid = (String) this.modelData.get("studentUuid");
-		final String studentName = (String) this.modelData.get("studentName");
+		// final String studentName = (String) this.modelData.get("studentName");
 		final Long categoryId = (Long) this.modelData.get("categoryId");
 		final boolean isExternal = (boolean) this.modelData.get("isExternal");
 		final GbGradeInfo gradeInfo = (GbGradeInfo) this.modelData.get("gradeInfo");
 		final GbRole role = (GbRole) this.modelData.get("role");
+		this.gradingType = (GbGradingType) this.modelData.get("gradingType");
 
 		// Note: gradeInfo may be null
 		this.rawGrade = (gradeInfo != null) ? gradeInfo.getGrade() : "";
@@ -119,12 +123,17 @@ public class GradeItemCellPanel extends Panel {
 
 		// get grade
 		this.formattedGrade = FormatHelper.formatGrade(this.rawGrade);
+		
+		//TODO move this to the format helper?
+		this.displayGrade = formatDisplayGrade(this.formattedGrade);
 
 		// RENDER
 		if (isExternal || !this.gradeable) {
 
-			add(new Label("readonlyGrade", Model.of(this.formattedGrade)));
+			add(new Label("readonlyGrade", Model.of(this.displayGrade)));
 			add(new Label("editableGrade") {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public boolean isVisible() {
 					return false;
@@ -145,12 +154,14 @@ public class GradeItemCellPanel extends Panel {
 
 		} else {
 			add(new Label("readonlyGrade") {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public boolean isVisible() {
 					return false;
 				}
 			});
-			this.gradeCell = new TextField<String>("editableGrade", Model.of(this.formattedGrade)) {
+			this.gradeCell = new TextField<String>("editableGrade", Model.of(this.displayGrade)) {
 
 				private static final long serialVersionUID = 1L;
 
@@ -166,7 +177,14 @@ public class GradeItemCellPanel extends Panel {
 					parentCell.setOutputMarkupId(true);
 
 					// check if grade is over limit and mark the cell with the warning class
-					if (NumberUtils.toDouble(GradeItemCellPanel.this.formattedGrade) > assignmentPoints.doubleValue()) {
+					double pointsLimit = 0;
+					if (gradingType == GbGradingType.PERCENTAGE) {
+						pointsLimit = 100;
+					} else {
+						pointsLimit = assignmentPoints.doubleValue();
+					}
+
+					if (NumberUtils.toDouble(GradeItemCellPanel.this.formattedGrade) > pointsLimit) {
 						markOverLimit(this);
 						GradeItemCellPanel.this.notifications.add(GradeCellNotification.OVER_LIMIT);
 					}
@@ -186,12 +204,15 @@ public class GradeItemCellPanel extends Panel {
 				@Override
 				public void onBind() {
 					super.onBind();
-					GradeItemCellPanel.this.originalGrade = GradeItemCellPanel.this.gradeCell.getDefaultModelObjectAsString();
+					//get the model data, and unformat it if required.
+					GradeItemCellPanel.this.originalGrade = unformatDisplayGrade(GradeItemCellPanel.this.gradeCell.getDefaultModelObjectAsString());
 				}
 
 				@Override
 				protected void onUpdate(final AjaxRequestTarget target) {
 					final String rawGrade = GradeItemCellPanel.this.gradeCell.getValue();
+					
+					final GradebookPage page = (GradebookPage) getPage();
 
 					clearNotifications();
 
@@ -201,38 +222,45 @@ public class GradeItemCellPanel extends Panel {
 					if (StringUtils.isNotBlank(rawGrade) && (!validator.isValid(rawGrade) || Double.parseDouble(rawGrade) < 0)) {
 						// show warning and revert button
 						markWarning(getComponent());
+						target.add(page.updateLiveGradingMessage(getString("feedback.error")));
 					} else {
 						final String newGrade = FormatHelper.formatGrade(rawGrade);
-
+						
 						// for concurrency, get the original grade we have in the UI and pass it into the service as a check
 						final GradeSaveResponse result = GradeItemCellPanel.this.businessService.saveGrade(assignmentId, studentUuid,
-							GradeItemCellPanel.this.originalGrade, newGrade, GradeItemCellPanel.this.comment);
+								GradeItemCellPanel.this.originalGrade, newGrade, GradeItemCellPanel.this.comment);
 
-						// TODO here, add the message
+						// reformat to display version
+						displayGrade = formatDisplayGrade(newGrade);
+						gradeCell.setDefaultModel(Model.of(displayGrade));
+						
+						// handle the result
 						switch (result) {
 							case OK:
 								markSuccessful(GradeItemCellPanel.this.gradeCell);
 								GradeItemCellPanel.this.originalGrade = newGrade;
 								refreshCourseGradeAndCategoryAverages(target);
+								target.add(page.updateLiveGradingMessage(getString("feedback.saved")));
 								break;
 							case ERROR:
 								markError(getComponent());
 								// show the error message
-								error(getString("grade.notifications.haserror"));
+								target.add(page.updateLiveGradingMessage(getString("feedback.error")));
 								// and the invalid score message, just to be helpful
 								GradeItemCellPanel.this.notifications.add(GradeCellNotification.INVALID);
 								break;
 							case OVER_LIMIT:
 								markOverLimit(GradeItemCellPanel.this.gradeCell);
-								refreshCourseGradeAndCategoryAverages(target);
 								GradeItemCellPanel.this.originalGrade = newGrade;
+								refreshCourseGradeAndCategoryAverages(target);
+								target.add(page.updateLiveGradingMessage(getString("feedback.saved")));
 								break;
 							case NO_CHANGE:
 								handleNoChange(GradeItemCellPanel.this.gradeCell);
 								break;
 							case CONCURRENT_EDIT:
 								markError(GradeItemCellPanel.this.gradeCell);
-								error(getString("error.concurrentedit"));
+								target.add(page.updateLiveGradingMessage(getString("feedback.error")));
 								GradeItemCellPanel.this.notifications.add(GradeCellNotification.CONCURRENT_EDIT);
 								break;
 							default:
@@ -245,8 +273,10 @@ public class GradeItemCellPanel extends Panel {
 					// refresh the components we need
 					target.addChildren(getPage(), FeedbackPanel.class);
 					target.add(getParentCellFor(getComponent()));
+					target.add(gradeCell);
 				}
 
+				// TODO can this be moved out of this block?
 				private void refreshCourseGradeAndCategoryAverages(final AjaxRequestTarget target) {
 					// trigger async event that score has been updated and now displayed
 					target.appendJavaScript(
@@ -262,6 +292,8 @@ public class GradeItemCellPanel extends Panel {
 					extraParameters.put("studentUuid", studentUuid);
 
 					final AjaxCallListener myAjaxCallListener = new AjaxCallListener() {
+						private static final long serialVersionUID = 1L;
+
 						@Override
 						public CharSequence getPrecondition(final Component component) {
 							return "return GradebookWicketEventProxy.updateGradeItem.handlePrecondition('"
@@ -298,6 +330,8 @@ public class GradeItemCellPanel extends Panel {
 
 			this.gradeCell.setType(String.class);
 			this.gradeCell.add(new AjaxEventBehavior("scoreupdated.sakai") {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onEvent(final AjaxRequestTarget target) {
 					send(getPage(), Broadcast.BREADTH, new ScoreChangedEvent(studentUuid, categoryId, target));
@@ -307,14 +341,19 @@ public class GradeItemCellPanel extends Panel {
 			});
 
 			this.gradeCell.add(new AjaxEventBehavior("revertscore.sakai") {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onEvent(final AjaxRequestTarget target) {
+					GradebookPage page = (GradebookPage)getPage();
+
 					getComponent().setDefaultModelObject(GradeItemCellPanel.this.originalGrade);
 					clearNotifications();
 					refreshNotifications();
-					Component cell = getParentCellFor(getComponent());
+					final Component cell = getParentCellFor(getComponent());
 					handleNoChange(cell);
 					target.add(cell);
+					target.add(page.updateLiveGradingMessage(getString("feedback.saved")));
 				}
 
 				@Override
@@ -326,6 +365,8 @@ public class GradeItemCellPanel extends Panel {
 					extraParameters.put("studentUuid", studentUuid);
 
 					final AjaxCallListener myAjaxCallListener = new AjaxCallListener() {
+						private static final long serialVersionUID = 1L;
+
 						@Override
 						public CharSequence getCompleteHandler(final Component component) {
 							return "GradebookWicketEventProxy.revertGradeItem.handleComplete('" + getParentCellFor(component).getMarkupId()
@@ -337,6 +378,8 @@ public class GradeItemCellPanel extends Panel {
 			});
 
 			this.gradeCell.add(new AjaxEventBehavior("viewlog.sakai") {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onEvent(final AjaxRequestTarget target) {
 					final GradebookPage gradebookPage = (GradebookPage) getPage();
@@ -348,12 +391,15 @@ public class GradeItemCellPanel extends Panel {
 				}
 			});
 			this.gradeCell.add(new AjaxEventBehavior("editcomment.sakai") {
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				protected void onEvent(final AjaxRequestTarget target) {
 					final GradebookPage gradebookPage = (GradebookPage) getPage();
 					final GbModalWindow window = gradebookPage.getGradeCommentWindow();
 
-					final EditGradeCommentPanel panel = new EditGradeCommentPanel(window.getContentId(), GradeItemCellPanel.this.model, window);
+					final EditGradeCommentPanel panel = new EditGradeCommentPanel(window.getContentId(), GradeItemCellPanel.this.model,
+							window);
 					window.setContent(panel);
 					window.showUnloadConfirmation(false);
 					window.clearWindowClosedCallbacks();
@@ -543,4 +589,31 @@ public class GradeItemCellPanel extends Panel {
 		component.add(new AttributeModifier("data-content", popoverString));
 		component.add(new AttributeModifier("tabindex", "0"));
 	}
+	
+	/**
+	 * Get a display version of a grade
+	 * 
+	 * @param grade the actual grade
+	 * @return
+	 */
+	private String formatDisplayGrade(String grade) {
+	
+		String rval = grade;
+		
+		if (this.gradingType == GbGradingType.PERCENTAGE && StringUtils.isNotBlank(grade)) {
+			rval += "%";
+		}
+		return rval;
+	}
+	
+	/**
+	 * Remove the formatting from a display grade
+	 * 
+	 * @param displayGrade the display version
+	 * @return
+	 */
+	private String unformatDisplayGrade(String displayGrade) {
+		return StringUtils.remove(displayGrade, '%');
+	}
+	
 }

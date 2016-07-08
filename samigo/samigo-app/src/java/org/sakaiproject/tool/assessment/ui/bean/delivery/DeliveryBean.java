@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -53,7 +54,6 @@ import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData;
@@ -94,8 +94,6 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
 
-import uk.org.ponder.rsf.state.support.TMLFixer;
-
 import org.apache.commons.lang.StringUtils;
 /**
  *
@@ -119,7 +117,7 @@ public class DeliveryBean
   
   private String assessmentId;
   private String assessmentTitle;
-  private Boolean honorPledge = Boolean.FALSE;
+  private boolean honorPledge;
   private ArrayList markedForReview;
   private ArrayList blankItems;
   private ArrayList markedForReviewIdents;
@@ -138,7 +136,6 @@ public class DeliveryBean
   private String timeOutSubmission;
   private String submissionTicket;
   private String timeElapse;
-  private String username;
   private int sectionIndex;
   private boolean previous;
   private String duration;
@@ -239,7 +236,7 @@ public class DeliveryBean
   // esmiley added to track JavaScript
   private String javaScriptEnabledCheck;
 
-  //cwen
+  //cwent
   private String siteId;
 
   private boolean beginAssessment;
@@ -291,6 +288,7 @@ public class DeliveryBean
   private Date deadline;
   
   private boolean  firstTimeTaking;
+  boolean timeExpired = false;
   
   private static String ACCESSBASE = ServerConfigurationService.getAccessUrl();
   private static String RECPATH = ServerConfigurationService.getString("samigo.recommendations.path"); 
@@ -669,26 +667,6 @@ public class DeliveryBean
   public int getDisplayIndex()
   {
     return this.itemIndex + 1;
-  }
-
-  /**
-   *
-   *
-   * @return
-   */
-  public String getUsername()
-  {
-    return username;
-  }
-
-  /**
-   *
-   *
-   * @param username
-   */
-  public void setUsername(String username)
-  {
-    this.username = username;
   }
 
   /**
@@ -2140,21 +2118,12 @@ public class DeliveryBean
 
   public String validatePassword()
   {
-    log.debug("**** username=" + username);
     log.debug("**** password=" + password);
-    log.debug("**** setting username=" + getSettings().getUsername());
     log.debug("**** setting password=" + getSettings().getPassword());
     
-    if (StringUtils.isBlank(password) && StringUtils.isBlank(username))
+    if (StringUtils.isBlank(password))
     {
     	return "passwordAccessError";
-    }
-    if(StringUtils.isNotBlank(getSettings().getUsername()))
-    {
-    	if (!StringUtils.equals(StringUtils.trim(username), StringUtils.trim(getSettings().getUsername())))
-    	{
-    		return "passwordAccessError";
-    	}
     }
     if(StringUtils.isNotBlank(getSettings().getPassword()))
     {
@@ -2207,7 +2176,7 @@ public class DeliveryBean
       EventLogData eventLogData = new EventLogData();
       
       // #1. check password
-      if (!getSettings().getUsername().equals("") || !getSettings().getPassword().equals(""))
+      if (!getSettings().getPassword().equals(""))
       {
         results = validatePassword();
         log.debug("*** checked password="+results);
@@ -2400,53 +2369,19 @@ public class DeliveryBean
 
   private byte[] getMediaStream(String mediaLocation)
   {
-    FileInputStream mediaStream = null;
-    FileInputStream mediaStream2 = null;
     byte[] mediaByte = new byte[0];
     try
     {
-      int i;
-      int size = 0;
-      mediaStream = new FileInputStream(mediaLocation);
-      while ( (i = mediaStream.read()) != -1)
-      {
-        size++;
-      }
-      mediaStream2 = new FileInputStream(mediaLocation);
-      mediaByte = new byte[size];
-      mediaStream2.read(mediaByte, 0, size);
+      mediaByte = Files.readAllBytes(new File(mediaLocation).toPath());
     }
     catch (FileNotFoundException ex)
     {
-      log.error("file not found=" + ex.getMessage());
+      log.error("File not found in DeliveryBean.getMediaStream(): " + ex.getMessage());
     }
     catch (IOException ex)
     {
-      log.error("io exception=" + ex.getMessage());
+      log.error("IO Exception in DeliveryBean.getMediaStream(): " + ex.getMessage());
     }
-    finally
-    {
-      if (mediaStream != null) {
-    	  try
-    	  {
-    		  mediaStream.close();
-    	  }
-    	  catch (IOException ex1)
-    	  {
-    		  log.warn(ex1.getMessage());
-    	  }
-      }
-    if (mediaStream2 != null) {
-  	  try
-  	  {
-  		  mediaStream2.close();
-  	  }
-  	  catch (IOException ex1)
-  	  {
-  		  log.warn(ex1.getMessage());
-  	  }
-    }
-  }
     return mediaByte;
   }
 
@@ -2460,7 +2395,7 @@ public class DeliveryBean
    */
   public void addMediaToItemGrading(javax.faces.event.ValueChangeEvent e)
   {
-    if (isTimeRunning() && timeExpired())
+    if (isTimeRunning() && getTimeExpired())
       setOutcome("timeExpired");
 
     String mediaLocation = (String) e.getNewValue();
@@ -3044,29 +2979,15 @@ public class DeliveryBean
     this.beginAssessment = beginAssessment;
   }
 
-  public boolean timeExpired(){
+  public boolean getTimeExpired(){
     if (adata == null) {
     	return false;
     }
-    boolean timeExpired = false;
-    TimedAssessmentQueue queue = TimedAssessmentQueue.getInstance();
-    TimedAssessmentGradingModel timedAG = (TimedAssessmentGradingModel)queue.
-                                             get(adata.getAssessmentGradingId());
-    if (timedAG != null){ 
-      // if server already submit the assessment, this happen if JScript latency is very long
-      // and assessment passed the time left + latency buffer
-      // in this case, we will display the time expired message.
-      if (timedAG.getSubmittedForGrade()){
-        timeExpired = true;
-        queue.remove(timedAG);
-      } 
-    }
-    else{ 
-      // null => not only does the assessment miss the latency buffer, it also missed the
-      // transaction buffer
-      timeExpired = true;
-    }
     return timeExpired;
+  }
+  
+  public void setTimeExpired(Boolean timeExpired) {
+	  this.timeExpired = timeExpired;
   }
 
   private void removeTimedAssessmentFromQueue(){
@@ -3407,7 +3328,7 @@ public class DeliveryBean
     
     log.debug("check9");
     // check 9: is timed assessment? and time has expired?
-    if (isTimeRunning() && timeExpired() && !turnIntoTimedAssessment){ 
+    if (isTimeRunning() && getTimeExpired() && !turnIntoTimedAssessment){ 
       return "timeExpired";
     }
     
@@ -3992,11 +3913,11 @@ public class DeliveryBean
 	    this.redrawAnchorName = redrawAnchorName;
 	  }
 
-	public Boolean getHonorPledge() {
+	public boolean isHonorPledge() {
 		return honorPledge;
 	}
 
-	public void setHonorPledge(Boolean honorPledge) {
+	public void setHonorPledge(boolean honorPledge) {
 		this.honorPledge = honorPledge;
 	}
 	 
