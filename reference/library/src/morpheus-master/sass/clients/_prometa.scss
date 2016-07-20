@@ -1,16 +1,34 @@
-$background-color: 			#CCCCCC;
-$primary-color: 			#4E4E4E;
-$text-color: 				#FFFFFF;
-$toolMenuBGColor: 			#B1B1B1;
-$toolMenuColor: 			#FFFFFF;
-$button-background-color: 		#f0f0f0;
-$button-text-color: 			#FFFFFF;
-$button-border-color: 			#B1B1B1;
-$button-background-secondary-color: 	#6D6D6D;
-$toolTabBGColor: 			#B1B1B1;
-$toolBorderColor: 			#FFFFFF;
+$background-color: #CCCCCC;
+$logo: 'images/prometa.jpg';
+$logo-height: 80px;
+$logo-width: 350px;
 
-$okcolor:                                        #dff0d8 !default;
+$header-gradient-a: #B1B1B1;
+$header-gradient-b: #B1B1B1;
+$header-gradient-c: #B1B1B1;
+$header-gradient-d: #B1B1B1;
+
+$tool-background-color: #F0F0F0;
+$toolMenuBGColor:                        #B1B1B1;
+$toolMenuColor:                          #FFFFFF;
+$toolTabBGColor:                         #B1B1B1;
+$toolBorderColor:                        #FFFFFF;
+
+$primary-color:                          #4E4E4E;
+
+$text-color:                             #FFFFFF;
+
+$button-text-color:      #FFFFFF;
+$button-border-color: #B1B1B1;
+$button-background-color: #f0f0f0;
+$button-background-secondary-color: #6D6D6D;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #B1B1B1;
+$button-color-background-color: #2a94c0;
+$button-color-background-secondary-color: #B1B1B1;
+
+$okcolor:                                        #dff08d !default;
 $errorcolor:                             #f2dede !default;
 $warncolor:                              #fcf8e3 !default;
 
@@ -19,22 +37,34 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: $secondary-color;
+  color: #00FF00;
 }
 
 .navIntraTool li span a {
-color: $secondary-color !important;
+color: #000000 !important;
 }
 
+
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: $background-color !important;
-  color: $primary-color !important;
+  background: #00FF00 !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: $primary-color !important;
+  color: #4E4E4E !important;
 }
 
 .Mrphs-topHeader {
-background: $secondary-color !important;
+background: #FFFFFF !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #00FF00 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
 }

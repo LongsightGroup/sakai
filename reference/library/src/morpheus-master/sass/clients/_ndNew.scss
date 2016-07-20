@@ -25,11 +25,14 @@ $button-color-background-secondary-color: #5aabbc;
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
   color: #0C2340;
+  border-radius: 3px !important;
+  border-color: #0C2340;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
   background: #5aabbc !important;
   color: #FFFFFF !important;
+  border-radius: 17px !important;
 }
 
 .Mrphs-siteHierarchy a {
@@ -85,4 +88,9 @@ background: #5AABBC !important;
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected ul {
 background: #ffffff !important;
+}
+
+#toolMenu ul li.Mrphs-collapseTools {
+background: #0c2340 !important;
+color: #FFFFFF !important;
 }

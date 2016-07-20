@@ -1,16 +1,34 @@
 $background-color: #CCCCCC;
-$primary-color: #001642;
-$text-color: #000000;
-$toolMenuBGColor: #3A4F11;
-$toolMenuColor: #FFFFFF;
-$button-background-color: #f0f0f0;
-$button-text-color: #000000;
-$button-border-color: #FFFFFF;
-$button-background-secondary-color: #00319E;
-$toolTabBGColor: #00319E;
-$toolBorderColor: #FFFFFF;
+$logo: 'images/brevard.jpg';
+$logo-height: 80px;
+$logo-width: 190px;
 
-$okcolor:                                        #dff0d8 !default;
+$header-gradient-a: #576729;
+$header-gradient-b: #576729;
+$header-gradient-c: #576729;
+$header-gradient-d: #576729;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #576729;
+$toolMenuColor:                          #FFFFFF;
+$toolTabBGColor:                         #003c78;
+$toolBorderColor:                        #FFFFFF;
+
+$primary-color:                          #003c78;
+
+$text-color:                             #000000;
+
+$button-text-color:      #000000;
+$button-border-color: #FFFFFF;
+$button-background-color: #f0f0f0;
+$button-background-secondary-color: #00319E;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #2a94c0;
+$button-color-background-secondary-color: #000000;
+
+$okcolor:                                        #dff08d !default;
 $errorcolor:                             #f2dede !default;
 $warncolor:                              #fcf8e3 !default;
 
@@ -19,22 +37,34 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: $secondary-color;
+  color: #003c78;
 }
 
 .navIntraTool li span a {
-color: $secondary-color !important;
+color: #000000 !important;
 }
 
+
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: $background-color !important;
-  color: $primary-color !important;
+  background: #576729 !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: $primary-color !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-topHeader {
-background: $secondary-color !important;
+background: #003c78 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #576729 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
 }

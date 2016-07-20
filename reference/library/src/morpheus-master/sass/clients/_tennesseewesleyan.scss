@@ -1,16 +1,34 @@
-$background-color: 			#CCCCCC;
-$primary-color: 			#98885B;
-$text-color: 				#032853;
-$toolMenuBGColor: 			#98885B;
-$toolMenuColor: 			#032853;
-$button-background-color: 		#f0f0f0;
-$button-text-color: 			#032853;
-$button-border-color: 			#032853;
-$button-background-secondary-color: 	#98885B;
-$toolTabBGColor: 			#98885B;
-$toolBorderColor: 			#98885B;
+$background-color: #EFEFEF;
+$logo: 'images/tennesseewesleyan.jpg';
+$logo-height: 46px;
+$logo-width: 229px;
 
-$okcolor:                                        #dff0d8 !default;
+$header-gradient-a: #0033A0;
+$header-gradient-b: #0033A0;
+$header-gradient-c: #0033A0;
+$header-gradient-d: #0033A0;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #2D2A26;
+$toolMenuColor:                          #FFFFFF;
+$toolTabBGColor:                         #98885B;
+$toolBorderColor:                        #98885B;
+
+$primary-color:                          #333333;
+
+$text-color:                             #2D2A26;
+
+$button-text-color:      #FFFFFF;
+$button-border-color: #BBBBBB;
+$button-background-color: #0033A0;
+$button-background-secondary-color: #98885B;
+
+$button-color-text-color: #032853;
+$button-color-border-color: #032853;
+$button-color-background-color: #2a94c0;
+$button-color-background-secondary-color: #032853;
+
+$okcolor:                                        #dff08d !default;
 $errorcolor:                             #f2dede !default;
 $warncolor:                              #fcf8e3 !default;
 
@@ -19,22 +37,34 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: $secondary-color;
+  color: #00FF00;
 }
 
 .navIntraTool li span a {
-color: $secondary-color !important;
+color: #000000 !important;
 }
 
+
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: $background-color !important;
-  color: $primary-color !important;
+  background: #00FF00 !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: $primary-color !important;
+  color: #333333 !important;
 }
 
 .Mrphs-topHeader {
-background: $secondary-color !important;
+background: #FFFFFF !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #00FF00 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
 }

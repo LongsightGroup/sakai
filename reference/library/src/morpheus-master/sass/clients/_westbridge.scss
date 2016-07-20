@@ -1,16 +1,34 @@
-$background-color: 			#CCCCCC;
-$primary-color: 			#C16145;
-$text-color: 				#FFFFFF;
-$toolMenuBGColor: 			#838D45;
-$toolMenuColor: 			#FFFFFF;
-$button-background-color: 		#f0f0f0;
-$button-text-color: 			#FFFFFF;
-$button-border-color: 			#B33D20;
-$button-background-secondary-color: 	#B33D20;
-$toolTabBGColor: 			#A2AA6C;
-$toolBorderColor: 			#A2AA6C;
+$background-color: #CCCCCC;
+$logo: 'images/westbridge.jpg';
+$logo-height: 80px;
+$logo-width: 198px;
 
-$okcolor:                                        #dff0d8 !default;
+$header-gradient-a: #B33D20;
+$header-gradient-b: #B33D20;
+$header-gradient-c: #B33D20;
+$header-gradient-d: #B33D20;
+
+$tool-background-color: #F0F0F0;
+$toolMenuBGColor:                        #838D45;
+$toolMenuColor:                          #FFFFFF;
+$toolTabBGColor:                         #A2AA6C;
+$toolBorderColor:                        #A2AA6C;
+
+$primary-color:                          #C16145;
+
+$text-color:                             #FFFFFF;
+
+$button-text-color:      #FFFFFF;
+$button-border-color: #B33D20;
+$button-background-color: #f0f0f0;
+$button-background-secondary-color: #B33D20;
+
+$button-color-text-color: #FFFFFF;
+$button-color-border-color: #B33D20;
+$button-color-background-color: #2a94c0;
+$button-color-background-secondary-color: #B33D20;
+
+$okcolor:                                        #dff08d !default;
 $errorcolor:                             #f2dede !default;
 $warncolor:                              #fcf8e3 !default;
 
@@ -19,22 +37,34 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: $secondary-color;
+  color: #00FF00;
 }
 
 .navIntraTool li span a {
-color: $secondary-color !important;
+color: #000000 !important;
 }
 
+
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: $background-color !important;
-  color: $primary-color !important;
+  background: #00FF00 !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: $primary-color !important;
+  color: #C16145 !important;
 }
 
 .Mrphs-topHeader {
-background: $secondary-color !important;
+background: #FFFFFF !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #00FF00 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
 }
