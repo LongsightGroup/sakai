@@ -171,7 +171,7 @@
 									<goal>copy-resources</goal>
 								</goals>
 								<configuration>
-									<outputDirectory>${basedir}/src/webapp/skin/${sakai.skin.target}/images/</outputDirectory>
+									<outputDirectory>${basedir}/src/webapp/images/</outputDirectory>
 									<resources>
 										<resource>
 											<directory>src/${sakai.skin.source}/images/</directory>
