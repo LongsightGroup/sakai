@@ -15,8 +15,8 @@ UPDATE sakai_site_tool SET registration = 'sakai.simple.rss' WHERE registration 
 
 -- KNL-1350 / SAK-11647
 INSERT INTO SAKAI_REALM_FUNCTION VALUES (SAKAI_REALM_FUNCTION_SEQ.nextval, 'dropbox.maintain.own.groups');
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!site.template.course'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = 'Teaching Assistant'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'dropbox.maintain.own.groups'))
-INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!group.template.course'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = 'Teaching Assistant'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'dropbox.maintain.own.groups'))
+INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!site.template.course'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = 'Teaching Assistant'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'dropbox.maintain.own.groups'));
+INSERT INTO SAKAI_REALM_RL_FN VALUES((select REALM_KEY from SAKAI_REALM where REALM_ID = '!group.template.course'), (select ROLE_KEY from SAKAI_REALM_ROLE where ROLE_NAME = 'Teaching Assistant'), (select FUNCTION_KEY from SAKAI_REALM_FUNCTION where FUNCTION_NAME = 'dropbox.maintain.own.groups'));
 -- END KNL-1350 / SAK-11647
 
 INSERT INTO SAKAI_REALM_FUNCTION VALUES (SAKAI_REALM_FUNCTION_SEQ.nextval, 'msg.permissions.allowToField.myGroupMembers');
@@ -1050,3 +1050,20 @@ DROP TABLE PERMISSIONS_SRC_TEMP;
 
 -- SAK-30144: Add the new 'EID' column to the VALIDATIONACCOUNT_ITEM table
 ALTER TABLE VALIDATIONACCOUNT_ITEM ADD EID VARCHAR2(255);
+
+-- SAK-31468 rename existing gradebooks to 'Gradebook Classic'
+-- This will not change any tool placements. To do that, uncomment the following line:
+-- UPDATE SAKAI_SITE_TOOL SET REGISTRATION='sakai.gradebookng' WHERE REGISTRATION='sakai.gradebook.tool';
+UPDATE SAKAI_SITE_TOOL SET TITLE='Gradebook Classic' WHERE TITLE='Gradebook';
+UPDATE SAKAI_SITE_PAGE SET TITLE='Gradebook Classic' WHERE TITLE='Gradebook';
+
+-- SAK-31507/KNL-1394 Oracle conversion, size increases of Message Bundle columns
+alter table SAKAI_MESSAGE_BUNDLE add tempcol clob;
+update SAKAI_MESSAGE_BUNDLE set tempcol=DEFAULT_VALUE;
+alter table SAKAI_MESSAGE_BUNDLE drop column DEFAULT_VALUE;
+alter table SAKAI_MESSAGE_BUNDLE rename column tempcol to DEFAULT_VALUE;
+
+alter table SAKAI_MESSAGE_BUNDLE add tempcol clob;
+update SAKAI_MESSAGE_BUNDLE set tempcol=PROP_VALUE;
+alter table SAKAI_MESSAGE_BUNDLE drop column PROP_VALUE;
+alter table SAKAI_MESSAGE_BUNDLE rename column tempcol to PROP_VALUE;
