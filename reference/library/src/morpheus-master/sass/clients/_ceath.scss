@@ -1,0 +1,70 @@
+$background-color: #0b763e;
+$logo: 'images/ceath.jpg';
+$logo-height: 80px;
+$logo-width: 277px;
+
+$header-gradient-a: #FFFFFF;
+$header-gradient-b: #FFFFFF;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #0b763e;
+$toolMenuColor:                          #FFFFFF;
+$toolTabBGColor:                         #FFFFFF;
+$toolBorderColor:                        #00FF00;
+
+$primary-color:                          #FFFFFF;
+
+$text-color:                             #0b763e;
+
+$button-text-color:      #0b763e;
+$button-border-color: #00FF00;
+$button-background-color: #FFFFFF;
+$button-background-secondary-color: #FF7F00;
+
+$button-color-text-color: #3D6D4D;
+$button-color-border-color: #3D6D4D;
+$button-color-background-color: #2a94c0;
+$button-color-background-secondary-color: #3D6D4D;
+
+$okcolor:                                        #dff08d !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #0b763e;
+}
+
+.navIntraTool li span a {
+color: #000000 !important;
+}
+
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #0b763e !important;
+  color: #FFFFFF !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+background: #FFFFFF !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #0b763e !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
+}
