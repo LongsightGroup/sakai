@@ -1,16 +1,34 @@
-$background-color: 			#CCCCCC;
-$primary-color: 			#79ACB2;
-$text-color: 				#FFFFFF;
-$toolMenuBGColor: 			#FFFFFF;
-$toolMenuColor: 			#255A66;
-$button-background-color: 		#f0f0f0;
-$button-text-color: 			#000000;
-$button-border-color: 			#255A66;
-$button-background-secondary-color: 	#FFFFFF;
-$toolTabBGColor: 			#79ACB2;
-$toolBorderColor: 			#8A6D83;
+$background-color: #CCCCCC;
+$logo: 'images/ndeo.jpg';
+$logo-height: 80px;
+$logo-width: 189px;
 
-$okcolor:                                        #dff0d8 !default;
+$header-gradient-a: #FFFFFF;
+$header-gradient-b: #FFFFFF;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
+
+$tool-background-color: #F0F0F0;
+$toolMenuBGColor:                        #FFFFFF;
+$toolMenuColor:                          #255A66;
+$toolTabBGColor:                         #79ACB2;
+$toolBorderColor:                        #8A6D83;
+
+$primary-color:                          #79ACB2;
+
+$text-color:                             #FFFFFF;
+
+$button-text-color:      #000000;
+$button-border-color: #255A66;
+$button-background-color: #f0f0f0;
+$button-background-secondary-color: #FFFFFF;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #255A66;
+$button-color-background-color: #2a94c0;
+$button-color-background-secondary-color: #255A66;
+
+$okcolor:                                        #dff08d !default;
 $errorcolor:                             #f2dede !default;
 $warncolor:                              #fcf8e3 !default;
 
@@ -19,22 +37,34 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: $secondary-color;
+  color: #00FF00;
 }
 
 .navIntraTool li span a {
-color: $secondary-color !important;
+color: #000000 !important;
 }
 
+
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: $background-color !important;
-  color: $primary-color !important;
+  background: #00FF00 !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: $primary-color !important;
+  color: #79ACB2 !important;
 }
 
 .Mrphs-topHeader {
-background: $secondary-color !important;
+background: #FFFFFF !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #00FF00 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
 }

@@ -1,7 +1,7 @@
 $background-color: #CCCCCC;
-$logo: 'images/JohnsonLogo.png';
-$logo-height: 88px;
-$logo-width: 200px;
+$logo: 'images/appalachainlaw.jpg';
+$logo-height: 1500px;
+$logo-width: 1500px;
 
 $header-gradient-a: #E3F5E6;
 $header-gradient-b: #E3F5E6;
@@ -15,22 +15,21 @@ $toolTabBGColor:                         #E3F5E6;
 $toolBorderColor:                        #D0D7D0;
 
 $primary-color:                          #3D6D4D;
-$secondary-color:                        #3D6D4D;
 
 $text-color:                             #3D6D4D;
 
 $button-text-color:      #3D6D4D;
 $button-border-color: #3D6D4D;
-$button-background-color: #f0f0f0;
+$button-background-color: #F0F0F0;
 $button-background-secondary-color: #C6CAC6;
 
 $button-color-text-color: #3D6D4D;
 $button-color-border-color: #3D6D4D;
-$button-color-background-color: #f0f0f0;
+$button-color-background-color: #F0F0F0;
 $button-color-background-secondary-color: #C6CAC6;
 
-$okcolor:                                        #dff0d8 !default;
-$errorcolor:                             #f2dede !default;
+$okcolor:                                        #DFF0D8 !default;
+$errorcolor:                             #F2DEDE !default;
 $warncolor:                              #fcf8e3 !default;
 
 $skin-with-icons: true;
@@ -38,21 +37,21 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: $secondary-color;
+  color: #3D6D4D;
 }
 
 .navIntraTool li span a {
-color: $secondary-color !important;
+color: #3D6D4D !important;
 }
 
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: $background-color !important;
-  color: $secondary-color !important;
+  background: #CCCCCC !important;
+  color: #3D6D4D !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: #3d6D4D !important;
+  color: #3D6D4D !important;
 }
 
 .Mrphs-topHeader {
@@ -61,11 +60,11 @@ background: #3D6D4D !important;
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
     background: #FFFFFF !important;
-    color: #3d6d4d !important;
+    color: #3D6D4D !important;
     font-weight: 450;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
-    top: 0px !important;
+    top: -1px !important;
     height: 28px;
 }
