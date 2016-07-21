@@ -74,7 +74,7 @@ public class ItemBean
   private String itemType;
   private double itemScore= 0.0d;
   private String itemScoreDisplayFlag= "true";
-  private double itemMinScore = 0.0d;
+  private Double itemMinScore;
   private double itemDiscount = 0.0d;
   private String partialCreditFlag = "Defualt";
   private String[] answers;
@@ -149,6 +149,7 @@ public class ItemBean
 
   private boolean caseSensitiveForFib=false;
   private boolean mutuallyExclusiveForFib=false;
+  private boolean ignoreSpacesForFib=false;
   private boolean caseSensitiveForFin=false;
   private boolean mutuallyExclusiveForFin=false;
   //not used now. This is used to deteremine whether 
@@ -1444,8 +1445,25 @@ public class ItemBean
     this.showMutuallyExclusiveForFibCheckbox= param;
   }
 
+    /**
+     * for fib, ignore spaces for grading?
+     * @return
+     */
+    public boolean getIgnoreSpacesForFib()
+    {
+      return ignoreSpacesForFib;
+    }
 
-   /**
+    /**
+     * for fib questions
+     * @param param ignore spaces for grading?
+     */
+    public void setIgnoreSpacesForFib(boolean param)
+    {
+      this.ignoreSpacesForFib = param;
+    }
+
+    /**
      * for fin, case sensitive for grading?
      * @return
      */
@@ -2058,11 +2076,11 @@ public class ItemBean
 		this.mcmsPartialCredit = mcmsPartialCredit;
 	}
 
-	public double getItemMinScore() {
+	public Double getItemMinScore() {
 		return itemMinScore;
 	}
 
-	public void setItemMinScore(double itemMinScore) {
+	public void setItemMinScore(Double itemMinScore) {
 		this.itemMinScore = itemMinScore;
 	}
 

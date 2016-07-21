@@ -237,11 +237,11 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	/**
 	 * The quota for content resource body bytes (in Kbytes) for any hierarchy in the /user/ or /group/ areas, or 0 if quotas are not enforced.
 	 */
-	protected long m_siteQuota = 0;
+	protected long m_siteQuota = 1048576;
     /**
      * The quota for content dropbox body bytes (in Kbytes), or 0 if quotas are not enforced.
      */
-	protected long m_dropBoxQuota = 0;
+	protected long m_dropBoxQuota = 1048576;
 
 	private boolean m_useSmartSort = true;
 
@@ -1636,7 +1636,13 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	protected boolean availabilityCheck(String id) throws IdUnusedException
 	{
 		// item is available if avaialability checks are <b>NOT</b> enabled OR if it's in /attachment
-		boolean available = (! m_availabilityChecksEnabled) || isAttachmentResource(id);
+		boolean available = (! m_availabilityChecksEnabled) || (isAttachmentResource(id) && !isCollection(id));
+		// while site owners can validly look at attachment collections, it's odd, and there's no 
+		// way in UI that we know to do it. However admins can definitely see it from resources
+		// so warn except for admins. This check will return true for site owners even though
+		// the warning is issued.
+		if (isAttachmentResource(id) && isCollection(id) && !m_securityService.isSuperUser())
+		    M_log.warn("availability check for attachment collection " + id);
 
 		GroupAwareEntity entity = null;
 		//boolean isCollection = id.endsWith(Entity.SEPARATOR);
@@ -7080,6 +7086,9 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 					} else {
 						res.addHeader("Content-Length", Long.toString(len));
 					}
+					
+					// SAK-30455: Track event now so the direct link still records a content.read
+					eventTrackingService.post(eventTrackingService.newEvent(EVENT_RESOURCE_READ, resource.getReference(null), false));
 
 					// Bypass loading the asset and just send the user a link to it.
 					if (directLinkUri != null) {
@@ -7154,10 +7163,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 							}
 						}
 					}
-					
-					// Track event - only for full reads
-					eventTrackingService.post(eventTrackingService.newEvent(EVENT_RESOURCE_READ, resource.getReference(null), false));
-
 		        } 
 		        else 
 		        {
@@ -11044,7 +11049,8 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 					return available;
 				}
 				if (available && !isHiddenWebFolder && currentEntity.getId().endsWith(Entity.SEPARATOR)) {
-					isHiddenWebFolder = "true".equals(currentEntity.getProperties().getProperty(ResourceProperties.PROP_HIDDEN_WITH_ACCESSIBLE_CONTENT));
+					isHiddenWebFolder = isAttachmentResource(currentEntity.getId()) ||
+					    "true".equals(currentEntity.getProperties().getProperty(ResourceProperties.PROP_HIDDEN_WITH_ACCESSIBLE_CONTENT));
 				}
 				currentEntity = currentEntity.getContainingCollection();
 				available = currentEntity!=null?!currentEntity.isHidden():available;
@@ -14256,7 +14262,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 	private static final String MACRO_USER_EID            = "${USER_EID}";
 	private static final String MACRO_USER_FIRST_NAME     = "${USER_FIRST_NAME}";
 	private static final String MACRO_USER_LAST_NAME      = "${USER_LAST_NAME}";
-	private static final String MACRO_SESSION_ID          = "${SESSION_ID}";
 
 	private static final String MACRO_DEFAULT_ALLOWED = "${USER_ID},${USER_EID},${USER_FIRST_NAME},${USER_LAST_NAME}";
 
@@ -14320,10 +14325,6 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, EntityTransferrerRef
 			if (macroName.equals(MACRO_USER_LAST_NAME)) {
 				return userDirectoryService.getCurrentUser().getLastName();
 			}
-			if (macroName.equals(MACRO_SESSION_ID)) {
-				return sessionManager.getCurrentSession().getId();
-			}
-
 		}
 		catch (Exception e) {
 			M_log.error("Error resolving macro:" + macroName + ": " + e.getClass() + ": " + e.getCause());

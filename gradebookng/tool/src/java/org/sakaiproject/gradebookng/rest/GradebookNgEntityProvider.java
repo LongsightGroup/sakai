@@ -1,9 +1,8 @@
 package org.sakaiproject.gradebookng.rest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -88,7 +87,7 @@ public class GradebookNgEntityProvider extends AbstractEntityProvider implements
 	 * @return
 	 */
 	@EntityCustomAction(action = "isotheruserediting", viewKey = EntityView.VIEW_LIST)
-	public List<GbGradeCell> isAnotherUserEditing(final EntityView view) {
+	public List<GbGradeCell> isAnotherUserEditing(final EntityView view, final Map<String, Object> params) {
 
 		// get siteId
 		final String siteId = view.getPathSegment(2);
@@ -103,10 +102,15 @@ public class GradebookNgEntityProvider extends AbstractEntityProvider implements
 		// check instructor or TA
 		checkInstructorOrTA(siteId);
 
-		// get notification list
-		// NOTE we assume the gradebook id and siteid are equivalent, which they are
-		// unless they have two gradebooks in a site? Is that even possible?
-		return this.businessService.getEditingNotifications(siteId);
+		if (!params.containsKey("since")) {
+			throw new IllegalArgumentException(
+				"Since timestamp (in milliseconds) must be set in order to access GBNG data.");
+		}
+
+		final long millis = NumberUtils.toLong((String) params.get("since"));
+		final Date since = new Date(millis);
+
+		return this.businessService.getEditingNotifications(siteId, since);
 	}
 
 	@EntityCustomAction(action = "categorized-assignment-order", viewKey = EntityView.VIEW_NEW)
@@ -129,17 +133,19 @@ public class GradebookNgEntityProvider extends AbstractEntityProvider implements
 
 		// update the order
 		try {
-			this.businessService.updateCategorizedAssignmentOrder(siteId, assignmentId, order);
+			this.businessService.updateAssignmentCategorizedOrder(siteId, assignmentId, order);
 		} catch (final IdUnusedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (final PermissionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (final JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+	}
+
+	@EntityCustomAction(action = "ping", viewKey = EntityView.VIEW_LIST)
+	public String ping(final EntityView view) {
+		return "pong";
 	}
 
 	/**

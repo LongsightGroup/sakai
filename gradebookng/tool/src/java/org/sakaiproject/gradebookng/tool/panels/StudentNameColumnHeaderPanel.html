@@ -4,7 +4,9 @@
 <body>
 <wicket:panel>
 	
-	<div wicket:id="title" class="gb-title"></div>
+	<div class="gb-title">
+		<a wicket:id="title"><wicket:container wicket:id="label" /></a>
+	</div>
 	
 	<div class="gb-student-filter">
 	  <label for="studentFilterInput" style="display:none" aria-hidden="true"><wicket:message key="filter.groups" /></label>
@@ -13,7 +15,7 @@
 	</div>
 	
 	<div class="btn-group">
-	    <a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-label="Show dropdown menu">
+	    <a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" wicket:message="title:students.menulabel">
 	    	<span class="caret"></span>
 	    </a>
 	    <ul class="dropdown-menu dropdown-menu-right" role="menu">

@@ -1,16 +1,19 @@
 package org.sakaiproject.gradebookng.tool.panels;
 
 import java.util.Map;
+import java.util.HashMap;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.StringResourceModel;
 import org.sakaiproject.gradebookng.business.model.GbStudentNameSortOrder;
+import org.sakaiproject.gradebookng.tool.component.GbAjaxLink;
 import org.sakaiproject.gradebookng.tool.model.GbModalWindow;
+import org.sakaiproject.gradebookng.tool.model.GradebookUiSettings;
 import org.sakaiproject.gradebookng.tool.pages.GradebookPage;
 
 /**
@@ -40,10 +43,11 @@ public class StudentNameCellPanel extends Panel {
 		final String eid = (String) modelData.get("eid");
 		final String firstName = (String) modelData.get("firstName");
 		final String lastName = (String) modelData.get("lastName");
+		final String displayName = (String) modelData.get("displayName");
 		final GbStudentNameSortOrder nameSortOrder = (GbStudentNameSortOrder) modelData.get("nameSortOrder");
 
 		// link
-		final AjaxLink<String> link = new AjaxLink<String>("link") {
+		final GbAjaxLink<String> link = new GbAjaxLink<String>("link") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -51,8 +55,12 @@ public class StudentNameCellPanel extends Panel {
 
 				final GradebookPage gradebookPage = (GradebookPage) getPage();
 				final GbModalWindow window = gradebookPage.getStudentGradeSummaryWindow();
+				final GradebookUiSettings settings = gradebookPage.getUiSettings();
 
-				final Component content = new StudentGradeSummaryPanel(window.getContentId(), StudentNameCellPanel.this.model, window);
+				final Map<String, Object> windowModel = new HashMap<>(StudentNameCellPanel.this.model.getObject());
+				windowModel.put("groupedByCategoryByDefault", settings.isCategoriesEnabled());
+
+				final Component content = new StudentGradeSummaryPanel(window.getContentId(), Model.ofMap(windowModel), window);
 
 				if (window.isShown() && window.isVisible()) {
 					window.replace(content);
@@ -65,7 +73,11 @@ public class StudentNameCellPanel extends Panel {
 				}
 
 				content.setOutputMarkupId(true);
-				target.appendJavaScript("new GradebookGradeSummary($(\"#" + content.getMarkupId() + "\"));");
+				final String modalTitle = (new StringResourceModel("heading.studentsummary",
+						null, new Object[] { displayName, eid })).getString();
+				target.appendJavaScript(String.format(
+						"new GradebookGradeSummary($(\"#%s\"), false, \"%s\");",
+						content.getMarkupId(), modalTitle));
 			}
 		};
 		link.setOutputMarkupId(true);
@@ -86,10 +98,6 @@ public class StudentNameCellPanel extends Panel {
 		});
 
 		add(link);
-
-		getParent().add(new AttributeModifier("scope", "row"));
-		getParent().add(new AttributeModifier("role", "rowheader"));
-
 	}
 
 	/**

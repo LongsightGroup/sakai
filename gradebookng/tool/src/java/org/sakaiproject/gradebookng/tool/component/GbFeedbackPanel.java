@@ -34,15 +34,28 @@ public class GbFeedbackPanel extends FeedbackPanel {
 
 		if (message.getLevel() == FeedbackMessage.ERROR ||
 				message.getLevel() == FeedbackMessage.DEBUG ||
-				message.getLevel() == FeedbackMessage.FATAL ||
-				message.getLevel() == FeedbackMessage.WARNING) {
+				message.getLevel() == FeedbackMessage.FATAL) {
 			add(AttributeModifier.replace("class", "messageError"));
 			add(AttributeModifier.append("class", "feedback"));
+		} else if (message.getLevel() == FeedbackMessage.WARNING) {
+			add(AttributeModifier.replace("class", "messageWarning"));
+			add(AttributeModifier.append("class", "feedback"));
 		} else if (message.getLevel() == FeedbackMessage.INFO) {
+			add(AttributeModifier.replace("class", "messageInformation"));
+			add(AttributeModifier.append("class", "feedback"));
+		} else if (message.getLevel() == FeedbackMessage.SUCCESS) {
 			add(AttributeModifier.replace("class", "messageSuccess"));
 			add(AttributeModifier.append("class", "feedback"));
 		}
 
 		return newMessageDisplayComponent;
+	}
+
+	/**
+	 * Clear all messages from the feedback panel
+	 */
+	public void clear() {
+		getFeedbackMessages().clear();
+		this.add(AttributeModifier.remove("class"));
 	}
 }

@@ -62,7 +62,10 @@
       </style>
 
       <%@ include file="/jsf/delivery/deliveryjQuery.jsp" %>
-      <script type='text/javascript' src='/library/js/headscripts.js'></script><script type='text/javascript'>var sakai = sakai || {}; sakai.editor = sakai.editor || {};sakai.editor.enableResourceSearch = false;</script><script type='text/javascript'>var CKEDITOR_BASEPATH='/library/editor/ckeditor/';</script><script type='text/javascript' src='/library/editor/ckeditor/ckeditor.js'></script><script type='text/javascript' src='/library/editor/ckeditor.launch.js'></script>
+      <script type='text/javascript' src='/library/js/headscripts.js'></script>
+      <script type='text/javascript' src="/sakai-editor/editor-bootstrap.js"></script>
+      <script type="text/javascript" src="/sakai-editor/editor.js"></script>
+      <script type="text/javascript" src="/sakai-editor/editor-launch.js"></script>
 	  <script type="text/javascript" src="/samigo-app/js/saveForm.js"></script>	  	  
       <script type="text/javascript">
 		
@@ -168,15 +171,15 @@
 		<div id="time-due-warning" style="display:none;text-align:center" >
 				<h:outputText value="#{deliveryMessages.time_due_warning_1}" escape="false"/>
 				<br/><br />
-				<button type="button"><h:outputText value="#{deliveryMessages.button_submit}" escape="false"/></button>
+				<button type="button" onclick="clickSubmit();"><h:outputText value="#{deliveryMessages.button_submit}" escape="false"/></button>
 				<br /><br />	
-				<a href="#"><h:outputText value="<u>#{deliveryMessages.link_do_not_submit}</u>" escape="false"/></a>
+				<a href="#" onclick="clickDoNotSubmit();"><h:outputText value="<u>#{deliveryMessages.link_do_not_submit}</u>" escape="false"/></a>
 				<br /><br />
 				<h:outputText value="#{deliveryMessages.time_due_warning_2}" escape="false"/>
 				<br /><br />
 		</div>
  
-<div class="portletBody">
+<div class="portletBody Mrphs-sakai-samigo">
  <h:outputText value="<div style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
 
 <!-- content... -->

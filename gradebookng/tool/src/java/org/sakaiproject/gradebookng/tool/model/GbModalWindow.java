@@ -16,6 +16,7 @@ public class GbModalWindow extends ModalWindow {
 
 	private Component componentToReturnFocusTo;
 	private List<WindowClosedCallback> closeCallbacks;
+	private boolean positionAtTop = false;
 
 	public GbModalWindow(final String id) {
 		super(id);
@@ -47,11 +48,20 @@ public class GbModalWindow extends ModalWindow {
 
 	@Override
 	protected CharSequence getShowJavaScript() {
-		// focus the first input field in the content pane
-		final String focusJavascript = String.format("setTimeout(function() {$('#%s :input:first:visible').focus();});",
-				getContent().getMarkupId());
+		StringBuilder extraJavascript = new StringBuilder();
 
-		return super.getShowJavaScript().toString() + focusJavascript;
+		// focus the first input field in the content pane
+		extraJavascript.append(String.format("setTimeout(function() {$('#%s :input:first:visible').focus();});",
+				getContent().getMarkupId()));
+
+		// position at the top of the page
+		if (this.positionAtTop) {
+			extraJavascript.append(
+					String.format("setTimeout(function() {sakai.gradebookng.spreadsheet.positionModalAtTop($('#%s').closest('.wicket-modal'));});",
+							getContent().getMarkupId()));
+		}
+
+		return super.getShowJavaScript().toString() + extraJavascript.toString();
 	}
 
 	@Override
@@ -80,12 +90,21 @@ public class GbModalWindow extends ModalWindow {
 		setDefaultWindowClosedCallback();
 	}
 
+	public void setPositionAtTop(final boolean positionAtTop) {
+		this.positionAtTop = positionAtTop;
+	}
+
 	private void setDefaultWindowClosedCallback() {
 		addWindowClosedCallback(new WindowClosedCallback() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClose(final AjaxRequestTarget target) {
+				// Disable all buttons with in the modal in case it takes a moment to close
+				target.appendJavaScript(
+					String.format("$('#%s :input').prop('disabled', true);",
+						GbModalWindow.this.getContent().getMarkupId()));
+
 				// Ensure the date picker is hidden
 				target.appendJavaScript("$('#ui-datepicker-div').hide();");
 

@@ -24,7 +24,6 @@ package org.sakaiproject.component.gradebook;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +40,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StaleObjectStateException;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.section.api.SectionAwareness;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 import org.sakaiproject.section.api.facade.Role;
@@ -48,9 +48,9 @@ import org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException;
 import org.sakaiproject.service.gradebook.shared.CommentDefinition;
 import org.sakaiproject.service.gradebook.shared.ConflictingAssignmentNameException;
 import org.sakaiproject.service.gradebook.shared.ConflictingCategoryNameException;
+import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GradebookNotFoundException;
 import org.sakaiproject.service.gradebook.shared.GradebookService;
-import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.service.gradebook.shared.GraderPermission;
 import org.sakaiproject.service.gradebook.shared.StaleObjectModificationException;
 import org.sakaiproject.tool.gradebook.AbstractGradeRecord;
@@ -68,9 +68,10 @@ import org.sakaiproject.tool.gradebook.LetterGradePercentMapping;
 import org.sakaiproject.tool.gradebook.Permission;
 import org.sakaiproject.tool.gradebook.facades.Authn;
 import org.sakaiproject.tool.gradebook.facades.EventTrackingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.sakaiproject.component.api.ServerConfigurationService;
 
 /**
  * Provides methods which are shared between service business logic and application business
@@ -465,7 +466,12 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
        eventTrackingService.postEvent(message,objectReference);
     }
 
-    public Long createCategory(final Long gradebookId, final String name, final Double weight, final Integer drop_lowest, final Integer dropHighest, final Integer keepHighest, final Boolean is_extra_credit) 
+
+    public Long createCategory(final Long gradebookId, final String name, final Double weight, final Integer drop_lowest, final Integer dropHighest, final Integer keepHighest, final Boolean is_extra_credit) {
+        return createCategory(gradebookId, name, weight, drop_lowest, dropHighest, keepHighest, is_extra_credit, null);
+    }
+
+    public Long createCategory(final Long gradebookId, final String name, final Double weight, final Integer drop_lowest, final Integer dropHighest, final Integer keepHighest, final Boolean is_extra_credit, final Integer categoryOrder) 
     throws ConflictingCategoryNameException, StaleObjectModificationException {
     	HibernateCallback hc = new HibernateCallback() {
     		public Object doInHibernate(Session session) throws HibernateException {
@@ -503,6 +509,7 @@ public abstract class BaseHibernateManager extends HibernateDaoSupport {
                 //ca.setItemValue(itemValue);
     			ca.setRemoved(false);
     			ca.setExtraCredit(is_extra_credit);
+    			ca.setCategoryOrder(categoryOrder);
 
     			Long id = (Long)session.save(ca);
 

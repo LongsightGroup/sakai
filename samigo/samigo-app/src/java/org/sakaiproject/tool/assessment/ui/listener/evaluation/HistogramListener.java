@@ -2454,7 +2454,7 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
     double[] scores = new double[array.length];
     for (int i=0; i<array.length; i++)
 {
-      scores[i] = ((Double) array[i]).doubleValue();
+      scores[i] = Double.valueOf(castingNum((Double)array[i],2)).doubleValue();
 }
 
     HashMap statMap = new HashMap();
@@ -2821,24 +2821,31 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
   {
     String[] ranges = new String[numStudents.length];
 
-    ranges[0] = (int) min + " - " + (int) (min + interval);
-    int i = 1;
-    while(i < ranges.length)
-    {
-      if((((i + 1) * interval) + min) < max)
-      {
-        ranges[i] =
-          ">" + (int) ((i * interval) + min) + " - " +
-          (int) (((i + 1) * interval) + min);
-      }
-      else
-      {
-        ranges[i] = ">" + (int) ((i * interval) + min) + " - " + (int) max;
-      }
-
-      i++;
+    if(Double.compare(max, min) == 0){
+      String num = castingNum(min,2);
+      ranges[0] = num + " - " + num;
     }
-
+    else
+    {	
+      ranges[0] = (int) min + " - " + (int) (min + interval);
+      int i = 1;
+      Integer nextVal = null;
+      while(i < ranges.length)
+      {
+        nextVal = new Integer((int) (((i + 1) * interval) + min));  
+        if(nextVal.doubleValue() < max)
+        {
+          ranges[i] =
+            ">" + (int) ((i * interval) + min) + " - " + nextVal;
+        }
+        else
+        {
+          ranges[i] = ">" + (int) ((i * interval) + min) + " - " + castingNum(max,2);
+        }
+        i++;
+      }
+  } 
+	    
     return ranges;
   }
 
@@ -2932,7 +2939,7 @@ private void getCalculatedQuestionScores(List<ItemGradingData> scores, Histogram
    *
    * @return DOCUMENTATION PENDING
    */
-    private String castingNum(double number,int decimal)
+    private static String castingNum(double number,int decimal)
   {
       int indexOfDec=0;
       String n;

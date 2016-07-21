@@ -890,9 +890,72 @@ ASN.toggleAutoAnnounceOptions = function(checked){
     var section = document.getElementById("selectAutoAnnounceOptions");
     if(checked){
         section.style.display="block";
-        resizeFrame('grow');
+        ASN.resizeFrame('grow');
     }else{
         section.style.display="none";
-        resizeFrame('shrink');
+        ASN.resizeFrame('shrink');
     }
 };
+
+// SAK-30032
+ASN.setupPeerReviewAttachment = function(){
+    $('#submissionFileCount').val(1);
+    $('#addMoreAttachmentControls').click(function(e){
+        e.preventDefault();
+        if ($('#submissionFileCount').val() < 5) {
+            var $input = $('#clonableUpload').clone().removeAttr('id').addClass('cloned').appendTo('#clonedHolder').children('input');
+            $input.val('');
+            var $count = $('#submissionFileCount').val();
+            var $nameCount = "upload"+$count;
+            $input.attr("name", $nameCount);
+            $('#submissionFileCount').val(parseInt($('#submissionFileCount').val(), 10) + 1);
+            if ($('#submissionFileCount').val() == 5) {
+                $('#addMoreAttachmentControls').hide();
+                $('#addMoreAttachmentControlsInactive').show();
+            }
+        }
+        $('.cloned a').show();
+        ASN.resizeFrame('grow');
+    });
+    var notifyDeleteControl = function(){
+        $('#submissionFileCount').val(parseInt($('#submissionFileCount').val(), 10) - 1);
+        if ($('#submissionFileCount').val() < 5) {
+            $('#addMoreAttachmentControls').show();
+            $('#addMoreAttachmentControlsInactive').hide();
+        }
+    };
+};
+
+// SAK-30032
+ASN.submitPeerReviewAttachment = function(id, action)
+{
+    var theForm = document.getElementById(id);
+    if(action !== null) {
+        theForm.action = action;
+    }
+    if(theForm && theForm.onsubmit) {
+        theForm.onsubmit();
+    }
+    if(theForm && theForm.submit) {
+        theForm.submit();
+    }
+};
+
+
+ASN.handleReportsTriangleDisclosure = function (header, content)
+{
+    var headerSrc = header.src;
+    var expand = "/library/image/sakai/expand.gif";
+    var collapse = "/library/image/sakai/collapse.gif";
+    if (headerSrc.indexOf(expand) !== -1)
+    {
+        header.src = collapse;
+        content.removeAttribute("style");
+        ASN.resizeFrame();
+    }
+    else if (headerSrc.indexOf(collapse) !== -1)
+    {
+        header.src = expand;
+        content.style.display = "none";
+    }
+}

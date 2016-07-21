@@ -2514,9 +2514,9 @@ extends VelocityPortletStateAction
 			state.setImportWizardState(IMPORT_WIZARD_SELECT_TYPE_STATE);
 		}
 		
-		// (optional) ical.experimental import
+		// (optional) ical.public.userdefined.subscribe import (ical.experimental is deprecated)
 		context.put("icalEnable", 
-						ServerConfigurationService.getString("ical.experimental"));
+						ServerConfigurationService.getBoolean("ical.public.userdefined.subscribe",ServerConfigurationService.getBoolean("ical.experimental",true)));
 		
 		// Set whatever the current wizard state is.
 		context.put("importWizardState", state.getImportWizardState());
@@ -4039,8 +4039,8 @@ extends VelocityPortletStateAction
 
 		context.put("serverName", ServerConfigurationService.getServerName());
 
-		String icalInfoArr[] = {String.valueOf(ServerConfigurationService.getInt("calendar.export.previous.months",6)),
-			String.valueOf(ServerConfigurationService.getInt("calendar.export.next.months",6))};
+		String icalInfoArr[] = {String.valueOf(ServerConfigurationService.getInt("calendar.export.next.months",12)),
+			String.valueOf(ServerConfigurationService.getInt("calendar.export.previous.months",6))};
 		String icalInfoStr = rb.getFormattedMessage("ical.info",icalInfoArr);
 		context.put("icalInfoStr",icalInfoStr);
 			
@@ -4070,8 +4070,8 @@ extends VelocityPortletStateAction
 		context.put("isMyWorkspace", isOnWorkspaceTab());
 		context.put("form-generate", BUTTON + "doOpaqueUrlGenerate");
 		context.put("form-cancel", BUTTON + "doCancel");
-		String icalInfoArr[] = {String.valueOf(ServerConfigurationService.getInt("calendar.export.previous.months",6)),
-			String.valueOf(ServerConfigurationService.getInt("calendar.export.next.months",6))};
+		String icalInfoArr[] = {String.valueOf(ServerConfigurationService.getInt("calendar.export.next.months",12)),
+			String.valueOf(ServerConfigurationService.getInt("calendar.export.previous.months",6))};
 		String icalInfoStr = rb.getFormattedMessage("ical.info",icalInfoArr);
 		context.put("icalInfoStr",icalInfoStr);
 	}
@@ -4086,8 +4086,8 @@ extends VelocityPortletStateAction
 		String opaqueUrl = ServerConfigurationService.getAccessUrl()
 			+ CalendarService.calendarOpaqueUrlReference(calendarRef);
 
-		String icalInfoArr[] = {String.valueOf(ServerConfigurationService.getInt("calendar.export.previous.months",6)),
-			String.valueOf(ServerConfigurationService.getInt("calendar.export.next.months",6))};
+		String icalInfoArr[] = {String.valueOf(ServerConfigurationService.getInt("calendar.export.next.months",12)),
+			String.valueOf(ServerConfigurationService.getInt("calendar.export.previous.months",6))};
 		String icalInfoStr = rb.getFormattedMessage("ical.info",icalInfoArr);
 		context.put("icalInfoStr",icalInfoStr);
 
@@ -7653,7 +7653,7 @@ extends VelocityPortletStateAction
 		bar.add( new MenuEntry(mergedCalendarPage.getButtonText(), null, allow_merge_calendars, MenuItem.CHECKED_NA, mergedCalendarPage.getButtonHandlerID()) );
 		
 		// See if we are allowed to configure external calendar subscriptions
-		if ( allow_subscribe && ServerConfigurationService.getBoolean(ExternalCalendarSubscriptionService.SAK_PROP_EXTSUBSCRIPTIONS_ENABLED,false))
+		if ( allow_subscribe && ServerConfigurationService.getBoolean(ExternalCalendarSubscriptionService.SAK_PROP_EXTSUBSCRIPTIONS_ENABLED,true))
 			{
 				bar.add( new MenuEntry(rb.getString("java.subscriptions"), rb.getString("java.subscriptions.title"), null, allow_subscribe, MenuItem.CHECKED_NA, "doSubscriptions") );
 			}
@@ -7661,14 +7661,14 @@ extends VelocityPortletStateAction
 		// See if we are allowed to export items.
 		String calId = state.getPrimaryCalendarReference();
 		if ( (allow_import_export || CalendarService.getExportEnabled(calId)) && 
-			  ServerConfigurationService.getBoolean("ical.experimental",false))
+			  ServerConfigurationService.getBoolean("ical.public.userdefined.subscribe",ServerConfigurationService.getBoolean("ical.experimental",true)))
 		{
 			bar.add( new MenuEntry(rb.getString("java.export"), rb.getString("java.export.title"), null, allow_new, MenuItem.CHECKED_NA, "doIcalExportName") );
 		}
 		
 		
 		// A link for subscribing to the implicit calendar
-		if ( ServerConfigurationService.getBoolean("ical.opaqueurl.subscribe", true) )
+		if ( ServerConfigurationService.getBoolean("ical.public.secureurl.subscribe", ServerConfigurationService.getBoolean("ical.opaqueurl.subscribe", true)) )
 		{
 			bar.add( new MenuEntry(rb.getString("java.opaque_subscribe"), rb.getString("java.opaque_subscribe.title"), null, allow_subscribe_this, MenuItem.CHECKED_NA, "doOpaqueUrl") );
 		}

@@ -195,9 +195,11 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
     // SAK-22384
     private static final String MATHJAX_ENABLED = "mathJaxEnabled";
     private static final String MATHJAX_SRC_PATH_SAKAI_PROP = "portal.mathjax.src.path";
-    private static final String MATHJAX_SRC_PATH = ServerConfigurationService.getString(MATHJAX_SRC_PATH_SAKAI_PROP, "");
     private static final String MATHJAX_ENABLED_SAKAI_PROP = "portal.mathjax.enabled";
-    private static final boolean MATHJAX_ENABLED_AT_SYSTEM_LEVEL = ServerConfigurationService.getBoolean(MATHJAX_ENABLED_SAKAI_PROP, false) && !MATHJAX_SRC_PATH.trim().isEmpty();
+    private static final String SRC_PATH_SAKAI_PROP_DEFAULT = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default,Safe";
+    private static final boolean ENABLED_SAKAI_PROP_DEFAULT = true;
+    private static final String MATHJAX_SRC_PATH = ServerConfigurationService.getString(MATHJAX_SRC_PATH_SAKAI_PROP, SRC_PATH_SAKAI_PROP_DEFAULT);
+    private static final boolean MATHJAX_ENABLED_AT_SYSTEM_LEVEL = ServerConfigurationService.getBoolean(MATHJAX_ENABLED_SAKAI_PROP, ENABLED_SAKAI_PROP_DEFAULT) && !MATHJAX_SRC_PATH.trim().isEmpty();
     
 	private PortalSiteHelper siteHelper = null;
 
@@ -514,7 +516,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		if (site != null)
 		{
 			// SAK-29138
-			title = title + ":" + siteHelper.getUserSpecificSiteTitle( site );
+			title = title + ":" + siteHelper.getUserSpecificSiteTitle( site, false );
 			if (placement != null) title = title + " : " + placement.getTitle();
 		}
 
@@ -1181,7 +1183,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	 * processing and return null to the caller.
 	 *
 	 * If the reference is to the magical, indexical MyWorkspace site ('~')
-	 * then replace ~ by their My Workspace.  Give them a chance to login
+	 * then replace ~ by their Home.  Give them a chance to login
 	 * if necessary.
 	 */
 
@@ -1350,8 +1352,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		retval.setProperty("sakai.html.head", head);
 		retval.setProperty("sakai.html.head.css", headCss);
 		retval.setProperty("sakai.html.head.lang", rloader.getLocale().getLanguage());
-		req.setAttribute("sakai.html.head.css.base", CSSUtils.getCssToolBaseLink(skin,ToolUtils.isInlineRequest(req)));
-		req.setAttribute("sakai.html.head.css.skin", CSSUtils.getCssToolSkinLink(skin));
+		retval.setProperty("sakai.html.head.css.base", CSSUtils.getCssToolBaseLink(skin,ToolUtils.isInlineRequest(req)));
+		retval.setProperty("sakai.html.head.css.skin", CSSUtils.getCssToolSkinLink(skin));
 		retval.setProperty("sakai.html.head.js", headJs.toString());
 
 		return retval;
@@ -1509,7 +1511,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		// session and reinstance it
 
 		// generate the forward to the tool page placement
-		String portalPlacementUrl = portalPath + getPortalPageUrl(p);
+		String portalPlacementUrl = portalPath + getPortalPageUrl(p) + "?" + req.getQueryString();
 		res.sendRedirect(portalPlacementUrl);
 		return;
 	}
@@ -1752,7 +1754,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			String userWarning = (String) s.getAttribute("userWarning");
 			rcontext.put("userWarning", new Boolean(StringUtils.isNotEmpty(userWarning)));
 
-			if (ServerConfigurationService.getBoolean("pasystem.enabled", false)) {
+			if (ServerConfigurationService.getBoolean("pasystem.enabled", true)) {
 			    PASystem paSystem = (PASystem) ComponentManager.get(PASystem.class);
 			    rcontext.put("paSystemEnabled", true);
 			    rcontext.put("paSystem", paSystem);

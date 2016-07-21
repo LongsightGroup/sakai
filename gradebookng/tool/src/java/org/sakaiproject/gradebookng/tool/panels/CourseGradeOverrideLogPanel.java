@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -19,6 +18,7 @@ import org.sakaiproject.gradebookng.business.GradebookNgBusinessService;
 import org.sakaiproject.gradebookng.business.model.GbGradeLog;
 import org.sakaiproject.gradebookng.business.model.GbUser;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
+import org.sakaiproject.gradebookng.tool.component.GbAjaxLink;
 import org.sakaiproject.service.gradebook.shared.CourseGrade;
 
 /**
@@ -46,6 +46,13 @@ public class CourseGradeOverrideLogPanel extends Panel {
 
 		// unpack model
 		final String studentUuid = (String) getDefaultModelObject();
+
+		// heading
+		// TODO if user has been deleted since rendering the GradebookPage, handle a null here gracefully
+		final GbUser user = this.businessService.getUser(studentUuid);
+		CourseGradeOverrideLogPanel.this.window.setTitle(
+				(new StringResourceModel("heading.coursegradelog", null,
+						new Object[] { user.getDisplayName(), user.getDisplayId() })).getString());
 
 		// get the course grade
 		final CourseGrade courseGrade = this.businessService.getCourseGrade(studentUuid);
@@ -82,7 +89,7 @@ public class CourseGradeOverrideLogPanel extends Panel {
 		add(emptyLabel);
 
 		// done button
-		add(new AjaxLink<Void>("done") {
+		add(new GbAjaxLink("done") {
 
 			private static final long serialVersionUID = 1L;
 
@@ -91,13 +98,6 @@ public class CourseGradeOverrideLogPanel extends Panel {
 				CourseGradeOverrideLogPanel.this.window.close(target);
 			}
 		});
-
-		// heading
-		// TODO if user has been deleted since rendering the GradebookPage, handle a null here gracefully
-		final GbUser user = this.businessService.getUser(studentUuid);
-		add(new Label("heading",
-				new StringResourceModel("heading.coursegradelog", null, new Object[] { user.getDisplayName(), user.getDisplayId() })));
-
 	}
 
 	/**

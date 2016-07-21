@@ -312,7 +312,7 @@ public class DeliveryActionListener
 
               if (ae != null && ae.getComponent().getId().startsWith("beginAssessment")) {
             	  // #1. check password
-            	  if (!delivery.getSettings().getUsername().equals(""))
+            	  if (!delivery.getSettings().getPassword().equals(""))
             	  {
             		  if ("passwordAccessError".equals(delivery.validatePassword())) {
             			  return;
@@ -1241,7 +1241,7 @@ public class DeliveryActionListener
     }
     
     //If the value close enough to the maximum value just set it to the maximum value (precision issue)
-    if (MathUtils.equalsIncludingNaN(itemBean.getExactPoints(),itemBean.getMaxPoints(),0.001d)) {
+    if (MathUtils.equals(itemBean.getExactPoints(),itemBean.getMaxPoints(),0.001d)) {
       itemBean.setPoints(itemBean.getMaxPoints());
     }
     

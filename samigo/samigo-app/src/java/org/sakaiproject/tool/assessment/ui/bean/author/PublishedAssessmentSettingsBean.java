@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TimeZone;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -57,6 +58,7 @@ import org.sakaiproject.section.api.facade.Role;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.cover.EntityManager;
+import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
@@ -82,10 +84,12 @@ import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.time.cover.TimeService;
+import org.sakaiproject.tool.assessment.util.ExtendedTimeService;
 
 public class PublishedAssessmentSettingsBean
   implements Serializable {
-  private static Log log = LogFactory.getLog(PublishedAssessmentSettingsBean.class);
+  private static final Log log = LogFactory.getLog(PublishedAssessmentSettingsBean.class);
   
   private static final IntegrationContextFactory integrationContextFactory =
     IntegrationContextFactory.getInstance();
@@ -134,12 +138,12 @@ public class PublishedAssessmentSettingsBean
   private String submissionsAllowed;
   private String submissionsSaved; // bad name, this is autoSaved
   private String lateHandling;
+  private String instructorNotification = Integer.toString( SamigoConstants.NOTI_PREF_INSTRUCTOR_EMAIL_DEFAULT ); // Default is 'No - I do not want to receive any emails';
   private String submissionMessage;
   private SelectItem[] publishingTargets;
   private String[] targetSelected;
   private String firstTargetSelected;
   private String releaseTo;
-  private String username;
   private String password;
   private String finalPageUrl;
   private String ipAddresses;
@@ -189,6 +193,7 @@ public class PublishedAssessmentSettingsBean
   private boolean updateMostCurrentSubmission = false;
   
   private boolean isMarkForReview;
+  private boolean honorPledge;
   private List attachmentList;
   private boolean editPubAnonyGradingRestricted = false;
   private String releaseToGroupsAsString;
@@ -201,7 +206,7 @@ public class PublishedAssessmentSettingsBean
   private SelectItem[] extendedTimeTargets;
   
   // SAM-2323 jQuery-UI datepicker
-  private TimeUtil tu = new TimeUtil();
+  private final TimeUtil tu = new TimeUtil();
   private final String HIDDEN_START_DATE_FIELD = "startDateISO8601";
   private final String HIDDEN_END_DATE_FIELD = "endDateISO8601";
   private final String HIDDEN_RETRACT_DATE_FIELD = "retractDateISO8601";
@@ -255,7 +260,8 @@ public class PublishedAssessmentSettingsBean
 			this.extendedTimes = "";
 			while ((assessment.getAssessmentMetaDataByLabel(extendedTimeLabel) != null)
 					&& (!assessment.getAssessmentMetaDataByLabel(extendedTimeLabel).equals(""))) {
-				String extendedTimeValue = assessment.getAssessmentMetaDataByLabel(extendedTimeLabel);
+				// server stores in JVM's time zone, convert to user's time zone
+				String extendedTimeValue = ExtendedTimeService.convertZones(assessment.getAssessmentMetaDataByLabel(extendedTimeLabel), TimeZone.getDefault(), TimeService.getLocalTimeZone());
 				// this.extendedTimes.add(extendedTimeValue);
 				// TODO: switch this back to being a list or hashmap
 				this.extendedTimes = this.extendedTimes.concat(extendedTimeValue + "^");
@@ -268,7 +274,7 @@ public class PublishedAssessmentSettingsBean
       resetOriginalDateString();
       
       // these are properties in AssessmentAccessControl
-      AssessmentAccessControlIfc accessControl = null;
+      AssessmentAccessControlIfc accessControl;
       accessControl = assessment.getAssessmentAccessControl();
       if (accessControl != null) {
         this.startDate = accessControl.getStartDate();
@@ -283,18 +289,13 @@ public class PublishedAssessmentSettingsBean
         this.firstTargetSelected = getFirstTargetSelected(releaseTo);
 
         this.timeLimit = accessControl.getTimeLimit(); // in seconds
-        if (timeLimit !=null && timeLimit.intValue()>0)
-          setTimeLimitDisplay(timeLimit.intValue());
+        if (timeLimit !=null && timeLimit>0)
+          setTimeLimitDisplay(timeLimit);
         else 
             resetTimeLimitDisplay();
         if (( Integer.valueOf(1)).equals(accessControl.getTimedAssessment()))
           this.timedAssessment = true;
-        if ((Integer.valueOf(1)).equals(accessControl.getAutoSubmit())) {
-          this.autoSubmit = true;
-        }
-        else {
-          this.autoSubmit = false;        	
-        }
+        this.autoSubmit = (Integer.valueOf(1)).equals(accessControl.getAutoSubmit());
         if (accessControl.getAssessmentFormat()!=null)
           this.assessmentFormat = accessControl.getAssessmentFormat().toString(); // question/part/assessment on separate page
         if (accessControl.getItemNavigation()!=null)
@@ -306,15 +307,11 @@ public class PublishedAssessmentSettingsBean
         if (accessControl.getSubmissionsSaved()!=null)
           this.submissionsSaved = accessControl.getSubmissionsSaved().toString();
 
-        if (accessControl.getMarkForReview() != null && (Integer.valueOf(1)).equals(accessControl.getMarkForReview())) {
-            this.isMarkForReview = true;
-        }
-        else {
-        	this.isMarkForReview = false;
-        }
-        
+        this.isMarkForReview = accessControl.getMarkForReview() != null && (Integer.valueOf(1)).equals(accessControl.getMarkForReview());
+        if (accessControl.getHonorPledge() != null)
+          this.honorPledge = accessControl.getHonorPledge();
         // default to unlimited if control value is null
-        if (accessControl.getUnlimitedSubmissions()!=null && !accessControl.getUnlimitedSubmissions().booleanValue()){
+        if (accessControl.getUnlimitedSubmissions()!=null && !accessControl.getUnlimitedSubmissions()){
           this.unlimitedSubmissions=AssessmentAccessControlIfc.LIMITED_SUBMISSIONS.toString();
           this.submissionsAllowed = accessControl.getSubmissionsAllowed().toString();
         }
@@ -325,10 +322,13 @@ public class PublishedAssessmentSettingsBean
 
         if (accessControl.getLateHandling() !=null)
           this.lateHandling = accessControl.getLateHandling().toString();
+        if (accessControl.getInstructorNotification() != null) {
+          this.instructorNotification = accessControl.getInstructorNotification().toString();
+          this.assessment.setInstructorNotification(Integer.valueOf(this.instructorNotification));
+        }
         if (accessControl.getSubmissionsSaved()!=null)
           this.submissionsSaved = accessControl.getSubmissionsSaved().toString();
         this.submissionMessage = accessControl.getSubmissionMessage();
-        this.username = accessControl.getUsername();
         this.password = accessControl.getPassword();
         this.finalPageUrl = accessControl.getFinalPageUrl();
       }
@@ -343,60 +343,25 @@ public class PublishedAssessmentSettingsBean
 
       if (feedback.getFeedbackAuthoring()!=null)
           this.feedbackAuthoring = feedback.getFeedbackAuthoring().toString();
-      
-      if ((Boolean.TRUE).equals(feedback.getShowQuestionText()))
-          this.showQuestionText = true;
-        else
-            this.showQuestionText = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowStudentResponse()))
-          this.showStudentResponse = true;
-        else
-            this.showStudentResponse = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowCorrectResponse()))
-          this.showCorrectResponse = true;
-        else
-            this.showCorrectResponse = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowStudentScore()))
-          this.showStudentScore = true;
-        else
-            this.showStudentScore = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowStudentQuestionScore()))
-          this.showStudentQuestionScore = true;
-        else
-            this.showStudentQuestionScore = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowQuestionLevelFeedback()))
-          this.showQuestionLevelFeedback = true;
-        else
-            this.showQuestionLevelFeedback = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowSelectionLevelFeedback()))
-          this.showSelectionLevelFeedback = true;// must be MC
-        else
-            this.showSelectionLevelFeedback = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowGraderComments()))
-          this.showGraderComments = true;
-        else
-            this.showGraderComments = false;
-        
-        if ((Boolean.TRUE).equals(feedback.getShowStatistics()))
-          this.showStatistics = true;
-        else
-            this.showStatistics = false;
+
+      this.showQuestionText = (Boolean.TRUE).equals(feedback.getShowQuestionText());
+      this.showStudentResponse = (Boolean.TRUE).equals(feedback.getShowStudentResponse());
+      this.showCorrectResponse = (Boolean.TRUE).equals(feedback.getShowCorrectResponse());
+      this.showStudentScore = (Boolean.TRUE).equals(feedback.getShowStudentScore());
+      this.showStudentQuestionScore = (Boolean.TRUE).equals(feedback.getShowStudentQuestionScore());
+      this.showQuestionLevelFeedback = (Boolean.TRUE).equals(feedback.getShowQuestionLevelFeedback());
+      this.showSelectionLevelFeedback = (Boolean.TRUE).equals(feedback.getShowSelectionLevelFeedback()); // must be MC
+      this.showGraderComments = (Boolean.TRUE).equals(feedback.getShowGraderComments());
+      this.showStatistics = (Boolean.TRUE).equals(feedback.getShowStatistics());
       }
 
       // properties of EvaluationModel
       EvaluationModelIfc evaluation = assessment.getEvaluationModel();
       if (evaluation != null) {
         if (evaluation.getAnonymousGrading()!=null)
-          this.anonymousGrading = evaluation.getAnonymousGrading().toString().equals("1") ? true : false;
+          this.anonymousGrading = evaluation.getAnonymousGrading().toString().equals("1");
         if (evaluation.getToGradeBook()!=null )
-          this.toDefaultGradebook = evaluation.getToGradeBook().toString().equals("1") ? true : false;
+          this.toDefaultGradebook = evaluation.getToGradeBook().equals("1");
         if (evaluation.getScoringType()!=null)
           this.scoringType = evaluation.getScoringType().toString();
         
@@ -603,9 +568,9 @@ public class PublishedAssessmentSettingsBean
   }
 
   public Integer getTimeLimit() {
-    return Integer.valueOf(timedHours.intValue()*3600
-        + timedMinutes.intValue()*60
-        + timedSeconds.intValue());
+    return timedHours*3600
+           + timedMinutes*60
+           + timedSeconds;
   }
 
   public void setTimeLimit(Integer timeLimit) {
@@ -695,14 +660,6 @@ public class PublishedAssessmentSettingsBean
 	  }
   }
 
-  public String getInstructorNotification(){
-    return this.assessment.getInstructorNotification().toString();
-  }
-
-  public void setInstructorNotification(String notiEmail){
-    this.assessment.setInstructorNotification(Integer.valueOf(notiEmail));
-  }
-
 
   public String getSubmissionsAllowed() {
     return submissionsAllowed;
@@ -731,6 +688,15 @@ public class PublishedAssessmentSettingsBean
     return lateHandling;
   }
 
+  public void setInstructorNotification(String instructorNotification) {
+    this.instructorNotification = instructorNotification;
+    this.assessment.setInstructorNotification(Integer.valueOf(this.instructorNotification));
+  }
+
+  public String getInstructorNotification() {
+    return instructorNotification;
+  }
+
   // bad name - this is autoSaved
   public void setSubmissionsSaved(String submissionSaved) {
     this.submissionsSaved = submissionSaved;
@@ -748,13 +714,6 @@ public class PublishedAssessmentSettingsBean
     return submissionMessage;
   }
 
-  public String getUsername() {
-    return this.username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
   public String getPassword() {
     return this.password;
   }
@@ -931,6 +890,10 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 	  this.secureDeliveryAvailable = secureDeliveryAvailable;
   }
 
+  public boolean isHonorPledge() { return honorPledge; }
+
+  public void setHonorPledge(boolean honorPledge) { this.honorPledge = honorPledge; }
+
   public void setValue(String key, Object value){
     this.values.put(key, value);
   }
@@ -980,15 +943,15 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
   }
 
   public void setTimeLimitDisplay(int time){
-    this.timedHours=Integer.valueOf(time/60/60);
-    this.timedMinutes = Integer.valueOf((time/60)%60);
-    this.timedSeconds = Integer.valueOf(time % 60);
+    this.timedHours=time/60/60;
+    this.timedMinutes = (time/60)%60;
+    this.timedSeconds = time % 60;
   }
 
   public void resetTimeLimitDisplay(){
-	    this.timedHours=Integer.valueOf(0);
-	    this.timedMinutes = Integer.valueOf(0);
-	    this.timedSeconds = Integer.valueOf(0);
+	    this.timedHours = 0;
+	    this.timedMinutes = 0;
+	    this.timedSeconds = 0;
   }
   
   // followings are set of SelectItem[] used in authorSettings.jsp
@@ -1303,12 +1266,9 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 
 	public boolean getActive() {
 		Date currentDate = new Date();
-		if ((this.dueDate != null && currentDate.after(this.dueDate))
+		return !((this.dueDate != null && currentDate.after(this.dueDate))
 				|| (this.retractDate != null && currentDate
-						.after(this.retractDate))) {
-			return false;
-		}
-		return true;
+						.after(this.retractDate)));
 	}
 
 	public void setDisplayFormat(String displayDateFormat) {
@@ -1367,7 +1327,7 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 	public SelectItem[] getGroupsForSite() {
 		SelectItem[] groupSelectItems = new SelectItem[0];
 		TreeMap sortedSelectItems = new TreeMap();
-		Site site = null;
+		Site site;
 		try {
 			site = SiteService.getSite(ToolManager.getCurrentPlacement()
 					.getContext());
@@ -1421,13 +1381,14 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 
 	/**
 	 * Returns the groups to which this assessment is released
+     * @param publishedAssessmentId
 	 * @return
 	 */
 	public String[] getGroupsAuthorized(String publishedAssessmentId) {
 		groupsAuthorized = null;
 		AuthzQueriesFacadeAPI authz = PersistenceService.getInstance()
 				.getAuthzQueriesFacade();
-		String id = "";
+		String id;
 		if (publishedAssessmentId != null) {
 			id = publishedAssessmentId;
 		}
@@ -1609,7 +1570,7 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 	 */
 	public SelectItem[] initExtendedTimeTargets() {
 		SelectItem[] extTimeSelectItems = null;
-		Site site = null;
+		Site site;
 
 		try {
 			site = SiteService.getSite(ToolManager.getCurrentPlacement().getContext());
@@ -1619,9 +1580,8 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
 			List enrollments = sectionAwareness.getSiteMembersInRole(site.getId(), Role.STUDENT);
 
 			// Treemaps are used here because they auto-sort
-			TreeMap SectionTargets = new TreeMap<String, String>();
-			TreeMap groupTargets = new TreeMap<String, String>();
-			TreeMap studentTargets = new TreeMap<String, String>();
+			TreeMap groupTargets = new TreeMap<>();
+			TreeMap studentTargets = new TreeMap<>();
 
 			// Add groups to target set
 			if (groups != null && groups.size() > 0) {

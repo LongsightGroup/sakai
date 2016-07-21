@@ -15,6 +15,7 @@ var delete_orphan_enabled = true;
 
 $(window).load(function () {
 	window.onbeforeunload = null;
+	fixupHeights();
 });
 
 function msg(s) {
@@ -69,6 +70,16 @@ var blankRubricTemplate, blankRubricRow;
 // $(function() {
 $(document).ready(function() {
 	// if we're in morpheus, move breadcrums into top bar, and generate an H2 with the title
+
+
+        $("li.multimediaType iframe, li.multimediaType object, li.multimediaType embed, li.multimediaType video").each(function() {
+		var width = $(this).attr("width");
+		var height = $(this).attr("height");
+                if ($(this).attr('defaultsize') === 'true' ||
+		    (typeof width !== 'undefined' && width !== '' &&
+		     (typeof height === 'undefined' || height =='')))
+                    $(this).height($(this).width() * 0.75);
+            });
 
 	// This is called in comments.js as well, however this may be faster.
 	//if(sakai.editor.editors.ckeditor==undefined) {
@@ -429,6 +440,7 @@ $(document).ready(function() {
 				
 				// create the test link from prototype, because oembed will remove it
 				var testlink = $('#mm-test-prototype').clone();
+				testlink.attr('id', 'mm-test-link');
 				$('#mm-test-prototype').after(testlink);
 				testlink.attr('href', url);
 				$('#mm-test-oembed-results').show();
@@ -1230,6 +1242,8 @@ $(document).ready(function() {
 		$('.change-resource-movie').click(function(){
 			closeMovieDialog();
 			mm_test_reset();
+			$("#mm-name-section").hide();
+			$("#mm-prerequisite").prop('checked',$("#movie-prerequisites").prop('checked'));
 			$("#addLink_label").text(msg("simplepage.addLink_label_add_or"));
 			$("#mm-file-replace-group").show();
 			$("#mm-item-id").val($("#movieEditId").val());
@@ -1387,11 +1401,11 @@ $(document).ready(function() {
 					$("#require-label").text(msg("simplepage.require_submit_assessment"));
 					$("#edit-item-object-p").show();
 					$("#edit-item-object").attr("href", 
-						$("#edit-item-object").attr("href").replace(/(source=).*?(&)/, '$1' + escape(editurl) + '$2'));
+						$("#edit-item-object").attr("href").replace(/(source=).*?(&)/, '$1' + encodeURIComponent(editurl) + '$2'));
 					$("#edit-item-text").text(msg("simplepage.edit_quiz"));
 					$("#edit-item-settings-p").show();
 					$("#edit-item-settings").attr("href", 
-						$("#edit-item-settings").attr("href").replace(/(source=).*?(&)/, '$1' + escape(editsettingsurl) + '$2'));
+						$("#edit-item-settings").attr("href").replace(/(source=).*?(&)/, '$1' + encodeURIComponent(editsettingsurl) + '$2'));
 					$("#edit-item-settings-text").text(msg("simplepage.edit_quiz_settings"));
 
 				}else if (type === '8'){
@@ -1401,7 +1415,7 @@ $(document).ready(function() {
 					$("#require-label").text(msg("simplepage.require_submit_forum"));
 					$("#edit-item-object-p").show();
 					$("#edit-item-object").attr("href", 
-						$("#edit-item-object").attr("href").replace(/(source=).*?(&)/, '$1' + escape(editurl) + '$2'));
+						$("#edit-item-object").attr("href").replace(/(source=).*?(&)/, '$1' + encodeURIComponent(editurl) + '$2'));
 					$("#edit-item-text").text(msg("simplepage.edit_topic"));
 
 				}else if (type === 'b'){
@@ -1427,7 +1441,7 @@ $(document).ready(function() {
 					$("#require-label").text(msg("simplepage.require_submit_assignment"));
 					$("#edit-item-object-p").show();
 					$("#edit-item-object").attr("href", 
-						$("#edit-item-object").attr("href").replace(/(source=).*?(&)/, '$1' + escape(editurl) + '$2'));
+						$("#edit-item-object").attr("href").replace(/(source=).*?(&)/, '$1' + encodeURIComponent(editurl) + '$2'));
 					$("#edit-item-text").text(msg("simplepage.edit_assignment"));
 
 				}
@@ -1565,6 +1579,9 @@ $(document).ready(function() {
 		$('#change-resource').click(function(){
 			closeEditItemDialog();
 			mm_test_reset();
+			$("#mm-name-section").show();
+			$("#mm-name").val($("#name").val());
+			$("#mm-prerequisite").prop('checked',$("#item-prerequisites").prop('checked'));
 			$("#addLink_label").text(msg("simplepage.addLink_label_add"));
 			$("#mm-file-replace-group").show();
 			$("#mm-item-id").val($("#item-id").val());
@@ -1595,6 +1612,9 @@ $(document).ready(function() {
 			closeDropdowns();
 
 			mm_test_reset();
+			$("#mm-name-section").hide();
+			$("#mm-name").val('');
+			$("#mm-prerequisite").prop('checked',false);
 			$("#addLink_label").text(msg("simplepage.addLink_label_add_or"));
 
 			$("#mm-item-id").val(-1);
@@ -1625,6 +1645,9 @@ $(document).ready(function() {
 		$(".add-resource").click(function(){
 			oldloc = $(this);
 			closeDropdowns();
+			$("#mm-name-section").show();
+			$("#mm-name").val('');
+			$("#mm-prerequisite").prop('checked',false);
 			if ($(this).hasClass("add-at-end"))
 			    addAboveItem = '';
 			mm_test_reset();
@@ -1658,6 +1681,9 @@ $(document).ready(function() {
 			oldloc = $(".dropdown a");
 			closeDropdowns();
 			mm_test_reset();
+			$("#mm-name-section").show();
+			$("#mm-name").val('');
+			$("#mm-prerequisite").prop('checked',false);
 			$("#addLink_label").text(msg("simplepage.addLink_label_add"));
 
 			$("#mm-item-id").val(-1);
@@ -1783,6 +1809,8 @@ $(document).ready(function() {
 		$('#change-resource-mm').click(function(){
 			closeMultimediaEditDialog();
 			mm_test_reset();
+			$("#mm-name-section").hide();
+			$("#mm-prerequisite").prop('checked',$("#multi-prerequisite").prop('checked'));
 			$("#addLink_label").text(msg("simplepage.addLink_label_add_or"));
 			$("#mm-file-replace-group").show();
 			$("#mm-item-id").val($("#multimedia-item-id").val());
@@ -1963,11 +1991,12 @@ $(document).ready(function() {
 		var tail_uls = addAboveLI.parent().nextAll();
 		var tail_cols = addAboveLI.parent().parent().nextAll();
 		var section = addAboveLI.parent().parent().parent();
-		section.after('<div class="section"><div class="column"><div class="editsection"><span class="sectionedit"><h3 class="offscreen">' + msg('simplepage.break-here') + '</h3><a href="/' + newitem + '" title="' + msg('simplepage.join-items') + '" class="section-merge-link" onclick="return false"><span aria-hidden="true" class="fa-compress fa-edit-icon sectioneditfont"></span></a></span><span class="sectionedit sectionedit2"><a href="/lessonbuilder-tool/templates/#" title="' + msg('simplepage.columnopen') + '" class="columnopen"><span aria-hidden="true" class="fa-cog fa-edit-icon sectioneditfont"></span></a></span></div><span class="sectionedit addbottom"><a href="#" title="Add new item at bottom of this column" class="add-bottom"><span aria-hidden="true" class="fa-edit-icon plus-edit-icon">+</span></a></span><ul border="0" role="list" style="z-index: 1;" class="indent mainList"><li class="breaksection" role="listitem"></li></ul></div></div>');
+		section.after('<div class="section"><div class="column"><div class="editsection"><span class="sectionedit"><h3 class="offscreen">' + msg('simplepage.break-here') + '</h3><a href="/' + newitem + '" title="' + msg('simplepage.join-items') + '" class="section-merge-link" onclick="return false"><span aria-hidden="true" class="fa-compress fa-edit-icon sectioneditfont"></span></a></span><span class="sectionedit sectionedit2"><a href="/lessonbuilder-tool/templates/#" title="' + msg('simplepage.columnopen') + '" class="columnopen"><span aria-hidden="true" class="fa-cog fa-edit-icon sectioneditfont"></span></a></span></div><span class="sectionedit addbottom"><a href="#" title="Add new item at bottom of this column" class="add-bottom"><span aria-hidden="true" class="fa-plus fa-edit-icon plus-edit-icon"></span></a></span><ul border="0" role="list" style="z-index: 1;" class="indent mainList"><li class="breaksection" role="listitem"><span style="display:none" class="itemid">' + newitem + '</span></li></ul></div></div>');
 		// now go to new section
 		section = section.next();
 		// and move current item and following into the first col of the new section
-		section.find("ul").append(addAboveLI, tail_lis);
+		if (addAboveItem > 0)
+		    section.find("ul.mainList").append(addAboveLI, tail_lis);
 		section.find(".column").append(tail_uls);
 		section.append(tail_cols);
 
@@ -1987,14 +2016,16 @@ $(document).ready(function() {
 		// addAboveLI is LI from which add was triggered
 		// following LI's if any
 		var tail_lis = addAboveLI.nextAll();
+
 		// current section DIV
 		var tail_uls = addAboveLI.parent().nextAll();
 		var column = addAboveLI.parent().parent();
-		column.after('<div class="column"><div class="editsection"><span class="sectionedit"><h3 class="offscreen">' + msg('simplepage.break-column-here') + '</h3><a href="/' + newitem + '" title="' + msg('simplepage.join-items') + '" class="column-merge-link" onclick="return false"><span aria-hidden="true" class="fa-compress fa-edit-icon sectioneditfont"></span></a></span><span class="sectionedit sectionedit2"><a href="/lessonbuilder-tool/templates/#" title="' + msg('simplepage.columnopen') + '" class="columnopen"><span aria-hidden="true" class="fa-cog fa-edit-icon sectioneditfont"></span></a></span></div><span class="sectionedit addbottom"><a href="#" title="Add new item at bottom of this column" class="add-bottom"><span aria-hidden="true" class="fa-edit-icon plus-edit-icon">+</span></a></span><ul border="0" role="list" style="z-index: 1;" class="indent mainList"><li class="breaksection" role="listcolumn"></li></ul></div>');
+		column.after('<div class="column"><div class="editsection"><span class="sectionedit"><h3 class="offscreen">' + msg('simplepage.break-column-here') + '</h3><a href="/' + newitem + '" title="' + msg('simplepage.join-items') + '" class="column-merge-link" onclick="return false"><span aria-hidden="true" class="fa-compress fa-edit-icon sectioneditfont"></span></a></span><span class="sectionedit sectionedit2"><a href="/lessonbuilder-tool/templates/#" title="' + msg('simplepage.columnopen') + '" class="columnopen"><span aria-hidden="true" class="fa-cog fa-edit-icon sectioneditfont"></span></a></span></div><span class="sectionedit addbottom"><a href="#" title="Add new item at bottom of this column" class="add-bottom"><span aria-hidden="true" class="fa-plus fa-edit-icon plus-edit-icon"></span></a></span><ul border="0" role="list" style="z-index: 1;" class="indent mainList"><li class="breaksection" role="listcolumn"><span style="display:none" class="itemid">' + newitem + '</span></li></ul></div>');
 		// now go to new section
 		column = column.next();
 		// and move current item and following into the first col of the new section
-		column.find("ul").append(addAboveLI, tail_lis);
+		if (addAboveItem > 0)
+		    column.find("ul.mainList").append(addAboveLI, tail_lis);
 		column.find(".column").append(tail_uls);
 		// need trigger on the A we just added
 		column.find('.column-merge-link').click(columnMergeLink);
@@ -2020,7 +2051,7 @@ $(document).ready(function() {
 		// current section DIV
 		var section = thisCol.parent();
 		// append rest of ul last one in prevous section
-		section.prev().find('ul').last().append(tail_lis);
+		section.prev().find('ul.mainList').last().append(tail_lis);
 		section.prev().find('.column').last().append(tail_uls);
 		section.prev().append(tail_cols);
 		// nothing should be left in current section. kill it
@@ -2038,7 +2069,7 @@ $(document).ready(function() {
 		var tail_uls = thisCol.find('.mainList').nextAll();
 
 		// append rest of ul last one in prevous column;
-		thisCol.prev().find('ul').last().append(tail_lis);
+		thisCol.prev().find('ul.mainList').last().append(tail_lis);
 		thisCol.prev().append(tail_uls);
 		// nothing should be left in current section. kill it
 		thisCol.remove();
@@ -2588,7 +2619,8 @@ function buttonOpenDropdowna() {
 
 function buttonOpenDropdownb() {
     oldloc = $(this);
-    addAboveItem = '-' + $(this).closest('.column').find('ul').children().last().find("span.itemid").text();
+    addAboveItem = '-' + $(this).closest('.column').find('ul.mainList').children().last().find("span.itemid").text();
+    addAboveLI = $(this).closest('.column').find('ul.mainList').children().last().closest("li");
     $(".addbreak").show();
     openDropdown($("#addContentDiv"), $("#dropdownc"));
     return false;
@@ -2599,6 +2631,10 @@ function openDropdown(dropDiv, button) {
     hideMultimedia();
     dropDiv.dialog('open');
     dropDiv.find("a").first().focus();
+    if (addAboveItem === '')
+	dropDiv.find(".addContentMessage").show();
+    else
+	dropDiv.find(".addContentMessage").hide();
     return false;
 }
 
@@ -2943,9 +2979,15 @@ function fixupColAttrs() {
 	});
 };
 
-$(window).load(fixupHeights);
-
+// called twice, once at page load, once after all comments are loaded.
+// depending upon content one or the other may be first, so there's no way to
+// be sure without doing it both times
 function fixupHeights() {
+    // if CSS is going to treat this as narrow device, don't need to match columns,
+    // because they are stacked vertically
+    if (window.matchMedia("only screen and (max-width: 800px)").matches) {
+	return;
+    }
     $(".section").each(function(index) {
 	    var max = 0;
 	    // reset to auto to cause recomputation. This is needed because

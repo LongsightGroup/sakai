@@ -21,6 +21,11 @@ a.toggleAnchor {
 a.toggleAnchor > h3 {
     display: inline;
 }
+
+a.toggleAnchor > h4 {
+    display: inline;
+}
+
 .discTria > a {
     text-decoration: none !important;
 }
@@ -124,7 +129,7 @@ a.toggleAnchor > h3 {
 .assignmentAttachRadio
 {
     margin: 2px;
-    height: 2.5em;
+    padding: 0 1em;
 }
 
 .assignmentAttachRadio input, .assignmentAttachRadio img, .assignmentAttachRadio span
@@ -175,6 +180,10 @@ a.toggleAnchor > h3 {
     background: url('/library/image/sakai/expand.gif') no-repeat left !important;
 }
 
+.groupsContainer .collapse{
+    display: block !important;
+}
+
 label.disabled {
     color: #aaa;
 }
@@ -200,34 +209,6 @@ label.disabled {
     color: #444444;
 }
 
-.leftColumn {
-    float: left;
-    display: table-cell;
-    width: 40%;
-}
-
-.centreColumn {
-    display: table-cell;
-    width: 20%;
-    text-align: center;
-}
-
-.rightColumn {
-    display: table-cell;
-    width: 40%;
-    text-align: right;
-}
-
-.centreColumn #subsOnlyContainer {
-    display: block;
-    text-align: center;
-    margin-top: 0.5em;
-}
-
-.leftColumn .instruction.textPanelFooter, .rightColumn .instruction.textPanelFooter {
-    margin-top: 0.5em;
-}
-
 td.specialLink a:link, td.specialLink a:visited {
     color: #197FA8;
 }
@@ -243,11 +224,19 @@ select.selectSet {
     display: none;
 }
 
+#extraNodeLinkList{
+    max-width:1200px;
+}
+
 .extraNode {
     border:1px solid #69d;
     padding: 0  1.5em 1em 1.5em;
-    width:50%;
-    min-width:500px;
+    width:100%;
+    max-width:1200px;
+}
+
+.extraNode legend{
+    margin-bottom: 1em;
 }
 
 .extraNodeLink {
@@ -257,6 +246,10 @@ select.selectSet {
 .extraNode legend {
     padding:0 .5em;
     color:#555
+}
+
+.members{
+    font-size: 0.9em;
 }
 
 .userList {
@@ -288,19 +281,6 @@ fieldset .alertMessageInline,fieldset .alertMessage {
 
 .itemAction.spinnerBesideContainer a {
     margin: 0 4px;
-}
-
-div#pagingHeader {
-    height: 20px;
-    display: flex;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    justify-content: center;
 }
 
 .itemAction a:link {

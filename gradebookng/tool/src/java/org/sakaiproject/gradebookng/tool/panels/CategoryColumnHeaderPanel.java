@@ -61,9 +61,6 @@ public class CategoryColumnHeaderPanel extends Panel {
 					settings.setCategorySortOrder(sortOrder);
 				}
 
-				// clear any assignment sort order to prevent conflicts
-				settings.setAssignmentSortOrder(null);
-
 				// save settings
 				gradebookPage.setUiSettings(settings);
 
@@ -87,11 +84,6 @@ public class CategoryColumnHeaderPanel extends Panel {
 		add(title);
 
 		String categoryColor = settings.getCategoryColor(category.getName());
-		if (categoryColor == null) {
-			categoryColor = gradebookPage.generateRandomRGBColorString();
-			settings.setCategoryColor(category.getName(), categoryColor);
-			gradebookPage.setUiSettings(settings);
-		}
 
 		final Component colorSwatch = gradebookPage.buildFlagWithPopover("categorySwatch",
 				(new StringResourceModel("label.gradeitem.categoryaverage", this, null,

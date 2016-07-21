@@ -35,7 +35,7 @@ public class GbStudentGradeInfo implements Serializable {
 
 	@Getter
 	@Setter
-	private String courseGrade;
+	private GbCourseGrade courseGrade;
 
 	@Getter
 	private Map<Long, GbGradeInfo> grades;

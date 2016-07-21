@@ -48,7 +48,16 @@
 				position: relative;
 				text-transform: uppercase;
 				top: 1px;
+				@media #{$phone}{
+					@include sakai_button_color( $button-color-background-color, $button-color-border-color, $button-color-text-color, $button-color-background-secondary-color );
+				}
 				a{
+					background: #FFF;
+				    border: 0px none;
+				    font-size: 1em;
+				    margin: 0 0 0 0;
+				    padding: 0 0 0 0;
+				    top: 1px;
 				}
 			}
 			&.inactive{
@@ -93,8 +102,24 @@
 		legend{
 			display: none;
 		}
+		
+		fieldset{
+			display:inline-block;
+		}
 	}
 }
+
 .viewNav{
 
+}
+
+.navPanel {
+	.floatLeft {
+		float: left;
+		padding: 1em;
+	}
+
+	.floatRight {
+		float: right;
+	}
 }
