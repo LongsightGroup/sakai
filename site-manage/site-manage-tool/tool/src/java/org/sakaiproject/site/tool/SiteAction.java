@@ -3819,7 +3819,7 @@ public class SiteAction extends PagedResourceActionII {
 			}
 			String tosText = termsOfServiceHelper.getTosText();
 			context.put("tosText", tosText);
-			return (String) getContext(data).get("template") + TEMPLATE[62];
+			return (String) getContext(data).get("template") + TEMPLATE[63];
 		case 64:
 			/*
 			 * build context for chef_site-toolkits
@@ -3842,7 +3842,7 @@ public class SiteAction extends PagedResourceActionII {
 			}
 			context.put("toolkitsUrl", url);
 
-			return (String) getContext(data).get("template") + TEMPLATE[63];
+			return (String) getContext(data).get("template") + TEMPLATE[64];
 		}
 			
 		// should never be reached
@@ -8270,7 +8270,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				.getPortletSessionState(((JetspeedRunData) data).getJs_peid());
 
 		if (state.getAttribute(STATE_MESSAGE) == null) {
-			state.setAttribute(STATE_TEMPLATE_INDEX, "63");
+			state.setAttribute(STATE_TEMPLATE_INDEX, "64");
 		}
 
 	} // doMenu_edit_site_access
