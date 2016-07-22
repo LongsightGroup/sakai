@@ -270,12 +270,6 @@ public class UsersAction extends PagedResourceActionII
 
 
 		// if not logged in as the super user, we won't do anything
-		if ((!singleUser) && (!createUser) && (!SecurityService.isSuperUser()))
-		{
-			context.put("tlang",rb);
-			return (String) getContext(rundata).get("template") + "_noaccess";
-		}
-
 		String template = null;
 
 		// for the create-user create-login case, we set this in the do so we can process the redirect here
@@ -452,7 +446,7 @@ public class UsersAction extends PagedResourceActionII
 
 		context.put("incType", Boolean.valueOf(true));
 
-    context.put("superUser", Boolean.valueOf(SecurityService.isSuperUser()));
+    context.put("superUser", Boolean.valueOf(UserDirectoryService.allowAddUser()));
 
 		String value = (String) state.getAttribute("valueEid");
 		if (value != null) context.put("valueEid", value);
@@ -549,7 +543,7 @@ public class UsersAction extends PagedResourceActionII
 		context.put("user", user);
 		
 		// is super user/admin user?
-		context.put("superUser", Boolean.valueOf(SecurityService.isSuperUser()));
+		context.put("superUser", Boolean.valueOf(UserDirectoryService.allowAddUser()));
 
 		// include the password fields?
 		context.put("incPw", state.getAttribute("include-password"));
@@ -1553,15 +1547,13 @@ public class UsersAction extends PagedResourceActionII
 					return false;
 				}
 			}
+            // Still needs super user to change super user password
+            // If the current user isn't a super user but is trying to change the password or email of a super user print an error
+            if (!SecurityService.isSuperUser() && SecurityService.isSuperUser(user.getId())) {
+                addAlert(state, rb.getString("useact.youdonot4"));
+                return false;
+            }
 
-                  // Still needs super user to change super user password
-                  // If the current user isn't a super user but is trying to change the password or email of a super user print an error
-			if (!SecurityService.isSuperUser() && SecurityService.isSuperUser(user.getId())) {
-			    addAlert(state, rb.getString("useact.youdonot4"));
-			    return false;
-			}
-
-			
 			// eid, pw, type might not be editable
 			if (eid != null) user.setEid(eid);
 			user.setFirstName(firstName);
@@ -1572,7 +1564,8 @@ public class UsersAction extends PagedResourceActionII
 			//add in the updated props
 			user.getPropertiesEdit().addAll(properties);
 			
-			if (SecurityService.isSuperUser()) {
+            if (UserDirectoryService.allowAddUser()) {
+
 				if(disabled == 1){
 					user.getProperties().addProperty("disabled", "true");
 				}else{
@@ -1584,7 +1577,8 @@ public class UsersAction extends PagedResourceActionII
 			if (!isProvidedType(user.getType())) {
 			
 				// make sure the old password matches, but don't check for super users
-				if (!SecurityService.isSuperUser()) {
+                if (!UserDirectoryService.allowAddUser()) {
+
 					if (!user.checkPassword(pwcur)) {
 						addAlert(state, rb.getString("usecre.curpass"));
 						return false;

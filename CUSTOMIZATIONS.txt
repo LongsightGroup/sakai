@@ -1,0 +1,2 @@
+CMCC-10 allow use of student number in JLDAP provider
+  -- Reverted ability to search on user id because no ability to reset user's eid without modifying kernel
