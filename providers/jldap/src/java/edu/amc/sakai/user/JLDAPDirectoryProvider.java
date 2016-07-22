@@ -431,6 +431,19 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 				M_log.debug("authenticateUser(): successfully allocated bound connection [userLogin = " + 
 						userLogin + "][bind dn [" + endUserDN + "]");
 			}
+
+                         if (StringUtils.isNumeric(userLogin)) {
+                                M_log.debug("eid is numberic: " + userLogin);
+                                String filter = "cMCCID=" + ldapAttributeMapper.escapeSearchFilterTerm(userLogin);
+                                M_log.debug("filter: " + filter);
+                                LdapUserData numUser = (LdapUserData)searchDirectoryForSingleEntry(filter, conn, null, null, null);
+                                if(numUser != null){
+                                        M_log.debug("eid: " + numUser.getEid());
+                                        //CMCC Change user EID from numberic to cmcc ID
+                                        edit.setEid(numUser.getEid());
+                                }
+                         }
+
 			return true;
 
 		}
@@ -587,7 +600,20 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	{
 
 		try {
-			return getUserByEid(edit, edit.getEid(), null);
+			
+                         if (StringUtils.isNumeric(edit.getEid())) {
+                                M_log.debug("getUser(): eid is numberic: " + edit.getEid());
+                                String filter = "cMCCID=" + ldapAttributeMapper.escapeSearchFilterTerm(edit.getEid());
+                                M_log.debug("getUser(): filter: " + filter);
+                                LdapUserData numUser = (LdapUserData)searchDirectoryForSingleEntry(filter, null, null, null, null);
+                                if(numUser != null){
+                                        M_log.debug("getUser(): eid: " + numUser.getEid());
+                                        //CMCC Change user EID from numberic to cmcc ID
+                                        edit.setEid(numUser.getEid());
+                                }
+                         }
+                        
+                        return getUserByEid(edit, edit.getEid(), null);
 		} catch ( LDAPException e ) {
 			M_log.error("getUser() failed [eid: " + edit.getEid() + "]", e);
 			return false;
@@ -819,6 +845,12 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 
 		String filter = 
 			ldapAttributeMapper.getFindUserByEidFilter(eid);
+
+        // CMCC Custom BYR-783915
+        if (StringUtils.isNumeric(eid)) {
+            filter = "cMCCID=" + ldapAttributeMapper.escapeSearchFilterTerm(eid);
+        //    return null;
+        }
 
 		// takes care of caching and everything
 		return (LdapUserData)searchDirectoryForSingleEntry(filter, 
@@ -1139,6 +1171,32 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		
 			userEdit.setEid(StringUtils.lowerCase(userData.getEid()));
 	}
+
+	/**
+	 * Retieve a user record from the cache, enforcing TTL rules.
+	 * 
+	 * @param eid the cache key
+	 * @return a user cache record, or null if a cache miss
+	 */
+	protected LdapUserData getCachedUserEntry(String eid) {
+		return null;
+	}
+
+	/**
+	 * Add a {@link LdapUserData} object to the cache. Responsible
+	 * for the setting the freshness timestamp.
+	 * 
+	 * @param user the {@link LdapUserData} to add to the cache
+	 */
+	protected void cacheUserData(LdapUserData user){
+	}
+
+	protected String toCaseInsensitiveCacheKey(String eid) {
+		if ( eid == null ) {
+			return null;
+		}
+		return eid.toLowerCase();
+	} 
 
 	/**
 	 * {@inheritDoc}
@@ -1737,5 +1795,26 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	{
 		this.searchAliases = searchAliases;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+    public String getDisplayId(User user)
+    {
+        String cmccId = user.getProperties().getProperty("externalid");
+        if (StringUtils.isNotEmpty(cmccId)) {
+            return cmccId;
+        }
+
+        return user.getEid();
+    }
+
+	/**
+	 * {@inheritDoc}
+	 */
+    public String getDisplayName(User user)
+    {
+        return null;
+    }
 
 }
