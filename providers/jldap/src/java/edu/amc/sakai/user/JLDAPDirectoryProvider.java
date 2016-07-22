@@ -1629,13 +1629,18 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		this.authenticateWithProviderFirst = authenticateWithProviderFirst;
 	}
 
-	public String getDisplayId(User user) {
-		String displayId = user.getProperties().getProperty(DISPLAY_ID_PROPERTY);
-		if (displayId != null && displayId.length() > 0) {
-				return displayId;
-		}
-		return null;
-	}
+	/**
+	 * CMCC Custom override
+	 */
+    public String getDisplayId(User user)
+    {
+        String cmccId = user.getProperties().getProperty("externalid");
+        if (StringUtils.isNotEmpty(cmccId)) {
+            return cmccId;
+        }
+
+        return user.getEid();
+    }
 
 	public String getDisplayName(User user) {
 		String displayName = user.getProperties().getProperty(DISPLAY_NAME_PROPERTY);
@@ -1795,26 +1800,5 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	{
 		this.searchAliases = searchAliases;
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-    public String getDisplayId(User user)
-    {
-        String cmccId = user.getProperties().getProperty("externalid");
-        if (StringUtils.isNotEmpty(cmccId)) {
-            return cmccId;
-        }
-
-        return user.getEid();
-    }
-
-	/**
-	 * {@inheritDoc}
-	 */
-    public String getDisplayName(User user)
-    {
-        return null;
-    }
 
 }
