@@ -5,8 +5,8 @@ $logo-width: 237px;
 
 $header-gradient-a: #0D341B;
 $header-gradient-b: #0D341B;
-$header-gradient-c: #0C4220;
-$header-gradient-d: #0C4220;
+$header-gradient-c: #0D341B;
+$header-gradient-d: #0D341B;
 
 $tool-background-color: #F0F0F0;
 $toolMenuBGColor:                        #D5D5D5;
@@ -37,7 +37,7 @@ $skin-with-icons: true;
 #toolMenuWrap img.img_site_toolmenu { display: none; }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #00FF00;
+  color: #FFFFFF;
 }
 
 .navIntraTool li span a {
@@ -46,7 +46,7 @@ color: #000000 !important;
 
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: #00FF00 !important;
+  background: #E6E6E6 !important;
   color: #FFFFFF !important;
 }
 
@@ -60,7 +60,7 @@ background: #FFFFFF !important;
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
     background: #FFFFFF !important;
-    color: #00FF00 !important;
+    color: #E6E6E6 !important;
     font-weight: 450;
 }
 

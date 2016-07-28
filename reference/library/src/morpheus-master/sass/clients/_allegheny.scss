@@ -1,0 +1,84 @@
+$background-color: #FFFFFF;
+$logo: 'images/allegheny.gif';
+$logo-height: 57px;
+$logo-width: 158px;
+
+$header-gradient-a: #00234c;
+$header-gradient-b: #00234c;
+$header-gradient-c: #00234c;
+$header-gradient-d: #00234c;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #ebebeb;
+$toolMenuColor:                          #444444;
+$toolTabBGColor:                         #375573;
+$toolBorderColor:                        #cccccc;
+
+$primary-color:                          #375573;
+
+$text-color:                             #000000;
+
+$button-text-color:      #000000;
+$button-border-color: #CCCCCC;
+$button-background-color: #ebebeb;
+$button-background-secondary-color: #ebebeb;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #CCCCCC;
+$button-color-background-color: #ebebeb;
+$button-color-background-secondary-color: #ebebeb;
+
+$okcolor:                                        #dff08d !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+  border-radius: 6px;
+}
+
+.navIntraTool li span a {
+color: #FFFFFF !important;
+margin: 2px 0.25em 0 0 !important;
+}
+
+.navIntraTool li span a:hover {
+color: #00234c !important;
+margin: 2px 0.25em 0 0 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #395776 !important;
+  color: #FFFFFF !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+background: #00234c !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #bdccd7 !important;
+    color: #000000 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -3px !important;
+    height: 28px;
+}
+
+#Mrphs-xlogin .logo {
+background: #00234c url("images/allegheny.gif") no-repeat center center !important;
+}
+
+#mastLogin #loginLinks ul a {
+color: #FFFFFF !important;
+}

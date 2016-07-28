@@ -3,7 +3,7 @@ $logo: 'images/ceath.jpg';
 $logo-height: 80px;
 $logo-width: 277px;
 
-$header-gradient-a: #FFFFFF;
+$header-gradient-a: #0b763e;
 $header-gradient-b: #FFFFFF;
 $header-gradient-c: #FFFFFF;
 $header-gradient-d: #FFFFFF;
@@ -25,12 +25,12 @@ $button-background-secondary-color: #FF7F00;
 
 $button-color-text-color: #3D6D4D;
 $button-color-border-color: #3D6D4D;
-$button-color-background-color: #2a94c0;
+$button-color-background-color: #;
 $button-color-background-secondary-color: #3D6D4D;
 
-$okcolor:                                        #dff08d !default;
-$errorcolor:                             #f2dede !default;
-$warncolor:                              #fcf8e3 !default;
+$okcolor:                                        # !default;
+$errorcolor:                             # !default;
+$warncolor:                              # !default;
 
 $skin-with-icons: true;
 
@@ -46,8 +46,8 @@ color: #000000 !important;
 
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: #0b763e !important;
-  color: #FFFFFF !important;
+  background: #00ff00 !important;
+  color: #0b763e !important;
 }
 
 .Mrphs-siteHierarchy a {
@@ -55,7 +55,7 @@ color: #000000 !important;
 }
 
 .Mrphs-topHeader {
-background: #FFFFFF !important;
+background: #0b763e !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {

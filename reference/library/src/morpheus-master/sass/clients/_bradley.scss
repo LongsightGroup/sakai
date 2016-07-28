@@ -1,0 +1,80 @@
+$background-color: #FFFFFF;
+$logo: 'images/bradley.gif';
+$logo-height: 51px;
+$logo-width: 156px;
+
+$header-gradient-a: #a40000;
+$header-gradient-b: #a40000;
+$header-gradient-c: #a40000;
+$header-gradient-d: #a40000;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #ebebeb;
+$toolMenuColor:                          #444444;
+$toolTabBGColor:                         #ededed;
+$toolBorderColor:                        #cccccc;
+
+$primary-color:                          #a40000;
+
+$text-color:                             #000000;
+
+$button-text-color:      #000000;
+$button-border-color: #cccccc;
+$button-background-color: #f0f0f0;
+$button-background-secondary-color: #cccccc;
+
+$button-color-text-color: #000000;
+$button-color-border-color: #cccccc;
+$button-color-background-color: #f0f0f0;
+$button-color-background-secondary-color: #cccccc;
+
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #000000;
+  border-radius: 3px !important;
+}
+
+.navIntraTool li span a {
+color: #3D6D4D !important;
+}
+
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #a40000 !important;
+  color: #FFFFFF !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+   background: #a40000 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem ul {
+   background: #a40000 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected ul {
+    background: #042644 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #042644 !important;
+    color: #FFFFFF !important;
+    border-radius: 3px;
+    font-weight: 500;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -3px !important;
+    height: 28px;
+}
