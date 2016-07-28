@@ -1,0 +1,70 @@
+$background-color: #Background_Color;
+$logo: 'images/SkinName.jpg';
+$logo-height: cLogoHeightpx;
+$logo-width: cLogoWidthpx;
+
+$header-gradient-a: #HeaderGradientA;
+$header-gradient-b: #HeaderGradientB;
+$header-gradient-c: #HeaderGradientC;
+$header-gradient-d: #HeaderGradientD;
+
+$tool-background-color: #ToolBackgroundColor;
+$toolMenuBGColor:                        #ToolMenuBGColor;
+$toolMenuColor:                          #ToolMenuColor;
+$toolTabBGColor:                         #ToolTabBGColor;
+$toolBorderColor:                        #ToolBorderColor;
+
+$primary-color:                          #Primary_Color;
+
+$text-color:                             #Text_Color;
+
+$button-text-color:      #Button_Text_Color;
+$button-border-color: #Button_Border_Color;
+$button-background-color: #Button_Background_Color;
+$button-background-secondary-color: #Button_Background_Secondary_Color;
+
+$button-color-text-color: #Button_Color_Text_Color;
+$button-color-border-color: #Button_Color_Border_Color;
+$button-color-background-color: #Button_Color_Background_Color;
+$button-color-background-secondary-color: #Button_Color_Background_Secondary_Color;
+
+$okcolor:                                        #OKColor !default;
+$errorcolor:                             #ErrorColor !default;
+$warncolor:                              #WarnColor !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #MrphsToolTitleNav_color;
+}
+
+.navIntraTool li span a {
+color: #NavIntraTool_color !important;
+}
+
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #MrphsSitesNav_menuitem_background !important;
+  color: #MrphsSitesNav_menuitem_color !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #MphsSiteHierarchy_color !important;
+}
+
+.Mrphs-topHeader {
+background: #MrphsTopHeader_background !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #MrphsSitesNav_menuitemisselected_background !important;
+    color: #MrphsSitesNav_menuitemisselected_color !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -1px !important;
+    height: 28px;
+}

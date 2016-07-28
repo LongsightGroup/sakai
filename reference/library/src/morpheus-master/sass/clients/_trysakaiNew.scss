@@ -1,0 +1,79 @@
+$background-color: #FFFFFF;
+$logo: 'images/newlogowhite.png'; 
+$logo-height: 47px;
+$logo-width: 226px;
+
+$header-gradient-a: #b3fffa;
+$header-gradient-b: #fbedb7;
+$header-gradient-c: #fbdcb6;
+$header-gradient-d: #fbdcb6;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #F6F6F6;
+$toolMenuColor:                          #000000;
+$toolTabBGColor:                         #f8f8f8;
+$toolBorderColor:                        #F2F1F1;
+
+$primary-color:                          #00aa9e;
+
+$text-color:                             #000000;
+
+$button-text-color:      #000000;
+$button-border-color: #eaeaea;
+$button-background-color: #f8f8f8;
+$button-background-secondary-color: #f8f8f8;
+
+$button-color-text-color: #FFFFFF;
+$button-color-border-color: #00aa9e;
+$button-color-background-color: #00aa9e;
+$button-color-background-secondary-color: #00aa9e;
+
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #00aa9e;
+  border-radius: 3px !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #D3D3D3 !important;
+  color: #000000 !important;
+  border-radius: 3px !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem ul.is-visible {
+background:#d3d3d3 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected ul {
+    background: #00aa9e !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #444 !important;
+}
+
+
+.Mrphs-topHeader {
+background: #444444 !important;
+}
+
+.select, select {
+color: #4A4A4A !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #00aa9e !important;
+    color: #FFFFFF !important;
+    font-weight: 500;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+top: -3px !important;
+}

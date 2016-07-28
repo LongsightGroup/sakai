@@ -1,7 +1,7 @@
 $background-color: #CCCCCC;
 $logo: 'images/appalachainlaw.jpg';
-$logo-height: 1500px;
-$logo-width: 1500px;
+$logo-height: 80px;
+$logo-width: 80px;
 
 $header-gradient-a: #E3F5E6;
 $header-gradient-b: #E3F5E6;
@@ -30,7 +30,7 @@ $button-color-background-secondary-color: #C6CAC6;
 
 $okcolor:                                        #DFF0D8 !default;
 $errorcolor:                             #F2DEDE !default;
-$warncolor:                              #fcf8e3 !default;
+$warncolor:                              #FCF*E3 !default;
 
 $skin-with-icons: true;
 
@@ -41,7 +41,7 @@ $skin-with-icons: true;
 }
 
 .navIntraTool li span a {
-color: #3D6D4D !important;
+color: #000000 !important;
 }
 
 
