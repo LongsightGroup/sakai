@@ -237,7 +237,7 @@ sakai.enableDukeFeatures = function() {
     utils.resizeFrame('grow');
     $('#submitFromTemplate').hide();
     $('#submitBuildOwn').show();
-    $('#submitBuildOwn').attr('disabled', 'disabled');
+    $('#submitBuildOwn').prop('disabled', 'disabled');
 };
 
 sakai.siteTypeSetup = function(){
@@ -353,10 +353,10 @@ sakai.siteTypeSetup = function(){
     // field and either enable or disable the submit, also check onblur below
     $('#siteTitleField').keyup(function(e){
         if ($(this).val().length >= 1) {
-            $('#submitFromTemplate').attr('disabled', false);
+            $('#submitFromTemplate').prop('disabled', false);
         }
         else {
-            $('#submitFromTemplate').attr('disabled', true);
+            $('#submitFromTemplate').prop('disabled', true);
         }
     });
     $('#siteTitleField').blur(function(){
@@ -400,7 +400,7 @@ sakai.siteTypeSetup = function(){
         if (!selectedTemplateId){  // how likely is this? 
             $('#templateSettingsTitleTerm span').hide(); // hide title for non-course sites
             $('#submitFromTemplateCourse, #submitFromTemplateCourse ').prop('disabled', true); //disable submit to create from templates
-            $('#siteTitleField').attr('value', ''); // empty title input
+            $('#siteTitleField').prop('value', ''); // empty title input
             $('#siteTerms select').prop('selectedIndex', 0); // zero out the term select
         }
         else {
@@ -505,7 +505,7 @@ sakai.siteTypeSetup = function(){
                 $('#siteTerms').show(); // show the term selector
                 $('#siteTitle').hide(); // hide the title input (Note: can an installation specify that a course can have a user generated title)?
                 $('#siteTerms select').focus(); // focus the term select control
-                $('#siteTitleField').attr('value', ''); // void the value of the title input
+                $('#siteTitleField').prop('value', ''); // void the value of the title input
             }
             // the picked template has a type that does not resolve to a course
             else { 
@@ -556,17 +556,18 @@ sakai.siteTypeSetup = function(){
 
         	if( $( '#selectTerm option' ).length === 0)
         	{
-        		$( '#submitBuildOwn' ).attr( 'disabled', true );
+        		$( '#submitBuildOwn' ).prop( 'disabled', true );
         	}
             else
             {
-            	$( '#submitBuildOwn' ).attr( 'disabled', false );
+            	$( '#submitBuildOwn' ).prop( 'disabled', false );
             }
         	
             $('#termList').show();
         }
         else if ($(this).attr('id') == 'project') {
             $('#termList').hide();
+            $( '#submitBuildOwn' ).prop( 'disabled', false );
         }
         else {
             $('#termList').hide();
@@ -764,7 +765,7 @@ var setupCategTools = function(){
 
         $('#alertBox a#alertBoxYes').on('click', function(){
             $(this).closest('li').prev('li').remove();
-            $('#' + target +'_wrap').find('input').attr('checked',false).end().find('label').css('font-weight','normal');
+            $('#' + target +'_wrap').find('input').prop('checked',false).end().find('label').css('font-weight','normal');
             $('#alertBox').remove();
         });
         $('#alertBox a#alertBoxNo').on('click', function(){
@@ -804,7 +805,7 @@ var setupCategTools = function(){
                 $(this).hide();
                 $(this).removeClass('highlightTool');
           });
-        $('#toolHolder').find('input[type="checkbox"][id="' + denormalizeId(myId) + '"]').attr("checked",false);
+        $('#toolHolder').find('input[type="checkbox"][id="' + denormalizeId(myId) + '"]').prop("checked",false);
       }
 
       function showToolSelection(myId,delaySeconds) {
@@ -813,7 +814,7 @@ var setupCategTools = function(){
           $(this).show();
             $(this).removeClass('highlightTool');
         });
-        $('#toolHolder').find('input[type="checkbox"][id="' + denormalizeId(myId) + '"]').attr("checked",true);
+        $('#toolHolder').find('input[type="checkbox"][id="' + denormalizeId(myId) + '"]').prop("checked",true);
       }
 
       // SAK-16600
@@ -835,7 +836,7 @@ var setupCategTools = function(){
                         $('#toolHolder').find('input#' + denormalizeId(myId)).next('label').css('font-weight', 'normal');
                 }
                 // toggle checked
-                $('#toolHolder').find('input#' + myId).attr("checked",checkVal);
+                $('#toolHolder').find('input#' + myId).prop("checked",checkVal);
         }
 
       }
