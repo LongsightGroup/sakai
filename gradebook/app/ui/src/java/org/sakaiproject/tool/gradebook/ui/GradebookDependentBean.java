@@ -55,6 +55,7 @@ import org.sakaiproject.tool.gradebook.business.GradebookScoringAgentManager;
 import org.sakaiproject.tool.gradebook.facades.Authn;
 import org.sakaiproject.tool.gradebook.facades.UserDirectoryService;
 import org.sakaiproject.tool.gradebook.jsf.FacesUtil;
+import org.sakaiproject.tool.gradebook.ui.duke.CsvMappingFileHelper;
 import org.sakaiproject.util.ResourceLoader;
 
 
@@ -180,6 +181,9 @@ public abstract class GradebookDependentBean extends InitializableBean {
 		return getGradebookBean().getScoringAgentManager();
 	}
 
+	public CsvMappingFileHelper getCsvMappingFileHelper() {
+		return getGradebookBean().getCsvMappingFileHelper();
+	}
 	// Because these methods are referred to inside "rendered" tag attributes,
 	// JSF will call them multiple times in every request. To cut back on
 	// business logic traffic, cache them in request scope. They need to be
@@ -586,6 +590,17 @@ public abstract class GradebookDependentBean extends InitializableBean {
     	return scoringAgentEnabled;
     }
 
+    /**
+     * Returns whether the SISS export can be executed
+     */
+    private transient Boolean exportSisGradesEnabled;
+    public boolean isExportSisGradesEnabled() {
+    	if (exportSisGradesEnabled == null)
+    		exportSisGradesEnabled = getCsvMappingFileHelper().isInitialzied(); 
+    	
+    	return exportSisGradesEnabled.booleanValue();
+    }
+
 	/**
 	 * Set proper text for navigation button on assignment detials and
 	 * instructor view pages.
@@ -680,6 +695,16 @@ public abstract class GradebookDependentBean extends InitializableBean {
 		setNav("other","false","false","false","");
 		
 		return "spreadsheetAll";
+	}
+	
+	/**
+	 * Go to SISS grade export wizard, start with choices page 
+	 * State is kept in tool session, hence attribute setting.
+	 */
+	public String navigateToExportSissGrades() {
+		setNav("other","false","false","false","");
+		
+		return "sissGradeExportChoices";
 	}
 	
 	/**

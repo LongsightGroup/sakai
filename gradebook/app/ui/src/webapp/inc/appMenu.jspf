@@ -52,4 +52,13 @@
       </h:commandLink>
       <sakai:tool_bar_item  value="#{msgs.appmenu_import_all}" rendered="#{bean.pageName eq 'spreadsheetAll'}" disabled="true" current="true" />
 
+	<%-- Export Grades menu --%>
+      <h:commandLink action="#{bean.navigateToExportSissGrades}" immediate="true" 
+      	rendered="#{bean.pageName ne 'sissGradeExportChoices' && bean.pageName ne 'sissGradeExportStudentGrades' && bean.userAbleToEditAssessments && bean.exportSisGradesEnabled}" styleClass="currentView">
+          <h:outputText value="#{msgs.appmenu_export_all}"  />
+          <f:param name="pageName" value="sissGradeExportChoices" />
+      </h:commandLink>
+      <sakai:tool_bar_item  value="#{msgs.appmenu_export_all}" 
+      	rendered="#{bean.pageName eq 'sissGradeExportChoices' || bean.pageName eq 'sissGradeExportStudentGrades'}" disabled="true" />
+
 </sakai:tool_bar>

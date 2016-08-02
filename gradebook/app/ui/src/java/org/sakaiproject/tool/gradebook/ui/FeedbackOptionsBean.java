@@ -68,6 +68,7 @@ public class FeedbackOptionsBean extends GradebookDependentBean implements Seria
 
     // View into row-specific data.
     private List gradeRows;
+    private List gradeScales;
     
     private boolean isValidWithLetterGrade = true;
 
@@ -132,6 +133,7 @@ public class FeedbackOptionsBean extends GradebookDependentBean implements Seria
 	private void initGradeRows() {
 		// Set up UI table view.
 		gradeRows = new ArrayList();
+		gradeScales = new ArrayList();
 		GradeMapping selectedGradeMapping = localGradebook.getSelectedGradeMapping();
 		for (Iterator iter = selectedGradeMapping.getGrades().iterator(); iter.hasNext(); ) {
 			String grade = (String)iter.next();
@@ -140,8 +142,12 @@ public class FeedbackOptionsBean extends GradebookDependentBean implements Seria
 			// grades (which have no percentage equivalent) are not
 			// editable.
 			Double d = selectedGradeMapping.getDefaultBottomPercents().get(grade);
-			boolean editable = ((d != null) && (d.doubleValue() > 0.0));
-			gradeRows.add(new GradeRow(selectedGradeMapping, grade, editable));
+			if (d!= null) {
+				boolean editable = ((d != null) && (d.doubleValue() > 0.0));
+				gradeRows.add(new GradeRow(selectedGradeMapping, grade, editable));
+			} else {
+				gradeScales.add(grade);
+			}
 		}
 	}
 
@@ -150,6 +156,10 @@ public class FeedbackOptionsBean extends GradebookDependentBean implements Seria
 	}
 	public void setGradeRows(List gradeRows) {
 		this.gradeRows = gradeRows;
+	}
+
+	public List getGradeScales() {
+		return gradeScales;
 	}
 
 	/**
