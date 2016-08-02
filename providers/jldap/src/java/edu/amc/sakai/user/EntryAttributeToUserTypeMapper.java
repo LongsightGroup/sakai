@@ -24,6 +24,8 @@ package edu.amc.sakai.user;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -167,10 +169,22 @@ public class EntryAttributeToUserTypeMapper implements UserTypeMapper {
 	 * @return a Sakai user type, possibly null
 	 */
 	protected String mapUserTypeAttributeValues(String[] attrValues) {
+		Set<String> possibleUserTypes = new HashSet<String>();
+
 		for ( String value : attrValues ) {
 			String userType = mapUserTypeAttributeValue(value);
 			if ( userType != null ) {
-				return userType;
+				possibleUserTypes.add(userType);
+			}
+		}
+
+		if (!possibleUserTypes.isEmpty()) {
+			for (Map.Entry<String, String> entry : attributeValueToSakaiUserTypeMap.entrySet()) {
+				for (String p : possibleUserTypes) {
+					if (entry.getValue().equals(p)) {
+						return entry.getKey();
+					}
+				}
 			}
 		}
 		

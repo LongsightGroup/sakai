@@ -7,20 +7,17 @@
 		class="edu.amc.sakai.user.JLDAPDirectoryProvider" init-method="init"
 		destroy-method="destroy">
 		
-		<!-- Setting a MemoryService in JLDAP is deprecated! 
-			Caching is done centrally in the UserDirectoryService.callCache -->
-		
 		<!-- Required. Host name or address of your LDAP server -->
 		<property name="ldapHost">
-			<value>ldap.university.edu</value>
+			<value>idms-authdir.oit.duke.edu</value>
 		</property>
 
 		<!-- Optional. LDAP connection port. Typically defaults to 
 			JLDAPDirectoryProvider.DEFAULT_LDAP_PORT (389). Secured
 			connections are usually on 636 -->
-		<!-- property name="ldapPort">
-			<value>389</value>
-		</property-->
+		<property name="ldapPort">
+			<value>636</value>
+		</property>
 
 		<!--  If secureConnection is true, a keystore location must be provided
 			unless javax.net.ssl.trustStore system property has already been 
@@ -38,40 +35,40 @@
 
 		<!-- Optional. DN to which to bind for directory searches. 
 			Typically only necessary if autoBind is true -->
-		<!-- property name="ldapUser">
+		<property name="ldapUser">
 			<value>attr=value,attr=value,attr=value</value>
-		</property -->
+		</property>
 
 		<!-- Optional. Password for ldapUser defined above -->
-		<!--  property name="ldapPassword">
+		<property name="ldapPassword">
 			<value>usually-set-this-value-in-security-dot-properties</value>
-		</property -->
+		</property>
 
 		<!-- Optional. Enables/disables secure LDAP connections.
 			defaults to JLDAPDirectoryProvider.DEFAULT_IS_SECURE_CONNECTION (false) -->
-		<!-- property name="secureConnection">
-			<value>false</value>
-		</property -->
+		<property name="secureConnection">
+			<value>true</value>
+		</property>
 
 		<!-- Optional. If secureConnection is true, this socket factory
 			will be assigned globally to LDAPConnections. Defaults to an
 			instance of com.novell.ldap.LDAPJSSESecureSocketFactory, which
 			is appropriate for SSL connections. Use 
 			com.novell.ldap.LDAPJSSEStartTLSFactory for TLS. -->
-		<!-- property name="secureSocketFactory">
+		<property name="secureSocketFactory">
 			<bean class="com.novell.ldap.LDAPJSSESecureSocketFactory" />
-		</property -->
+		</property>
 
 		<!-- Optional. Indicate if connection allocation should
 			implicitly bind as ${ldapUser}. Defaults to false -->
-		<!-- property name="autoBind">
-			<value>false</value>
-		</property -->
+		<property name="autoBind">
+			<value>true</value>
+		</property>
 
 		<!-- Optional, but usually specified. Base DN for directory searches. -->
-		<!--  property name="basePath">
-			<value>attr=value,attr=value,attr=value</value>
-		</property -->
+		<property name="basePath">
+			<value>dc=duke,dc=edu</value>
+		</property>
 
 		<!-- Optional. Indicate if connections should follow
 			referrals. Defaults to  
@@ -82,9 +79,9 @@
 
 		<!-- Optional. LDAP operation timeout in millis. Defaults 
 			to JLDAPDirectoryProvider.DEFAULT_OPERATION_TIMEOUT_MILLIS (5000) -->
-		<!-- property name="operationTimeout">
-			<value>5000</value>
-		</property -->
+		<property name="operationTimeout">
+			<value>20000</value>
+		</property>
 		
 		<!-- Optional. Control depth of all searches. Possible values:
 			0 - LDAPConnection.SCOPE_BASE - base object only
@@ -94,12 +91,6 @@
 		<!-- property name="searchScope">
 			<value>2</value>
 		</property -->
-
-		<!-- Setting a cacheTTL in jldap-beans.xml is longer supported! 
-			 If you are attempting to cache your users for one hour instead of the default of 5 minutes, 
-			 set the central UserDirectoryService.callCache
-			 memory.org.sakaiproject.user.api.UserDirectoryService.callCache=timeToLiveSeconds=3600
-		-->
 
 		<!-- Setting caseSensitiveCacheKeys is no longer supported!
 			 We assume that user jdoe is the same as user JDoe!! -->
@@ -132,9 +123,9 @@
 			Defaults to JLDAPDirectoryProvider.DEFAULT_POOLING (false). 
 			Has no effect if ldapConnectionManager has been explicitly
 			assigned (unless that object honors this flag, of course). -->
-		<!--  property name="pooling">
+		<property name="pooling">
 			<value>false</value>
-		</property -->
+		</property>
 
 		<!-- Optional. Maxmimum number of connections in the pool
 			Defaults to JLDAPDirectoryProvider.DEFAULT_POOL_MAX_CONNS (10) -->
@@ -192,9 +183,11 @@
 				</property>
 				<property name="eidBlacklist">
 					<list>
+						<value>admin</value>
+						<value>guest</value>
 						<value>null</value>
-						<!--value>nobody</value-->
-						<!--value>adversary</value-->
+						<value>nobody</value>
+						<value>adversary</value>
 					</list>
 				</property>
 			</bean>
@@ -205,7 +198,7 @@
 			
     <!-- An optional bean definition which can be used to customize LDAP
     attribute to Sakai User instance member mapping behaviors. This
-    example describes availabel configuration options for SimpleLdapAttributeMapper
+   example describes availabel configuration options for SimpleLdapAttributeMapper
     (the default LdapAttributeMapper implementation). -->
 	<bean id="edu.amc.sakai.user.LdapAttributeMapper"
 			class="edu.amc.sakai.user.SimpleLdapAttributeMapper"
@@ -280,12 +273,18 @@
 		<!-- Optional. If not present or empty, behavior is
 		determined by the value of returnLiteralAttributeValueIfNoMapping
 		(see below). -->
-		<!-- property name="attributeValueToSakaiUserTypeMap">
+		<property name="attributeValueToSakaiUserTypeMap">
 			<map>
 				<entry key="faculty"><value>faculty</value></entry> 
-				<entry key="students"><value>student</value></entry> 
+				<entry key="faculty"><value>student,faculty</value></entry> 
+				<entry key="faculty"><value>staff,student,faculty</value></entry> 
+				<entry key="faculty"><value>student,staff,faculty</value></entry> 
+				<entry key="faculty"><value>staff,faculty</value></entry> 
+				<entry key="staff"><value>staff</value></entry> 
+				<entry key="staff"><value>student,staff</value></entry> 
+				<entry key="student"><value>student</value></entry> 
 			</map>
-		</property -->
+		</property>
 				
 		<!-- Required. The logical name of the LDAP attribute which
 		defines Sakai users' types. Value should be a key into the 
@@ -296,15 +295,15 @@
 		</property>
 				
 		<!-- Optional. Defaults to false -->
-		<!--  property name="returnLiteralAttributeValueIfNoMapping">
-			<value>false</value>
-		</property -->
+		<property name="returnLiteralAttributeValueIfNoMapping">
+			<value>true</value>
+		</property>
 				
 		<!-- Optional. Only considered if returnLiteralAttributeValueIfNoMapping
 			is false. Defaults to null. -->
-		<!--  property name="defaultSakaiUserType">
+		<property name="defaultSakaiUserType">
 			<null />
-		</property -->
+		</property>
 		
 	</bean>
 	
