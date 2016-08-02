@@ -226,7 +226,7 @@
   			disabled="true"
 				#end
 			 type="submit" class="active" accesskey="s" name="eventSubmit_doContinue" 
-				#if ($!basedOnTemplate) value="$tlang.getString('sitetype.done')" #else value="$tlang.getString('gen.continue')" #end
+				value="$tlang.getString('gen.continue')"
 				onclick="SPNR.disableControlsAndSpin( this, null ); resetOption('continue', 'findCourseForm');" />
 			<input type="submit" accesskey="b" name="eventSubmit_doBack" value="$tlang.getString('gen.back')" 
 				onclick="SPNR.disableControlsAndSpin( this, null ); resetOption('back', 'findCourseForm');" />

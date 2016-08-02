@@ -532,5 +532,35 @@
     &.nopad {
       padding: 0.5em 0;
     }
+
+  .box-group {
+    padding: 9px 14px;
+    margin-top: 20px;
+    margin-right: 0;
+    margin-left: 0;
+    background-color: #fff;
+    border-color: #ddd;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px 4px 0 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .box-group-highlight {
+    padding: 9px 14px;
+    margin-top: 0;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+  }
+
+  .box-group.box-group-highlight {
+    border-width: 0 1px 1px;
+    border-radius: 0;
+  }
+
+  .no-close .ui-dialog-titlebar-close {
+    min-width: 30em;
   }
 }
