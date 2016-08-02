@@ -1,0 +1,170 @@
+<link type="text/css" href="/library/js/jquery-ui-latest/css/smoothness/jquery-ui.css" rel="stylesheet" media="screen" />
+<link type="text/css" href="/sakai-site-manage-tool/css/site-manage.css" rel="stylesheet" media="screen" />
+<script type="text/javascript" src="/library/js//jquery/1.7.1/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="/library/js/jquery-ui-latest/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/sakai-site-manage-tool/js/site-manage.js"></script>
+<div class="portletBody">
+	<h3>Confirmation of Instructor or Delegate</h3>
+
+	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>#end
+	
+	#if (!$!isCourseSite)
+		<form name="newSiteDelegateConfirm" id="newSiteDelegateConfirm" action="#toolForm("$action")" method="post">
+			<input type="hidden" name="eventSubmit_doNewSiteDelegateConfirm" id="eventSubmit_doNewSiteDelegateConfirm" value="x" />
+			<input type="hidden" name="option" id="option" value="cancel" />
+			<input type="hidden" name="templateIndex" id="templateIndex" value="$!templateIndex" />
+			
+			<div class="act">
+				<input
+					type="submit" 
+					name="cancel" 
+					id="cancelButton" 
+					accesskey="x"
+					value="$tlang.getString('gen.cancel')"
+				/>
+			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+		</form>			
+	#else
+		<script type="text/javascript">
+		<!-- hide from non-JS browsers
+		function promptDialogConfirmation() {
+		    var selected = $('input[type=radio][name=conformer]:checked').val();
+		    
+		    if ( selected === 'instructor' || selected === 'delegate' ) {
+                $('#cancelButton').prop('disabled', true);
+                $('#backButton').prop('disabled', true);
+
+                var isOpen = $( "#dialog-confirm" ).dialog( "isOpen" );
+		    	if( !isOpen ) {
+		    		$( "#dialog-confirm" ).dialog( "open" );
+		    	}
+		    } else {
+                $('#option').val('notinstructor');
+                $('#continueButton').click();
+            }
+		}
+		
+		$( document ).ready( function() {
+			$('input[type=radio][name=conformer]').on('change', function() {
+				promptDialogConfirmation();
+			});
+			
+			// initialize dialog but don't open
+			$( "#dialog-confirm" ).dialog({
+				autoOpen: false,
+				resizable: false, 
+				modal: true,
+				dialogClass: 'no-close',
+				buttons: {
+					$tlang.getString("sitegen.delegate.confirm.confirm"): function() {
+						var dialogInput = $('#dialogInput').val();
+						if (dialogInput === '$tlang.getString("sitegen.delegate.confirm.instructor")') {
+							$('#option').val('confirmed');
+						} else {
+							$('#option').val('unconfirmed');
+						}
+						$( this ).dialog( 'close' );
+						$('#continueButton').click();
+		            },
+					$tlang.getString("sitegen.delegate.confirm.cancel"): function() {
+						$('input[type=radio][name=conformer]').attr('checked', false);
+		                $('#cancelButton').prop('disabled', false);
+		                $('#backButton').prop('disabled', false);
+        		        $( this ).dialog( 'close' );
+		            }
+				}
+			});
+			
+			$( '#dialog-confirm' ).siblings('div.ui-dialog-titlebar').remove();
+			
+			$('#continueButton').click(function() {
+                $('#newSiteDelegateConfirm').submit();
+		    });
+		    
+		    $('#backButton').click(function() {
+				$('#option').val('back');
+				$('#newSiteDelegateConfirm').submit();
+		    });
+		
+			$('#cancelButton').click(function() {
+				$('#option').val('cancel');
+				$('#newSiteDelegateConfirm').submit();
+		    });
+		});
+		// -->
+		</script>
+		<form name="newSiteDelegateConfirm" action="#toolForm("$action")" method="post">
+			
+			<div class="box-group">
+				<p>$tlang.getString("sitegen.delegate.confirm.instructions")</p>
+			</div>
+			<div class="box-group box-group-highlight">
+				<div class="radio">
+					<label>
+						<input type="radio" name="conformer" id="instructor" value="instructor"/>
+						$tlang.getString("sitegen.delegate.confirm.ior")
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="conformer" id="delegate" value="delegate"/>
+						$tlang.getString("sitegen.delegate.confirm.delegate")
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="conformer" id="student" value="student"/>
+						$tlang.getString("sitegen.delegate.confirm.student")
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="conformer" id="other" value="other"/>
+						$tlang.getString("sitegen.delegate.confirm.none")
+					</label>
+				</div>
+			</div>
+			
+			<input type="hidden" name="eventSubmit_doNewSiteDelegateConfirm" id="eventSubmit_doNewSiteDelegateConfirm" value="x" />
+			<input type="hidden" name="option" id="option" value="continue" />
+			<input type="hidden" name="back" id="back" value="$!backIndex" />
+			<input type="hidden" name="templateIndex" id="templateIndex" value="$!templateIndex" />
+	
+			<div class="act">
+				<input
+					type="submit"
+					name="continue"
+					id="continueButton" 
+					accesskey="s"
+					style="display: none"
+                    #if ($!basedOnTemplate) value="$tlang.getString('sitetype.doneOnly')" #else value="$tlang.getString('gen.continue')" #end
+				/>
+				<input
+					type="submit" 
+					name="back" 
+					id="backButton" 
+					accesskey="b"
+					value="$tlang.getString('gen.back')"
+				/>
+				<input
+					type="submit" 
+					name="cancel" 
+					id="cancelButton" 
+					accesskey="x"
+					value="$tlang.getString('gen.cancel')"
+				/>
+			</div>
+			<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
+		</form>
+		<div id="dialog-confirm" title="$tlang.getString("sitegen.delegate.confirm.confirm")">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 20px;"></span>
+				$tlang.getString("sitegen.delegate.confirm.dialog.instructions.1")
+			</p>
+			<p>$tlang.getString("sitegen.delegate.confirm.dialog.instructions.2")</p>
+			<input type="text" name="dialogInput" id="dialogInput" size="30"/>
+		</div>
+	#end
+</div>
+
