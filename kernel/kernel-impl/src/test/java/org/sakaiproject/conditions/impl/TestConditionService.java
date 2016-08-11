@@ -9,6 +9,7 @@ import org.sakaiproject.conditions.api.Condition;
 import org.sakaiproject.conditions.api.ConditionService;
 import org.sakaiproject.conditions.api.Rule;
 import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
 
 import junit.framework.TestCase;
 
@@ -65,6 +66,10 @@ public class TestConditionService extends TestCase {
 			public String getResource() {
 				return "69";
 			}
+			
+			public LRS_Statement getLrsStatement() {
+				return null; 
+			}
 
 			public String getSessionId() {
 				// TODO Auto-generated method stub
@@ -108,6 +113,10 @@ public class TestConditionService extends TestCase {
 
 			public String getResource() {
 				return "zt10";
+			}
+			
+			public LRS_Statement getLrsStatement() {
+				return null;
 			}
 
 			public String getSessionId() {
