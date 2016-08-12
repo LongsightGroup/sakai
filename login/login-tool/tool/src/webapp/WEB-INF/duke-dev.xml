@@ -67,7 +67,7 @@
     <!-- Disable signing using cryptographic keys -->
     <!-- Central storage of cryptographic keys -->
     <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
-        <constructor-arg value="classpath:${samlkeystore.name}"/>
+        <constructor-arg value="classpath:samlKeystore.jks"/>
         <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
