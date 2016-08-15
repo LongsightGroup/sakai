@@ -1,0 +1,115 @@
+$background-color: #FFFFFF;
+$logo: 'images/DTechNarrow.png';
+$logo-height: 55px;
+$logo-width: 174px;
+
+$header-gradient-a: #444444;
+$header-gradient-b: #444444;
+$header-gradient-c: #444444;
+$header-gradient-d: #444444;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #ededed;
+$toolMenuColor:                          #444444;
+$toolTabBGColor:                         #ededed;
+$toolBorderColor:                        #cccccc;
+
+$primary-color:                          #028546;
+
+$text-color:                             #222222;
+
+$button-text-color:      #121212;
+$button-border-color: #cbcbcb;
+$button-background-color: #ececec;
+$button-background-secondary-color: #ededed;
+
+$button-color-text-color: #121212;
+$button-color-border-color: #cbcbcb;
+$button-color-background-color: #ececec;
+$button-color-background-secondary-color: #ededed;
+
+$okcolor:                                        #dff0d8 !default;
+$errorcolor:                             #f2dede !default;
+$warncolor:                              #fcf8e3 !default;
+
+$skin-with-icons: true;
+
+#toolMenuWrap img.img_site_toolmenu { display: none; }
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #000000;
+  border-radius: 3px !important;
+}
+
+.navIntraTool li span a {
+   color: #3D6D4D !important;
+}
+
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+   background: #FFFFFF !important;
+   color: #000000 !important;
+}
+
+.Mrphs-siteHierarchy {
+   color: #FFFFFF !important;
+}
+
+.Mrphs-siteHierarchy a {
+   color: #FFFFFF !important;
+}
+
+.Mrphs-topHeader {
+   background: #FFFFFF !important;
+   color: #444444 !important;
+}
+
+.Mrphs-topHeader a {
+   color: #028546 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #028546 !important;
+    color: #FFFFFF !important;
+    font-weight: 500;
+    border-radius: 3px !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -3px !important;
+    height: 28px;
+}
+
+.instruction {
+    border-color: #444444 !important;
+    border-left-color: #444444 !important;
+    background-color: #ededed !important;
+}
+
+#Mrphs-xlogin .logo {
+    background: #444 url("images/DTechNarrow.png") no-repeat center center !important;
+}
+
+.messageInformation, .messageInstruction, .messageProgress {
+    border-color: #F07622 !important;
+    border-left-color: #F07622 !important;
+    background-color: #FFFFFF !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-import-box h4 {
+    color: #000000 !important;
+}
+
+
+.bs-callout-primary {
+    border-color: #F07622 !important;
+    border-left-color: #F07622 !important;
+    background-color: #FFFFFF !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+    border-left-color: #000000 !important;
+    border-color: #000000 !important;
+    border-radius: 3px !important;
+    background-color: #CCCCCC !important;
+}
