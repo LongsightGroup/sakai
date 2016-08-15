@@ -1,7 +1,7 @@
 $background-color: #FFFFFF;
 $logo: 'images/leesmcrae.jpg';
-$logo-height: 80px;
-$logo-width: 318px;
+$logo-height: 56px;
+$logo-width: 142px;
 
 $header-gradient-a: #005C42;
 $header-gradient-b: #005C42;
@@ -38,33 +38,77 @@ $skin-with-icons: true;
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
   color: #FFFFFF;
+  border-radius: 3px !important;
 }
 
 .navIntraTool li span a {
-color: #000000 !important;
+   color: #FFFFFF !important;
 }
 
+.navIntraTool li span a:hover {
+   color: #000000 !important;
+   background: #cccccc !important;
+}
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
   background: #014D37 !important;
   color: #FFFFFF !important;
+  border-radius: 3px !important;
 }
 
 .Mrphs-siteHierarchy a {
-  color: #005C42 !important;
+  color: #FFFFFF !important;
 }
 
 .Mrphs-topHeader {
-background: #005C42 !important;
+   background: #116823 !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
-    background: #FFFFFF !important;
-    color: #005C42 !important;
-    font-weight: 450;
+   background: #FFFFFF !important;
+   color: #005C42 !important;
+   font-weight: 500;
+   border-radius: 3px !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
-    top: -1px !important;
+    top: -3px !important;
     height: 28px;
+}
+
+.select, select {
+    background-color: #eaeaea !important;
+}
+
+.instruction {
+    border-color: #005C42 !important;
+    border-left-color: #005C42 !important;
+    background-color: #ededed !important;
+}
+
+.fa-angle-right:before {
+    color: #FFFFFF !important;
+}
+
+.messageInformation, .messageInstruction, .messageProgress {
+    border-color: #005C42 !important;
+    border-left-color: #005C42 !important;
+    background-color: #ededed !important;
+}
+
+.bs-callout-primary {
+    border-color: #005C42 !important;
+    border-left-color: #005C42 !important;
+    background-color: #ededed !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+    border-left-color: #005C42 !important;
+    border-color: #005C42 !important;
+    border-radius: 3px !important;
+    background-color: #ededed !important;
+}
+
+.lessons-siteHierarchy-title {
+   color: #ffffff !important;
 }

@@ -3,14 +3,14 @@ $logo: 'images/tdainc.jpg';
 $logo-height: 68px;
 $logo-width: 80px;
 
-$header-gradient-a: #1a1aff;
-$header-gradient-b: #1a1aff;
-$header-gradient-c: #1a1aff;
-$header-gradient-d: #1a1aff;
+$header-gradient-a: #0000ff;
+$header-gradient-b: #0000ff;
+$header-gradient-c: #0000ff;
+$header-gradient-d: #0000ff;
 
 $tool-background-color: #FFFFFF;
 $toolMenuBGColor:                        #FFFFFF;
-$toolMenuColor:                          #1186C1;
+$toolMenuColor:                          #0000cc;
 $toolTabBGColor:                         #FFFFFF;
 $toolBorderColor:                        #FFFFFF;
 
@@ -41,13 +41,13 @@ $skin-with-icons: true;
 }
 
 .navIntraTool li span a {
-color: #000000 !important;
+color: #0000cc !important;
 }
 
 
 #linkNav ul li.Mrphs-sitesNav__menuitem a {
   background: #E6E6E6 !important;
-  color: #FFFFFF !important;
+  color: #0000ff !important;
 }
 
 .Mrphs-siteHierarchy a {
@@ -55,7 +55,7 @@ color: #000000 !important;
 }
 
 .Mrphs-topHeader {
-background: #FFFFFF !important;
+background: #000099 !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
