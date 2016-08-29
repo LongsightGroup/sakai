@@ -307,6 +307,7 @@ public class BaseLearningResourceStoreService implements LearningResourceStoreSe
         LRS_Actor actor=null;
         LRS_Context context=null;
         LRS_Object object=null;
+        LRS_Result result = null;
         if (event.getLrsStatement() != null) {
             statement =  event.getLrsStatement();
             //If the statement is fully populated nothing left to do
@@ -317,6 +318,7 @@ public class BaseLearningResourceStoreService implements LearningResourceStoreSe
             actor=statement.getActor();
             context=statement.getContext();
             object=statement.getObject();
+            result=statement.getResult();
 
         }
         try {
@@ -332,14 +334,11 @@ public class BaseLearningResourceStoreService implements LearningResourceStoreSe
             if (actor == null) {
                 actor = getEventActor(event);
             }
-            statement = new LRS_Statement(actor, verb, object);
             //If context is not set get it from the event
             if (context == null) {
                 context = getEventContext(event);
             }
-            if (context != null) {
-                statement.setContext(context);
-            }
+            statement = new LRS_Statement(actor, verb, object,result,context);
         } catch (Exception e) {
             if (log.isDebugEnabled()) log.debug("LRS Unable to convert event ("+event+") into statement: "+e);
             statement = null;
