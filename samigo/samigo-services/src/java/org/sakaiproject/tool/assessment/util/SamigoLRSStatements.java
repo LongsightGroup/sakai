@@ -21,7 +21,7 @@ import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
  * Class that holds custom code for generating LRS_Statements that contain special samigo Metadata
  */
 public class SamigoLRSStatements {
-    private static final ServerConfigurationService serverConfigurationService = ComponentManager.get( ServerConfigurationService.class );
+    private static final ServerConfigurationService serverConfigurationService = (ServerConfigurationService) ComponentManager.get( ServerConfigurationService.class );
 
     public static LRS_Statement getStatementForTakeAssessment(String assessmentTitle, boolean pastDue, boolean isViaURL) {
     	StringBuffer lrssMetaInfo = new StringBuffer("Assesment: " + assessmentTitle);

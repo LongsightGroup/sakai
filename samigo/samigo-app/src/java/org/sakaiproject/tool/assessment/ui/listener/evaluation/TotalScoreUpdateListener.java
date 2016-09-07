@@ -72,7 +72,7 @@ public class TotalScoreUpdateListener
   implements ActionListener
 {
   private static Log log = LogFactory.getLog(TotalScoreUpdateListener.class);
-  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+  private final EventTrackingService eventTrackingService= (EventTrackingService) ComponentManager.get( EventTrackingService.class );
   
   /**
    * Standard process action method.

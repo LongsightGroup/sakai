@@ -64,7 +64,7 @@ public class LinearAccessDeliveryActionListener extends DeliveryActionListener
 {
   private static Log log = LogFactory.getLog(LinearAccessDeliveryActionListener.class);
   private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
-  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+  private final EventTrackingService eventTrackingService= (EventTrackingService) ComponentManager.get( EventTrackingService.class );
   /**
    * ACTION.
    * @param ae

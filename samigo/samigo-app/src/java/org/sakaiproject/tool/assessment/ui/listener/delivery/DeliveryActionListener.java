@@ -121,7 +121,7 @@ public class DeliveryActionListener
   private boolean resetPageContents = true;
   private long previewGradingId = (long)(Math.random() * 1000);
   private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
-  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+  private final EventTrackingService eventTrackingService= (EventTrackingService) ComponentManager.get( EventTrackingService.class );
 
 
   /**

@@ -89,7 +89,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
 public class SubmitToGradingActionListener implements ActionListener {
 	private static Log log = LogFactory
 			.getLog(SubmitToGradingActionListener.class);
-	private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+	private final EventTrackingService eventTrackingService= (EventTrackingService) ComponentManager.get( EventTrackingService.class );
 	
 	/**
 	 * The publishedAssesmentService
@@ -952,5 +952,4 @@ public class SubmitToGradingActionListener implements ActionListener {
 			return Boolean.FALSE;
 	}
 	
-	}
 }

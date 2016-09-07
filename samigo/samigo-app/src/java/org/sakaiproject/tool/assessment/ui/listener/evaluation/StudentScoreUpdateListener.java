@@ -74,7 +74,7 @@ public class StudentScoreUpdateListener
   implements ActionListener
 {
   private static Log log = LogFactory.getLog(StudentScoreUpdateListener.class);
-  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+  private final EventTrackingService eventTrackingService= (EventTrackingService) ComponentManager.get( EventTrackingService.class );
   private static ContextUtil cu;
 
   /**
