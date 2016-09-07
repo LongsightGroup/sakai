@@ -15,7 +15,8 @@
  */
 package org.sakaiproject.samigo.util;
 
-import org.sakaiproject.event.api.NotificationService;
+//Didn't pull this patch into this branch
+//import org.sakaiproject.event.api.NotificationService;
 
 /**
  * Class to hold constants for Samigo, defaults, etc.
@@ -56,11 +57,11 @@ public class SamigoConstants {
 
     /*
      * Notification Defaults
-     */
     public static final     int         NOTI_PREF_DEFAULT                                   = NotificationService.PREF_IMMEDIATE;
     public static final     int         NOTI_EVENT_ASSESSMENT_SUBMITTED                     = NotificationService.NOTI_OPTIONAL;
     public static final     int         NOTI_EVENT_ASSESSMENT_TIMED_SUBMITTED               = NotificationService.NOTI_OPTIONAL;
     public static final     int         NOTI_PREF_INSTRUCTOR_EMAIL_DEFAULT                  = NotificationService.PREF_IGNORE;
+    */
     
     /*
      * Authorization 
