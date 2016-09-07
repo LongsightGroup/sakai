@@ -51,7 +51,7 @@ import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Result;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
-import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
@@ -71,6 +71,7 @@ import org.sakaiproject.tool.assessment.ui.bean.delivery.ItemContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.delivery.SectionContentsBean;
 import org.sakaiproject.tool.assessment.ui.bean.shared.PersonBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.util.SamigoLRSStatements;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 
 /**
@@ -88,6 +89,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
 public class SubmitToGradingActionListener implements ActionListener {
 	private static Log log = LogFactory
 			.getLog(SubmitToGradingActionListener.class);
+	private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
 	
 	/**
 	 * The publishedAssesmentService
@@ -131,13 +133,8 @@ public class SubmitToGradingActionListener implements ActionListener {
 			// set AssessmentGrading in delivery
 			delivery.setAssessmentGrading(adata);
             if (adata.getForGrade()) {
-                Event event = EventTrackingService.newEvent("", adata.getPublishedAssessmentTitle(), true);
-                LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-                    .get("org.sakaiproject.event.api.LearningResourceStoreService");
-                if (null != lrss && lrss.getEventActor(event) != null) {
-                    lrss.registerStatement(getStatementForGradedAssessment(adata, lrss.getEventActor(event), publishedAssessment),
-                        "sakai.samigo");
-                }
+                Event event = eventTrackingService.newEvent("", adata.getPublishedAssessmentTitle(), null, true, NotificationService.NOTI_OPTIONAL, SamigoLRSStatements.getStatementForGradedAssessment(adata, publishedAssessment));
+                eventTrackingService.post(event);
             }
 			// set url & confirmation after saving the record for grade
 			if (adata != null && delivery.getForGrade())
@@ -955,26 +952,5 @@ public class SubmitToGradingActionListener implements ActionListener {
 			return Boolean.FALSE;
 	}
 	
-    private LRS_Statement getStatementForGradedAssessment(AssessmentGradingData gradingData, LRS_Actor student,
-            PublishedAssessmentFacade publishedAssessment) {
-        LRS_Verb verb = new LRS_Verb(SAKAI_VERB.scored);
-        LRS_Object lrsObject = new LRS_Object(ServerConfigurationService.getPortalUrl() + "/assessment", "received-grade-assessment");
-        HashMap<String, String> nameMap = new HashMap<String, String>();
-        nameMap.put("en-US", "User received a grade");
-        lrsObject.setActivityName(nameMap);
-        HashMap<String, String> descMap = new HashMap<String, String>();
-        descMap.put("en-US", "User received a grade for their assessment: " + publishedAssessment.getTitle() + "; Submitted: "
-                + (gradingData.getIsLate() ? "late" : "on time"));
-        lrsObject.setDescription(descMap);
-        LRS_Context context = new LRS_Context("other", "assessment");
-        LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(gradingData, publishedAssessment), context);
-        return statement;
 	}
-
-    private LRS_Result getLRS_Result(AssessmentGradingData gradingData, PublishedAssessmentFacade publishedAssessment) {
-        double score = gradingData.getFinalScore();
-        LRS_Result result = new LRS_Result(new Double(score), new Double(0.0), new Double(publishedAssessment.getTotalScore()), null);
-        result.setCompletion(true);
-        return result;
-    }
 }

@@ -41,7 +41,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.math.util.MathUtils;
-import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.event.api.EventTrackingService;
+import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.samigo.util.SamigoConstants;
+import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedAssessmentData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
@@ -50,6 +54,7 @@ import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.AgentResults;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.TotalScoresBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.util.SamigoLRSStatements;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 
 /**
@@ -67,6 +72,7 @@ public class TotalScoreUpdateListener
   implements ActionListener
 {
   private static Log log = LogFactory.getLog(TotalScoreUpdateListener.class);
+  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
   
   /**
    * Standard process action method.
@@ -109,7 +115,7 @@ public class TotalScoreUpdateListener
       HashMap map = prepareAssessmentGradingHash(assessmentGradingList);
       Collection agents = bean.getAgents();
       Iterator iter = agents.iterator();
-      ArrayList grading = new ArrayList();
+      ArrayList <AssessmentGradingData> grading = new ArrayList();
       boolean hasNumberFormatException = false;
       StringBuffer idList = new StringBuffer(" ");
   	  String err = "";
@@ -258,13 +264,17 @@ public class TotalScoreUpdateListener
       
       GradingService delegate = new GradingService();
       try {
-    	  delegate.saveTotalScores(grading, bean.getPublishedAssessment());
+    	  PublishedAssessmentData publishedAssessment = bean.getPublishedAssessment();
+    	  delegate.saveTotalScores(grading, publishedAssessment);
     	  StringBuffer logString = new StringBuffer();
     	  logString.append("gradedBy=");
           logString.append(AgentFacade.getAgentString());
     	  logString.append(", publishedAssessmentId=");
-    	  logString.append(bean.getPublishedAssessment().getPublishedAssessmentId());
-    	  EventTrackingService.post(EventTrackingService.newEvent("sam.total.score.update", "siteId=" + AgentFacade.getCurrentSiteId() + ", " + logString.toString(), true));
+    	  logString.append(publishedAssessment.getPublishedAssessmentId());
+    	  //Log details for each event
+    	  for (AssessmentGradingData data: grading) { 
+    		  eventTrackingService.post(eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_TOTAL_SCORE_UPDATE, "siteId=" + AgentFacade.getCurrentSiteId() + ", " + logString.toString(), AgentFacade.getCurrentSiteId(), true,  NotificationService.NOTI_OPTIONAL, SamigoLRSStatements.getStatementForTotalScoreUpdate(data, publishedAssessment)));
+    	  }
     	  log.debug("Saved total scores.");
       } catch (GradebookServiceException ge) {
     	  FacesContext context = FacesContext.getCurrentInstance();
