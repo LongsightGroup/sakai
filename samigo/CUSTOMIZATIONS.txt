@@ -1,0 +1,2 @@
+SAM-2997 - Add additional events to samigo xapi for scoring
+SAM-3010 - Add actual event string for auto graded event and fix score
