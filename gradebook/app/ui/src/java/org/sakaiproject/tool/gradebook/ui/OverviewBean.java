@@ -627,10 +627,10 @@ public class OverviewBean extends GradebookDependentBean implements Serializable
 				localGradebook.setSelectedGradeMapping(localGradeMap);
 				getGradebookManager().updateGradebook(localGradebook);
 			} catch (IllegalStateException e) {
-	            logger.error(e);
+	            logger.error(e.getMessage(),e);
 	            FacesUtil.addErrorMessage("Failed to initialized duke grading options");
 			} catch (StaleObjectModificationException e) {
-	            logger.error(e);
+	            logger.error(e.getMessage(),e);
 	            FacesUtil.addErrorMessage("Failed to initialized duke grading options");
 			}
 		}
