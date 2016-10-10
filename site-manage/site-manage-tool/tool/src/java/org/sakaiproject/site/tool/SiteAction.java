@@ -15308,8 +15308,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			// user selected an option allowed to continue but failed confirmation
 			addAlert(state, rb.getString("sitegen.delegate.confirm.alert.mustfollow"));
 			state.setAttribute(STATE_TEMPLATE_INDEX, "55");
+		} else {
+			// user selected an option allowed to continue but failed confirmation
+			addAlert(state, rb.getString("sitegen.delegate.confirm.alert.mustbe"));
+			state.setAttribute(STATE_TEMPLATE_INDEX, "55");
 		}
-	}	
+	}
 	
 	/**
 	 * return the title of the 1st section in the chosen list that has an

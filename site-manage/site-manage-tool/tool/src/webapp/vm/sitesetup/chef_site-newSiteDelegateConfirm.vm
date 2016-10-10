@@ -32,17 +32,20 @@
 		    var selected = $('input[type=radio][name=conformer]:checked').val();
 		    
 		    if ( selected === 'instructor' || selected === 'delegate' ) {
-		    	var isOpen = $( "#dialog-confirm" ).dialog( "isOpen" );
+                $('#cancelButton').prop('disabled', true);
+                $('#backButton').prop('disabled', true);
+
+                var isOpen = $( "#dialog-confirm" ).dialog( "isOpen" );
 		    	if( !isOpen ) {
 		    		$( "#dialog-confirm" ).dialog( "open" );
 		    	}
-		    }
+		    } else {
+                $('#option').val('notinstructor');
+                $('#continueButton').click();
+            }
 		}
 		
 		$( document ).ready( function() {
-			// disable continue button initially
-			// $('#continueButton').prop('disabled', true);
-			
 			$('input[type=radio][name=conformer]').on('change', function() {
 				promptDialogConfirmation();
 			});
@@ -63,18 +66,20 @@
 						}
 						$( this ).dialog( 'close' );
 						$('#continueButton').click();
-					},
+		            },
 					$tlang.getString("sitegen.delegate.confirm.cancel"): function() {
 						$('input[type=radio][name=conformer]').attr('checked', false);
-						$( this ).dialog( 'close' );
-					}
+		                $('#cancelButton').prop('disabled', false);
+		                $('#backButton').prop('disabled', false);
+        		        $( this ).dialog( 'close' );
+		            }
 				}
 			});
 			
 			$( '#dialog-confirm' ).siblings('div.ui-dialog-titlebar').remove();
 			
 			$('#continueButton').click(function() {
-				$('#newSiteDelegateConfirm').submit();
+                $('#newSiteDelegateConfirm').submit();
 		    });
 		    
 		    $('#backButton').click(function() {
@@ -132,6 +137,7 @@
 					name="continue"
 					id="continueButton" 
 					accesskey="s"
+					style="display: none"
                     #if ($!basedOnTemplate) value="$tlang.getString('sitetype.doneOnly')" #else value="$tlang.getString('gen.continue')" #end
 				/>
 				<input
