@@ -1,10 +1,10 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "missionsociety"; // This is used for bootstrap font behaviour.
+$skin-name : "morpheus-default"; // This is used for bootstrap font behaviour.
 
-$break-small-end:      	800px;
-$break-medium-end:     	1030px;
+$break-small-end: 	800px;
+$break-medium-end: 	1030px;
 
 $phone  :       "only screen and (max-width : #{ $break-small-end })";
 $tablet :       "only screen and (max-width : #{ $break-medium-end })";
@@ -24,29 +24,34 @@ $font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default
 //Typography variables
 $font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
 $default-font-size: 14px !default;
-$default-font-weight: 400 !default;    										// 400 or 700 as you wish
+$default-font-weight: 400 !default;										// 400 or 700 as you wish
 $header-font-family: $font-family;
-$header-font-weight: 700 !default;     										// 400 or 700 as you wish
+$header-font-weight: 700 !default;										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #CCCCCC;
+$background-color: 			 #FFFFFF !default;
+// $background-color-secondary: #0b736e !default;
 
-$primary-color:                          #0E437F;
-$text-color:                             #FFFFFF;
+$primary-color:    			 #0b763e;
+// $primary-color-shadow:			 #2A87C0;
+// $secondary-color:  			 #F00;
+// $alt-colour: 				 #d36f00;
 
-$portal-background-color: $background-color;
+$text-color:				 #000000;
 
-$tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #F0F0F0;
-$tool-menu-color:      			 #424621;
-$tool-tab-background-color:    			 #707937;
-$tool-border-color:    			 #C1C1C1;
-$tool-tab-active-background-color:     			 $background-color !default;
+$portal-background-color: $background-color !default;
+
+$tool-background-color:		 $background-color !default;
+$tool-menu-background-color:			 #FFFFFF;
+$tool-menu-color: 			 #0b763e;
+$tool-tab-background-color: 			 #F8F8F8;
+$tool-border-color:			 #E0E0E0;
+$tool-tab-active-background-color: 			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #CCCCCC !important;
-$tool-menu-hover-background-color: #0E437F !important;
-$tool-menu-current-background-color: #0E437F !important;
-$tool-menu-current-color: #CCCCCC !important;
+$tool-menu-hover-color: $background-color !important;
+$tool-menu-hover-background-color: $primary-color !important;
+$tool-menu-current-background-color: $primary-color !important;
+$tool-menu-current-color: $background-color !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -57,13 +62,13 @@ $tool-sub-menu-current-background-color: $background-color !default;
 $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
-$main-content-background: $background-color !important;
-$top-header-background: #FFFFFF !important;
+$main-content-background: $background-color !default;
+$top-header-background: $primary-color !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #0E437F !important;
-$breadcrumbs-hover-color:      		 #0E437F !important;
+$breadcrumbs-color:			 $background-color !important;
+$breadcrumbs-tool-color:		 #FFFFFF;
+$breadcrumbs-hover-color:		 #00FF00;
 
 /* Link colors */
 $link-color: $primary-color;
@@ -74,41 +79,49 @@ $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #FFFFFF;
-$button-border-color: #0A2A4C;
-$button-background-color: #f0f0f0;
-$button-background-secondary-color: #707937;
+$button-text-color:	 #0b763e;
+$button-border-color: #00FF00;
+$button-background-color: #FFFFFF;
+$button-background-secondary-color: #FF7F00;
 /* General button colors */
-$button-color-text-color: #FFFFFF;
-$button-color-border-color: #FFFFFF;
-$button-color-background-color: #2a94c0;
-$button-color-background-secondary-color: #424621;
+$button-color-text-color: #0b763e;
+$button-color-border-color: #00FF00;
+$button-color-background-color: #FFFFFF;
+$button-color-background-secondary-color: #FF7F00;
 /* ///////////// */
 
 $info-color:                $primary-color;
-$info-background-color:     lighten($info-color, 45%) !important;
-$ok-color:                  #dff08d !default;
+$info-background-color:     lighten(#444444, 45%) !important;
+$ok-color:                  #3c763d !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #fcf8e3 !default;
+$warn-background-color:     #F6ECB7 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-/* This is the gradient in the header of the page */
-$header-gradient-a: #AC4710;
-$header-gradient-b: #AC4710;
-$header-gradient-c: #AC4710;
-$header-gradient-d: #AC4710;
+$swapped-view-primary: 		 #bf360c;
+$swapped-view-text-color:	 #414141;
+$swapped-view-sites-nav-background: $swapped-view-primary !default;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #E6E6E6 !important;
-$sites-nav-menu-item-color-hover:           #E6E6E6 !default;
+/* This is the gradient in the header of the page */
+$header-gradient-a: #0b763e;
+$header-gradient-b: #0b763e;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
+
+/* topNav Main Menu */
+$topNav-text-color:                         #fff; /* used for links and text in the topNav */
+$topNav-text-alt-color:                     #fff;
+
+$sites-nav-menu-item-background:            #ebebeb !important;
+$sites-nav-menu-item-color:                 #000000 !important;
+$sites-nav-menu-item-color-hover:           $sites-nav-menu-item-color !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #0E437F !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-background:   #00FF00 !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -116,7 +129,7 @@ $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border
 $sites-nav-menu-item-selected-border-left:  none !default;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
 $sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
-$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !default;
 $sites-nav-submenu-item-color:              $sites-nav-menu-item-color;
 $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !default;
 $sites-nav-submenu-item-border:             none !default;
@@ -136,9 +149,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/missionsociety.jpg';
+$logo: 'images/ceath.jpg';
 $logo-height: 80px;
-$logo-width: 300px;
+$logo-width: 277px;
 
 /* Tool icons */
 $skin-with-icons: true !default;
@@ -147,3 +160,7 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+// @import "customization"; //it is created on-the-fly by maven.
+
+// @import url(#{$font-family-url});
