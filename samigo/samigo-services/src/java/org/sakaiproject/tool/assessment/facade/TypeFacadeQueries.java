@@ -41,7 +41,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class TypeFacadeQueries extends HibernateDaoSupport implements TypeFacadeQueriesAPI{
 
-  private Logger log = LoggerFactory.getLogger(TypeFacadeQueries.class);
+  private Log log = LogFactory.getLog(TypeFacadeQueries.class);
   private HashMap<Long, TypeFacade> typeFacadeMap;
   private List<TypeFacade> itemTypes;
 
