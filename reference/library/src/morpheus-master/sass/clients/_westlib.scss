@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "missionsociety"; // This is used for bootstrap font behaviour.
+$skin-name : "ceath"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -29,24 +29,24 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #CCCCCC;
+$background-color: #FFFFFF;
 
-$primary-color:                          #0E437F;
-$text-color:                             #FFFFFF;
+$primary-color:                          #000000;
+$text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #F0F0F0;
-$tool-menu-color:      			 #424621;
-$tool-tab-background-color:    			 #707937;
-$tool-border-color:    			 #C1C1C1;
+$tool-menu-background-color:   			 #ffe485;
+$tool-menu-color:      			 #000000;
+$tool-tab-background-color:    			 #ffe485;
+$tool-border-color:    			 #ffcc00;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #CCCCCC !important;
-$tool-menu-hover-background-color: #0E437F !important;
-$tool-menu-current-background-color: #0E437F !important;
-$tool-menu-current-color: #CCCCCC !important;
+$tool-menu-hover-color: $background-color !important;
+$tool-menu-hover-background-color: $primary-color !important;
+$tool-menu-current-background-color: $primary-color !important;
+$tool-menu-current-color: $background-color !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,34 +58,34 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #FFFFFF !important;
+$top-header-background: #202224 !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #0E437F !important;
-$breadcrumbs-hover-color:      		 #0E437F !important;
+$breadcrumbs-color:    			 #FFFFFF !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #ffcc00 !important;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #0064cd;
+$link-active-color: #0064cd;
+$link-hover-color: #0064cd;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #FFFFFF;
-$button-border-color: #0A2A4C;
-$button-background-color: #f0f0f0;
-$button-background-secondary-color: #707937;
+$button-text-color:    	 #000000;
+$button-border-color: #CCCCCC;
+$button-background-color: #f2f2f2;
+$button-background-secondary-color: #FFFFFF;
 /* General button colors */
-$button-color-text-color: #FFFFFF;
-$button-color-border-color: #FFFFFF;
-$button-color-background-color: #2a94c0;
-$button-color-background-secondary-color: #424621;
+$button-color-text-color: #000000;
+$button-color-border-color: #CCCCCC;
+$button-color-background-color: #f2f2f2;
+$button-color-background-secondary-color: #FFFFFF;
 /* ///////////// */
 
-$info-color:                $primary-color;
+$info-color:                #CCCCCC;
 $info-background-color:     lighten($info-color, 45%) !important;
 $ok-color:                  #dff08d !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
@@ -95,20 +95,20 @@ $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #AC4710;
-$header-gradient-b: #AC4710;
-$header-gradient-c: #AC4710;
-$header-gradient-d: #AC4710;
+$header-gradient-a: #202224;
+$header-gradient-b: #202224;
+$header-gradient-c: #eec44e;
+$header-gradient-d: #eec44e;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #E6E6E6 !important;
-$sites-nav-menu-item-color-hover:           #E6E6E6 !default;
+$sites-nav-menu-item-background:            #202224 !important;
+$sites-nav-menu-item-color:                 #FFFFFF !important;
+$sites-nav-menu-item-color-hover:           $sites-nav-menu-item-color !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #0E437F !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-background:   #eec44e !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/missionsociety.jpg';
+$logo: 'images/westliberty.png';
 $logo-height: 80px;
-$logo-width: 300px;
+$logo-width: 277px;
 
 /* Tool icons */
 $skin-with-icons: true !default;
@@ -147,3 +147,16 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+// .Mrphs-topHeader a {
+//    color: #990000 !important;
+// }
+
+.Mrphs-mainHeader .Mrphs-headerLogo {
+   width: 8.5em !important;
+}
+
+.instruction {
+   border-color: #eec44e !important;
+   background-color: #FFFFFF !important;
+}
