@@ -38,7 +38,7 @@ $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #FFFFFF;
-$tool-menu-color:      			 #FFFFFF;
+$tool-menu-color:      			 #000000;
 $tool-tab-background-color:    			 #153978;
 $tool-border-color:    			 #FFFFFF;
 $tool-tab-active-background-color:     			 $background-color !default;
@@ -58,7 +58,7 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #FFFFFF !important;
+$top-header-background: #153978 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
@@ -100,7 +100,7 @@ $header-gradient-b: #153978;
 $header-gradient-c: #153978;
 $header-gradient-d: #153978;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
+$sites-nav-menu-item-background:            #153978 !important;
 $sites-nav-menu-item-color:                 #E6E6E6 !important;
 $sites-nav-menu-item-color-hover:           #E6E6E6 !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -137,11 +137,11 @@ $measure: 960px !default;
 
 /* Logo location */
 $logo: 'images/newbrunswick.jpg';
-$logo-height: 80px;
-$logo-width: 300px;
+$logo-height: 50px;
+$logo-width: 188px;
 
 /* Tool icons */
-$skin-with-icons: true !default;
+$skin-with-icons: false !important;
 $icon-size: 20px !default;
 
 /* Footer */

@@ -40,13 +40,13 @@ $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #00407A;
 $tool-menu-color:      			 #FFFFFF;
 $tool-tab-background-color:    			 #032993;
-$tool-border-color:    			 #7DBA00;
+$tool-border-color:    			 #FFFFFF;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
 $tool-menu-hover-background-color: #7DBA00 !important;
-$tool-menu-current-background-color: #7DBA00 !important;
-$tool-menu-current-color: #FFFFFF !important;
+$tool-menu-current-background-color: #FFFFFF !important;
+$tool-menu-current-color: #00407A !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -75,12 +75,12 @@ $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
-$button-border-color: #7DBA00;
+$button-border-color: #FFFFFF;
 $button-background-color: #032993;
 $button-background-secondary-color: #7DBA00;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
-$button-color-border-color: #7DBA00;
+$button-color-border-color: #FFFFFF;
 $button-color-background-color: #2a94c0;
 $button-color-background-secondary-color: #7DBA00;
 /* ///////////// */
@@ -95,10 +95,10 @@ $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #FCC917;
-$header-gradient-b: #FCC917;
-$header-gradient-c: #FCC917;
-$header-gradient-d: #FCC917;
+$header-gradient-a: #00407A;
+$header-gradient-b: #00407A;
+$header-gradient-c: #00407A;
+$header-gradient-d: #00407A;
 
 $sites-nav-menu-item-background:            #FFFFFF !important;
 $sites-nav-menu-item-color:                 #FCC917 !important;
@@ -137,11 +137,11 @@ $measure: 960px !default;
 
 /* Logo location */
 $logo: 'images/point.jpg';
-$logo-height: 24px;
-$logo-width: 150px;
+$logo-height: 50px;
+$logo-width: 102px;
 
 /* Tool icons */
-$skin-with-icons: true !default;
+$skin-with-icons: false !important;
 $icon-size: 20px !default;
 
 /* Footer */
