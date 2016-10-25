@@ -13,6 +13,14 @@
 
     <filter-mapping>
         <filter-name>sakai.request</filter-name>
+        <servlet-name>ubalt.attendance</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>sakai.request</filter-name>
         <servlet-name>sakai.iframe</servlet-name>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
@@ -125,6 +133,20 @@
      <servlet>
         <servlet-name>
            sakai.iframe.annotatedurl
+        </servlet-name>
+        <servlet-class>
+            org.sakaiproject.web.tool.IFrameAction
+        </servlet-class>
+        <init-param>
+            <param-name>template</param-name>
+            <param-value>web/chef_iframe</param-value>            
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+     </servlet>
+
+     <servlet>
+        <servlet-name>
+           ubalt.attendance
         </servlet-name>
         <servlet-class>
             org.sakaiproject.web.tool.IFrameAction
