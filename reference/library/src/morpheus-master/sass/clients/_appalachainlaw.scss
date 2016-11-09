@@ -89,7 +89,7 @@ $info-color:                $primary-color;
 $info-background-color:     lighten($info-color, 45%) !important;
 $ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #FCF8E3 !default;
+$warn-background-color:     #FCF*E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;

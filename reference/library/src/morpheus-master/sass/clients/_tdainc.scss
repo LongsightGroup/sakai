@@ -40,7 +40,8 @@ $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #FFFFFF;
 $tool-menu-color:      			 #0000cc;
 $tool-tab-background-color:    			 #f0f0f0;
-$tool-border-color:    			 #0000ff;
+$tool-border-color:    			 #0000ff
+;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
@@ -100,7 +101,8 @@ $header-gradient-b: #b3ccff;
 $header-gradient-c: #b3ccff;
 $header-gradient-d: #b3ccff;
 
-$sites-nav-menu-item-background:            #0000ff !important;
+$sites-nav-menu-item-background:            #0000ff
+ !important;
 $sites-nav-menu-item-color:                 #E6E6E6 !important;
 $sites-nav-menu-item-color-hover:           #0000ff !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */

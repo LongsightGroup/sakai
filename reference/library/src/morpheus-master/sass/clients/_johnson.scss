@@ -43,8 +43,8 @@ $tool-tab-background-color:    			 #FFFFFF;
 $tool-border-color:    			 #C1C1C1;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #8a8d8f !important;
-$tool-menu-hover-background-color: #cccccc !important;
+$tool-menu-hover-color:  #ffffff !important;
+$tool-menu-hover-background-color: #e37022 !important;
 $tool-menu-current-background-color: #0a2240 !important;
 $tool-menu-current-color: #ffffff !important;
 $tool-menu-current-border-color: $primary-color !important;
@@ -62,8 +62,8 @@ $top-header-background: #0a2240 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #000000 !important;
-$breadcrumbs-hover-color:      		 #535353 !important;
+$breadcrumbs-tool-color:       		 #0a2240 !important;
+$breadcrumbs-hover-color:      		 #0a2240 !important;
 
 /* Link colors */
 $link-color: $primary-color;
@@ -95,8 +95,8 @@ $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #ffffff;
-$header-gradient-b: #8a8d8f;
+$header-gradient-a: #f0f0f0;
+$header-gradient-b: #f0f0f0;
 $header-gradient-c: #0a2240;
 $header-gradient-d: #ee7624;
 
