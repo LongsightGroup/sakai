@@ -39,11 +39,11 @@ $portal-background-color: $background-color;
 $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #ebebeb;
 $tool-menu-color:      			 #424242;
-$tool-tab-background-color:    			 #424242;
+$tool-tab-background-color:    			 #ebebeb;
 $tool-border-color:    			 #424242;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #424242 !important;
+$tool-menu-hover-color:  #ed1c2b !important;
 $tool-menu-hover-background-color: #FFFFFF !important;
 $tool-menu-current-background-color: #ffffff !important;
 $tool-menu-current-color: #ed1c2b !important;
@@ -66,9 +66,9 @@ $breadcrumbs-tool-color:       		 #FFFFFF !important;
 $breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #424242;
+$link-active-color: #424242;
+$link-hover-color: #424242;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
@@ -100,15 +100,15 @@ $header-gradient-b: #ed1c2b;
 $header-gradient-c: #FFFFFF;
 $header-gradient-d: #FFFFFF;
 
-$sites-nav-menu-item-background:            #424242 !important;
-$sites-nav-menu-item-color:                 #ebebeb !important;
+$sites-nav-menu-item-background:            #ebebeb !important;
+$sites-nav-menu-item-color:                 #424242 !important;
 $sites-nav-menu-item-color-hover:           #ed1c2b !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
 $sites-nav-menu-item-selected-background:   #ebebeb !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-color:        #424242 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -122,8 +122,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/kentuckychristian.jpg';
+$logo: '../images/kentuckychristian.jpg';
 $logo-height: 50px;
-$logo-width: 124px;
+$logo-width: 125px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -147,3 +147,20 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+.img_site_toolmenu {
+    display: none !important;
+}
+
+.select {
+    background-color: #FFFFFF !important;
+    color: #424242 !important;
+}
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #424242;
+}
+
+.navIntraTool li span a {
+    color: #424242 !important;
+}

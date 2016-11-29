@@ -29,17 +29,17 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #CCCCCC;
+$background-color: #FFFFFF;
 
 $primary-color:                          #A39161;
-$text-color:                             #FFFFFF;
+$text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #A39161;
 $tool-menu-color:      			 #FFFFFF;
-$tool-tab-background-color:    			 #4F234B;
+$tool-tab-background-color:    			 #A39161;
 $tool-border-color:    			 #8A6D83;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
@@ -66,9 +66,9 @@ $breadcrumbs-tool-color:       		 #A39161 !important;
 $breadcrumbs-hover-color:      		 #A39161 !important;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #4F234B;
+$link-active-color: #4F234B;
+$link-hover-color: #4F234B;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
@@ -122,8 +122,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/kuyper.jpg';
+$logo: '../images/kuyper.jpg';
 $logo-height: 50px;
-$logo-width: 273px;
+$logo-width: 494px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -147,3 +147,20 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+.img_site_toolmenu {
+    display: none !important;
+}
+
+.select {
+    background-color: #f0f0f0 !important;
+    color: #000000 !important;
+}
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+.navIntraTool li span a {
+    color: #FFFFFF !important;
+}

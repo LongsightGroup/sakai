@@ -39,14 +39,14 @@ $portal-background-color: $background-color;
 $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #576729;
 $tool-menu-color:      			 #FFFFFF;
-$tool-tab-background-color:    			 #FFFFFF;
+$tool-tab-background-color:    			 #576729;
 $tool-border-color:    			 #003c78;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #E1E1E1 !important;
+$tool-menu-hover-color:  #FFFFFF !important;
 $tool-menu-hover-background-color: #003c78 !important;
 $tool-menu-current-background-color: #003c78 !important;
-$tool-menu-current-color: #E1E1E1 !important;
+$tool-menu-current-color: #FFFFFF !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -66,9 +66,9 @@ $breadcrumbs-tool-color:       		 #FFFFFF !important;
 $breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #003c78;
+$link-active-color: #003c78;
+$link-hover-color: #003c78;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
@@ -77,7 +77,7 @@ $link-hover-background-color: transparent !default;
 $button-text-color:    	 #000000;
 $button-border-color: #FFFFFF;
 $button-background-color: #f0f0f0;
-$button-background-secondary-color: #00319E;
+$button-background-secondary-color: #99B1C9;
 /* General button colors */
 $button-color-text-color: #000000;
 $button-color-border-color: #FFFFFF;
@@ -102,13 +102,13 @@ $header-gradient-d: #343434;
 
 $sites-nav-menu-item-background:            #FFFFFF !important;
 $sites-nav-menu-item-color:                 #000000 !important;
-$sites-nav-menu-item-color-hover:           #FFFFFF !default;
+$sites-nav-menu-item-color-hover:           #000000 !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #576729 !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-background:   #E1E1E1 !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -122,8 +122,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/brevard.jpg';
+$logo: '../images/brevard.jpg';
 $logo-height: 50px;
-$logo-width: px;
+$logo-width: 120px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -147,3 +147,20 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+.img_site_toolmenu {
+    display: none !important;
+}
+
+.select {
+    background-color: #f0f0f0 !important;
+    color: #000000 !important;
+}
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #FFFFFF;
+}
+
+.navIntraTool li span a {
+    color: #FFFFFF !important;
+}

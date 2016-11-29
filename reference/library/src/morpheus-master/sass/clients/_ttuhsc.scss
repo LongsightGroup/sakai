@@ -39,3 +39,8 @@ $header-gradient-d: #99281e;
 
 $breadcrumbs-color: #ffffff;
 $breadcrumbs-tool-color: #ffffff;
+
+#toolMenu ul li a .Mrphs-toolsNav__menuitem--title, #subSites ul li a .Mrphs-toolsNav__menuitem--title {
+    overflow: overlay;
+    white-space: inherit;
+}

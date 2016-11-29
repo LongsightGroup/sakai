@@ -29,24 +29,24 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #CCCCCC;
+$background-color: #FFFFFF;
 
 $primary-color:                          #79ACB2;
-$text-color:                             #FFFFFF;
+$text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #FFFFFF;
 $tool-menu-color:      			 #255A66;
-$tool-tab-background-color:    			 #79ACB2;
+$tool-tab-background-color:    			 #FFFFFF;
 $tool-border-color:    			 #8A6D83;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #CCCCCC !important;
+$tool-menu-hover-color:  #FFFFFF !important;
 $tool-menu-hover-background-color: #79ACB2 !important;
 $tool-menu-current-background-color: #79ACB2 !important;
-$tool-menu-current-color: #CCCCCC !important;
+$tool-menu-current-color: #FFFFFF !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -66,22 +66,22 @@ $breadcrumbs-tool-color:       		 #79ACB2 !important;
 $breadcrumbs-hover-color:      		 #79ACB2 !important;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #255A66;
+$link-active-color: #255A66;
+$link-hover-color: #255A66;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #000000;
+$button-text-color:    	 #FFFFFF;
 $button-border-color: #255A66;
-$button-background-color: #f0f0f0;
-$button-background-secondary-color: #FFFFFF;
+$button-background-color: #79ACB2;
+$button-background-secondary-color: #255A66;
 /* General button colors */
-$button-color-text-color: #000000;
+$button-color-text-color: #FFFFFF;
 $button-color-border-color: #255A66;
-$button-color-background-color: #2a94c0;
+$button-color-background-color: #79ACB2;
 $button-color-background-secondary-color: #255A66;
 /* ///////////// */
 
@@ -101,8 +101,8 @@ $header-gradient-c: #FFFFFF;
 $header-gradient-d: #FFFFFF;
 
 $sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #E6E6E6 !important;
-$sites-nav-menu-item-color-hover:           #E6E6E6 !default;
+$sites-nav-menu-item-color:                 #696969 !important;
+$sites-nav-menu-item-color-hover:           #79ACB2 !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -122,8 +122,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -136,7 +136,7 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/ndeo.jpg';
+$logo: '../images/ndeo.jpg';
 $logo-height: 50px;
 $logo-width: 118px;
 
@@ -147,3 +147,20 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+.img_site_toolmenu {
+    display: none !important;
+}
+
+.select {
+    background-color: #CCCCCC !important;
+    color: #000000 !important;
+}
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #255A66;
+}
+
+.navIntraTool li span a {
+    color: #255A66 !important;
+}

@@ -39,7 +39,7 @@ $portal-background-color: $background-color;
 $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #F0F0F0;
 $tool-menu-color:      			 #424621;
-$tool-tab-background-color:    			 #707937;
+$tool-tab-background-color:    			 #F0F0F0;
 $tool-border-color:    			 #C1C1C1;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
@@ -66,9 +66,9 @@ $breadcrumbs-tool-color:       		 #0E437F !important;
 $breadcrumbs-hover-color:      		 #0E437F !important;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #000000;
+$link-active-color: #000000;
+$link-hover-color: #000000;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
@@ -122,8 +122,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -136,7 +136,7 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/missionsociety.jpg';
+$logo: '../images/missionsociety.jpg';
 $logo-height: 50px;
 $logo-width: 188px;
 
@@ -147,3 +147,20 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+.img_site_toolmenu {
+    display: none !important;
+}
+
+.select {
+    background-color: #f0f0f0 !important;
+    color: #FFFFFF !important;
+}
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #424621;
+}
+
+.navIntraTool li span a {
+    color: #424621 !important;
+}
