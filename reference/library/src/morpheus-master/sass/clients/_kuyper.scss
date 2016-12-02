@@ -29,9 +29,9 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #FFFFFF;
+$background-color: #F2F2F2;
 
-$primary-color:                          #A39161;
+$primary-color:                          #84754e;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
@@ -40,7 +40,7 @@ $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #A39161;
 $tool-menu-color:      			 #FFFFFF;
 $tool-tab-background-color:    			 #A39161;
-$tool-border-color:    			 #8A6D83;
+$tool-border-color:    			 #47234b;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #CCCCCC !important;
