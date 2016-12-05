@@ -148,6 +148,9 @@ $icon-size: 20px !default;
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
+
 .img_site_toolmenu {
     display: none !important;
 }
@@ -163,4 +166,13 @@ $footer-color: $background-color-secondary !default;
 
 .navIntraTool li span a {
     color: #005C42 !important;
+}
+
+.instruction {
+    border-color: #005C42 !important;
+    background-color: #FFFFFF !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: #005C42 !important;
 }

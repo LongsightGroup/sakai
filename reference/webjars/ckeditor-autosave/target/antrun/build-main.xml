@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <mkdir dir="/home/ubuntu/src/sakai-11/reference/webjars/ckeditor-autosave/target/classes/META-INF/resources/webjars/autosave/8541f541d9985cfd0859c7d8eb6be404afe95a2d"/>
+  <get src="https://github.com/w8tcha/CKEditor-AutoSave-Plugin/archive/8541f541d9985cfd0859c7d8eb6be404afe95a2d/8541f541d9985cfd0859c7d8eb6be404afe95a2d.zip" dest="/home/ubuntu/src/sakai-11/reference/webjars/ckeditor-autosave/target/ckeditor-autosave.zip"/>
+  <echo message="unzip archives"/>
+  <unzip src="/home/ubuntu/src/sakai-11/reference/webjars/ckeditor-autosave/target/ckeditor-autosave.zip" dest="/home/ubuntu/src/sakai-11/reference/webjars/ckeditor-autosave/target">
+    <cutdirsmapper dirs="1"/>
+  </unzip>
+  <echo message="moving resources"/>
+  <move todir="/home/ubuntu/src/sakai-11/reference/webjars/ckeditor-autosave/target/classes/META-INF/resources/webjars/autosave/8541f541d9985cfd0859c7d8eb6be404afe95a2d">
+    <fileset excludes="samples/" dir="/home/ubuntu/src/sakai-11/reference/webjars/ckeditor-autosave/target/autosave"/>
+  </move>
+</target>
+</project>
