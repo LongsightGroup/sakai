@@ -124,6 +124,20 @@
 
                                     #end ## END of IF (${tabsSites.prefsToolUrl})
 
+<!-- LS-163 customization for WSCC -->
+#if ($wsccEmailAddress && $wsccEmailAddress.contains("@wscc.edu"))
+  <li class="Mrphs-userNav__submenuitem Mrphs-userNav__submenuitem-indented">
+    <a id="wsccStudentResources" href="/portal/site/dda47388-2837-49dd-9220-b5793995506c">Student Resources</a>
+  </li>
+  <li class="Mrphs-userNav__submenuitem Mrphs-userNav__submenuitem-indented">
+    <a id="wsccEmployeeResources" href="/portal/site/71a2f77f-d87c-4c68-bdb9-ea7ebb213e4f">Employee Resources</a>
+  </li>
+#elseif ($wsccEmailAddress)
+  <li class="Mrphs-userNav__submenuitem Mrphs-userNav__submenuitem-indented">
+    <a id="wsccStudentResources" href="/portal/site/dda47388-2837-49dd-9220-b5793995506c">Student Resources</a>
+  </li>
+#end
+
                                     #if (${tabsSites.tutorial})
 
                                         <li class="Mrphs-userNav__submenuitem Mrphs-userNav__submenuitem-indented">
