@@ -65,20 +65,17 @@
     <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
     
     <!-- Disable signing using cryptographic keys -->
-    <bean id="keyManager" class="org.springframework.security.saml.key.EmptyKeyManager"/>
     <!-- Central storage of cryptographic keys -->
-    <!--
     <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
-        <constructor-arg value="classpath:security/samlKeystore.jks"/>
-        <constructor-arg type="java.lang.String" value="nalle123"/>
+        <constructor-arg value="classpath:samlKeystore.jks"/>
+        <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
-                <entry key="apollo" value="nalle123"/>
+                <entry key="lampprodkey" value="changeit"/>
             </map>
         </constructor-arg>
-        <constructor-arg type="java.lang.String" value="apollo"/>
+        <constructor-arg type="java.lang.String" value="lampprodkey"/>
     </bean>
-    -->
 
     <!-- Entry point to initialize authentication, default values taken from properties file -->
     <bean id="samlEntryPoint" class="org.springframework.security.saml.SAMLEntryPoint">
@@ -98,8 +95,8 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="SakaiSAMLApp"/>
-                <!-- <property name="includeDiscoveryExtension" value="true"/> -->
+                <property name="entityId" value="https://lampprod.longsight.com/saml" />
+                <property name="includeDiscoveryExtension" value="true"/>
                 <!-- <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         <property name="idpDiscoveryEnabled" value="true"/>
@@ -133,7 +130,7 @@
 			                </constructor-arg>
 			                <constructor-arg>
                                 <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="/opt/tomcat/sakai/SakaiSAMLApp_sp.xml"/>
+                                    <constructor-arg value="sakai/saml/sp.xml"/>
                                 </bean>
 			                </constructor-arg>
 			                <property name="parserPool" ref="parserPool"/>
@@ -146,8 +143,8 @@
 			               <property name="sslSecurityProfile" value="pkix"/>
 			               <property name="sslHostnameVerification" value="default"/>
 			               <property name="signMetadata" value="false"/>
-			               <property name="signingKey" value="null"/>
-			               <property name="encryptionKey" value="null"/>
+			               <property name="signingKey" value="lampprodkey"/>
+			               <property name="encryptionKey" value="lampprodkey"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
 			               <property name="requireLogoutRequestSigned" value="false"/>
 			               <property name="requireLogoutResponseSigned" value="false"/>
@@ -157,54 +154,55 @@
 			    </bean>
 
                 <!-- Example of classpath metadata with Extended Metadata -->
+<!--
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <bean class="java.util.Timer"/>
+                                <value type="java.lang.String">https://adfs.johnsonu.edu/federationmetadata/2007-06/federationmetadata.xml</value>
                             </constructor-arg>
                             <constructor-arg>
-                                <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="/opt/tomcat/sakai/ssocircle_idp.xml"/>
-                                </bean>
+                                <value type="int">45000</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="java.lang.String">sakai/saml/idp-johnsonu.xml</value>
                             </constructor-arg>
                             <property name="parserPool" ref="parserPool"/>
                         </bean>
                     </constructor-arg>
                     <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                        </bean>
+                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
                     </constructor-arg>
+                    <property name="metadataTrustCheck" value="false"/>
                 </bean>
-                
-                <!-- Example of HTTP metadata without Extended Metadata -->
-                <!-- 
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
-                    <constructor-arg>
-                        <value type="java.lang.String">http://idp.ssocircle.com/idp-meta.xml</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <value type="int">15000</value>
-                    </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
-                </bean>
-                -->
-                
-                <!-- Example of file system metadata without Extended Metadata -->
-                <!--
+-->
                 <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
                     <constructor-arg>
-                        <value type="java.io.File">/usr/local/metadata/idp.xml</value>
+                        <value type="java.io.File">sakai/saml/idp-longsight.xml</value>
                     </constructor-arg>
                     <property name="parserPool" ref="parserPool"/>
                 </bean>
-                -->
+
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                    <constructor-arg>
+                        <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                            <constructor-arg>
+                                <value type="java.io.File">sakai/saml/idp-johnsonu.xml</value>
+                            </constructor-arg>
+                            <property name="parserPool" ref="parserPool"/>
+                        </bean>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
+                    </constructor-arg>
+                    <property name="metadataTrustCheck" value="false"/>
+                </bean>
             </list>
         </constructor-arg>
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://idp.ssocircle.com"/>
+        <property name="defaultIDP" value="http://adfs.johnsonu.edu/adfs/services/trust"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
