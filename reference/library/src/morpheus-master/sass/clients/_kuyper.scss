@@ -76,22 +76,20 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #8A6D83;
-$button-background-color: #f0f0f0;
+$button-background-color: #f0f0f0  !important;
 $button-background-secondary-color: #4F234B;
 /* General button colors */
-$button-color-text-color: #FFFFFF;
+$button-color-text-color: #CCCCCC;
 $button-color-border-color: #8A6D83;
-$button-color-background-color: #2a94c0;
+$button-color-background-color: #84754e !important;
 $button-color-background-secondary-color: #8A6D83;
 /* ///////////// */
 
-$info-color:                $primary-color;
-$info-background-color:     lighten($info-color, 45%) !important;
-$ok-color:                  #dff08d !default;
+$ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #fcf8e3 !default;
+$warn-background-color:     #FCF8E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #f2dede !default;
+$error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
@@ -101,8 +99,8 @@ $header-gradient-c: #4F234B;
 $header-gradient-d: #4F234B;
 
 $sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #E6E6E6 !important;
-$sites-nav-menu-item-color-hover:           #E6E6E6 !default;
+$sites-nav-menu-item-color:                 ##484848 !important;
+$sites-nav-menu-item-color-hover:           ##484848 !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -138,7 +136,7 @@ $measure: 960px !default;
 /* Logo location */
 $logo: '../images/kuyper.jpg';
 $logo-height: 50px;
-$logo-width: 494px;
+$logo-width: 449px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -147,6 +145,9 @@ $icon-size: 20px !default;
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
+
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
 
 .img_site_toolmenu {
     display: none !important;
@@ -162,7 +163,7 @@ $footer-color: $background-color-secondary !default;
 }
 
 .navIntraTool li span a {
-    color: #FFFFFF !important;
+  color: #CCCCCC !important;
 }
 
 .instruction {
@@ -170,7 +171,10 @@ $footer-color: $background-color-secondary !default;
     background-color: #F2F2F2 !important;
 }
 
-.Mrphs-sakai-samigo #samigo-create-new-box {
-   background-color: #F2F2F2 !important;
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: #84754e !important;
+}
+
+.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
+    color: #A39161 !important;
 }

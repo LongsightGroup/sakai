@@ -76,22 +76,20 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #FFFFFF;
-$button-background-color: #0a2240;
+$button-background-color: #0a2240 !important;
 $button-background-secondary-color: #0a2240;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
 $button-color-border-color: #FFFFFF;
-$button-color-background-color: #0a2240;
+$button-color-background-color: #0a2240 !important;
 $button-color-background-secondary-color: #0a2240;
 /* ///////////// */
 
-$info-color:                $primary-color;
-$info-background-color:     lighten($info-color, 45%) !important;
-$ok-color:                  #dff08d !default;
+$ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #fcf8e3 !default;
+$warn-background-color:     #FCF8E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #f2dede !default;
+$error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
@@ -148,13 +146,16 @@ $icon-size: 20px !default;
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
+
 .img_site_toolmenu {
     display: none !important;
 }
 
 .select {
     background-color: #0a2240 !important;
-    color: #0a2240 !important;
+    color: #FFFFFF !important;
 }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
@@ -162,7 +163,7 @@ $footer-color: $background-color-secondary !default;
 }
 
 .navIntraTool li span a {
-    color: #0a2240 !important;
+  color: #ffffff !important;
 }
 
 .instruction {
@@ -170,7 +171,10 @@ $footer-color: $background-color-secondary !default;
     background-color: #ffffff !important;
 }
 
-.Mrphs-sakai-samigo #samigo-create-new-box {
-   background-color: #ffffff !important;
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: #cccccc !important;
+}
+
+.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
+    color: #0a2240 !important;
 }

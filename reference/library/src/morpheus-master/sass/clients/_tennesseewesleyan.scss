@@ -76,22 +76,20 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #5D829F;
-$button-background-color: #2681B5;
+$button-background-color: #2681B5 !important;
 $button-background-secondary-color: #225377;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
 $button-color-border-color: #000000;
-$button-color-background-color: #5D829F;
+$button-color-background-color: #5D829F !important;
 $button-color-background-secondary-color: #2681B5;
 /* ///////////// */
 
-$info-color:                $primary-color;
-$info-background-color:     lighten($info-color, 45%) !important;
-$ok-color:                  #dff08d !default;
+$ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #fcf8e3 !default;
+$warn-background-color:     #FCF8E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #f2dede !default;
+$error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
@@ -100,8 +98,8 @@ $header-gradient-b: #9DABBE;
 $header-gradient-c: #E6E6E6;
 $header-gradient-d: #E6E6E6;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #E6E6E6 !important;
+$sites-nav-menu-item-background:            #aec0cf !important;
+$sites-nav-menu-item-color:                 #3d3d3d !important;
 $sites-nav-menu-item-color-hover:           #5D829F !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
@@ -148,6 +146,9 @@ $icon-size: 20px !default;
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
+
 .img_site_toolmenu {
     display: none !important;
 }
@@ -162,7 +163,7 @@ $footer-color: $background-color-secondary !default;
 }
 
 .navIntraTool li span a {
-    color: #343434 !important;
+  color: #5D829F !important;
 }
 
 .instruction {
@@ -170,7 +171,10 @@ $footer-color: $background-color-secondary !default;
     background-color: #FFFFFF !important;
 }
 
-.Mrphs-sakai-samigo #samigo-create-new-box {
-   background-color: #FFFFFF !important;
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: #5D829F !important;
+}
+
+.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
+    color: #343434 !important;
 }

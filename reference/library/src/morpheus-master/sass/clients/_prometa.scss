@@ -29,18 +29,18 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #EAEAED;
+$background-color: #FFFFFF;
 
 $primary-color:                          #FFFFFF;
-$text-color:                             #5D829F;
+$text-color:                             #6F6F6F;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #E6E6E6;
-$tool-menu-color:      			 #343434;
-$tool-tab-background-color:    			 #E6E6E6;
-$tool-border-color:    			 #9DABBE;
+$tool-menu-background-color:   			 #9E9E9E;
+$tool-menu-color:      			 #FFFFFF;
+$tool-tab-background-color:    			 #9E9E9E;
+$tool-border-color:    			 #6F6F6F;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
@@ -62,8 +62,8 @@ $top-header-background: #343434 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #000000 !important;
-$breadcrumbs-hover-color:      		 #343434 !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
 $link-color: #990000;
@@ -74,40 +74,38 @@ $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #990000;
-$button-border-color: #5D829F;
-$button-background-color: #2681B5;
+$button-text-color:    	 #FFFFFF;
+$button-border-color: #9E9E9E;
+$button-background-color: #9E9E9E !important;
 $button-background-secondary-color: #FFFFFF;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
 $button-color-border-color: #343434;
-$button-color-background-color: #990000;
-$button-color-background-secondary-color: #FFFFFF;
+$button-color-background-color: #9E9E9E !important;
+$button-color-background-secondary-color: #9E9E9E;
 /* ///////////// */
 
-$info-color:                $primary-color;
-$info-background-color:     lighten($info-color, 45%) !important;
-$ok-color:                  #dff08d !default;
+$ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #fcf8e3 !default;
+$warn-background-color:     #FCF8E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #f2dede !default;
+$error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #D9D9D9;
-$header-gradient-b: #D9D9D9;
-$header-gradient-c: #FF9999;
-$header-gradient-d: #FF9999;
+$header-gradient-a: #990000;
+$header-gradient-b: #990000;
+$header-gradient-c: #990000;
+$header-gradient-d: #990000;
 
-$sites-nav-menu-item-background:            #737373 !important;
+$sites-nav-menu-item-background:            #343434 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
-$sites-nav-menu-item-color-hover:           #E6E6E6 !default;
+$sites-nav-menu-item-color-hover:           #FFFFFF !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #A6A6A6 !important;
+$sites-nav-menu-item-selected-background:   #626262 !important;
 $sites-nav-menu-item-selected-color:        #FFFFFF !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -138,7 +136,7 @@ $measure: 960px !default;
 /* Logo location */
 $logo: '../images/prometa.jpg';
 $logo-height: 50px;
-$logo-width: 219px;
+$logo-width: 218px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -148,29 +146,35 @@ $icon-size: 20px !default;
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
+
 .img_site_toolmenu {
     display: none !important;
 }
 
 .select {
-    background-color: #FFFFFF !important;
-    color: #5D829F !important;
+    background-color: #b9b8b8 !important;
+    color: #343434 !important;
 }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #343434;
+  color: #FFFFFF;
 }
 
 .navIntraTool li span a {
-    color: #343434 !important;
+  color: #990000 !important;
 }
 
 .instruction {
     border-color: #FFFFFF !important;
-    background-color: #EAEAED !important;
+    background-color: #FFFFFF !important;
 }
 
-.Mrphs-sakai-samigo #samigo-create-new-box {
-   background-color: #EAEAED !important;
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: #FFFFFF !important;
+}
+
+.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
+    color: #FFFFFF !important;
 }

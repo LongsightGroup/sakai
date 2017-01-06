@@ -76,22 +76,20 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #FFFFFF;
-$button-background-color: #484743;
+$button-background-color: #484743 !important;
 $button-background-secondary-color: #484743;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
 $button-color-border-color: #FFFFFF;
-$button-color-background-color: #484743;
+$button-color-background-color: #484743 !important;
 $button-color-background-secondary-color: #484743;
 /* ///////////// */
 
-$info-color:                $primary-color;
-$info-background-color:     lighten($info-color, 45%) !important;
-$ok-color:                  #dff08d !default;
+$ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #fcf8e3 !default;
+$warn-background-color:     #FCF8E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #f2dede !default;
+$error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
@@ -156,7 +154,7 @@ $info-background-color:     $background-color !important;
 }
 
 .select {
-    background-color: #484743 !important;
+    background-color: #EAEAEA !important;
     color: #005C42 !important;
 }
 
@@ -165,7 +163,7 @@ $info-background-color:     $background-color !important;
 }
 
 .navIntraTool li span a {
-    color: #005C42 !important;
+  color: #005C42 !important;
 }
 
 .instruction {
@@ -175,4 +173,8 @@ $info-background-color:     $background-color !important;
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: #005C42 !important;
+}
+
+.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
+    color: #FFFFFF !important;
 }
