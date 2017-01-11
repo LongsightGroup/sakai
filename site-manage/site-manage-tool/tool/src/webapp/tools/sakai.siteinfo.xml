@@ -32,7 +32,7 @@
                      like annc.read, content.read or some other permission
 		     that the particular role is likely to have so the button appears and disappears properly -->
 
-		<configuration name="functions.require" value="site.visit" /> 
+		<configuration name="functions.require" value="site.upd" /> 
 
 	</tool>
 
