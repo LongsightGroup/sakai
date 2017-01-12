@@ -3258,7 +3258,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			
 			List<Assignment> assignments = getAssignmentsCounted(gradebook.getId());
 			GradeMapping gradeMap = gradebook.getSelectedGradeMapping();
-			
+						
 			//this takes care of drop/keep scores
 			List<CourseGradeRecord> gradeRecords = getPointsEarnedCourseGradeRecords(getCourseGrade(gradebook.getId()), userUuids);
 			
@@ -3283,8 +3283,9 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 					if(calculatedGrade != null) {
 						cg.setCalculatedGrade(calculatedGrade.toString());
 					}
-
+					
 					//mapped grade
+					//NOTE: any incorrect mappings here are likely caused by the comparator not catering for the characters in the gradeMap string
 					String mappedGrade = gradeMap.getGrade(calculatedGrade);
 					cg.setMappedGrade(mappedGrade);
 					
