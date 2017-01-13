@@ -62,8 +62,8 @@ $top-header-background: #242b68 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #4478bc !important;
-$breadcrumbs-hover-color:      		 #4478bc !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
 $link-color: #000000;
@@ -74,7 +74,7 @@ $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #FFFFFF;
+$button-text-color:    	 #000000;
 $button-border-color: #3C76B6;
 $button-background-color: #ababab !important;
 $button-background-secondary-color: #3C76B6;
@@ -163,7 +163,7 @@ $info-background-color:     $background-color !important;
 }
 
 .navIntraTool li span a {
-  color: #CCCCCC !important;
+  color: #000000 !important;
 }
 
 .instruction {
@@ -176,5 +176,5 @@ $info-background-color:     $background-color !important;
 }
 
 .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
-    color: #4478bc !important;
+    color: #FFFFFF !important;
 }

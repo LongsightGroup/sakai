@@ -32,19 +32,19 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 $background-color: #FFFFFF;
 
 $primary-color:                          #ebebeb;
-$text-color:                             #424242;
+$text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #ebebeb;
-$tool-menu-color:      			 #424242;
-$tool-tab-background-color:    			 #ebebeb;
+$tool-menu-background-color:   			 #424242;
+$tool-menu-color:      			 #ebebeb;
+$tool-tab-background-color:    			 #424242;
 $tool-border-color:    			 #424242;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #ed1c2b !important;
-$tool-menu-hover-background-color: #FFFFFF !important;
+$tool-menu-hover-color:  #ffffff !important;
+$tool-menu-hover-background-color: #ed1c2b !important;
 $tool-menu-current-background-color: #ffffff !important;
 $tool-menu-current-color: #ed1c2b !important;
 $tool-menu-current-border-color: $primary-color !important;
@@ -75,12 +75,12 @@ $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
 $button-text-color:    	 #424242;
-$button-border-color: #424242;
+$button-border-color: #00000;
 $button-background-color: #FFFFFF !important;
 $button-background-secondary-color: #ed1c2b;
 /* General button colors */
 $button-color-text-color: #424242;
-$button-color-border-color: #424242;
+$button-color-border-color: #000000;
 $button-color-background-color: #FFFFFF !important;
 $button-color-background-secondary-color: #ed1c2b;
 /* ///////////// */
@@ -155,11 +155,11 @@ $info-background-color:     $background-color !important;
 
 .select {
     background-color: #FFFFFF !important;
-    color: #424242 !important;
+    color: #ed1c2b !important;
 }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #424242;
+  color: #ebebeb;
 }
 
 .navIntraTool li span a {
