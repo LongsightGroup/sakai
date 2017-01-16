@@ -52,7 +52,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-        <dependency>
             <groupId>org.sakaiproject.emailtemplateservice</groupId>
             <artifactId>emailtemplateservice-api</artifactId>
         </dependency>
