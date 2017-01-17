@@ -31,22 +31,22 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #375573;
+$primary-color:                          #002776;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #ebebeb;
-$tool-menu-color:      			 #444444;
-$tool-tab-background-color:    			 #375573;
-$tool-border-color:    			 #cccccc;
+$tool-menu-background-color:   			 #FFFFFF;
+$tool-menu-color:      			 #000000;
+$tool-tab-background-color:    			 #FFFFFF;
+$tool-border-color:    			 #002776;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
-$tool-menu-hover-background-color: #375573 !important;
+$tool-menu-hover-background-color: #009dce !important;
 $tool-menu-current-background-color: #FFFFFF !important;
-$tool-menu-current-color: #375573 !important;
+$tool-menu-current-color: #002776 !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,7 +58,7 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #00234c !important;
+$top-header-background: #002776 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
@@ -66,8 +66,8 @@ $breadcrumbs-tool-color:       		 #FFFFFF !important;
 $breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
-$link-color: #596482;
-$link-active-color: #111930;
+$link-color: #0064cd;
+$link-active-color: #4e5192;
 $link-hover-color: $primary-color !important;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
@@ -95,20 +95,20 @@ $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #00234c;
-$header-gradient-b: #00234c;
-$header-gradient-c: #00234c;
-$header-gradient-d: #00234c;
+$header-gradient-a: #002776;
+$header-gradient-b: #002776;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #002776;
 
-$sites-nav-menu-item-background:            #395775 !important;
+$sites-nav-menu-item-background:            #002776 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           #FFFFFF !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #bdccd7 !important;
-$sites-nav-menu-item-selected-color:        #000000 !important;
+$sites-nav-menu-item-selected-background:   #0085af !important;
+$sites-nav-menu-item-selected-color:        #FFFFFF !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/allegheny.gif';
+$logo: '../images/wellesley.png';
 $logo-height: 50px;
-$logo-width: 156px;
+$logo-width: 65px;
 
 /* Tool icons */
 $skin-with-icons: true !default;
@@ -149,24 +149,22 @@ $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #FFFFFF;
   border-radius: 6px;
 }
 
-//.select {
-//    border-color: #111930 !important;
-//    background-color: #FFFFFF !important;
-// }
-
 .navIntraTool li span a {
-  color: #FFFFFF !important;
+  color: #002776 !important;
 }
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: $primary-color !important;
-   background: #b4c8db !important;
+   background: #CCCCCC !important;
 }
 
-#mastLogin #loginLinks ul a { 
-    color: #000000 !important;
+.instruction {
+    background-color: #CCCCCC !important;
 }
+
+//#mastLogin #loginLinks ul a { 
+//    color: #000000 !important;
+//}
