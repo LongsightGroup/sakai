@@ -4,6 +4,7 @@
     <session-factory>
         <!-- these mapping resource paths must point to your hibernate template files (.hbm.xml),
             this should be the classpath location (typically after the src directory) -->
+        <mapping resource="org/sakaiproject/lessonbuildertool/activityalert.hbm.xml"/>
         <mapping resource="org/sakaiproject/lessonbuildertool/simplepage.hbm.xml"/>
         <mapping resource="org/sakaiproject/lessonbuildertool/simplepageitem.hbm.xml"/>
         <mapping resource="org/sakaiproject/lessonbuildertool/simplepagecomment.hbm.xml"/>

@@ -305,6 +305,14 @@ $(document).ready(function() {
 			draggable: false
 		});
 
+		$('#add-alert-dialog').dialog({
+			autoOpen: false,
+			width: modalDialogWidth(),
+			modal: true,
+			resizable: false,
+			draggable: false
+		});
+
 		$('#comments-dialog').dialog({
 			autoOpen: false,
 			width: modalDialogWidth(),
@@ -2071,6 +2079,7 @@ $(document).ready(function() {
 				$('#movie-dialog').dialog('isOpen') ||
 				$('#import-cc-dialog').dialog('isOpen') ||
 				$('#export-cc-dialog').dialog('isOpen') ||
+				$('#add-alert-dialog').dialog('isOpen') ||
 				$('#comments-dialog').dialog('isOpen') ||
 				$('#column-dialog').dialog('isOpen') ||
 			        $('#student-dialog').dialog('isOpen') ||

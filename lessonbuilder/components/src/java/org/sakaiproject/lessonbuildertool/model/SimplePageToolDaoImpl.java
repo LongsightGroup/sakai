@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -48,6 +49,7 @@ import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.db.api.SqlReader;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.lessonbuildertool.ActivityAlert;
 import org.sakaiproject.lessonbuildertool.SimplePage;
 import org.sakaiproject.lessonbuildertool.SimplePageComment;
 import org.sakaiproject.lessonbuildertool.SimplePageCommentImpl;
@@ -835,7 +837,9 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		}
 
 		try {
-			if(!(o instanceof SimplePageLogEntry)) {
+			if(o instanceof ActivityAlert) {
+				getHibernateTemplate().saveOrUpdate(o);	
+			}else if(!(o instanceof SimplePageLogEntry)) {
 				getHibernateTemplate().merge(o);
 			}else {
 				// Updating seems to always update the timestamp on the log correctly,
@@ -937,6 +941,21 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 			return null;
 		}
 	}
+	
+	public boolean hasActivityForPage(String userId, long pageId) {
+		if (StringUtils.isBlank(userId)) {
+			return false;
+		}
+		Object[] fields = new Object[3];
+		fields[0] = userId;
+		fields[1] = pageId;
+		fields[2] = pageId;
+		List<String> result = sqlService.dbRead("select count(0) > 0 from lesson_builder_log lbl join lesson_builder_items lbi on (lbl.itemId = lbi.id) where lbl.userId = ? and (lbi.pageId = ? or lbi.sakaiId = ?)", fields, null);
+
+		return "1".equals(result.get(0));
+	}
+
+
 	
 	// owner not currently used. would need group as well
         public boolean isPageVisited(long pageId, String userId, String owner) {
@@ -1760,6 +1779,27 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 	public List<SimplePageItem> findAllChecklistsInSite(String siteId) {
 		String hql = "select item from org.sakaiproject.lessonbuildertool.SimplePageItem item, org.sakaiproject.lessonbuildertool.SimplePage page where item.pageId = page.pageId and page.siteId = :site and item.type = 15";
 		return (List<SimplePageItem>) getHibernateTemplate().findByNamedParam(hql, "site", siteId);
+	}
+
+	@Override
+	public ActivityAlert findActivityAlert(String siteId, String tool, String pageId) {
+		DetachedCriteria d = DetachedCriteria.forClass(ActivityAlert.class)
+				.add(Restrictions.eq("siteId", siteId))
+				.add(Restrictions.eq("tool", tool))
+				.add(Restrictions.eq("reference", pageId));
+		List<ActivityAlert> list = (List<ActivityAlert>)getHibernateTemplate().findByCriteria(d);
+		
+		if(list.size() > 0) {
+			return list.get(0);
+		}else {
+			return null;
+		}
+	}
+
+	@Override
+	public void saveActityAlert(ActivityAlert alert) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

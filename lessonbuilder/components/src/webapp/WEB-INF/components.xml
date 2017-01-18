@@ -10,6 +10,7 @@
         class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
     <property name="mappingResources">
       <list>
+        <value>org/sakaiproject/lessonbuildertool/activityalert.hbm.xml</value>
         <value>org/sakaiproject/lessonbuildertool/simplepageitem.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplepage.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplepagelogentry.hbm.xml</value>
@@ -35,6 +36,14 @@
     <property name="sqlService" ref="org.sakaiproject.db.api.SqlService" />
     <property name="authzGroupService"><ref bean="org.sakaiproject.authz.api.AuthzGroupService"/></property>
   </bean>
+  
+  <bean id="org.sakaiproject.lessonbuildertool.model.ActivityAlertService"
+    	class="org.sakaiproject.lessonbuildertool.model.ActivityAlertServiceImpl"
+    	singleton="true">
+    	<property name="timeService" ref="org.sakaiproject.time.api.TimeService" />
+		<property name="scheduledInvocationManager" ref="org.sakaiproject.api.app.scheduler.ScheduledInvocationManager" />
+		<property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+  </bean>  
 
 <!-- here's the version our code will access -->
 
