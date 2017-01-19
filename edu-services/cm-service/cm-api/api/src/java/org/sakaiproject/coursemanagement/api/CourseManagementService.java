@@ -159,6 +159,8 @@ public interface CourseManagementService {
 	 */
 	public boolean isCourseOfferingDefined(String eid);
 
+	public boolean isCourseOfferingInCourseSet(String courseSetEid, String courseOfferingEid) throws IdNotFoundException;
+
 	/**
 	 * Gets any equivalent CourseOfferings.
 	 * 
