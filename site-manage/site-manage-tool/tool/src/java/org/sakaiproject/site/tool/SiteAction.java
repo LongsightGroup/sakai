@@ -762,7 +762,7 @@ public class SiteAction extends PagedResourceActionII {
 	private final static String SORT_KEY_SECTION = "worksitesetup.sort.key.section";
 	private final static String SORT_ORDER_SECTION = "worksitesetup.sort.order.section";
 	
-	// bjones86 - SAK-23255
+	// SAK-23255
 	private final static String CONTEXT_IS_ADMIN = "isAdmin";
 	private final static String CONTEXT_SKIP_MANUAL_COURSE_CREATION = "skipManualCourseCreation";
 	private final static String CONTEXT_SKIP_COURSE_SECTION_SELECTION = "skipCourseSectionSelection";
@@ -782,7 +782,7 @@ public class SiteAction extends PagedResourceActionII {
 	
 	private static final String VM_ALLOWED_ROLES_DROP_DOWN 	= "allowedRoles";
 	
-	// bjones86 - SAK-23256
+	// SAK-23256
 	private static final String SAK_PROP_FILTER_TERMS = "worksitesetup.filtertermdropdowns";
 	private static final String CONTEXT_HAS_TERMS = "hasTerms";
 	
@@ -1201,7 +1201,7 @@ public class SiteAction extends PagedResourceActionII {
 		state.removeAttribute(STATE_LTITOOL_EXISTING_SELECTED_LIST);
 		state.removeAttribute(STATE_LTITOOL_SELECTED_LIST);
 
-		// bjones86 - SAK-24423 - remove joinable site settings from the state
+		// SAK-24423 - remove joinable site settings from the state
 		JoinableSiteSettings.removeJoinableSiteSettingsFromState( state );
 
 	} // cleanState
@@ -1560,7 +1560,7 @@ public class SiteAction extends PagedResourceActionII {
 			Hashtable termViews = new Hashtable();
 			termViews.put(TERM_OPTION_ALL, rb.getString("list.allTerms"));
 			
-			// bjones86 - SAK-23256
+			// SAK-23256
 			List<AcademicSession> aSessions = setTermListForContext( context, state, false, false );
 			
 			if(aSessions != null){
@@ -1714,7 +1714,7 @@ public class SiteAction extends PagedResourceActionII {
 			String typeSelected = (String) state.getAttribute(STATE_TYPE_SELECTED);
 			context.put("typeSelected", state.getAttribute(STATE_TYPE_SELECTED) != null?state.getAttribute(STATE_TYPE_SELECTED):types.get(0));
 			
-			// bjones86 - SAK-23256
+			// SAK-23256
 			Boolean hasTerms = Boolean.FALSE;
 			List<AcademicSession> termList = setTermListForContext( context, state, true, true ); // true => only
 			if( termList != null && termList.size() > 0 )
@@ -1937,7 +1937,7 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("joinerRole", siteInfo.joinerRole);
 			context.put("additionalAccess", getAdditionRoles(siteInfo));
 
-			// bjones86 - SAK-24423 - add joinable site settings to context
+			// SAK-24423 - add joinable site settings to context
 			JoinableSiteSettings.addJoinableSiteSettingsToNewSiteConfirmContext( context, siteInfo );
 
 			context.put("importSiteTools", state
@@ -2753,7 +2753,7 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("shoppingPeriodInstructorEditable", ServerConfigurationService.getBoolean("delegatedaccess.shopping.instructorEditable", false));
 				context.put("viewDelegatedAccessUsers", ServerConfigurationService.getBoolean("delegatedaccess.siteaccess.instructorViewable", false));
 
-				// bjones86 - SAK-24423 - add joinable site settings to context
+				// SAK-24423 - add joinable site settings to context
 				JoinableSiteSettings.addJoinableSiteSettingsToEditAccessContextWhenSiteIsNotNull( context, state, site, !unJoinableSiteTypes.contains( siteType ) );
 
 				if (siteType != null && !unJoinableSiteTypes.contains(siteType)) {
@@ -2781,7 +2781,7 @@ public class SiteAction extends PagedResourceActionII {
 				
 				addAccess(context, access);
 
-				// bjones86 - SAK-23257
+				// SAK-23257
 				context.put("roles", getJoinerRoles(site.getReference(), state, site.getType()));
 			} else {
 				// In the site creation process...
@@ -2809,7 +2809,7 @@ public class SiteAction extends PagedResourceActionII {
 					context.put("disableJoinable", Boolean.TRUE);
 				}
 				
-				// bjones86 - SAK-24423 - add joinable site settings to context
+				// SAK-24423 - add joinable site settings to context
 				JoinableSiteSettings.addJoinableSiteSettingsToEditAccessContextWhenSiteIsNull( context, siteInfo, true );
 				
 				// the template site, if using one
@@ -2826,13 +2826,13 @@ public class SiteAction extends PagedResourceActionII {
 				try {
 					AuthzGroup r = authzGroupService.getAuthzGroup(realmTemplate);
 					
-					// bjones86 - SAK-23257
+					// SAK-23257
 					context.put("roles", getJoinerRoles(r.getId(), state, null));
 				} catch (GroupNotDefinedException e) {
 					try {
 						AuthzGroup rr = authzGroupService.getAuthzGroup("!site.template");
 						
-						// bjones86 - SAK-23257
+						// SAK-23257
 						context.put("roles", getJoinerRoles(rr.getId(), state, null));
 					} catch (GroupNotDefinedException ee) {
 					}
@@ -3238,7 +3238,7 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("currentTermId", site.getProperties().getProperty(
 						Site.PROP_SITE_TERM));
 				
-				// bjones86 - SAK-23256
+				// SAK-23256
 				setTermListForContext( context, state, true, false ); // true upcoming only
 			} else {
 				context.put("isCourseSite", Boolean.FALSE);
@@ -3279,7 +3279,7 @@ public class SiteAction extends PagedResourceActionII {
 						.getAttribute(SITE_PROVIDER_COURSE_LIST);
 				coursesIntoContext(state, context, site);
 
-				// bjones86 - SAK-23256
+				// SAK-23256
 				List<AcademicSession> terms = setTermListForContext( context, state, true, true ); // true -> upcoming only
 				
 				AcademicSession t = (AcademicSession) state.getAttribute(STATE_TERM_SELECTED);
@@ -3394,7 +3394,7 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("basedOnTemplate",  state.getAttribute(STATE_TEMPLATE_SITE) != null ? Boolean.TRUE:Boolean.FALSE);
 			context.put("publishTemplate", (Boolean) state.getAttribute(STATE_TEMPLATE_PUBLISH));
 			
-			// bjones86 - SAK-21706
+			// SAK-21706
 			context.put( CONTEXT_SKIP_COURSE_SECTION_SELECTION, 
 					ServerConfigurationService.getBoolean( SAK_PROP_SKIP_COURSE_SECTION_SELECTION, Boolean.FALSE ) );
 			context.put( CONTEXT_SKIP_MANUAL_COURSE_CREATION, 
@@ -3472,7 +3472,7 @@ public class SiteAction extends PagedResourceActionII {
 			
 			context.put("requireAuthorizer", ServerConfigurationService.getString(SAK_PROP_REQUIRE_AUTHORIZER, "true").equals("true")?Boolean.TRUE:Boolean.FALSE);
 			
-			// bjones86 - SAK-21706/SAK-23255
+			// SAK-21706/SAK-23255
 			context.put( CONTEXT_IS_ADMIN, SecurityService.isSuperUser() );
 			context.put( CONTEXT_SKIP_COURSE_SECTION_SELECTION, ServerConfigurationService.getBoolean( SAK_PROP_SKIP_COURSE_SECTION_SELECTION, Boolean.FALSE ) );
 			context.put( CONTEXT_FILTER_TERMS, ServerConfigurationService.getBoolean( SAK_PROP_FILTER_TERMS, Boolean.FALSE ) );
@@ -3725,7 +3725,7 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("basedOnTemplate",  state.getAttribute(STATE_TEMPLATE_SITE) != null ? Boolean.TRUE:Boolean.FALSE);
 			context.put("requireAuthorizer", ServerConfigurationService.getString(SAK_PROP_REQUIRE_AUTHORIZER, "true").equals("true")?Boolean.TRUE:Boolean.FALSE);
 			
-			// bjones86 - SAK-21706/SAK-23255
+			// SAK-21706/SAK-23255
 			context.put( CONTEXT_IS_ADMIN, SecurityService.isSuperUser() );
 			context.put( CONTEXT_SKIP_MANUAL_COURSE_CREATION, ServerConfigurationService.getBoolean( SAK_PROP_SKIP_MANUAL_COURSE_CREATION, Boolean.FALSE ) );
 			context.put( CONTEXT_FILTER_TERMS, ServerConfigurationService.getBoolean( SAK_PROP_FILTER_TERMS, Boolean.FALSE ) );
@@ -4815,7 +4815,7 @@ public class SiteAction extends PagedResourceActionII {
 		context.put("term", (AcademicSession) state
 				.getAttribute(STATE_TERM_SELECTED));
 		
-		// bjones86 - SAK-23256
+		// SAK-23256
 		setTermListForContext( context, state, true, false ); //-> future terms only
 		
 		context.put(STATE_TERM_COURSE_LIST, state
@@ -5646,7 +5646,7 @@ public class SiteAction extends PagedResourceActionII {
 			siteInfo.joinerRole = templateSite.getJoinerRole();
 			//siteInfo.include = false;
 			
-			// bjones86 - SAK-24423 - update site info for joinable site settings
+			// SAK-24423 - update site info for joinable site settings
 			JoinableSiteSettings.updateSiteInfoFromSitePropertiesOnSelectTemplate( templateSite.getProperties(), siteInfo );
 			
 			List<String> toolIdsSelected = new Vector<String>();
@@ -8150,7 +8150,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			}
 			state.setAttribute(STATE_JOINERROLE, joinerRole); 
 
-			// bjones86 - SAK-24423 - update state for joinable site settings
+			// SAK-24423 - update state for joinable site settings
 			JoinableSiteSettings.updateStateFromSitePropertiesOnEditAccessOrNewSite( site.getProperties(), state );
 		}
 		catch (Exception e)
@@ -9022,7 +9022,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		readInputAndUpdateStateVariable(state, params, "joinable", STATE_JOINABLE, true);
 		readInputAndUpdateStateVariable(state, params, "joinerRole", STATE_JOINERROLE, false);
 		
-		// bjones86 - SAK-24423 - get all joinable site settings from the form input
+		// SAK-24423 - get all joinable site settings from the form input
 		JoinableSiteSettings.getAllFormInputs( state, params );
 		
 		boolean publishUnpublish = state.getAttribute(STATE_SITE_ACCESS_PUBLISH) != null ? ((Boolean) state.getAttribute(STATE_SITE_ACCESS_PUBLISH)).booleanValue() : false;
@@ -9085,7 +9085,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				state.removeAttribute(STATE_JOINABLE);
 				state.removeAttribute(STATE_JOINERROLE);
 
-				// bjones86 - SAK-24423 - remove joinable site settings from the state
+				// SAK-24423 - remove joinable site settings from the state
 				JoinableSiteSettings.removeJoinableSiteSettingsFromState( state );
 			}
 		} else {
@@ -9102,7 +9102,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				// joinable site or not
 				boolean joinable = state.getAttribute(STATE_JOINABLE) != null ? ((Boolean) state.getAttribute(STATE_JOINABLE)).booleanValue() : null;
 
-				// bjones86 - SAK-24423 - update site info for joinable site settings
+				// SAK-24423 - update site info for joinable site settings
 				JoinableSiteSettings.updateSiteInfoFromStateOnSiteUpdate( state, siteInfo, joinable );
 
 				if (joinable) {
@@ -10636,7 +10636,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			// Make changes and then put changed site back in state
 			String id = site.getId();
 
-			// bjones86 - SAK-24423 - update site properties for joinable site settings
+			// SAK-24423 - update site properties for joinable site settings
 			JoinableSiteSettings.updateSitePropertiesFromStateOnUpdateSiteAttributes( site, state );
 
 			try {
@@ -10741,7 +10741,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					.valueOf(params.getString("itemStatus")).booleanValue();
 		}
 
-		// bjones86 - SAK-24423 - update site info for joinable site settings
+		// SAK-24423 - update site info for joinable site settings
 		JoinableSiteSettings.updateSiteInfoFromParams( params, siteInfo );
 
 		// site contact information
@@ -10873,7 +10873,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 	/**
 	 * getRoles
 	 * 
-	 * bjones86 - SAK-23257 - added state and siteType parameters so list 
+	 * SAK-23257 - added state and siteType parameters so list 
 	 * of joiner roles can respect the restricted role lists in sakai.properties.
 	 * 
 	 */
@@ -10895,7 +10895,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					permissionAllowedRoleIds.addAll(realm.getRolesIsAllowed(permission));
 				}
 				
-				// bjones86 - SAK-23257
+				// SAK-23257
 				List<Role> allowedRoles = null;
 				Set<String> restrictedRoles = null;
 				if (null == state.getAttribute(STATE_SITE_INSTANCE_ID)) {
@@ -10910,7 +10910,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					if (isUserRole(role) && (permissionAllowedRoleIds == null 
 							|| permissionAllowedRoleIds!= null && !permissionAllowedRoleIds.contains(role.getId())))
 					{
-						// bjones86 - SAK-23257
+						// SAK-23257
 						if (allowedRoles != null && allowedRoles.contains(role)) {
 							roles.add(role);
 						}
@@ -12094,8 +12094,8 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					// if the site was created from template
 					rp.addProperty(TEMPLATE_USED, templateSite.getId());
 				}
-
-				// bjones86 - SAK-24423 - update site properties for joinable site settings
+				
+				// SAK-24423 - update site properties for joinable site settings
 				JoinableSiteSettings.updateSitePropertiesFromSiteInfoOnAddNewSite( siteInfo, rp );
 
 				state.setAttribute(STATE_SITE_INSTANCE_ID, site.getId());
@@ -12202,7 +12202,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 					siteInfo.term = term;
 				}
 				
-				// bjones86 - SAK-24423 - update site info for joinable site settings
+				// SAK-24423 - update site info for joinable site settings
 				JoinableSiteSettings.updateSiteInfoFromSiteProperties( siteProperties, siteInfo );
 				
 				// site contact information
@@ -13283,7 +13283,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		
 		public ResourceProperties properties = new BaseResourcePropertiesEdit();
 
-		// bjones86 - SAK-24423 - joinable site settings
+		// SAK-24423 - joinable site settings
 		public String joinerGroup = NULL_STRING;
 		public String getJoinerGroup()
 		{ 
@@ -13880,7 +13880,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		return toolIdList;
 	} // getToolsAvailableForImport
 
-	// bjones86 - SAK-23256 - added userFilteringIfEnabled parameter
+	// SAK-23256 - added userFilteringIfEnabled parameter
 	private List<AcademicSession> setTermListForContext(Context context, SessionState state,
 			boolean upcomingOnly, boolean useFilteringIfEnabled) {
 		List<AcademicSession> terms;
@@ -13891,7 +13891,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		}
 		if (terms != null && terms.size() > 0) {
 			
-			// bjones86 - SAK-23256
+			// SAK-23256
 			if( useFilteringIfEnabled )
 			{
 				if( !SecurityService.isSuperUser() )
@@ -13918,7 +13918,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 	/**
 	 * Removes any academic sessions that the user is not currently enrolled in
 	 * 
-	 * @author bjones86 - SAK-23256
+	 * SAK-23256
 	 * 
 	 * @return the filtered list of academic sessions
 	 */
@@ -15391,7 +15391,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			siteInfo.joinerRole = templateSite.getJoinerRole();
 			state.setAttribute(STATE_SITE_INFO, siteInfo);
 			
-			// bjones86 - SAK-24423 - update site info for joinable site settings
+			// SAK-24423 - update site info for joinable site settings
 			JoinableSiteSettings.updateSiteInfoFromParams( params, siteInfo );
 			
 			// whether to copy users or site content over?
