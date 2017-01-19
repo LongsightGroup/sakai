@@ -51,6 +51,8 @@ public class LdapUserData
 	
 	private Properties properties;
 	
+	private long timeStamp;
+	
 
 	/**
 	 * @return Returns the email.
@@ -143,6 +145,23 @@ public class LdapUserData
 	public void setType(String type)
 	{
 		this.type = type;
+	}
+
+	/**
+	 * @return Returns the timeStamp.
+	 */
+	public long getTimeStamp()
+	{
+		return timeStamp;
+	}
+
+	/**
+	 * @param timeStamp
+	 *        The timeStamp to set.
+	 */
+	public void setTimeStamp(long timeStamp)
+	{
+		this.timeStamp = timeStamp;
 	}
 
 	/**

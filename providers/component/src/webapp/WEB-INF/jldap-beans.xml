@@ -4,8 +4,11 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="org.sakaiproject.user.api.UserDirectoryProvider"
-		class="edu.amc.sakai.user.JLDAPDirectoryProvider" init-method="init"
+		class="edu.amc.sakai.user.URIJLDAPDirectoryProvider" init-method="init"
 		destroy-method="destroy">
+
+		<property name="sakaiUserFactory" ref="org.sakaiproject.user.api.UserDirectoryService" />
+
 		
 		<!-- Setting a MemoryService in JLDAP is deprecated! 
 			Caching is done centrally in the UserDirectoryService.callCache -->
@@ -38,12 +41,12 @@
 
 		<!-- Optional. DN to which to bind for directory searches. 
 			Typically only necessary if autoBind is true -->
-		<!-- property name="ldapUser">
-			<value>attr=value,attr=value,attr=value</value>
-		</property -->
+		<property name="ldapUser">
+			<value>URIEduauthid=sakai,dc=sakai,dc=uri,dc=edu</value>
+		</property>
 
 		<!-- Optional. Password for ldapUser defined above -->
-		<!--  property name="ldapPassword">
+		<!-- property name="ldapPassword">
 			<value>usually-set-this-value-in-security-dot-properties</value>
 		</property -->
 
@@ -64,14 +67,14 @@
 
 		<!-- Optional. Indicate if connection allocation should
 			implicitly bind as ${ldapUser}. Defaults to false -->
-		<!-- property name="autoBind">
-			<value>false</value>
-		</property -->
+		<property name="autoBind">
+			<value>true</value>
+		</property>
 
 		<!-- Optional, but usually specified. Base DN for directory searches. -->
-		<!--  property name="basePath">
-			<value>attr=value,attr=value,attr=value</value>
-		</property -->
+		<property name="basePath">
+			<value>dc=sakai,dc=uri,dc=edu</value>
+		</property>
 
 		<!-- Optional. Indicate if connections should follow
 			referrals. Defaults to  
@@ -82,9 +85,9 @@
 
 		<!-- Optional. LDAP operation timeout in millis. Defaults 
 			to JLDAPDirectoryProvider.DEFAULT_OPERATION_TIMEOUT_MILLIS (5000) -->
-		<!-- property name="operationTimeout">
-			<value>5000</value>
-		</property -->
+		<property name="operationTimeout">
+			<value>30000</value>
+		</property>
 		
 		<!-- Optional. Control depth of all searches. Possible values:
 			0 - LDAPConnection.SCOPE_BASE - base object only
@@ -138,9 +141,9 @@
 
 		<!-- Optional. Maxmimum number of connections in the pool
 			Defaults to JLDAPDirectoryProvider.DEFAULT_POOL_MAX_CONNS (10) -->
-		<!--  property name="poolMaxConns">
+		<property name="poolMaxConns">
 			<value>10</value>
-		</property -->
+		</property>
 
 		<!-- Optional. Size of batch when loading multiple users at once.
 		     Defaults to DEFAULT_BATCH_SIZE = 200 -->
@@ -205,7 +208,7 @@
 			
     <!-- An optional bean definition which can be used to customize LDAP
     attribute to Sakai User instance member mapping behaviors. This
-    example describes availabel configuration options for SimpleLdapAttributeMapper
+    example describes available configuration options for SimpleLdapAttributeMapper
     (the default LdapAttributeMapper implementation). -->
 	<bean id="edu.amc.sakai.user.LdapAttributeMapper"
 			class="edu.amc.sakai.user.SimpleLdapAttributeMapper"
@@ -215,19 +218,18 @@
 		names expected by the application. Values are physical LDAP
 		attribute names. If not specified or empty, defaults to
 		AttributeMappingConstants.DEFAULT_ATTR_MAPPINGS. -->
-		<!-- property name="attributeMappings">
-			<map>
-				<entry key="aid"><value>krb5PrincipalName</value></entry>
-				<entry key="login"><value>cn</value></entry>         
-				<entry key="firstName"><value>givenName</value></entry> 
-				<entry key="preferredFirstName"><value>preferredName</value></entry>
-				<entry key="lastName"><value>sn</value></entry> 
-				<entry key="email"><value>email</value></entry>  
-				<entry key="groupMembership"><value>groupMembership</value></entry>   
-				<entry key="jpegPhoto"><value>jpegPhoto</value></entry>   
-			</map>
-		</property -->
-		
+		<property name="attributeMappings">
+  			<map>
+ 				<entry key="login"><value>URIEduemplid</value></entry>
+ 				<entry key="uriOprid"><value>URIEduecampusid</value></entry>
+ 				<entry key="uriEmplid"><value>URIEduemplid</value></entry>
+ 				<entry key="firstName"><value>URIEdugn</value></entry>
+ 				<entry key="lastName"><value>URIEdusn</value></entry>
+ 				<entry key="email"><value>mail</value></entry>
+ 				<entry key="groupMembership"><value>URIEdustatus</value></entry>
+ 				<!-- entry key="jpegPhoto"><value>jpegPhoto</value></entry -->
+ 			</map>
+ 		</property>	
 		<!-- If any of the values need manipulating with message formats they can be set here. -->
 		<!-- property name="valueMappings">
 			<map>
@@ -239,8 +241,8 @@
 		on LDAP attributes. Defaults to an instance of EmptyStringUserTypeMapper -->
 		<property name="userTypeMapper">
 			<!-- Select one of the following beans -->
-			<ref bean="edu.amc.sakai.user.EmptyStringUserTypeMapper" />
-			<!-- ref bean="edu.amc.sakai.user.EntryAttributeToUserTypeMapper" /-->
+			<!-- ref bean="edu.amc.sakai.user.EmptyStringUserTypeMapper" /-->
+			<ref bean="edu.amc.sakai.user.EntryAttributeToUserTypeMapper" />
 			<!-- ref bean="edu.amc.sakai.user.EntryContainerRdnToUserTypeMapper" /-->
 			<!-- ref bean="edu.amc.sakai.user.StringUserTypeMapper" /-->
 		</property>
@@ -280,12 +282,12 @@
 		<!-- Optional. If not present or empty, behavior is
 		determined by the value of returnLiteralAttributeValueIfNoMapping
 		(see below). -->
-		<!-- property name="attributeValueToSakaiUserTypeMap">
+		<property name="attributeValueToSakaiUserTypeMap">
 			<map>
-				<entry key="faculty"><value>faculty</value></entry> 
-				<entry key="students"><value>student</value></entry> 
+				<entry key="staff"><value>registered</value></entry> 
+				<entry key="student"><value></value></entry> 
 			</map>
-		</property -->
+		</property>
 				
 		<!-- Required. The logical name of the LDAP attribute which
 		defines Sakai users' types. Value should be a key into the 

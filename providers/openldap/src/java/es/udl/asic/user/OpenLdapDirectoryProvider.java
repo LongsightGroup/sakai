@@ -289,7 +289,7 @@ public class OpenLdapDirectoryProvider implements UserDirectoryProvider
 			return false;
 		}
 
-		edit.setId(id);
+		edit.setEid(id);
 		edit.setFirstName(firstName);
 		edit.setLastName(lastName);
 		edit.setEmail(email);
