@@ -168,3 +168,7 @@ $footer-color: $background-color-secondary !default;
 //#mastLogin #loginLinks ul a { 
 //    color: #000000 !important;
 //}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem>a {
+    border-radius: 3px !important;
+}

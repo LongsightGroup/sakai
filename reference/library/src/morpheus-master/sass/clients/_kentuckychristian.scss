@@ -37,15 +37,15 @@ $text-color:                             #000000;
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #424242;
+$tool-menu-background-color:   			 #666666;
 $tool-menu-color:      			 #ebebeb;
-$tool-tab-background-color:    			 #424242;
+$tool-tab-background-color:    			 #666666;
 $tool-border-color:    			 #424242;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #ffffff !important;
+$tool-menu-hover-color:  #424242 !important;
 $tool-menu-hover-background-color: #ed1c2b !important;
-$tool-menu-current-background-color: #ffffff !important;
+$tool-menu-current-background-color: #FFFFFF !important;
 $tool-menu-current-color: #ed1c2b !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
@@ -75,7 +75,7 @@ $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
 $button-text-color:    	 #424242;
-$button-border-color: #00000;
+$button-border-color: #000000;
 $button-background-color: #FFFFFF !important;
 $button-background-secondary-color: #ed1c2b;
 /* General button colors */
@@ -163,7 +163,7 @@ $info-background-color:     $background-color !important;
 }
 
 .navIntraTool li span a {
-  color: #ed1c2b !important;
+  color: #FFFFFF !important;
 }
 
 .instruction {

@@ -40,7 +40,7 @@ $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #FFFFFF;
 $tool-menu-color:      			 #0086b3;
 $tool-tab-background-color:    			 #FFFFFF;
-$tool-border-color:    			 #0000ff;
+$tool-border-color:    			 #0000FF;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
@@ -95,8 +95,8 @@ $error-color:               darken($error-background-color, 30%) !default;
 /* This is the gradient in the header of the page */
 $header-gradient-a: #333333;
 $header-gradient-b: #333333;
-$header-gradient-c: #000080;
-$header-gradient-d: #000080;
+$header-gradient-c: #b3b3b3;
+$header-gradient-d: #cccccc;
 
 $sites-nav-menu-item-background:            #FFFFFF !important;
 $sites-nav-menu-item-color:                 #0086b3 !important;
@@ -136,7 +136,7 @@ $measure: 960px !default;
 /* Logo location */
 $logo: '../images/tdainc.jpg';
 $logo-height: 50px;
-$logo-width: 59px;
+$logo-width: 60px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -163,7 +163,7 @@ $info-background-color:     $background-color !important;
 }
 
 .navIntraTool li span a {
-  color: #FFFFFF !important;
+  color: #333333 !important;
 }
 
 .instruction {
