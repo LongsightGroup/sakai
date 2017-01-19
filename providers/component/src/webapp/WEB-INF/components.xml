@@ -37,7 +37,7 @@
 		<entry key="officialInstructorToSiteRole" value="Instructor"/>
 		<entry key="enrollmentStatusToSiteRole">
 			<map>
-				<entry key="enrolled" value="Student"/>
+				<entry key="Enrolled" value="Student"/>
 				<entry key="wait" value="Student"/>
 			</map>
 		</entry>
@@ -157,7 +157,7 @@
 -->
 
 <!-- Uncomment and configure to use the JLDAPDirectoryProvider -->
-	<!--  import resource="jldap-beans.xml" / -->
+	<import resource="jldap-beans.xml" />
 
 <!-- Uncomment and configure to use the Candidate Details Provider -->  
 	<!--  import resource="candidate-details.xml"/ -->

@@ -37,6 +37,10 @@ public abstract class AttributeMappingConstants {
 	 */
 	public static final String LOGIN_ATTR_MAPPING_KEY = "login";
 	
+	public static final String URIOPRID_ATTR_MAPPING_KEY = "URIEduecampusid";
+	
+	public static final String URIEMPLID_ATTR_MAPPING_KEY = "URIEduemplid";
+	
 	/** Key into {@link #DEFAULT_ATTR_MAPPINGS} representing the logical
 	 * name of a user entry's authentication (aka Sakai "AID") attribute
 	 */

@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 
 import com.novell.ldap.LDAPConnection;
 import com.novell.ldap.LDAPEntry;
@@ -72,6 +74,9 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 * {@link #searchDirectory(String, LDAPConnection, LdapEntryMapper, String[], String, int)}
 	 */
 	public static final int DEFAULT_SEARCH_SCOPE = LDAPConnection.SCOPE_SUB;
+
+	/** Default LDAP user entry cache TTL */
+	public static final long DEFAULT_CACHE_TTL = 5 * 60 * 1000;
 
 	/** Default LDAP use of connection pooling */
 	public static final boolean DEFAULT_POOLING = false;
@@ -174,13 +179,27 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 * 
 	 * @see LdapAttributeMapper
 	 */
-	private Map<String,String> attributeMappings;
+	protected Map<String,String> attributeMappings;
+
+	private MemoryService memoryService;
+	
+	/**
+	 * Cache of {@link LdapUserData} objects, keyed by eid. 
+	 * {@link cacheTtl} controls TTL. 
+	 * 
+	 * TODO: This is a naive implementation: cache
+	 * is completely isolated on each app node.
+	 */
+	private Cache userCache;
+
+	/** TTL for cachedUsers. Defaults to {@link #DEFAULT_CACHE_TTL} */
+	private long cacheTtl = DEFAULT_CACHE_TTL;
 
 	/** Handles LDAPConnection allocation */
-	private LdapConnectionManager ldapConnectionManager;
+	protected LdapConnectionManager ldapConnectionManager;
 
 	/** Handles LDAP attribute mappings and encapsulates filter writing */
-	private LdapAttributeMapper ldapAttributeMapper;
+	protected LdapAttributeMapper ldapAttributeMapper;
 	
 	/** Currently limited to allowing/disallowing searches for particular user EIDs.
 	 * Implements things like user EID blacklists. */
@@ -197,6 +216,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		// yields multiple records
 		public Object mapLdapEntry(LDAPEntry searchResult, int resultNum) {
 			LdapUserData cacheRecord = mapLdapEntryOntoUserData(searchResult);
+			cacheUserData(cacheRecord);
 			return cacheRecord;
 		}
 
@@ -233,6 +253,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		if ( log.isDebugEnabled() ) {
 			log.debug("init()");
 		}
+		userCache = memoryService.newCache(getClass().getName()+".userCache");
 
 		// We don't want to allow people to break their config by setting the batch size to be more than the maxResultsSize.
 		if (batchSize > maxResultSize) {
@@ -345,6 +366,18 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			log.debug("destroy()");
 		}
 
+		clearCache();
+	}
+
+	/**
+	 * Resets the internal {@link LdapUserData} cache
+	 */
+	public void clearCache() {
+		if ( log.isDebugEnabled() ) {
+			log.debug("clearCache()");
+		}
+
+		userCache.clear();
 	}
 
 	/**
@@ -655,8 +688,15 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 					//proceed ahead with this (perhaps the final) iteration
 					//usersToSearchInLDAP needs to be processed unless empty
 				} else {
+					// Check the cache before sending the request to LDAP
+					LdapUserData cachedUserData = getCachedUserEntry(eid);
+					if ( cachedUserData == null ) {
 						usersToSearchInLDAP.put(eid, userEdit);
 						cnt++;
+					} else {
+						// populate userEdit with cached ldap data:
+						mapUserDataOntoUserEdit(cachedUserData, userEdit);
+					}
 				}
 				
 				// We need to make sure this query isn't larger than maxQuerySize
@@ -803,6 +843,16 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			log.debug("getUserByEid(): [eid = " + eid + "]");
 		}
 
+		LdapUserData cachedUserData = getCachedUserEntry(eid);
+		boolean foundCachedUserData = cachedUserData != null;
+
+		if ( foundCachedUserData ) {
+			if ( log.isDebugEnabled() ) {
+				log.debug("getUserByEid(): found cached user [eid = " + eid + "]");
+			}
+			return cachedUserData;
+		}
+		
 		if ( !(isSearchableEid(eid)) ) {
 			if (eid == null)
 			{
@@ -1138,6 +1188,68 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	}
 
 	/**
+	 * Retieve a user record from the cache, enforcing TTL rules.
+	 * 
+	 * @param eid the cache key
+	 * @return a user cache record, or null if a cache miss
+	 */
+	protected LdapUserData getCachedUserEntry(String eid) {
+
+		if ( log.isDebugEnabled() ) {
+			log.debug("getCachedUserEntry(): [eid = " + eid + "]");
+		}
+			eid = toCaseInsensitiveCacheKey(eid);
+		LdapUserData cachedUserEntry = (LdapUserData) userCache.get(eid);
+		boolean foundCachedUserEntry = cachedUserEntry != null;
+		boolean cachedUserEntryExpired = 
+			foundCachedUserEntry && 
+			((System.currentTimeMillis() - cachedUserEntry.getTimeStamp()) > cacheTtl);
+
+		if ( log.isDebugEnabled() ) {
+			log.debug("getCachedUserEntry(): cache access [found entry = " + foundCachedUserEntry + 
+					"][entry expired = " + cachedUserEntryExpired + "]");
+		}
+
+		if ( cachedUserEntryExpired ) {
+			userCache.remove(eid);
+			return null;
+		}
+
+		return cachedUserEntry;
+
+	}
+
+	/**
+	 * Add a {@link LdapUserData} object to the cache. Responsible
+	 * for the setting the freshness timestamp.
+	 * 
+	 * @param user the {@link LdapUserData} to add to the cache
+	 */
+	protected void cacheUserData(LdapUserData user){
+		String eid = user.getEid();
+
+		if ( eid == null ) {
+			throw new IllegalArgumentException("Attempted to cache a user record without an eid [UserData = " + user + "]");
+		}
+		user.setTimeStamp(System.currentTimeMillis());
+
+		if ( log.isDebugEnabled() ) {
+			log.debug("cacheUserData(): [user record = " + user + "]");
+		}
+
+			eid = toCaseInsensitiveCacheKey(eid);
+
+		userCache.put(eid, user);
+	}
+
+	protected String toCaseInsensitiveCacheKey(String eid) {
+		if ( eid == null ) {
+			return null;
+		}
+		return eid.toLowerCase();
+	} 
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public String getLdapHost()
@@ -1302,6 +1414,25 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	public void setOperationTimeout(int operationTimeout)
 	{
 		this.operationTimeout = operationTimeout;
+	}
+
+	/**
+	 * @return Returns the user entry cache TTL, in millis
+	 */
+	public long getCacheTTL()
+	{
+		return cacheTtl;
+	}
+
+	/**
+	 * @param timeMs
+	 *        The user entry cache TTL, in millis.
+	 */
+	public void setCacheTTL(long timeMs)
+	{
+		cacheTtl = timeMs;
+		log.warn("JLDAP cacheTTL has no effect, see SAK-21110. Set cache in sakai.properties: " + 
+			"memory.edu.amc.sakai.user.JLDAPDirectoryProvider.userCache=timeToLiveSeconds=3600,timeToIdleSeconds=0,maxElementsInMemory=20000"); 
 	}
 
 	/**
@@ -1617,12 +1748,12 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		}
 	}
 
-	/**
-	 * User caching is done centrally in the UserDirectoryService.callCache
-	 * @deprecated
-	**/
-	public void setMemoryService(org.sakaiproject.memory.api.MemoryService ignore) {
-		log.warn("DEPRECATION WARNING: memoryService is deprecated. Please remove it from your jldap-beans.xml configuration.");
+	public MemoryService getMemoryService() {
+		return memoryService;
+	}
+
+	public void setMemoryService(MemoryService memoryService) {
+		this.memoryService = memoryService;
 	}
 
 	/** 
