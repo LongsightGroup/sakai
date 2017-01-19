@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -95,6 +96,7 @@ public abstract class CmSynchronizer {
 			reconcileCurrentAcademicSessions(doc);
 			reconcileCanonicalCourses(doc);
 			reconcileCourseOfferings(doc);
+			reconcileCourseSetLinking(doc); //UD addition to sync course links
 			reconcileSections(doc);
 			reconcileEnrollmentSets(doc);
 			reconcileCourseSets(doc);
@@ -350,7 +352,7 @@ public abstract class CmSynchronizer {
 	}
 
 	protected void reconcileEnrollments(Element enrollmentsElement, EnrollmentSet enrollmentSet) {
-		List newEnrollmentElements = enrollmentsElement.getChildren("enrollment");
+	    List newEnrollmentElements = (enrollmentsElement == null ? Collections.EMPTY_LIST : enrollmentsElement.getChildren("enrollment"));
 		Set newUserEids = new HashSet();
 		Set existingEnrollments = cmService.getEnrollments(enrollmentSet.getEid());
 
@@ -660,4 +662,11 @@ public abstract class CmSynchronizer {
 	public void setCmService(CourseManagementService cmService) {
 		this.cmService = cmService;
 	}
+	
+	// UD Extension to link course sets
+	protected void reconcileCourseSetLinking(Document doc)
+	{
+	    // defined in UDCMSyncJob.java
+	}
+
 }

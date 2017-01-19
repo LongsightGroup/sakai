@@ -182,6 +182,1578 @@
         <property name="azgs" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
 
+<!-- Beans for importing from Peoplesoft -->
+
+    <!-- Spring 2013 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2131"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2131.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2131"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2131</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2013</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2131"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2131.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2131"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2131</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2013</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Summer 2013 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2136"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2136.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2136"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2136</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2013</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2136"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2136.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2136"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2136</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2013</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Fall 2013 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2139"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2139.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2139"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2139</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Fall 2013</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2139"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2139.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2139"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2139</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Fall 2013</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- J-Term 2014 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2140"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2140.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2140"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2140</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job J-Term 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2140"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2140.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2140"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2140</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job J-Term 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Spring 2014 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2141"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2141.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2141"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2141</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2141"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2141.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2141"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2141</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Summer 2014 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2146"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2146.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2146"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2146</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2146"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2146.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2146"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2146</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Fall 2014 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2149"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2149.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2149"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2149</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Fall 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2149"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2149.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2149"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2149</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Fall 2014</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- J-Term 2015 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2150"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2150.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2150"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2150</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job J-Term 2015</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2150"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2150.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2150"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2150</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job J-Term 2015</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Spring 2015 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2151"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2151.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2151"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2151</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2015</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2151"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2151.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2151"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2151</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2015</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Summer 2015 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJob2156"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2156.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2156"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2156</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2015</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJob2156"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2156.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2156"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2156</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2015</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Summer 2015 Online-->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2155"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2155.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2155"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2155</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2015 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2155"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2155.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2155"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2155</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2015 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Fall 2016 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2169"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2169.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2169"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2169</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Fall 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2169"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2169.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2169"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2169</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Fall 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Fall 2016 Online -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2168"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2168.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2168"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2168</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Fall 2016 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2168"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2168.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2168"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2168</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Fall 2016 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- J-Term 2016 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2160"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2160.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2160"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2160</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job J-Term 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2160"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2160.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2160"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2160</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job J-Term 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Spring 2016 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2161"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2161.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2161"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2161</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2161"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2161.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2161"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2161</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Spring 2016 Online-->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2162"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2162.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2162"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2162</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2016 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2162"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2162.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2162"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2162</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2016 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Summer 2016 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2166"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2166.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2166"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2166</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2166"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2166.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2166"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2166</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2016</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Summer 2016 Online-->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2165"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2165.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2165"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2165</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2016 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2165"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2165.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2165"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2165</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2016 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+<!-- Beans for importing UCS101 test rosters -->
+
+    <!-- UCS 101 -->
+    <!-- Test Reconciliation Job for CM data -->   
+    <bean id="UDCMTestSyncJobUCS101"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-Oink.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJobUCS101"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJobUCS101</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job UCS101</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- J-Term 2017 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2170"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2170.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2170"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2170</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job J-Term 2017</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2170"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2170.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2170"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2170</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job J-Term 2017</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Spring 2017 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2171"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2171.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2171"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2171</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2017</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2171"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2171.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2171"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2171</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2017</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Spring 2017 Online-->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2172"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2172.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2172"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2172</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Spring 2017 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2172"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2172.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2172"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2172</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Spring 2017 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Summer 2017 -->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2176"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2176.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2176"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2176</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2017</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2176"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2176.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2176"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2176</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2017</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Summer 2017 Online-->
+    <!-- Test Reconciliation Job for CM data -->
+    <bean id="UDCMTestSyncJob2175"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/test-2175.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2175"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMTestSyncJob2175</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Test Sync Job Summer 2017 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->
+    <bean id="UDCMSyncJob2175"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-2175.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2175"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJob2175</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job Summer 2017 Online</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
+
+    <!-- Full (w/enrollment) Reconciliation Job for CM data -->   
+    <bean id="UDCMSyncJobUCS101"
+        class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+        init-method="init" destroy-method="destroy">
+        <property name="cmService">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+        </property>
+        <property name="cmAdmin">
+            <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+        </property>
+        <property name="classPathToXml">
+            <!-- location of xml files generated from PeopleSoft -->
+            <value>/sakaimisc/peoplesoft_xml/full-Oink.xml</value>
+        </property>
+        <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    </bean>
+    <!-- this is the helper that will register the above bean with the job scheduler -->
+    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJobUCS101"
+        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+        singleton="true" init-method="init">
+        <property name="beanId">
+            <value>UDCMSyncJobUCS101</value>
+        </property>
+        <property name="jobName">
+            <value>UD Course Management Full Sync Job UCS101</value>
+        </property>
+        <property name="schedulerManager">
+            <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+        </property>
+    </bean>
+
 
 	<!-- course site publishing service bean -->
 	<bean id="org.sakaiproject.coursemanagement.api.CourseSitePublishService.target"

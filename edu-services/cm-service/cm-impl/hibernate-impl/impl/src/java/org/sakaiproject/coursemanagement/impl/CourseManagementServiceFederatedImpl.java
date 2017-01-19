@@ -797,6 +797,22 @@ public class CourseManagementServiceFederatedImpl implements
 		return false;
 	}
 
+	@Override
+	public boolean isCourseOfferingInCourseSet(String courseSetEid, String courseOfferingEid) throws IdNotFoundException {
+		for(Iterator implIter = implList.iterator(); implIter.hasNext();) {
+			CourseManagementService cm = (CourseManagementService)implIter.next();
+			try {
+				// If any implementation says that the object exists, it exists!
+				if(cm.isCourseOfferingInCourseSet(courseSetEid, courseOfferingEid)) {
+					return true;
+				}
+			} catch (UnsupportedOperationException uso) {
+				if(log.isDebugEnabled()) log.debug(cm + " doesn't know whether course offering "+ courseOfferingEid + " is in course set " + courseSetEid);
+			}
+		}
+		return false;
+	}
+
 	public boolean isCourseSetDefined(String eid) {
 		for(Iterator implIter = implList.iterator(); implIter.hasNext();) {
 			CourseManagementService cm = (CourseManagementService)implIter.next();

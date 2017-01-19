@@ -40,6 +40,17 @@
         ]]>
     </query>
 
+    <!-- U Delaware -->
+    <query name="isCourseOfferingInCourseSet">
+        <![CDATA[
+        select count(cs) 
+           from CourseSetCmImpl as cs, CourseOfferingCmImpl as co
+           where cs.eid=:courseSetEid and
+                 co in elements(cs.courseOfferings) and
+                 co.eid=:courseOfferingEid
+        ]]>
+    </query>
+
     <query name="findTopLevelCourseSets">
         <![CDATA[
         from CourseSetCmImpl as courseSet where courseSet.parent is null

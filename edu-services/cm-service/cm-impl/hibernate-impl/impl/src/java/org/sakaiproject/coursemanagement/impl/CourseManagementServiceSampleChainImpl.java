@@ -207,6 +207,11 @@ public class CourseManagementServiceSampleChainImpl implements CourseManagementS
 		throw new UnsupportedOperationException();
 	}
 
+	@Override
+	public boolean isCourseOfferingInCourseSet(String courseSetEid, String courseOfferingEid) throws IdNotFoundException {
+		throw new UnsupportedOperationException();
+	}
+
 	public boolean isCourseSetDefined(String eid) {
 		throw new UnsupportedOperationException();
 	}

@@ -160,6 +160,18 @@ public class CourseManagementServiceHibernateImpl extends HibernateDaoSupport im
 		return ((CourseSetCmImpl)getCourseSet(courseSetEid)).getCourseOfferings();
 	}
 
+	/**
+	 *  From U Delaware
+	 */
+	public boolean isCourseOfferingInCourseSet(final String courseSetEid,final String courseOfferingEid) throws IdNotFoundException {
+	    return ((Number)getHibernateTemplate().findByNamedQueryAndNamedParam(
+	            "isCourseOfferingInCourseSet", 
+	            new String[] {"courseSetEid", "courseOfferingEid"},
+	            new String[] {courseSetEid, courseOfferingEid})
+	            .get(0)).intValue() >= 1;
+	}
+
+
 	public Set<CourseOffering> getEquivalentCourseOfferings(String courseOfferingEid) throws IdNotFoundException {
 		final CourseOfferingCmImpl courseOffering = (CourseOfferingCmImpl)getCourseOffering(courseOfferingEid);
 		HibernateCallback<List<CourseOffering>> hc = session -> {
@@ -447,8 +459,8 @@ public class CourseManagementServiceHibernateImpl extends HibernateDaoSupport im
 
 	public Map<String, String> getEnrollmentStatusDescriptions(Locale locale) {
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("enrolled", "Enrolled");
-		map.put("wait", "Waitlisted");
+		map.put("Enrolled", "Enrolled");
+		map.put("Dropped", "Dropped");
 		return map;
 	}
 
