@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -182,6 +184,8 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 */
 	protected Map<String,String> attributeMappings;
 
+	private MemoryService memoryService;
+	
 	/**
 	 * Cache of {@link LdapUserData} objects, keyed by eid. 
 	 * {@link cacheTtl} controls TTL. 
@@ -189,6 +193,8 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 * TODO: This is a naive implementation: cache
 	 * is completely isolated on each app node.
 	 */
+	private Cache userCache;
+
 	/** TTL for cachedUsers. Defaults to {@link #DEFAULT_CACHE_TTL} */
 	private long cacheTtl = DEFAULT_CACHE_TTL;
 
@@ -1743,6 +1749,14 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			default :
 				throw new IllegalArgumentException("Invalid search scope [" + searchScope +"]");
 		}
+	}
+
+	public MemoryService getMemoryService() {
+		return memoryService;
+	}
+
+	public void setMemoryService(MemoryService memoryService) {
+		this.memoryService = memoryService;
 	}
 
 	/** 
