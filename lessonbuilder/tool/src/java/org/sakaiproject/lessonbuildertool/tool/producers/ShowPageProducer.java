@@ -4183,7 +4183,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 			UIOutput.make(tofill, "add-alert-dialog").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.add-alert-title") + " - " + simplePageBean.getPageTitle()));
 
 			UIForm form = UIForm.make(tofill, "add-alert-form");
-			makeCsrf(form, "csrf22");
+			makeCsrf(form, "csrf23");
 
 			//Roles:
 			String currentSiteId = toolManager.getCurrentPlacement().getContext();
