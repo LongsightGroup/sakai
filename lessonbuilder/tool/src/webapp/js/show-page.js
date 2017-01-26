@@ -507,12 +507,10 @@ $(document).ready(function() {
 		    });
 
 		$('#add-alert').click(function(){
-			closeDropdowns();
-			var position =  $(this).position();
-			$("#add-alert-dialog").dialog("option", "position", [position.left, position.top]);
 			oldloc = $(".dropdown a");
+			closeDropdowns();
 			$('#add-alert-dialog').dialog('open');
-			checksize($('#add-alert-dialog'));
+			setupdialog($('#add-alert-dialog'));
 			$("#add-alert-error-container").hide();
 			return false;
 		});
