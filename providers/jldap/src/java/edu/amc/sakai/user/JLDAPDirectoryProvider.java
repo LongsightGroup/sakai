@@ -1105,8 +1105,13 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			List<LdapUserData> mappedResults = new ArrayList<LdapUserData>();
 			int resultCnt = 0;
 			while ( searchResults.hasMore() ) {
-				LDAPEntry entry = searchResults.next();
-				Object mappedResult = mapper.mapLdapEntry(entry, ++resultCnt);
+				Object mappedResult = null;
+				try {
+					LDAPEntry entry = searchResults.next();
+					mappedResult = mapper.mapLdapEntry(entry, ++resultCnt);
+				} catch (LDAPReferralException ldapEx) {
+					M_log.debug("LDAPReferralException: {}", ldapEx.getLDAPErrorMessage());
+				}
 				if ( mappedResult == null ) {
 					continue;
 				}
