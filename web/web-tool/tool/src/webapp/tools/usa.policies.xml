@@ -13,6 +13,7 @@
 		<configuration name="reset.button" value="false" type="final" />
 
 		<category name="course" />
+		<category name="project" />
 
 		<!-- Allow this to be set -->
 		<configuration name="functions.require" />
