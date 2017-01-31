@@ -74,7 +74,7 @@ $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #FFFFFF;
+$button-text-color:    	 #4F234B;
 $button-border-color: #8A6D83;
 $button-background-color: #A39161 !important;
 $button-background-secondary-color: #4F234B;
@@ -106,7 +106,7 @@ $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
 $sites-nav-menu-item-selected-background:   #A39161 !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;

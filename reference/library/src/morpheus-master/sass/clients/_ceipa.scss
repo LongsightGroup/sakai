@@ -137,8 +137,8 @@ $measure: 960px !default;
 
 /* Logo location */
 $logo: '../images/ceipa.png';
-$logo-height: 112px;
-$logo-width: 80px;
+$logo-height: 50px;
+$logo-width: 50px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -187,4 +187,8 @@ $info-background-color:     $background-color !important;
 
 #mastLogin #loginLinks ul a {
    color: #FFFFFF !important;
+}
+
+.Mrphs-skipNav__menu li a {
+    color: #009fa0 !important;
 }
