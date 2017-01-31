@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Global namespace */
 
 $namespace : "Mrphs-";
@@ -458,4 +459,110 @@ div.cke-notifications-area {
 
 div.portletBody {
    background: #FFFFFF !important;
+=======
+
+$logo: 'images/nd_gold.png';
+/*$logo-height: '26px';
+$logo-width: '400px';*/
+$header-gradient-a:	#B4820B;
+$header-gradient-b:	#C99700;
+$header-gradient-c:	#DAA520;
+$header-gradient-d:	#E8B414;
+$sites-nav-background:	#0C2340;
+$background-color:	#E4E8EC;
+$tool-background-color:	#FFFFFF;
+$toolMenuBGColor:	#E2E2E0;
+$toolMenuColor:	#5AABBC;
+$toolTabBGColor:	#5AABBC;
+$toolBorderColor:	#5AABBC;
+$primary-color:	#0C2340;
+$text-color:	#0C2340;
+$button-text-color:	#0C2340;
+$button-border-color:	#0C2340;
+$button-background-color:	#5aabbc;
+$button-background-secondary-color:	#5aabbc;
+$button-color-text-color:	#0C2340;
+$button-color-border-color:	#0C2340;
+$button-color-background-color:	#5aabbc;
+$button-color-background-secondary-color: #5aabbc;
+
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  color: #0C2340;
+  border-radius: 3px !important;
+  border-color: #0C2340;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem a {
+  background: #5aabbc !important;
+  color: #FFFFFF !important;
+  border-radius: 17px !important;
+}
+
+.Mrphs-siteHierarchy a {
+  color: #0C2340 !important;
+}
+
+.Mrphs-topHeader {
+background: #0C2340 !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
+    background: #FFFFFF !important;
+    color: #0C2340 !important;
+    font-weight: 450;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
+    top: -3px !important;
+    height: 28px;
+}
+
+@mixin bs-callout($primary-color, $background-color) {
+  display: block;
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border: 1px solid;
+  border-left-width: 5px;
+  border-color: lighten($primary-color, 25%) !important;
+  border-left-color: $primary-color !important;
+  background-color: $background-color !important;
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    color: $primary-color;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+  code, .highlight {
+    background-color: #fff;
+  }
+}
+
+.bs-callout-primary, .bs-callout-info {
+  @include bs-callout($toolMenuBGColor, lighten($toolMenuBGColor, 0%));
+}
+.instruction{
+        @include bs-callout($toolMenuBGColor, lighten($toolMenuBGColor, 0%));
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem ul {
+background: #5AABBC !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected ul {
+background: #ffffff !important;
+}
+
+#toolMenu ul li.Mrphs-collapseTools {
+background: #0c2340 !important;
+color: #FFFFFF !important;
+}
+
+.Mrphs-mainHeader .Mrphs-loginUser p {
+    margin: 0.05em -4.5em 0px -100px !important;
+}
+
+#mastLogin #loginLinks ul .Mrphs-loginUser {
+    padding: 0px 0px 0px 100px !important;
+>>>>>>> 46792afd9df9a917abeddbb4d5a8f875e2ec7da6
 }
