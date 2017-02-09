@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "ohiovalley"; // This is used for bootstrap font behaviour.
+$skin-name : "appalachainlaw"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -29,24 +29,24 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #CCCCCC;
+$background-color: #FFFFFF;
 
-$primary-color:                          #474747;
-$text-color:                             #000000;
+$primary-color:                          #003366;
+$text-color:                             #003366;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #cce0ff;
+$tool-menu-background-color:   			 #eaeaea;
 $tool-menu-color:      			 #000000;
-$tool-tab-background-color:    			 #cce0ff;
-$tool-border-color:    			 #FFFFFF;
+$tool-tab-background-color:    			 #eaeaea;
+$tool-border-color:    			 #003366;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #000000 !important;
-$tool-menu-hover-background-color: #474747 !important;
-$tool-menu-current-background-color: #ff4d4d !important;
-$tool-menu-current-color: #000000 !important;
+$tool-menu-hover-color:  #FFFFFF !important;
+$tool-menu-hover-background-color: #003366 !important;
+$tool-menu-current-background-color: #FFFFFF !important;
+$tool-menu-current-color: #003366 !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,31 +58,31 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #002a6c !important;
+$top-header-background: #444444 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #000000 !important;
-$breadcrumbs-hover-color:      		 #474747 !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
-$link-color: #000000;
-$link-active-color: #000000;
-$link-hover-color: #000000;
+$link-color: #003366;
+$link-active-color: #003366;
+$link-hover-color: #ccddee;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #000000;
-$button-border-color: #011D62;
-$button-background-color: #F0F0F0 !important;
-$button-background-secondary-color: #4F6DAA;
+$button-text-color: #FFFFFF;
+$button-border-color: #FFFFFF;
+$button-background-color: #484743 !important;
+$button-background-secondary-color: #444444;
 /* General button colors */
-$button-color-text-color: #000000;
-$button-color-border-color: #011D62;
-$button-color-background-color: #2A94C0 !important;
-$button-color-background-secondary-color: #011D62;
+$button-color-text-color: #FFFFFF;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #484743 !important;
+$button-color-background-secondary-color: #444444;
 /* ///////////// */
 
 $ok-color:                  #DFF0D8 !default;
@@ -93,20 +93,20 @@ $error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #cce0ff;
-$header-gradient-b: #3381ff;
-$header-gradient-c: #004ecc;
-$header-gradient-d: #011D62;
+$header-gradient-a: #314151;
+$header-gradient-b: #2d3d4d;
+$header-gradient-c: #1b2936;
+$header-gradient-d: #1b2936;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #000000 !important;
+$sites-nav-menu-item-background:            #666666 !important;
+$sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           #FFFFFF !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #ff4d4d !important;
-$sites-nav-menu-item-selected-color:        #000000 !important;
+$sites-nav-menu-item-selected-background:   #ccddee !important;
+$sites-nav-menu-item-selected-color:        #003366 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -133,12 +133,10 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #FFFFFF !important; /* used for links and text in the topNav */
-
 /* Logo location */
-$logo: '../images/ohiovalley.jpg';
-$logo-height: 50px;
-$logo-width: 175px;
+$logo: '../images/covenant.png';
+$logo-height: 45px;
+$logo-width: 114px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -156,27 +154,26 @@ $info-background-color:     $background-color !important;
 }
 
 .select {
-    background-color: #F0F0F0 !important;
-    color: #000000 !important;
+    color: #FFFFFF !important;
 }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #000000;
+  color: #003366;
 }
 
-.navIntraTool li span a {
-  color: #000000 !important;
-}
+// .navIntraTool li span a {
+//   color: #CCCCCC !important;
+// }
 
 .instruction {
-    border-color: #474747 !important;
-    background-color: #CCCCCC !important;
+    background-color: #FFFFFF !important;
+    color: #003366 !important;
 }
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
-   border-color: #474747 !important;
+   border-color: #003366 !important;
 }
 
 .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
-    color: #000000 !important;
+    color: #FFFFFF !important;
 }
