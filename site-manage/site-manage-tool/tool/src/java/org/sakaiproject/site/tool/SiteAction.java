@@ -1736,9 +1736,7 @@ public class SiteAction extends PagedResourceActionII {
                     context.put("userType", user.getType());
                 }
             } catch (Exception e) {
-                if (Log.isWarnEnabled()) {
                     M_log.warn("buildContextForTemplate chef_site-type.vm " + e);
-                }
             }
 			
 			return (String) getContext(data).get("template") + TEMPLATE[1];
