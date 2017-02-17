@@ -47,9 +47,11 @@
 					<div class="col-sm-5">
 						<select id="view" name="view" size="1" onchange="SPNR.insertSpinnerInPreallocated( this, null, 'viewFilterSpinner' );document.viewForm.submit();">
 							#foreach($view in $viewKeys)
+                       #if ($views.get($view) != "portfolio")
 								<option value ="$view"
 								#if($view == $viewSelected) selected="selected" #end
 								> $views.get($view) </option>
+                       #end
 							#end
 						</select>
 						<div id="viewFilterSpinner" class="allocatedSpinPlaceholder"></div>
