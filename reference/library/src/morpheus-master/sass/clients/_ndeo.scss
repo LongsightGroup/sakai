@@ -58,7 +58,7 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #bcc2c3 !important;
+$top-header-background: #FFFFFF !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
@@ -76,7 +76,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #255A66;
-$button-background-color: #79ACB2 !important;
+$button-background-color: #79ACB2;
 $button-background-secondary-color: #255A66;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
@@ -133,7 +133,7 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #FFFFFF !important; /* used for links and text in the topNav */
+$topNav-text-color:                         #255A66; /* used for links and text in the topNav */
 
 /* Logo location */
 $logo: '../images/ndeo.jpg';

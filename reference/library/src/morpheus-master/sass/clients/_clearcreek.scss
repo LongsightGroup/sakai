@@ -76,7 +76,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #0e4220;
-$button-background-color: #35734A !important;
+$button-background-color: #35734A;
 $button-background-secondary-color: #2681B5;
 /* General button colors */
 $button-color-text-color: #343434;
@@ -133,7 +133,7 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #FFFFFF !important; /* used for links and text in the topNav */
+$topNav-text-color:                         #FFFFFF; /* used for links and text in the topNav */
 
 /* Logo location */
 $logo: '../images/clearcreek.jpg';

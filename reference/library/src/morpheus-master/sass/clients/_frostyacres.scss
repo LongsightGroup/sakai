@@ -29,24 +29,24 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #CCCCCC;
+$background-color: #FFFFFF;
 
-$primary-color:                          #F1F3FA;
+$primary-color:                          #ebebeb;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #C3CDE8;
-$tool-menu-color:      			 #000000;
-$tool-tab-background-color:    			 #C3CDE8;
-$tool-border-color:    			 #C3CDE8;
+$tool-menu-background-color:   			 #ebebeb;
+$tool-menu-color:      			 #666666;
+$tool-tab-background-color:    			 #ebebeb;
+$tool-border-color:    			 #424242;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #CCCCCC !important;
-$tool-menu-hover-background-color: #F1F3FA !important;
-$tool-menu-current-background-color: #F1F3FA !important;
-$tool-menu-current-color: #CCCCCC !important;
+$tool-menu-hover-color:  #FFFFFF !important;
+$tool-menu-hover-background-color: #666666 !important;
+$tool-menu-current-background-color: #FFFFFF !important;
+$tool-menu-current-color: #ed1c2b !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,31 +58,31 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #FFFFFF !important;
+$top-header-background: #424242 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #F1F3FA !important;
-$breadcrumbs-hover-color:      		 #F1F3FA !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
-$link-color: #000000;
-$link-active-color: #000000;
-$link-hover-color: #000000;
+$link-color: #424242;
+$link-active-color: #424242;
+$link-hover-color: #424242;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #000000;
+$button-text-color:    	 #424242;
 $button-border-color: #000000;
-$button-background-color: #f0f0f0 !important;
-$button-background-secondary-color: #C3CDE8;
+$button-background-color: #FFFFFF;
+$button-background-secondary-color: #ed1c2b;
 /* General button colors */
-$button-color-text-color: #000000;
+$button-color-text-color: #424242;
 $button-color-border-color: #000000;
-$button-color-background-color: #2a94c0 !important;
-$button-color-background-secondary-color: #C3CDE8;
+$button-color-background-color: #FFFFFF !important;
+$button-color-background-secondary-color: #ed1c2b;
 /* ///////////// */
 
 $ok-color:                  #DFF0D8 !default;
@@ -93,20 +93,20 @@ $error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #C3CDE8;
-$header-gradient-b: #C3CDE8;
-$header-gradient-c: #C3CDE8;
-$header-gradient-d: #C3CDE8;
+$header-gradient-a: #ed1c2b;
+$header-gradient-b: #ed1c2b;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #E6E6E6 !important;
-$sites-nav-menu-item-color-hover:           #E6E6E6 !default;
+$sites-nav-menu-item-background:            #ebebeb !important;
+$sites-nav-menu-item-color:                 #424242 !important;
+$sites-nav-menu-item-color-hover:           #ed1c2b !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #F1F3FA !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-background:   #ebebeb !important;
+$sites-nav-menu-item-selected-color:        #424242 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
@@ -133,12 +133,12 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #FFFFFF !important; /* used for links and text in the topNav */
+$topNav-text-color:                         #424242; /* used for links and text in the topNav */
 
 /* Logo location */
 $logo: '../images/frostyacres.jpg';
 $logo-height: 50px;
-$logo-width: 188px;
+$logo-width: 158px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -156,27 +156,27 @@ $info-background-color:     $background-color !important;
 }
 
 .select {
-    background-color: #f0f0f0 !important;
-    color: #000000 !important;
+    background-color: #FFFFFF !important;
+    color: #ed1c2b !important;
 }
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #000000;
+  color: #666666;
 }
 
 .navIntraTool li span a {
-  color: #CCCCCC !important;
+  color: #ed1c2b !important;
 }
 
 .instruction {
-    border-color: #F1F3FA !important;
-    background-color: #CCCCCC !important;
+    border-color: #ebebeb !important;
+    background-color: #FFFFFF !important;
 }
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
-   border-color: #F1F3FA !important;
+   border-color: #ebebeb !important;
 }
 
 .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
-    color: #F1F3FA !important;
+    color: #FFFFFF !important;
 }

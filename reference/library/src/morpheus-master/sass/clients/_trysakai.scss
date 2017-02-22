@@ -1,70 +1,191 @@
+/* Global namespace */
+
+$namespace : "Mrphs-";
+$skin-name : "appalachainlaw"; // This is used for bootstrap font behaviour.
+
+$break-small-end:      	800px;
+$break-medium-end:     	1030px;
+
+$phone  :       "only screen and (max-width : #{ $break-small-end })";
+$tablet :       "only screen and (max-width : #{ $break-medium-end })";
+$desktop:       "only screen and (min-width : #{ $break-medium-end + 1 })";
+$nonPhone:      "only screen and (min-width : #{ $break-small-end + 1 })";
+
+// For the "More Sites" drawer, just use one column if there's not
+// enough room to show two side-by-side.
+$break-more-sites-single-column: 1200px;
+$more-sites-single-column: "only screen and (max-width : #{ $break-more-sites-single-column })";
+
+/* Typography*/
+
+//Google family Fonts URL
+$font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default;
+
+//Typography variables
+$font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
+$default-font-size: 14px !default;
+$default-font-weight: 400 !default;    										// 400 or 700 as you wish
+$header-font-family: $font-family;
+$header-font-weight: 700 !default;     										// 400 or 700 as you wish
+
+/* Color palette */
 $background-color: #FFFFFF;
-$logo: 'images/newlogowhite.png'; 
-$logo-height: 47px;
+
+$primary-color:                          #00aa9e;
+$text-color:                             #000000;
+
+$portal-background-color: $background-color;
+
+$tool-background-color:		 $background-color;
+$tool-menu-background-color:   			 #f6f6f6;
+$tool-menu-color:      			 #7c7c7c;
+$tool-tab-background-color:    			 #f6f6f6;
+$tool-border-color:    			 #f2f1f1;
+$tool-tab-active-background-color:     			 $background-color !default;
+$tool-tab-active-border-color: 	 $background-color !important;
+$tool-menu-hover-color:  #FFFFFF !important;
+$tool-menu-hover-background-color: #00aa9e !important;
+$tool-menu-current-background-color: #FFFFFF !important;
+$tool-menu-current-color: #00aa9e !important;
+$tool-menu-current-border-color: $primary-color !important;
+$tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
+$tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
+$tool-sub-menu-hover-background-color: $primary-color !default;
+$tool-sub-menu-hover-color: $tool-menu-color !default;
+$tool-sub-menu-current-color: $primary-color !default;
+$tool-sub-menu-current-background-color: $background-color !default;
+$tool-sub-menu-current-hover-color: $tool-menu-color !important;
+$tool-sub-menu-current-hover-background-color: $background-color !default;
+
+$main-content-background: $background-color !important;
+$top-header-background: #444444 !important;
+$sites-nav-background: $top-header-background !important;
+
+$breadcrumbs-color:    			 #FFFFFF !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #FFFFFF !important;
+
+/* Link colors */
+$link-color: #444444;
+$link-active-color: #444444;
+$link-hover-color: #00aa9e;
+$link-background-color: transparent !default;
+$link-active-background-color: transparent !default;
+$link-hover-background-color: transparent !default;
+
+/* Linknav button colors */
+$button-text-color: #FFFFFF;
+$button-border-color: #FFFFFF;
+$button-background-color: #00aa9e;
+$button-background-secondary-color: #00aa9e;
+/* General button colors */
+$button-color-text-color: #FFFFFF;
+$button-color-border-color: #FFFFFF;
+$button-color-background-color: #00aa9e;
+$button-color-background-secondary-color: #00aa9e;
+/* ///////////// */
+
+$ok-color:                  #DFF0D8 !default;
+$ok-background-color:        lighten($ok-color, 45%) !default;
+$warn-background-color:     #FCF8E3 !default;
+$warn-color:                darken($warn-background-color, 35%) !default;
+$error-background-color:    #F2DEDE !default;
+$error-color:               darken($error-background-color, 30%) !default;
+
+/* This is the gradient in the header of the page */
+$header-gradient-a: #00aa9e;
+$header-gradient-b: #00aa9e;
+$header-gradient-c: #00aa9e;
+$header-gradient-d: #00aa9e;
+
+$sites-nav-menu-item-background:            #D3D3D3 !important;
+$sites-nav-menu-item-color:                 #000000 !important;
+$sites-nav-menu-item-color-hover:           #000000 !default;
+$sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          none !default;
+$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-left:           none !default;
+$sites-nav-menu-item-selected-background:   #00aa9e !important;
+$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
+$sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: none !default;
+$sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-left:  none !default;
+$sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
+$sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-color:              $sites-nav-menu-item-color;
+$sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !default;
+$sites-nav-submenu-item-border:             none !default;
+$sites-nav-submenu-item-border-hover:       none !default;
+$sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
+$sites-nav-submenu-item-selected-border:    none !default;
+
+$tool-nav-link-color:  #00aa9e;
+
+/* Tool Menu */
+$tool-menu-width: 7.5em !default;
+
+/* Navigation Hierarchy */
+$hierarchy-size: 3.5em;
+
+/* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
+$measure: 960px !default;
+
+/* Logo location */
+$logo: '../images/trysakai.png';
+$logo-height: 50px;
 $logo-width: 226px;
 
-$header-gradient-a: #444444;
-$header-gradient-b: #444444;
-$header-gradient-c: #444444;
-$header-gradient-d: #444444;
+/* Tool icons */
+$skin-with-icons: false !important;
+$icon-size: 20px !default;
 
-$tool-background-color: #FFFFFF;
-$toolMenuBGColor:                        #F6F6F6;
-$toolMenuColor:                          #7C7C7C;
-$toolTabBGColor:                         #C2C2C2;
-$toolBorderColor:                        #F2F1F1;
+/* Footer */
+$footer-background: transparent !default;
+$footer-color: $background-color-secondary !default;
 
-$primary-color:                          #444444;
-$secondary-color:                        #00ACDA;
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
 
-$text-color:                             #4A4A4A;
+.img_site_toolmenu {
+    display: none !important;
+}
 
-$button-text-color:      #4A4A4A;
-$button-border-color: #FFFFFF;
-$button-background-color: #DDDDDD;
-$button-background-secondary-color: #DDDDDD;
-
-$button-color-text-color: #4A4A4A;
-$button-color-border-color: #FFFFFF;
-$button-color-background-color: #DDDDDD;
-$button-color-background-secondary-color: #DDDDDD;
-
-$okcolor:                                        #dff0d8 !default;
-$errorcolor:                             #f2dede !default;
-$warncolor:                              #fcf8e3 !default;
-
-$skin-with-icons: true;
-
-#toolMenuWrap img.img_site_toolmenu { display: none; }
+.select {
+    color: #212121 !important;
+    background-color: #F0F0F0 !important;
+}
 
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #031D49;
+  border-radius: 3px;
 }
 
-#linkNav ul li.Mrphs-sitesNav__menuitem a {
-  background: #D3D3D3 !important;
-  color: #000000 !important;
+.instruction {
+    background-color: #FFFFFF !important;
+    color: #444444 !important;
+    border-color: #00aa9e !important;
 }
 
-.Mrphs-siteHierarchy a {
-  color: #FFFFFF !important;
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: #00aa9e !important;
 }
 
-.Mrphs-topHeader {
-background: #444444 !important;
+#linkNav ul li.Mrphs-sitesNav__menuitem>a {
+    border-radius: 3px;
 }
 
-.select, select {
-color: #4A4A4A !important;
+#Mrphs-xlogin .logo {
+    background: #444 url("../images/trysakai.png") no-repeat center center !important;
 }
 
-#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
-    background: #00acda !important;
+.Mrphs-siteHierarchy {
     color: #FFFFFF !important;
-    font-weight: 450;
 }
 
-#linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
-    top: -1px !important;
-    height: 28px;
+.Mrphs-footerApp__presence, .Mrphs-footerApp__portalChat {
+    background-color: #444444 !important;
 }

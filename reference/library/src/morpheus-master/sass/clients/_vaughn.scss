@@ -61,9 +61,9 @@ $main-content-background: $background-color !important;
 $top-header-background: #f7b03c !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #FFFFFF !important;
-$breadcrumbs-hover-color:      		 #FFFFFF !important;
+$breadcrumbs-color:    			 #000000 !important;
+$breadcrumbs-tool-color:       		 #000000 !important;
+$breadcrumbs-hover-color:      		 #000000 !important;
 
 /* Link colors */
 $link-color: #0064cd;
@@ -94,11 +94,13 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
+$topNav-text-color: #000000;
+
 /* This is the gradient in the header of the page */
-$header-gradient-a: #f7b03c;
-$header-gradient-b: #f7b03c;
-$header-gradient-c: #FFFFFF;
-$header-gradient-d: #f7b03c;
+$header-gradient-a: #ededed;
+$header-gradient-b: #ededed;
+$header-gradient-c: #ededed;
+$header-gradient-d: #ededed;
 
 $sites-nav-menu-item-background:            #f9ad38 !important;
 $sites-nav-menu-item-color:                 #555555 !important;
@@ -152,10 +154,6 @@ $footer-color: $background-color-secondary !default;
   border-radius: 6px;
 }
 
-//.navIntraTool li span a {
-//  color: #002776 !important;
-//}
-
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: $primary-color !important;
    background: #CCCCCC !important;
@@ -164,10 +162,6 @@ $footer-color: $background-color-secondary !default;
 .instruction {
     background-color: #CCCCCC !important;
 }
-
-//#mastLogin #loginLinks ul a { 
-//    color: #000000 !important;
-//}
 
 #linkNav ul li.Mrphs-sitesNav__menuitem>a {
     border-radius: 3px !important;

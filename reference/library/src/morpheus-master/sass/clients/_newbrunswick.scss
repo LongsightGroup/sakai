@@ -76,7 +76,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #000000;
 $button-border-color: #3C76B6;
-$button-background-color: #ababab !important;
+$button-background-color: #ababab;
 $button-background-secondary-color: #3C76B6;
 /* General button colors */
 $button-color-text-color: #BEB9B9;
@@ -133,7 +133,7 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #FFFFFF !important; /* used for links and text in the topNav */
+$topNav-text-color:                         #FFFFFF; /* used for links and text in the topNav */
 
 /* Logo location */
 $logo: '../images/newbrunswick.jpg';

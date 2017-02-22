@@ -76,7 +76,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #4F234B;
 $button-border-color: #8A6D83;
-$button-background-color: #A39161 !important;
+$button-background-color: #A39161;
 $button-background-secondary-color: #4F234B;
 /* General button colors */
 $button-color-text-color: #CCCCCC;
@@ -133,7 +133,7 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #000000 !important; /* used for links and text in the topNav */
+$topNav-text-color:                         #000000; /* used for links and text in the topNav */
 
 /* Logo location */
 $logo: '../images/kuyper.jpg';

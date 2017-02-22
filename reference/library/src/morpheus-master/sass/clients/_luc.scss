@@ -161,10 +161,6 @@ $info-background-color:     $background-color !important;
   border-radius: 3px;
 }
 
-// .navIntraTool li span a {
-//   color: #CCCCCC !important;
-// }
-
 .instruction {
     background-color: #FFFFFF !important;
     color: #980033 !important;
@@ -180,4 +176,12 @@ $info-background-color:     $background-color !important;
 
 #linkNav ul li.Mrphs-sitesNav__menuitem>a {
     border-radius: 3px;
+}
+
+#Mrphs-xlogin .logo {
+    background: #8c1b35 url(../images/luc.png) no-repeat center center !important;
+}
+
+.popup-container-header { 
+    background: #922246 !important;
 }
