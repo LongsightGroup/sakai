@@ -81,6 +81,9 @@
   .icon-sakai--kaltura-my-media {                           @extend .fa-file-video-o; }
   .icon-sakai--sakai-bbb {                                  @extend .fa-video-camera; }
   .icon-sakai--sakai-rsf-evaluation {                       @extend .fa-commenting; }
+  .icon-sakai--com-sonicfoundry-mediasite-mymediasite {     @extend .fa-users; }
+  .icon-sakai--com-sonicfoundry-mediasite-catalog {         @extend .fa-youtube-play; }
+
 
   // other icons
   .icon-sakai--check {                                      @extend .fa-check; }
