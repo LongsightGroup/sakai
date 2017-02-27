@@ -164,8 +164,12 @@ $info-background-color:     $background-color !important;
    border-color: #af0000 !important;
 }
 
+.Mrphs-portalWrapper {
+  padding-top: 30px;
+}
+
 /* Remove server time per ISU */
-div.server-time-container {
+.Mrphs-footer--details__server-time {
         display: none;
 }
 
