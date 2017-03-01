@@ -31,7 +31,7 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #ebebeb;
+$primary-color:                          #424242;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
@@ -169,12 +169,12 @@ $info-background-color:     $background-color !important;
 }
 
 .instruction {
-    border-color: #ebebeb !important;
+    border-color: #424242 !important;
     background-color: #FFFFFF !important;
 }
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
-   border-color: #ebebeb !important;
+   border-color: #424242 !important;
 }
 
 .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
