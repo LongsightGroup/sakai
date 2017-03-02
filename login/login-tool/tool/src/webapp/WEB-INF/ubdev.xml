@@ -167,6 +167,7 @@
                                 <value type="java.lang.String">sakai/saml/idp.xml</value>
                             </constructor-arg>
                             <property name="parserPool" ref="parserPool"/>
+                            <property name="requireValidMetadata" value="false" />
                         </bean>
                     </constructor-arg>
                     <constructor-arg>

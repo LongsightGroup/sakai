@@ -71,10 +71,10 @@
         <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
-                <entry key="ubaltprodkey" value="changeit"/>
+                <entry key="ubaltprod" value="changeit"/>
             </map>
         </constructor-arg>
-        <constructor-arg type="java.lang.String" value="ubaltprodkey"/>
+        <constructor-arg type="java.lang.String" value="ubaltprod"/>
     </bean>
 
     <!-- Entry point to initialize authentication, default values taken from properties file -->
@@ -143,8 +143,8 @@
 			               <property name="sslSecurityProfile" value="pkix"/>
 			               <property name="sslHostnameVerification" value="default"/>
 			               <property name="signMetadata" value="false"/>
-			               <property name="signingKey" value="ubaltprodkey"/>
-			               <property name="encryptionKey" value="ubaltprodkey"/>
+			               <property name="signingKey" value="ubaltprod"/>
+			               <property name="encryptionKey" value="ubaltprod"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
 			               <property name="requireLogoutRequestSigned" value="false"/>
 			               <property name="requireLogoutResponseSigned" value="false"/>
@@ -167,6 +167,7 @@
                                 <value type="java.lang.String">sakai/saml/idp.xml</value>
                             </constructor-arg>
                             <property name="parserPool" ref="parserPool"/>
+                            <property name="requireValidMetadata" value="false" />
                         </bean>
                     </constructor-arg>
                     <constructor-arg>
