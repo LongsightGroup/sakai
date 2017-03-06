@@ -80,6 +80,7 @@
   .icon-sakai--kaltura-media {                              @extend .fa-file-video-o; }
   .icon-sakai--kaltura-my-media {                           @extend .fa-file-video-o; }
   .icon-sakai--sakai-bbb {                                  @extend .fa-video-camera; }
+  .icon-sakai--sakai-gradebook-gwt-rpc {                    @extend .fa-book; }
   .icon-sakai--sakai-rsf-evaluation {                       @extend .fa-commenting; }
   .icon-sakai--com-sonicfoundry-mediasite-mymediasite {     @extend .fa-users; }
   .icon-sakai--com-sonicfoundry-mediasite-catalog {         @extend .fa-youtube-play; }
@@ -94,6 +95,9 @@
   .icon-sakai--home {                                       @extend .fa-university; }
   .icon-sakai--pdf {                                        @extend .fa-file-pdf-o; }
   .icon-sakai--subsite {                                    @extend .fa-level-up; }
+  .icon-sakai--sakai-clog {                                 @extend .fa-comments; }
+  .icon-sakai--sakai-clogadmin {                            @extend .fa-comments; }
+  .icon-sakai--sakai-attendance {                           @extend .fa-check-square-o; }
   .icon-sakai--subsites-list {                              @extend .fa-level-down; }
 
   // when we're showing the motd tool as "Welcome" on the gateway page, use a different icon.
