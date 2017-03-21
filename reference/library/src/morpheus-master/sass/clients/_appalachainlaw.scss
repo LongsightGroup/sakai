@@ -151,6 +151,8 @@ $footer-color: $background-color-secondary !default;
 $info-color:                $primary-color  !default;
 $info-background-color:     $background-color !important;
 
+$tool-nav-link-color: #CCCCCC;
+
 .img_site_toolmenu {
     display: none !important;
 }
@@ -164,9 +166,9 @@ $info-background-color:     $background-color !important;
   color: #3D6D4D;
 }
 
-.navIntraTool li span a {
-  color: #CCCCCC !important;
-}
+//.navIntraTool li span a {
+//  color: #CCCCCC !important;
+//}
 
 .instruction {
     border-color: #3D6D4D !important;

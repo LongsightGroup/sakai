@@ -182,12 +182,18 @@ $swapped-view-sites-nav-background: $swapped-view-primary;
   clear: both;
   text-align: center;
   background: url(images/bg_seal.png) no-repeat scroll center -350px #545454;
-  #footer #Mrphs-footer--nav__project--sakai {
-    display: none;
+
+  #Mrphs-footer--nav__project--sakai {
+    visibility: hidden;
   }
-  #footer li {
+  ul li {
     list-style-type: none;
   }
+  a {
+    color: #ddd;
+    text-decoration: none;
+  }
+
   /* Remove server time per ISU */
   .Mrphs-footer--details__server-time {
     display: none;

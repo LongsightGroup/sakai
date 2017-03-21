@@ -31,7 +31,7 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #ebebeb;
+$primary-color:                          #424242;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
@@ -133,7 +133,7 @@ $hierarchy-size: 3.5em;
 /* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
 $measure: 960px !default;
 
-$topNav-text-color:                         #424242; /* used for links and text in the topNav */
+$topNav-text-color:                         #FFFFFF; /* used for links and text in the topNav */
 
 /* Logo location */
 $logo: '../images/frostyacres.jpg';
@@ -151,6 +151,8 @@ $footer-color: $background-color-secondary !default;
 $info-color:                $primary-color  !default;
 $info-background-color:     $background-color !important;
 
+$tool-nav-link-color: #ed1c2b;
+
 .img_site_toolmenu {
     display: none !important;
 }
@@ -164,17 +166,17 @@ $info-background-color:     $background-color !important;
   color: #666666;
 }
 
-.navIntraTool li span a {
-  color: #ed1c2b !important;
-}
+//.navIntraTool li span a {
+//  color: #ed1c2b !important;
+//}
 
 .instruction {
-    border-color: #ebebeb !important;
+    border-color: #424242 !important;
     background-color: #FFFFFF !important;
 }
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
-   border-color: #ebebeb !important;
+   border-color: #424242 !important;
 }
 
 .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
