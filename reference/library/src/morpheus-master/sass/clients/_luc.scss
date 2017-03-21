@@ -44,9 +44,9 @@ $tool-border-color:    			 #980033;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
-$tool-menu-hover-background-color: #980033 !important;
+$tool-menu-hover-background-color: #A30042 !important;
 $tool-menu-current-background-color: #ededed !important;
-$tool-menu-current-color: #980033 !important;
+$tool-menu-current-color: #A30042 !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,7 +58,7 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #8c1b35 !important;
+$top-header-background: #A30042 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
@@ -74,15 +74,15 @@ $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color: #980033;
-$button-border-color: #E0E3E5;
-$button-background-color: #e9e9e9 !important;
-$button-background-secondary-color: #FFFFFF;
+$button-text-color: #A30042;
+$button-border-color: #ccc;
+$button-background-color: -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !important;
+$button-background-secondary-color: -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !important;
 /* General button colors */
-$button-color-text-color: #980033;
-$button-color-border-color: #E0E3E5;
-$button-color-background-color: #e9e9e9 !important;
-$button-color-background-secondary-color: #FFFFFF;
+$button-color-text-color: #A30042;
+$button-color-border-color: #ccc;
+$button-color-background-color: -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !important;
+$button-color-background-secondary-color: -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !important;
 /* ///////////// */
 
 $ok-color:                  #DFF0D8 !default;
@@ -93,10 +93,10 @@ $error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #980033;
-$header-gradient-b: #980033;
-$header-gradient-c: #FFFFFF;
-$header-gradient-d: #980033;
+$header-gradient-a: #A30042;
+$header-gradient-b: #A30042;
+$header-gradient-c: #A30042;
+$header-gradient-d: #A30042;
 
 $sites-nav-menu-item-background:            #8c1b35 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
