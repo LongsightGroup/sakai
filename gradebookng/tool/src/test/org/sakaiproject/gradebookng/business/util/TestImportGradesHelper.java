@@ -22,7 +22,6 @@ import org.sakaiproject.gradebookng.business.model.ImportedRow;
 import org.sakaiproject.gradebookng.business.model.ImportedSpreadsheetWrapper;
 import org.sakaiproject.gradebookng.business.model.ProcessedGradeItem;
 import org.sakaiproject.gradebookng.business.model.ProcessedGradeItemStatus;
-import org.sakaiproject.gradebookng.business.util.ImportGradesHelper;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.GradeDefinition;
 import org.sakaiproject.user.api.User;
@@ -39,6 +38,14 @@ public class TestImportGradesHelper {
 		Assert.assertTrue(m1.matches());
 		Assert.assertEquals(StringUtils.trimToNull(m1.group(1)), "Week #1: Intro to A-B-C");
 		Assert.assertEquals(m1.group(2), "55.4");
+
+		Matcher titleMatcher = ImportGradesHelper.STANDARD_HEADER_PATTERN.matcher(headerValue);
+		Assert.assertTrue(titleMatcher.find());
+		Assert.assertEquals(StringUtils.trimToNull(titleMatcher.group()), "Week #1: Intro to A-B-C");
+
+		Matcher pointsMatcher = ImportGradesHelper.POINTS_PATTERN.matcher(headerValue);
+		Assert.assertTrue(pointsMatcher.find());
+		Assert.assertEquals(pointsMatcher.group(), "55.4");
 	}
 
 	@Test
@@ -56,6 +63,21 @@ public class TestImportGradesHelper {
 		Assert.assertEquals(StringUtils.trimToNull(m2.group(1)), "Week #2");
 		Assert.assertEquals(m1.group(2), "55.1");
 		Assert.assertEquals(m2.group(2), "55.2");
+		Matcher titleMatcherA = ImportGradesHelper.STANDARD_HEADER_PATTERN.matcher(headerValueA);
+		Assert.assertTrue(titleMatcherA.find());
+		Assert.assertEquals(StringUtils.trimToNull(titleMatcherA.group()), "Week #1");
+
+		Matcher titleMatcherB = ImportGradesHelper.STANDARD_HEADER_PATTERN.matcher(headerValueB);
+		Assert.assertTrue(titleMatcherB.find());
+		Assert.assertEquals(StringUtils.trimToNull(titleMatcherB.group()), "Week #2");
+
+		Matcher pointsMatcherA = ImportGradesHelper.POINTS_PATTERN.matcher(headerValueA);
+		Assert.assertTrue(pointsMatcherA.find());
+		Assert.assertEquals(pointsMatcherA.group(), "55.1");
+
+		Matcher pointsMatcherB = ImportGradesHelper.POINTS_PATTERN.matcher(headerValueB);
+		Assert.assertTrue(pointsMatcherB.find());
+		Assert.assertEquals(pointsMatcherB.group(), "55.2");
 	}
 
 	@Test
@@ -65,6 +87,14 @@ public class TestImportGradesHelper {
 		Assert.assertTrue(m1.matches());
 		Assert.assertEquals(StringUtils.trimToNull(m1.group(1)), "Week #2");
 		Assert.assertEquals(m1.group(2), "5");
+
+		Matcher titleMatcher = ImportGradesHelper.STANDARD_HEADER_PATTERN.matcher(headerValue);
+		Assert.assertTrue(titleMatcher.find());
+		Assert.assertEquals(StringUtils.trimToNull(titleMatcher.group()), "Week #2");
+
+		Matcher pointsMatcher = ImportGradesHelper.POINTS_PATTERN.matcher(headerValue);
+		Assert.assertTrue(pointsMatcher.find());
+		Assert.assertEquals(pointsMatcher.group(), "5");
 	}
 
 	@Test
