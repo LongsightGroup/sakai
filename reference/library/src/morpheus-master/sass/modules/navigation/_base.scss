@@ -215,6 +215,9 @@ body.is-logged-out{
 		@include align-items( center );
 
 		color: $topNav-text-color;
+		&:hover {
+			color: $button-primary-background-color;
+		}
 	}
 	> * {
 		transition: all 0.3s ease;
@@ -555,7 +558,7 @@ body.is-logged-out{
 	}
 
 	.#{$namespace}loginUser{
-		padding: 0.9em 0.5em;
+		padding: 0.2em 0.5em;
 		@media #{$phone}{
 			padding: 0em;
 		}
