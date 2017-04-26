@@ -377,8 +377,8 @@ body.is-logged-out{
 
 	// make it so the separator lines are a consistent height
 	> * {
-		height: 2.3em;
-		line-height: 2.3em;
+		height: 2.9em;
+		line-height: 1.45em;
 	}
 
 	@media #{$phone}{
