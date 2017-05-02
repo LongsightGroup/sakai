@@ -67,6 +67,7 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 	ListView<GbGradingSchemaEntry> schemaView;
 	List<GradeMappingDefinition> gradeMappings;
 	private boolean expanded;
+	String gradingSchemaName;
 
 	/**
 	 * This is the currently PERSISTED grade mapping id that is persisted for this gradebook
@@ -207,7 +208,7 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 			}
 		});
 
-		//get the courser grade map as we are about to use it a lot
+		//get the course grade map as we are about to use it a lot
 		this.courseGradeMap = getCourseGrades();
 
 		// chart
@@ -219,22 +220,17 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 		//TODO this could be in a panel/fragment of its own
 		final DescriptiveStatistics stats = calculateStatistics();
 
-		if (this.total > 0) {
-			settingsGradingSchemaPanel.add(new Label("average", stats.getMean()));
-			settingsGradingSchemaPanel.add(new Label("median", stats.getPercentile(50)));
-			settingsGradingSchemaPanel.add(new Label("lowest", stats.getMin()));
-			settingsGradingSchemaPanel.add(new Label("highest", stats.getMax()));
-			settingsGradingSchemaPanel.add(new Label("deviation", stats.getStandardDeviation()));
-		} else {
-			settingsGradingSchemaPanel.add(new Label("average", "-"));
-			settingsGradingSchemaPanel.add(new Label("median", "-"));
-			settingsGradingSchemaPanel.add(new Label("lowest", "-"));
-			settingsGradingSchemaPanel.add(new Label("highest", "-"));
-			settingsGradingSchemaPanel.add(new Label("deviation", "-"));
-		}
-
+		settingsGradingSchemaPanel.add(new Label("averagegpa", getAverageGPA()) {
+			public boolean isVisible() {
+				return StringUtils.equals(gradingSchemaName, "Grade Points");
+			}
+		});
+		settingsGradingSchemaPanel.add(new Label("average", getMean(stats)));
+		settingsGradingSchemaPanel.add(new Label("median", getMedian(stats)));
+		settingsGradingSchemaPanel.add(new Label("lowest", getMin(stats)));
+		settingsGradingSchemaPanel.add(new Label("highest", getMax(stats)));
+		settingsGradingSchemaPanel.add(new Label("deviation", getStandardDeviation(stats)));
 		settingsGradingSchemaPanel.add(new Label("graded", String.valueOf(this.total)));
-
 
 		//if there are course grade overrides, add the list of students
 		final List<GbUser> usersWithOverrides = getStudentsWithCourseGradeOverrides();
@@ -309,7 +305,7 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 		Map<String, Double> bottomPercents = new LinkedHashMap<>();
 
 		// note that we sort based on name so we need to pull the right name out of the list of mappings, for both cases
-		final String gradingSchemaName = this.gradeMappings.stream()
+		this.gradingSchemaName = this.gradeMappings.stream()
 				.filter(gradeMapping -> StringUtils.equals(gradeMapping.getId(), this.currentGradeMappingId))
 				.findFirst()
 				.get()
@@ -375,10 +371,10 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 			this.total++;
 		}
 
-		// build the data with x-axis inverted
-		final ListIterator<String> iter = new ArrayList<>(counts.keySet()).listIterator(counts.size());
-		while(iter.hasPrevious()) {
-			final String c = iter.previous();
+		// build the data
+		final ListIterator<String> iter = new ArrayList<>(counts.keySet()).listIterator(0);
+		while(iter.hasNext()) {
+			final String c = iter.next();
 			data.addValue(counts.get(c), "count", c);
 		}
 
@@ -387,7 +383,7 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 				getString("settingspage.gradingschema.chart.xaxis"), // the label for the category (x) axis
 				getString("label.statistics.chart.yaxis"), // the label for the value (y) axis
 				data, // the dataset for the chart
-				PlotOrientation.VERTICAL, // the plot orientation
+				PlotOrientation.HORIZONTAL, // the plot orientation
 				false, // show legend
 				true, // show tooltips
 				false); // show urls
@@ -475,9 +471,81 @@ public class SettingsGradingSchemaPanel extends Panel implements IFormModelUpdat
 
 		return stats;
 	}
-
-
-
+	
+	/**
+	 * Calculates the average GPA for the course
+	 * @return String average GPA
+	 */
+	private String getAverageGPA() {
+		
+		if (this.total < 1 && StringUtils.equals(this.gradingSchemaName, "Grade Points")) {
+			return "-";
+		} else if (StringUtils.equals(this.gradingSchemaName, "Grade Points")) {
+			Map<String, Double> gpaScoresMap = new HashMap<>();
+			gpaScoresMap.put("A (4.0)", Double.valueOf("4.0"));
+			gpaScoresMap.put("A- (3.67)", Double.valueOf("3.67"));
+			gpaScoresMap.put("B+ (3.33)", Double.valueOf("3.33"));
+			gpaScoresMap.put("B (3.0)", Double.valueOf("3.0"));
+			gpaScoresMap.put("B- (2.67)", Double.valueOf("2.67"));
+			gpaScoresMap.put("C+ (2.33)", Double.valueOf("2.33"));
+			gpaScoresMap.put("C (2.0)", Double.valueOf("2.0"));
+			gpaScoresMap.put("C- (1.67)", Double.valueOf("1.67"));
+			gpaScoresMap.put("D (1.0)", Double.valueOf("1.0"));
+			gpaScoresMap.put("F (0)", Double.valueOf("0"));	
+			
+			final List<String> mappedGrades = this.courseGradeMap.values().stream().map(c -> (c.getMappedGrade())).collect(Collectors.toList());
+			Double averageGPA = 0.0;
+			for (String mappedGrade : mappedGrades) {
+				averageGPA += gpaScoresMap.get(mappedGrade);
+			}
+			averageGPA /= mappedGrades.size();
+			
+			return String.format("%.2f",averageGPA);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Calculates the mean grade for the course
+	 * @return String mean grade
+	 */
+	private String getMean(DescriptiveStatistics stats) {
+		return this.total > 0 ? String.format("%.2f",stats.getMean()) :  "-";
+	}
+	
+	/**
+	 * Calculates the median grade for the course
+	 * @return String median grade
+	 */
+	private String getMedian(DescriptiveStatistics stats) {
+		return this.total > 0 ? String.format("%.2f",stats.getPercentile(50)) :  "-";
+	}	
+	
+	/**
+	 * Calculates the min grade for the course
+	 * @return String min grade
+	 */
+	private String getMin(DescriptiveStatistics stats) {
+		return this.total > 0 ? String.format("%.2f",stats.getMin()) :  "-";
+	}
+	
+	/**
+	 * Calculates the max grade for the course
+	 * @return String max grade
+	 */
+	private String getMax(DescriptiveStatistics stats) {
+		return this.total > 0 ? String.format("%.2f",stats.getMax()) :  "-";
+	}
+	
+	/**
+	 * Calculates the standard deviation for the course
+	 * @return String standard deviation
+	 */
+	private String getStandardDeviation(DescriptiveStatistics stats) {
+		return this.total > 0 ? String.format("%.2f",stats.getStandardDeviation()) :  "-";
+	}
+	
 }
 
 
