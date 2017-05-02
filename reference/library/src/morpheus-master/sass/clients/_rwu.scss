@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "ceath"; // This is used for bootstrap font behaviour.
+$skin-name : "appalachainlaw"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -19,10 +19,10 @@ $more-sites-single-column: "only screen and (max-width : #{ $break-more-sites-si
 /* Typography*/
 
 //Google family Fonts URL
-$font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default;
+$font-family-url: "//fonts.googleapis.com/css?family=Open Sans:400,500,700" !default;
 
 //Typography variables
-$font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
+$font-family: "Open Sans", Verdana, sans-serif !default;
 $default-font-size: 14px !default;
 $default-font-weight: 400 !default;    										// 400 or 700 as you wish
 $header-font-family: $font-family;
@@ -31,22 +31,22 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #000a42;
+$primary-color:                          #00355f;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
-$tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #FFFFFF;
-$tool-menu-color:      			 #001261;
-$tool-tab-background-color:    			 #FFFFFF;
-$tool-border-color:    			 #001261;
+$tool-background-color:		 #fff;
+$tool-menu-background-color:   			 #ececec;
+$tool-menu-color:      			 #444444;
+$tool-tab-background-color:    			 #ececec;
+$tool-border-color:    			 #d9d9d9;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #FFFFFF !important;
-$tool-menu-hover-background-color: #7D0102 !important;
-$tool-menu-current-background-color: #7D0102 !important;
-$tool-menu-current-color: #FFFFFF !important;
+$tool-menu-hover-color:  #fff !important;
+$tool-menu-hover-background-color: linear-gradient(to bottom, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%);
+$tool-menu-current-background-color: #ededed !important;
+$tool-menu-current-color: #00355f !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,62 +58,60 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #000a42 !important;
+$top-header-background: #00355f !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #FFFFFF !important;
-$breadcrumbs-hover-color:      		 #FFFFFF !important;
+$breadcrumbs-color:    			 #000000;
+$breadcrumbs-tool-color:       		 #000000;
+$breadcrumbs-hover-color:      		 #000000;
 
 /* Link colors */
-$link-color: $primary-color;
-$link-active-color: $primary-color;
-$link-hover-color: $primary-color;
+$link-color: #2a94c0;
+$link-active-color: #2a94c0;
+$link-hover-color: #2A94FE;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #FFFFFF;
-$button-border-color: #FFFFFF;
-$button-background-color: #910204;
-$button-background-secondary-color: #580002;
+$button-text-color: #000000;
+$button-border-color: #e9e9e9;
+$button-background-color: #e9e9e9 !important;
+$button-background-secondary-color: #e9e9e9;
 /* General button colors */
-$button-color-text-color: #FFFFFF;
-$button-color-border-color: #FFFFFF;
-$button-color-background-color: #910204;
-$button-color-background-secondary-color: #580002;
+$button-color-text-color: #000000;
+$button-color-border-color: #e9e9e9;
+$button-color-background-color: #e9e9e9 !important;
+$button-color-background-secondary-color: #e9e9e9;
 /* ///////////// */
 
-$info-color:                $primary-color  !default;
-$info-background-color:     lighten($primary-color, 45%) !default;
-$ok-color:                  #3c763d !default;
+$ok-color:                  #DFF0D8 !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #F6ECB7 !default;
+$warn-background-color:     #FCF8E3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #f2dede !default;
+$error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #910204;
-$header-gradient-b: #910204;
-$header-gradient-c: #000a42;
-$header-gradient-d: #000a42;
+$header-gradient-a: #a5a5a5;
+$header-gradient-b: #a5a5a5;
+$header-gradient-c: #a5a5a5;
+$header-gradient-d: #a5a5a5;
 
-$sites-nav-menu-item-background:            #000a42 !important;
+$sites-nav-menu-item-background:            #00355f !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
-$sites-nav-menu-item-color-hover:           #000a42 !default;
-$sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-color-hover:           #FFFFFF !default;
+$sites-nav-menu-item-border-top:            none !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #8f0204 !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-background:   #FFFFFF !important;
+$sites-nav-menu-item-selected-color:        #00355f !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
-$sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-right: none !default;
-$sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-left:  none !default;
+$sites-nav-menu-item-selected-border-top:   none !important; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: none !important;
+$sites-nav-menu-item-selected-border-bottom: none !important; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-left:  none !important;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
 $sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
 $sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
@@ -122,8 +120,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -136,40 +134,40 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/usa.png';
-$logo-height: 37px;
-$logo-width: 187px;
+$logo: '../images/rwu.svg';
+$logo-width: 111px;
+$logo-height: 50px;
 
 /* Tool icons */
-$skin-with-icons: true !default;
+$skin-with-icons: false !important;
 $icon-size: 20px !default;
 
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
-.instruction {
-    border-color: #001dc2 !important;
-    background-color: #FFFFFF !important;
-}
+$info-color:                $primary-color  !default;
+$info-background-color:     $background-color !important;
 
 .select {
-    border-color: #e8e8e8 !important;
+    color: #000000 !important;
+}
+
+.instruction {
     background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: #00355f !important;
+    border-left-color: #00355f !important;
 }
 
-.Mrphs-sakai-schedule table.calendar .event a {
-    color: #444444 !important;
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: #00355f !important;
 }
 
-a.nextprev {
-    background-color: #910204 !important;
+#linkNav ul li.Mrphs-sitesNav__menuitem>a {
+    border-radius: 3px !important;
 }
 
-a.nexprev {
-    background-color: #910204 !important;
-}
-
-.lessons-siteHierarchy-title {
-    color: #FFFFFF !important;
+.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+  border-radius: 6px;
 }

@@ -160,3 +160,7 @@ $footer-color: $background-color-secondary !default;
    border-color: #CCCCCC !important;
    background-color: #FFFFFF !important;
 }
+
+#appendRecipientList, #appendRecipientList ~ label {
+  visibility: hidden;
+}

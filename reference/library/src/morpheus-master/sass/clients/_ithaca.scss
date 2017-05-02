@@ -19,10 +19,10 @@ $more-sites-single-column: "only screen and (max-width : #{ $break-more-sites-si
 /* Typography*/
 
 //Google family Fonts URL
-$font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default;
+$font-family-url: "//fonts.googleapis.com/css?family=Open Sans:400,500,700" !default;
 
 //Typography variables
-$font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
+$font-family: "Open Sans", Verdana, sans-serif !default;
 $default-font-size: 14px !default;
 $default-font-weight: 400 !default;    										// 400 or 700 as you wish
 $header-font-family: $font-family;
@@ -40,7 +40,7 @@ $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #ededed;
 $tool-menu-color:      			 #444444;
 $tool-tab-background-color:    			 #ededed;
-$tool-border-color:    			 #d7e2ea;
+$tool-border-color:    			 #05375a;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #444444 !important;
@@ -61,9 +61,9 @@ $main-content-background: $background-color !important;
 $top-header-background: #05375a !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 #000000 !important;
-$breadcrumbs-tool-color:       		 #000000 !important;
-$breadcrumbs-hover-color:      		 #000000 !important;
+$breadcrumbs-color:    			 #000000;
+$breadcrumbs-tool-color:       		 #000000;
+$breadcrumbs-hover-color:      		 #000000;
 
 /* Link colors */
 $link-color: #16457C;
@@ -134,9 +134,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/ithaca.png';
+$logo: '../images/ithaca.svg';
 $logo-height: 46px;
-$logo-width: 200px;
+$logo-width: 181px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -149,12 +149,26 @@ $footer-color: $background-color-secondary !default;
 $info-color:                $primary-color  !default;
 $info-background-color:     $background-color !important;
 
+@import "base/icons";
+.icon-sakai--sakai-blogwow {
+	@extend .fa-newspaper-o;
+}
+.icon-sakai--ithaca-research {
+	@extend .fa-book;
+}
+.icon-sakai--kaltura-media {
+	@extend .fa-film;
+}
+.icon-sakai--sakai-attendance {
+	@extend .fa-check-square;
+}
+
 .select {
     color: #000000 !important;
 }
 
 .instruction {
-    background-color: #FFFFFF !important;
+    background-color: #d7e2ea !important;
     color: #000000 !important;
     border-color: #05375a !important;
     border-left-color: #05375a !important;
@@ -162,4 +176,53 @@ $info-background-color:     $background-color !important;
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: #05375a !important;
+}
+
+@media only screen and (max-width: 800px) {
+.Mrphs-siteHierarchy a {
+    color: #FFFFFF !important;
+}}
+
+@media only screen and (max-width: 800px) {
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: 127px !important;
+    height: 50px !important;
+}}
+
+// Custom Working Copies colors
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: #7ea5bf !important;
+    background:#7ea5bf !important;
+}
+
+body.Mrphs-toolMenu-collapsed #toolMenu ul li a:hover .Mrphs-toolsNav__menuitem--title, body.Mrphs-toolMenu-collapsed ul#subSites ul li a:hover .Mrphs-toolsNav__menuitem--title {
+    color: #ffffff;
+}
+
+#Mrphs-sakai-roster .roster-groups-selector {
+    max-width: 110px !important;
+}
+
+#gradebookGrades .gb-highlighted-row .gb-row-selector {
+    background-color: #d7e2ea;
+    border-color: #d7e2ea;
+}
+
+#gradebookGrades .gb-row-selector > div:before {
+    color: #05375a !important;
+}
+
+#gradebookGradesTable td:focus, #gradebookGradesTable th:focus {
+    outline: 2px solid #05375a !important;
+    outline-color: rgb(5, 55, 90) !important;
+}
+
+#gradebookGrades tbody .gb-highlighted-row {
+    outline: 2px solid #7ea5bf !important;
+    outline-color: #7ea5bf !important;
+}
+
+#Mrphs-xlogin .logo {
+    height: 35px !important;
 }

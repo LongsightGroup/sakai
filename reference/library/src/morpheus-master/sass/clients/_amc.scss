@@ -61,7 +61,7 @@ $main-content-background: $background-color !important;
 $top-header-background: #952a4e !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
+$breadcrumbs-color:    			 #000000 !important;
 $breadcrumbs-tool-color:       		 #000000 !important;
 $breadcrumbs-hover-color:      		 #000000 !important;
 
@@ -164,6 +164,10 @@ $info-background-color:     $background-color !important;
    border-color: #980033 !important;
 }
 
-.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
-    color: #000000 !important;
-}
+//.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
+//    color: #000000 !important;
+//}
+
+//.Mrphs-siteHierarchy a {
+//   color: #000000 !important;
+//}

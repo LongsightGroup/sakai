@@ -98,7 +98,7 @@ $header-gradient-b: #A30042;
 $header-gradient-c: #A30042;
 $header-gradient-d: #A30042;
 
-$sites-nav-menu-item-background:            #8c1b35 !important;
+$sites-nav-menu-item-background:            #A30042 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           #FFFFFF !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -134,9 +134,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/luc.png';
+$logo: '../images/luc.svg';
 $logo-height: 50px;
-$logo-width: 179px;
+$logo-width: 150px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -184,4 +184,9 @@ $info-background-color:     $background-color !important;
 
 .popup-container-header { 
     background: #922246 !important;
+}
+
+.button_color, input[type="submit"], input[type="button"], input[type="reset"], button, button.btn-primary {
+    font-weight: 600 !important;
+    box-shadow: 0 1px 1px 0 #999999 !important;
 }

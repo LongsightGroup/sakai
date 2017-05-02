@@ -1,0 +1,46 @@
+$background-color: #FFFFFF;
+$logo: 'images/ttuhsc.png';
+$logo-height: 43px;
+$logo-width: 299px;
+
+$tool-background-color: #FFFFFF;
+$toolMenuBGColor:                        #ededed;
+$toolMenuColor:                          #cc0000;
+$toolTabBGColor:                         #ededed;
+$toolBorderColor:                        #cccccc;
+
+$primary-color:                          #cc0000;
+$tool-menu-hover-background-color: #cc0000;
+$tool-menu-current-color: #cc0000;
+$tool-menu-current-border-color: #cc0000; 
+
+$text-color:                             #222222;
+
+$button-text-color:      #121212;
+$button-border-color: #cbcbcb;
+$button-background-color: #ececec;
+$button-background-secondary-color: #ededed;
+
+$button-color-text-color: #121212;
+$button-color-border-color: #cbcbcb;
+$button-color-background-color: #ececec;
+$button-color-background-secondary-color: #ededed;
+
+$skin-with-icons: true;
+
+$font-family-url: "";
+$font-family: "Helvetica Neue", Arial, sans-serif;
+$header-font-family: "Charter BT", "Helvetica Neue", Arial, sans-serif;
+
+$header-gradient-a: #99281e;
+$header-gradient-b: #99281e;
+$header-gradient-c: #99281e;
+$header-gradient-d: #99281e;
+
+$breadcrumbs-color: #ffffff;
+$breadcrumbs-tool-color: #ffffff;
+
+#toolMenu ul li a .Mrphs-toolsNav__menuitem--title, #subSites ul li a .Mrphs-toolsNav__menuitem--title {
+    overflow: overlay;
+    white-space: inherit;
+}
