@@ -205,7 +205,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2131"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2131</value>
         </property>
@@ -237,7 +237,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2131"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2131</value>
         </property>
@@ -270,7 +270,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2136"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2136</value>
         </property>
@@ -302,7 +302,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2136"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2136</value>
         </property>
@@ -335,7 +335,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2139"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2139</value>
         </property>
@@ -367,7 +367,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2139"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2139</value>
         </property>
@@ -400,7 +400,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2140"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2140</value>
         </property>
@@ -432,7 +432,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2140"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2140</value>
         </property>
@@ -465,7 +465,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2141"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2141</value>
         </property>
@@ -497,7 +497,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2141"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2141</value>
         </property>
@@ -530,7 +530,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2146"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2146</value>
         </property>
@@ -562,7 +562,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2146"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2146</value>
         </property>
@@ -595,7 +595,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2149"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2149</value>
         </property>
@@ -627,7 +627,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2149"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2149</value>
         </property>
@@ -660,7 +660,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2150"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2150</value>
         </property>
@@ -692,7 +692,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2150"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2150</value>
         </property>
@@ -725,7 +725,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2151"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2151</value>
         </property>
@@ -757,7 +757,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2151"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2151</value>
         </property>
@@ -790,7 +790,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2156"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2156</value>
         </property>
@@ -822,7 +822,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2156"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2156</value>
         </property>
@@ -855,7 +855,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2155"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2155</value>
         </property>
@@ -887,7 +887,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2155"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2155</value>
         </property>
@@ -920,7 +920,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2169"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2169</value>
         </property>
@@ -952,7 +952,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2169"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2169</value>
         </property>
@@ -986,7 +986,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2168"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2168</value>
         </property>
@@ -1018,7 +1018,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2168"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2168</value>
         </property>
@@ -1051,7 +1051,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2160"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2160</value>
         </property>
@@ -1083,7 +1083,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2160"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2160</value>
         </property>
@@ -1117,7 +1117,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2161"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2161</value>
         </property>
@@ -1149,7 +1149,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2161"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2161</value>
         </property>
@@ -1183,7 +1183,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2162"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2162</value>
         </property>
@@ -1215,7 +1215,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2162"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2162</value>
         </property>
@@ -1249,7 +1249,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2166"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2166</value>
         </property>
@@ -1281,7 +1281,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2166"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2166</value>
         </property>
@@ -1314,7 +1314,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2165"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2165</value>
         </property>
@@ -1346,7 +1346,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2165"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2165</value>
         </property>
@@ -1381,7 +1381,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJobUCS101"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJobUCS101</value>
         </property>
@@ -1414,7 +1414,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2170"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2170</value>
         </property>
@@ -1446,7 +1446,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2170"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2170</value>
         </property>
@@ -1480,7 +1480,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2171"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2171</value>
         </property>
@@ -1512,7 +1512,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2171"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2171</value>
         </property>
@@ -1546,7 +1546,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2172"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2172</value>
         </property>
@@ -1578,7 +1578,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2172"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2172</value>
         </property>
@@ -1612,7 +1612,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2176"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2176</value>
         </property>
@@ -1644,7 +1644,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2176"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2176</value>
         </property>
@@ -1677,7 +1677,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2175"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMTestSyncJob2175</value>
         </property>
@@ -1709,7 +1709,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2175"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJob2175</value>
         </property>
@@ -1745,7 +1745,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2179"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2179</value>
     </property>
@@ -1777,7 +1777,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2179"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2179</value>
     </property>
@@ -1810,7 +1810,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2178"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2178</value>
     </property>
@@ -1842,7 +1842,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2178"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2178</value>
     </property>
@@ -1875,7 +1875,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2180"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2180</value>
     </property>
@@ -1908,7 +1908,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2180"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2180</value>
     </property>
@@ -1941,7 +1941,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2181"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2181</value>
     </property>
@@ -1973,7 +1973,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2181"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2181</value>
     </property>
@@ -2007,7 +2007,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2182"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2182</value>
     </property>
@@ -2040,7 +2040,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2182"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2182</value>
     </property>
@@ -2074,7 +2074,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2186"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2186</value>
     </property>
@@ -2107,7 +2107,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2186"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2186</value>
     </property>
@@ -2141,7 +2141,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2185"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMTestSyncJob2185</value>
     </property>
@@ -2174,7 +2174,7 @@
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2185"
     class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-    singleton="true" init-method="init">
+    scope="singleton" init-method="init">
     <property name="beanId">
         <value>UDCMSyncJob2185</value>
     </property>
@@ -2212,7 +2212,7 @@
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJobUCS101"
         class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
-        singleton="true" init-method="init">
+        scope="singleton" init-method="init">
         <property name="beanId">
             <value>UDCMSyncJobUCS101</value>
         </property>
