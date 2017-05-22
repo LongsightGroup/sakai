@@ -305,7 +305,17 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 						
 		} else if(StringUtils.equals(officialImageSource, ProfileConstants.OFFICIAL_IMAGE_SETTING_PROVIDER)){
 			String data = getOfficialImageEncoded(userUuid);
-			if(StringUtils.isBlank(data)) {
+			if (log.isDebugEnabled()) log.debug("Profile data: {}", StringUtils.left(data, 300));
+			if (StringUtils.isNotBlank(data) && StringUtils.length(data) < 100) {
+				String replace = sakaiProxy.getServerConfigurationParameter("profile2.official.image.secure.replace", "");
+				if (StringUtils.isNotBlank(replace)) {
+					data = replace + data + ".jpg";
+				}
+				log.debug("Profile provider image: " + data);
+				byte[] imageUrlBytes = this.getUrlAsBytes(data);
+				image.setUploadedImage(imageUrlBytes);
+				image.setOfficialImageUrl(null);
+			} else if(StringUtils.isBlank(data)) {
 				image.setExternalImageUrl(defaultImageUrl);
 				image.setDefault(true);
 			} else {
