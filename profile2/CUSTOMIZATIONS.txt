@@ -1,0 +1,1 @@
+48902: ProfileImageLogicImpl.java: retrieve image from private source
