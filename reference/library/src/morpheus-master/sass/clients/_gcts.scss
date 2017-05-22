@@ -174,3 +174,9 @@ $footer-color: $background-color-secondary !default;
 .fa-angle-down:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__drop:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:before {
     color: #FFFFFF !important;
 }
+
+@media only screen and (max-width: 800px) {
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: 140px !important;
+    }
+}

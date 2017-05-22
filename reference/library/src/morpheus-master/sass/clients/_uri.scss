@@ -94,6 +94,8 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
+$topNav-text-color: #000000;
+
 /* This is the gradient in the header of the page */
 $header-gradient-a: #e7e7e7;
 $header-gradient-b: #FFFFFF;
@@ -173,7 +175,7 @@ $footer-color: $background-color-secondary !default;
     border-radius: 3px !important;
 }
 
-.Mrphs-topHeader a {
+.Mrphs-topHeader {
     color: #002147 !important;
 }
 
