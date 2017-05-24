@@ -1,0 +1,2 @@
+LS-40: limit user selection to dropdown
+LS-63: change isSuperUser calls to allowAddUser calls
