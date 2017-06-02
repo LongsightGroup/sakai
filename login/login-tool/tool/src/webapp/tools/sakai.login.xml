@@ -7,7 +7,7 @@
 			title="Login"
 			description="A login tool.">
 
-		<configuration name="eid" value="user id: " />
+		<configuration name="eid" value="CAMPUS ID: " />
 		<configuration name="pw" value="password: " />
 
 		<keyword name="login" />
