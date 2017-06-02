@@ -9001,7 +9001,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			m_allowAttachments = getBool(el.getAttribute("allowattach"));
 			m_hideDueDate = getBool(el.getAttribute("hideduedate"));
 			m_allowReviewService = getBool(el.getAttribute("allowreview"));
-			m_allowStudentViewReport = getBool(el.getAttribute("allowstudentview"));
+			m_allowStudentViewReport = true;
 			m_submitReviewRepo = el.getAttribute("submitReviewRepo");
 			m_generateOriginalityReport = el.getAttribute("generateOriginalityReport");
 			m_checkTurnitin = getBool(el.getAttribute("checkTurnitin"));
@@ -9213,7 +9213,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							m_allowAttachments = getBool(attributes.getValue("allowattach"));
 							m_hideDueDate = getBool(attributes.getValue("hideduedate"));
 							m_allowReviewService = getBool(attributes.getValue("allowreview"));
-							m_allowStudentViewReport = getBool(attributes.getValue("allowstudentview"));
+							m_allowStudentViewReport = true;
 							m_submitReviewRepo = attributes.getValue("submitReviewRepo");
 							m_generateOriginalityReport = attributes.getValue("generateOriginalityReport");
 							m_checkTurnitin = getBool(attributes.getValue("checkTurnitin"));
@@ -9475,7 +9475,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				m_hideDueDate = content.getHideDueDate();
 				//Uct
 				m_allowReviewService = content.getAllowReviewService();
-				m_allowStudentViewReport = content.getAllowStudentViewReport();
+				m_allowStudentViewReport = true;
 				m_submitReviewRepo = content.getSubmitReviewRepo();
 				m_generateOriginalityReport = content.getGenerateOriginalityReport();
 				m_checkTurnitin = content.isCheckTurnitin();
@@ -9837,7 +9837,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		}
 		
 		public boolean getAllowStudentViewReport() {
-			return m_allowStudentViewReport;
+			return true;
 		}
 		
 		
