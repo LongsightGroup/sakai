@@ -1,10 +1,10 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "morpheus-default"; // This is used for bootstrap font behaviour.
+$skin-name : "morpheus-master"; // This is used for bootstrap font behaviour.
 
-$break-small-end: 	800px;
-$break-medium-end: 	1030px;
+$break-small-end:      	800px;
+$break-medium-end:     	1030px;
 
 $phone  :       "only screen and (max-width : #{ $break-small-end })";
 $tablet :       "only screen and (max-width : #{ $break-medium-end })";
@@ -24,116 +24,100 @@ $font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default
 //Typography variables
 $font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
 $default-font-size: 14px !default;
-$default-font-weight: 400 !default;										// 400 or 700 as you wish
+$default-font-weight: 400 !default;    										// 400 or 700 as you wish
 $header-font-family: $font-family;
-$header-font-weight: 700 !default;										// 400 or 700 as you wish
+$header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: 			 #FFFFFF !default;
-$background-color-secondary: #444444 !default;
+$background-color: #FFFFFF;
 
-$primary-color:    			 #2a94c0 !default;
-$primary-color-shadow:			 adjust-hue( $primary-color, 5 ) !default;	// To give primary a darker shadow
-$secondary-color:  			 #F00 !default;
-$alt-colour: 				 #d36f00 !default;
+$primary-color:                          #000000;
+$text-color:                             #000000;
 
-$text-color:				 #212121 !default;
+$portal-background-color: $background-color;
 
-$portal-background-color: $background-color !default;
-
-$tool-background-color:		 $background-color !default;
-$tool-menu-background-color:			 #EBEBEB !default;
-$tool-menu-color: 			 #424242 !default;
-$tool-tab-background-color: 			 #F8F8F8 !default;
-$tool-border-color:			 #E0E0E0 !default;
-$tool-tab-active-background-color: 			 $background-color !default;
-$tool-tab-active-border-color: 	 $background-color !default;
-$tool-menu-hover-color: $tool-background-color !default;
-$tool-menu-hover-background-color: $primary-color !default;
-$tool-menu-current-background-color: $background-color !default;
-$tool-menu-current-color: $primary-color !default;
-$tool-menu-current-border-color: $primary-color !default;
-$tool-sub-menu-border-color: darken( $tool-menu-background-color, 10% ) !default;
-$tool-sub-menu-background-color: darken( $tool-menu-background-color, 10% ) !default;
+$tool-background-color:		 $background-color;
+$tool-menu-background-color:   			 #efefef;
+$tool-menu-color:      			 #000000;
+$tool-tab-background-color:    			 #efefef;
+$tool-border-color:    			 #CCCCCC;
+$tool-tab-active-background-color:     			 $background-color !default;
+$tool-tab-active-border-color: 	 $background-color !important;
+$tool-menu-hover-color: $background-color !important;
+$tool-menu-hover-background-color: $primary-color !important;
+$tool-menu-current-background-color: $primary-color !important;
+$tool-menu-current-color: $background-color !important;
+$tool-menu-current-border-color: $primary-color !important;
+$tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
+$tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-hover-background-color: $primary-color !default;
-$tool-sub-menu-hover-color: #FFF !default;
+$tool-sub-menu-hover-color: $tool-menu-color !default;
 $tool-sub-menu-current-color: $primary-color !default;
 $tool-sub-menu-current-background-color: $background-color !default;
-$tool-sub-menu-current-hover-color: $tool-menu-color !default;
+$tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
-$tool-nav-link-color: #666 !default;
+$main-content-background: $background-color !important;
+$top-header-background: #cacaca !important;
+$sites-nav-background: $top-header-background !important;
 
-$main-content-background: $background-color !default;
-$top-header-background: $background-color-secondary !default;
-$sites-nav-background: $top-header-background !default;
-
-$breadcrumbs-color:			 $text-color !default;
-$breadcrumbs-tool-color:		 #185878 !default;
-$breadcrumbs-hover-color:		 #0F4461 !default;
+$breadcrumbs-color:    			 $background-color !important;
+$breadcrumbs-tool-color:       		 #FFFFFF !important;
+$breadcrumbs-hover-color:      		 #FFFFFF !important;
 
 /* Link colors */
-$link-color: $primary-color !default;
-$link-active-color: $primary-color !default;
-$link-hover-color: $primary-color !default;
+$link-color: #6369c2;
+$link-active-color: #6369c2;
+$link-hover-color: #6369c2;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:	 #777 !default;
-$button-border-color: #C0C0C0 !default;
-$button-background-color: #F0F0F0 !default;
-$button-background-secondary-color: #FFF !default;
+$button-text-color:    	 #000000;
+$button-border-color: #CCCCCC;
+$button-background-color: #f4f4f4;
+$button-background-secondary-color: #ffffff;
 /* General button colors */
-$button-color-text-color: #FFF !default;
-$button-color-border-color: #4a8db3 !default;
-$button-color-background-color: $primary-color !default;
-$button-color-background-secondary-color: #276488 !default;
+$button-color-text-color: #000000;
+$button-color-border-color: #CCCCCC;
+$button-color-background-color: #f4f4f4;
+$button-color-background-secondary-color: #ffffff;
 /* ///////////// */
 
-$info-color:                $primary-color  !default;
-$info-background-color:     lighten($primary-color, 45%) !default;
-$ok-color:                  #3c763d !default;
+$info-color:                $primary-color;
+$info-background-color:     lighten(#444444, 45%) !important;
+$ok-color:                  #dff08d !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #F6ECB7 !default;
+$warn-background-color:     #fcf8e3 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-$swapped-view-primary: 		 #bf360c !default;
-$swapped-view-text-color:	 #414141 !default;
-$swapped-view-sites-nav-background: $swapped-view-primary !default;
-
 /* This is the gradient in the header of the page */
-$header-gradient-a: #b6c3d4 !default;
-$header-gradient-b: #d9cdcd !default;
-$header-gradient-c: #c4ccd7 !default;
-$header-gradient-d: #a6c2df !default;
+$header-gradient-a: #000000;
+$header-gradient-b: #000000;
+$header-gradient-c: #FFFFFF;
+$header-gradient-d: #FFFFFF;
 
-/* topNav Main Menu */
-$header-size : 50px !default;
-$topNav-text-color:                         #fff !default; /* used for links and text in the topNav */
-$topNav-text-alt-color:                     #ccc !default;
-
-$sites-nav-menu-item-background:            #666 !default;
-$sites-nav-menu-item-color:                 #fff !default;
+$sites-nav-menu-item-background:            #000000 !important;
+$sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           $sites-nav-menu-item-color !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none !default;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   $primary-color !default;
-$sites-nav-menu-item-selected-color:        #fff !default;
+$sites-nav-menu-item-selected-background:   #f8b954 !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: none !default;
 $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-left:  none !default;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
-$sites-nav-submenu-item-background:         $sites-nav-menu-item-background !default;
-$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !default;
-$sites-nav-submenu-item-color:              $sites-nav-menu-item-color !default;
+$sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-color:              $sites-nav-menu-item-color;
 $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !default;
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
@@ -144,7 +128,6 @@ $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
 $tool-menu-width: 7.5em !default;
-$tool-menu-width-collapsed: $tool-menu-width / 2 !default;
 
 /* Navigation Hierarchy */
 $hierarchy-size: 3.5em;
@@ -153,19 +136,22 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: 'images/logo.png' !default;
-$logo-height: 30px !default;
-$logo-width: 50px !default;
+$logo: '../images/providence.svg';
+$logo-height: 49px !important;
+$logo-width: 466px !important;
 
 /* Tool icons */
 $skin-with-icons: true !default;
 $icon-size: 20px !default;
-$tool-menu-icon-on-left: false !default;
 
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
-@import "customization"; //it is created on-the-fly by maven.
+.Mrphs-mainHeader .Mrphs-headerLogo {
+   width: 19.5em !important;
+}
 
-@import url(#{$font-family-url});
+.instruction {
+   background-color: #CCCCCC !important;
+}
