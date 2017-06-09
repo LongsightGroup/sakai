@@ -76,7 +76,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #FFFFFF;
-$button-background-color: #910204;
+$button-background-color: #910204 !important;
 $button-background-secondary-color: #580002;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
@@ -171,5 +171,9 @@ a.nexprev {
 }
 
 .lessons-siteHierarchy-title {
+    color: #FFFFFF !important;
+}
+
+.select {
     color: #FFFFFF !important;
 }

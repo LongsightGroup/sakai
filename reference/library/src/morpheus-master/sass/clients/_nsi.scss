@@ -30,17 +30,19 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
 $background-color: #FFFFFF;
+$background-color-secondary: #E5E8E8;
 
-$primary-color:                          #373737;
-$text-color:                             #000000;
+
+$primary-color:                          #ABA3F1;
+$text-color:                             #1E1E1E;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color: #e1e1e1;
-$tool-menu-color:      			 #00446d;
-$tool-tab-background-color:    			 #e1e1e1;
-$tool-border-color:    			 #00446d;
+$tool-menu-background-color: #D0D2D3;
+$tool-menu-color:      			 #4D4D4D;
+$tool-tab-background-color:    			 #D0D2D3;
+$tool-border-color:    			 #D0D2D3;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #00446d !important;
@@ -51,7 +53,7 @@ $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-hover-background-color: $primary-color !default;
-$tool-sub-menu-hover-color: $tool-menu-color !default;
+$tool-sub-menu-hover-color: #FFFFFF !default;
 $tool-sub-menu-current-color: $primary-color !default;
 $tool-sub-menu-current-background-color: $background-color !default;
 $tool-sub-menu-current-hover-color: $tool-menu-color !important;
@@ -61,14 +63,14 @@ $main-content-background: $background-color !important;
 $top-header-background: #FFFFFF !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 #000000 !important;
-$breadcrumbs-tool-color:       		 #000000 !important;
-$breadcrumbs-hover-color:      		 #000000 !important;
+$breadcrumbs-color:    			 #FFFFFF !important;
+$breadcrumbs-tool-color:       		 #D0D2D3 !important;
+$breadcrumbs-hover-color:      		 #D0D2D3 !important;
 
 /* Link colors */
 $link-color: #00446d;
 $link-active-color:#6d63ce;
-$link-hover-color: #6d63ce;
+$link-hover-color: #D9A0D9;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
@@ -77,12 +79,12 @@ $link-hover-background-color: transparent !default;
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #E0E3E5;
 $button-background-color: #7570b3;
-$button-background-secondary-color: #373737;;
+$button-background-secondary-color: #FFFFFF;;
 /* General button colors */
 $button-color-text-color: #FFFFFF;
-$button-color-border-color: #E0E3E5;
-$button-color-background-color: #7570b3;
-$button-color-background-secondary-color: #373737;
+$button-color-border-color: #D0D2D3;
+$button-color-background-color: #ABA3F1;
+$button-color-background-secondary-color: #9E9EA2;
 /* ///////////// */
 
 $info-color:                $primary-color;
@@ -95,6 +97,8 @@ $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 $topNav-text-color: #000000;
+$topNav-text-alt-color: #9E9EA2;
+$tool-nav-link-color: #9E9EA2;
 
 /* This is the gradient in the header of the page */
 $header-gradient-a: #7570b3;
@@ -103,14 +107,14 @@ $header-gradient-c: #7570b3;
 $header-gradient-d: #7570b3;
 
 $sites-nav-menu-item-background:            #FFFFFF !important;
-$sites-nav-menu-item-color:                 #373733 !important;
-$sites-nav-menu-item-color-hover:           #373733 !default;
+$sites-nav-menu-item-color:                 #1E1E1E !important;
+$sites-nav-menu-item-color-hover:           #1E1E1E !default;
 $sites-nav-menu-item-border-top:            solid 2px #e1e1e1 ; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          solid 2px #e1e1e1;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           solid 2px #e1e1e1;
 $sites-nav-menu-item-selected-background:   #373737 !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-selected-color:        #1E1E1E !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   2px ridge #e1e1e1; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: 2px ridge #e1e1e1;
