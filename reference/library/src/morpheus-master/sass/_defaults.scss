@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "ceath"; // This is used for bootstrap font behaviour.
+$skin-name : "morpheus-default"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -29,9 +29,14 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #FFFFFF;
+$background-color: 			 #FFFFFF !default;
+$background-color-secondary: #444444 !default;
 
 $primary-color:                          #cc0000;
+$primary-color-shadow:			 adjust-hue( $primary-color, 5 ) !default;	// To give primary a darker shadow
+$secondary-color:  			 #F00 !default;
+$alt-colour: 				 #d36f00 !default;
+
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
@@ -57,6 +62,8 @@ $tool-sub-menu-current-background-color: $background-color !default;
 $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
+$tool-nav-link-color: #000000 !important;
+
 $main-content-background: $background-color !important;
 $top-header-background: #cc0000 !important;
 $sites-nav-background: $top-header-background !important;
@@ -65,9 +72,7 @@ $breadcrumbs-color:    			 #000000 !important;
 $breadcrumbs-tool-color:       		 #000000 !important;
 $breadcrumbs-hover-color:      		 #000000 !important;
 
-$topNav-text-color: 			 #FFFFFF;
 
-$tool-nav-link-color: 			 #000000 !important;
 
 /* Link colors */
 $link-color: #cc0000;
@@ -98,12 +103,20 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
+$swapped-view-primary: 		 #bf360c !default;
+$swapped-view-text-color:	 #414141 !default;
+$swapped-view-sites-nav-background: $swapped-view-primary !default;
 
 /* This is the gradient in the header of the page */
 $header-gradient-a: #ececec;
 $header-gradient-b: #ececec;
 $header-gradient-c: #ececec;
 $header-gradient-d: #ececec;
+
+/* topNav Main Menu */
+$header-size : 50px !default;
+$topNav-text-color:                         #fff !default; /* used for links and text in the topNav */
+$topNav-text-alt-color:                     #ccc !default;
 
 $sites-nav-menu-item-background:            #cc0000 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
@@ -133,6 +146,7 @@ $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
 $tool-menu-width: 7.5em !default;
+$tool-menu-width-collapsed: $tool-menu-width / 2 !default;
 
 /* Navigation Hierarchy */
 $hierarchy-size: 3.5em;
@@ -148,6 +162,7 @@ $logo-width: 126px;
 /* Tool icons */
 $skin-with-icons: true !default;
 $icon-size: 20px !default;
+$tool-menu-icon-on-left: false !default;
 
 /* Footer */
 $footer-background: transparent !default;
@@ -181,3 +196,7 @@ $footer-color: $background-color-secondary !default;
 .select {
     color: #FFFFFF !important;
 }
+
+@import "customization"; //it is created on-the-fly by maven.
+
+@import url(#{$font-family-url});
