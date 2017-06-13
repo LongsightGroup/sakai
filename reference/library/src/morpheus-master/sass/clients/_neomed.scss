@@ -31,22 +31,22 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #53284F;
+$primary-color:                          #004478;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color: #ececec;
+$tool-menu-background-color: #ebebeb;
 $tool-menu-color:      			 #444444;
-$tool-tab-background-color:    			 #ececec;
-$tool-border-color:    			 #d47b18;
+$tool-tab-background-color:    			 #ebebeb;
+$tool-border-color:    			 #004478;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
 $tool-menu-hover-color:  #FFFFFF !important;
-$tool-menu-hover-background-color: #865B82;
-$tool-menu-current-background-color: #53284F;
-$tool-menu-current-color: #FFFFFF !important;
+$tool-menu-hover-background-color: -webkit-linear-gradient(top, #004478 0%,#005ca3 100%);
+$tool-menu-current-background-color: #ebebeb;
+$tool-menu-current-color: #004478 !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
@@ -58,7 +58,7 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #649825 !important;
+$top-header-background: #f1f1f1 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 #000000 !important;
@@ -79,7 +79,7 @@ $button-border-color: #CCCCCC;
 $button-background-color: -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !important;
 $button-background-secondary-color: #e7e7e7;
 /* General button colors */
-$button-color-text-color: #E99535;
+$button-color-text-color: #2683BC;
 $button-color-border-color: #E0E3E5;
 $button-color-background-color: -webkit-linear-gradient(top, #f6f6f5 0%,#e0e0e0 93%,#e0e0e0 97%,#e9e9e9 100%);
 $button-color-background-secondary-color: #e0e0e0;
@@ -94,28 +94,28 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-$topNav-text-color: #f5f5dc;
+$topNav-text-color: #000000;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #ececec;
-$header-gradient-b: #ececec;
-$header-gradient-c: #ececec;
-$header-gradient-d: #ececec;
+$header-gradient-a: #b0c7db;
+$header-gradient-b: #b0c7db;
+$header-gradient-c: #b0c7db;
+$header-gradient-d: #b0c7db;
 
-$sites-nav-menu-item-background:            -webkit-linear-gradient(top, #f3f3f3 0%,#e7e7e7 100%) !important;
-$sites-nav-menu-item-color:                 #000000 !important;
-$sites-nav-menu-item-color-hover:           #000000 !default;
-$sites-nav-menu-item-border-top:            1px solid #ccc ; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-right:          1px solid #ccc;
+$sites-nav-menu-item-background:            -webkit-linear-gradient(top, #004478 0%,#005ca3 100%) !important;
+$sites-nav-menu-item-color:                 #FFFFFF !important;
+$sites-nav-menu-item-color-hover:           #FFFFFF !default;
+$sites-nav-menu-item-border-top:            1px solid #005ca3 ; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          1px solid #005ca3;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-left:           1px solid #ccc;
-$sites-nav-menu-item-selected-background:   #53284F !important;
-$sites-nav-menu-item-selected-color:        #FFFFFF !important;
+$sites-nav-menu-item-border-left:           1px solid #005ca3;
+$sites-nav-menu-item-selected-background:   #f1f1f1 !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
-$sites-nav-menu-item-selected-border-top:   none !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-right: none !default;
+$sites-nav-menu-item-selected-border-top:   1px solid #004478; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: 1px solid #004478;
 $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-left:  none !default;
+$sites-nav-menu-item-selected-border-left:  1px solid #004478;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
 $sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
 $sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
@@ -138,8 +138,8 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/cmcc.svg';
-$logo-height: 95px;
+$logo: '../images/neomed.svg';
+$logo-height: 50px;
 $logo-width: 203px;
 
 /* Tool icons */
@@ -160,7 +160,7 @@ $footer-color: $background-color-secondary !default;
 
 .instruction {
     border-color: $primary-color !important;
-    background-color: #eeeeee !important;
+    background-color: #f1f1f1 !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem>a {
