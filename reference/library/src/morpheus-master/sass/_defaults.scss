@@ -204,6 +204,7 @@ $footer-color: $background-color-secondary !default;
 
 a.button {
    background-color: #cc0000 !important;
+   color: #FFFFFF !important;
 }
 
 .Mrphs-toolTitleNav .Mrphs-toolTitleNav__button_container {
@@ -216,6 +217,65 @@ a.button {
 
 .Mrphs-portalChat__users { 
     border-top:	solid 0.5em #CC0000;
+}
+
+.discTria {
+    background-color: #F0F0F0 !important;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #F0F0F0 !important;
+}
+
+.ui-state-active {
+    color: #FFFFFF !important;
+    background: #CC0000 !important;
+    border: 1px solid #CC0000 !important;
+}
+
+#chatPresenceWrapper {
+    color: #585858;
+}
+
+.messageAlert { 
+    color: #000000 !important;
+}
+
+.gb-grade-section,.gb-due-date {
+    color: #000000 !important;
+}
+
+.btn-info { 
+   color: #FFFFFF !important;
+//   background: #CC0000 !important;
+   border: #CC0000 !important;
+}
+
+.dropDownDiv {
+    background: #FFFFFF !important;
+}
+
+.alertMessage h3 {
+    color: #CC0000 !important;
+}
+
+.Mrphs-sakai-poll thead tr th {
+    color: #FFFFFF !important;
+}
+
+.addAttendee, .activeTag {
+   color: #CC0000 !important;
+}
+
+.alert-info {
+    color: #CC0000 !important;
+    background-color: #FFFFFF !important;
+    border-color: #CC0000 !important;
+}
+
+.ui-accordion .ui-accordion-header { 
+    background-color: #F0F0F0 !important;
+    border-color : #F0F0F0 !important;
 }
 
 @import "customization"; //it is created on-the-fly by maven.
