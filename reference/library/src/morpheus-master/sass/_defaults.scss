@@ -85,7 +85,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #cc0000;
-$button-background-color: #cc0000;
+$button-background-color: #cc0000 !important;
 $button-background-secondary-color: #585858;
 /* General button colors */
 $button-color-text-color: #585858;
@@ -193,10 +193,6 @@ $footer-color: $background-color-secondary !default;
     color: #FFFFFF !important;
 }
 
-.select {
-    color: #000000 !important;
-    background: #FFFFFF !important;
-}
 
 .Mrphs-topHeader a {
     color: #EFEFEF;
@@ -247,7 +243,7 @@ a.button {
 
 .btn-info { 
    color: #FFFFFF !important;
-//   background: #CC0000 !important;
+   background: #CC0000 !important;
    border: #CC0000 !important;
 }
 
