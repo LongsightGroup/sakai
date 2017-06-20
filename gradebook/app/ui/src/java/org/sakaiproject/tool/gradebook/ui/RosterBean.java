@@ -1190,7 +1190,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 
              // then, we need to check for special grader permissions that may limit which categories may be viewed
              if (!isUserAbleToGradeAll() && isUserHasGraderPermissions()) {
-                 categoryList = getGradebookPermissionService().getCategoriesForUser(getGradebookId(), getUserUid(), categoriesFilter, getGradebook().getCategory_type());
+                 categoryList = getGradebookPermissionService().getCategoriesForUser(getGradebookId(), getUserUid(), categoriesFilter);
              }
 
              if (categoryList != null && !categoryList.isEmpty()) {
