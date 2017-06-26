@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "ceath"; // This is used for bootstrap font behaviour.
+$skin-name : "morpheus-default"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -29,9 +29,14 @@ $header-font-family: $font-family;
 $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
-$background-color: #FFFFFF;
+$background-color: 			 #FFFFFF !default;
+$background-color-secondary: #444444 !default;
 
 $primary-color:                          #cc0000;
+$primary-color-shadow:			 adjust-hue( $primary-color, 5 ) !default;	// To give primary a darker shadow
+$secondary-color:  			 #F00 !default;
+$alt-colour: 				 #d36f00 !default;
+
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
@@ -39,7 +44,7 @@ $portal-background-color: $background-color;
 $tool-background-color:		 $background-color;
 $tool-menu-background-color: #FFFFFF;
 $tool-menu-color:      			 #444444;
-$tool-tab-background-color:    			 #ececec;
+$tool-tab-background-color:    			 #FFFFFF;
 $tool-border-color:    			 #d8d8d8;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
@@ -57,6 +62,8 @@ $tool-sub-menu-current-background-color: $background-color !default;
 $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
+$tool-nav-link-color: #000000 !important;
+
 $main-content-background: $background-color !important;
 $top-header-background: #cc0000 !important;
 $sites-nav-background: $top-header-background !important;
@@ -65,9 +72,7 @@ $breadcrumbs-color:    			 #000000 !important;
 $breadcrumbs-tool-color:       		 #000000 !important;
 $breadcrumbs-hover-color:      		 #000000 !important;
 
-$topNav-text-color: 			 #FFFFFF;
 
-$tool-nav-link-color: 			 #000000 !important;
 
 /* Link colors */
 $link-color: #cc0000;
@@ -80,7 +85,7 @@ $link-hover-background-color: transparent !default;
 /* Linknav button colors */
 $button-text-color:    	 #FFFFFF;
 $button-border-color: #cc0000;
-$button-background-color: #cc0000 !important;
+$button-background-color: #cc0000;
 $button-background-secondary-color: #585858;
 /* General button colors */
 $button-color-text-color: #585858;
@@ -98,12 +103,20 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
+$swapped-view-primary: 		 #bf360c !default;
+$swapped-view-text-color:	 #414141 !default;
+$swapped-view-sites-nav-background: $swapped-view-primary !default;
 
 /* This is the gradient in the header of the page */
 $header-gradient-a: #ececec;
 $header-gradient-b: #ececec;
 $header-gradient-c: #ececec;
 $header-gradient-d: #ececec;
+
+/* topNav Main Menu */
+$header-size : 50px !default;
+$topNav-text-color:                         #fff !default; /* used for links and text in the topNav */
+$topNav-text-alt-color:                     #ccc !default;
 
 $sites-nav-menu-item-background:            #cc0000 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
@@ -133,6 +146,7 @@ $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
 $tool-menu-width: 7.5em !default;
+$tool-menu-width-collapsed: $tool-menu-width / 2 !default;
 
 /* Navigation Hierarchy */
 $hierarchy-size: 3.5em;
@@ -141,13 +155,14 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/brock.svg';
-$logo-height: 50px;
+$logo: 'images/brock.svg';
+$logo-height: 40px;
 $logo-width: 126px;
 
 /* Tool icons */
 $skin-with-icons: true !default;
 $icon-size: 20px !default;
+$tool-menu-icon-on-left: false !default;
 
 /* Footer */
 $footer-background: transparent !default;
@@ -179,5 +194,89 @@ $footer-color: $background-color-secondary !default;
 }
 
 .select {
+    color: #000000 !important;
+    background: #FFFFFF !important;
+}
+
+.Mrphs-topHeader a {
+    color: #EFEFEF;
+}
+
+a.button {
+   background-color: #cc0000 !important;
+   color: #FFFFFF !important;
+}
+
+.Mrphs-toolTitleNav .Mrphs-toolTitleNav__button_container {
+    margin: -5px 0 -20px 0 !important;
+}
+
+.Mrphs-footerApp__presence, .Mrphs-footerApp__portalChat { 
+    background-color: #CC0000 !important;
+}
+
+.Mrphs-portalChat__users { 
+    border-top:	solid 0.5em #CC0000;
+}
+
+.discTria {
+    background-color: #F0F0F0 !important;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #F0F0F0 !important;
+}
+
+.ui-state-active {
+    color: #FFFFFF !important;
+    background: #CC0000 !important;
+    border: 1px solid #CC0000 !important;
+}
+
+#chatPresenceWrapper {
+    color: #585858;
+}
+
+.messageAlert { 
+    color: #000000 !important;
+}
+
+.gb-grade-section,.gb-due-date {
+    color: #000000 !important;
+}
+
+.btn-info { 
+   color: #FFFFFF !important;
+//   background: #CC0000 !important;
+   border: #CC0000 !important;
+}
+
+.dropDownDiv {
+    background: #FFFFFF !important;
+}
+
+.alertMessage h3 {
+    color: #CC0000 !important;
+}
+
+.Mrphs-sakai-poll thead tr th {
     color: #FFFFFF !important;
 }
+
+.addAttendee, .activeTag {
+   color: #CC0000 !important;
+}
+
+.alert-info {
+    color: #CC0000 !important;
+    background-color: #FFFFFF !important;
+    border-color: #CC0000 !important;
+}
+
+.ui-accordion .ui-accordion-header { 
+    background-color: #F0F0F0 !important;
+    border-color : #F0F0F0 !important;
+}
+
+@import url(#{$font-family-url});
+
