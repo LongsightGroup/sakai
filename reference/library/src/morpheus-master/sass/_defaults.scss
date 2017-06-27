@@ -274,6 +274,11 @@ a.button {
     border-color : #F0F0F0 !important;
 }
 
+input[type="radio"]:checked{
+    background: radial-gradient(#CC0000, #fff 5px) !important;
+    border: 1px solid #CC0000 !important;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
