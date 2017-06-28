@@ -212,7 +212,11 @@ a.button {
 }
 
 .Mrphs-portalChat__users { 
-    border-top:	solid 0.5em #CC0000;
+    border-top:	solid 0.5em #CC0000 !important;
+}
+
+.Mrphs-portalChat__title {
+    background-color: #CC0000 !important;
 }
 
 .discTria {
