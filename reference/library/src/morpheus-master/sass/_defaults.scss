@@ -291,6 +291,10 @@ input[type="radio"]:checked{
     border: 1px solid #CC0000 !important;
 }
 
+.userNav__subnav li a, #mastLogin #loginLinks ul li a {
+    color: #CC0000 !important;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
