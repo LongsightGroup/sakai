@@ -295,6 +295,54 @@ input[type="radio"]:checked{
     color: #CC0000 !important;
 }
 
+#foot-wrapper{
+    width:100%;
+    color:#585858;
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size:9px;
+}
+
+#foot-content, #footcr{
+    text-align:center;
+}
+
+#btmnav-upper ul li{
+    list-style:none;
+    display:inline;
+    border-right:#999999 solid 1px;
+    padding:0 5px 0 5px;
+}
+
+#btmnav-upper ul li a{
+    text-decoration:none;
+}
+
+#btmnav-upper ul li a:link, btmnav-upper ul li a:visited, btmnav-upper ul li a:hover, btmnav-upper ul li a:active{
+                color:#585858
+}
+
+#btmnav-upper ul li a:hover{
+    color:#CC0000;
+}
+
+#btmnav-upper ul li a:link, a:visited, a:hover, a:active{
+    color:#585858
+}
+
+.footerbold{
+    font-weight:bold;
+}
+
+#btmnav-lower div address a, #btmnav-lower div a{
+    color:#CC0000;
+}
+
+.Mrphs-footer {
+    text-align: center !important;
+}
+
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
+
