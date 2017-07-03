@@ -341,6 +341,14 @@ input[type="radio"]:checked{
     text-align: center !important;
 }
 
+.Mrphs-footer--nav__project {
+    list-style-type:  none !important;
+}
+
+
+.Mrphs-footer--nav__project--poweredby {
+    display: none !important;
+}
 
 @import "customization"; //it is created on-the-fly by maven.
 
