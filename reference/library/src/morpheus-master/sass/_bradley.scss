@@ -84,14 +84,14 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-$sites-nav-menu-item-background:            #a40000 !important;
-$sites-nav-menu-item-color:                 #FFFFFF !important;
-$sites-nav-menu-item-color-hover:           #FFFFFF !default;
-$sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-right:          none !default;
-$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #042644 !important;
+$sites-nav-menu-item-background:            #FFFFFF !important;
+$sites-nav-menu-item-color:                 #042644 !important;
+$sites-nav-menu-item-color-hover:           #042644 !default;
+$sites-nav-menu-item-border-top:            1px solid #E5E5E5 !important; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          1px solid #E5E5E5 !important;
+$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-left:           1px solid #E5E5E5 !important;
+$sites-nav-menu-item-selected-background:   #a40000 !important;
 $sites-nav-menu-item-selected-color:        #FFFFFF !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
