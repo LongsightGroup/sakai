@@ -1,33 +1,3 @@
-/* Global namespace */
-
-$namespace : "Mrphs-";
-$skin-name : "bradley"; // This is used for bootstrap font behaviour.
-
-$break-small-end:      	800px;
-$break-medium-end:     	1030px;
-
-$phone  :       "only screen and (max-width : #{ $break-small-end })";
-$tablet :       "only screen and (max-width : #{ $break-medium-end })";
-$desktop:       "only screen and (min-width : #{ $break-medium-end + 1 })";
-$nonPhone:      "only screen and (min-width : #{ $break-small-end + 1 })";
-
-// For the "More Sites" drawer, just use one column if there's not
-// enough room to show two side-by-side.
-$break-more-sites-single-column: 1200px;
-$more-sites-single-column: "only screen and (max-width : #{ $break-more-sites-single-column })";
-
-/* Typography*/
-
-//Google family Fonts URL
-$font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default;
-
-//Typography variables
-$font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
-$default-font-size: 14px !default;
-$default-font-weight: 400 !default;    										// 400 or 700 as you wish
-$header-font-family: $font-family;
-$header-font-weight: 700 !default;     										// 400 or 700 as you wish
-
 /* Color palette */
 $background-color: #FFFFFF;
 
@@ -40,6 +10,7 @@ $tool-background-color:		 $background-color;
 $tool-menu-background-color:   			 #ebebeb;
 $tool-menu-color:      			 #444444;
 $tool-tab-background-color:    			 #ededed;
+$tool-tab-active-highlight-color:                         #a40000 !default;
 $tool-border-color:    			 #cccccc;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
@@ -56,6 +27,17 @@ $tool-sub-menu-current-color: $primary-color !default;
 $tool-sub-menu-current-background-color: $background-color !default;
 $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
+
+
+$tool-tab-text-color:                                     $tool-menu-color !default;
+$tool-tab-background-color:                               $tool-menu-background-color !default;
+$tool-tab-border-color:                                   #E5E5E5 !default;
+$tool-tab-hover-text-color:                               #FFFFFF !default;
+$tool-tab-hover-background-color:                         #a40000 !default;
+$tool-tab-hover-highlight-color:                          #a40000 !default;
+$tool-tab-active-text-color:                              #a40000 !default;
+$tool-tab-active-background-color:                        #FFFFFF !default;
+$tool-tab-active-highlight-color:                         #a40000 !default;
 
 $main-content-background: $background-color !important;
 $top-header-background: #a40000 !important;
@@ -94,14 +76,6 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-$topNav-text-color: #000000;
-
-/* This is the gradient in the header of the page */
-$header-gradient-a: #a40000;
-$header-gradient-b: #a40000;
-$header-gradient-c: #a40000;
-$header-gradient-d: #a40000;
-
 $sites-nav-menu-item-background:            #a40000 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           #FFFFFF !default;
@@ -128,24 +102,9 @@ $sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-backgr
 $sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
-/* Tool Menu */
-$tool-menu-width: 7.5em !default;
-
-/* Navigation Hierarchy */
-$hierarchy-size: 3.5em;
-
-/* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
-$measure: 960px !default;
-
 /* Logo location */
 $logo: 'images/bradley.svg';
 $logo-height: 51px;
 $logo-width: 156px;
 
-/* Tool icons */
-$skin-with-icons: true !default;
-$icon-size: 20px !default;
-
-/* Footer */
-$footer-background: transparent !default;
 $topNav-text-color:                         #FFFFFF;
