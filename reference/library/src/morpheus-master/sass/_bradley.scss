@@ -7,8 +7,8 @@ $text-color:                             #000000;
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #ebebeb !important;
-$tool-menu-color:      			 #444444 !important;
+$tool-menu-background-color:   			 #ebebeb;
+$tool-menu-color:      			 #444444;
 $tool-tab-background-color:    			 #ededed;
 $tool-border-color:    			 #cccccc;
 $tool-tab-active-background-color:     			 $background-color !default;
@@ -30,7 +30,12 @@ $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $tool-menu-item-selected-text-color:                       #a40000 !default;
 $tool-menu-item-selected-icon-color:                       #a40000 !default;
-
+$tool-menu-item-background-color:                          #EBEBEB !default;
+$tool-menu-item-hover-text-color:                          #FFFFFF !default;
+$tool-menu-item-hover-icon-color:                          #FFFFFF !default;
+$tool-menu-item-hover-background-color:                    #a40000 !default;
+$tool-menu-item-hover-border-left:                         4px solid #FFFFFF !default;
+$tool-menu-item-selected-border-left:                      4px solid #a40000 !default;
 
 $tool-tab-text-color:                                     $tool-menu-color !default;
 $tool-tab-background-color:                               $tool-menu-background-color !default;
