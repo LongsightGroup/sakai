@@ -185,7 +185,7 @@
 			<properties>
 				<sakai.skin.source>morpheus-master</sakai.skin.source>
 				<sakai.skin.target>morpheus-default</sakai.skin.target>
-				<sakai.skin.customization.file>src/${sakai.skin.source}/sass/_pepperdine.scss</sakai.skin.customization.file>
+				<sakai.skin.customization.file>src/${sakai.skin.source}/sass/_bradley.scss</sakai.skin.customization.file>
 				<sakai.skin.outputSyle>nested</sakai.skin.outputSyle>
 			</properties>
 			<build>
