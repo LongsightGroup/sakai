@@ -145,18 +145,18 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             // Uncomment the next line and comment the following to enable the default spell checker.
             // Note that it uses spellchecker.net, displays ads and sends content to remote servers without additional setup.
             //['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print'],
-            ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+            ['Cut','Copy','Paste','PasteText','PasteFromWord'],
+            ['Undo','Redo','-','Replace','-','RemoveFormat'],
             ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
             '/',
             ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
 						['atd-ckeditor'],
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
             ['BidiLtr', 'BidiRtl' ],
-            ['Link','Unlink','Anchor'],
+            ['Link','Unlink'],
             (sakai.editor.enableResourceSearch
-                ? ['AudioRecorder','ResourceSearch','sharestream','Image','Movie','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']
-                : ['AudioRecorder','sharestream','Image','Movie','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']),
+                ? ['AudioRecorder','ResourceSearch','sharestream','Image','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']
+                : ['AudioRecorder','sharestream','Image','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']),
             '/',
             ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
