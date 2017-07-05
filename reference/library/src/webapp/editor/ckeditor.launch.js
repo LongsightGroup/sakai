@@ -127,6 +127,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
         extraPlugins: (sakai.editor.enableResourceSearch ? 'resourcesearch,' : '')+'',
 
+        fontAwesome_version : '4.6',
+        fontAwesome_html_tag : 'i',
+        fontAwesome_size : 'class'
+        fontAwesome_unicode = false;
 
         // These two settings enable the browser's native spell checking and context menus.
         // Control-Right-Click (Windows/Linux) or Command-Right-Click (Mac) on highlighted words
@@ -158,7 +162,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
                 ? ['AudioRecorder','ResourceSearch','sharestream','Image','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']
                 : ['AudioRecorder','sharestream','Image','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']),
             '/',
-            ['Styles','Format','Font','FontSize'],
+            ['Styles','Format','Font','FontSize','FontAwesome'],
             ['TextColor','BGColor'],
             ['Maximize', 'ShowBlocks']
         ],
@@ -219,6 +223,9 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('clipboard',basePath+'clipboard/', 'plugin.js');
             CKEDITOR.plugins.addExternal('a11ychecker',basePath+'a11ychecker/', 'plugin.js');
             CKEDITOR.plugins.addExternal('balloonpanel',basePath+'balloonpanel/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('fontAwesome','/library-private/fontAwesome/', 'plugin.js'); 
+            
+
             /*
                To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
                and to extraPlugins. This also needs extra stylesheets.
@@ -235,11 +242,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             //ckconfig.extraPlugins+="atd-ckeditor,";
             //ckconfig.contentsCss = [basePath+'atd-ckeditor/atd.css'];
 
-            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification,autolink,a11ychecker";
+            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification,autolink,a11ychecker,fontAwesome";
             ckconfig.extraPlugins+=",sharestream";
 
-            //SAK-29648
-            ckconfig.contentsCss = [basePath+'/fontawesome/font-awesome/css/font-awesome.min.css'];
+            ckconfig.contentsCss = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'];
             //If the siteskin is defined, add the print.css
             if (sakai.editor.sitePrintSkin) {
                 ckconfig.contentsCss.push(sakai.editor.sitePrintSkin);
