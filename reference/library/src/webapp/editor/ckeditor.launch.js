@@ -150,7 +150,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
             '/',
             ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-						['atd-ckeditor'],
+						['atd-ckeditor','A11ychecker'],
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
             ['BidiLtr', 'BidiRtl' ],
             ['Link','Unlink'],
@@ -215,6 +215,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('wordcount',webJars+'wordcount/4897cb23a9f2ca7fb6b792add4350fb9e2a1722c/', 'plugin.js');
             CKEDITOR.plugins.addExternal('notification',basePath+'notification/', 'plugin.js');
             CKEDITOR.plugins.addExternal('fontawesome',basePath+'fontawesome/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('autolink',basePath+'autolink/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('clipboard',basePath+'clipboard/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('a11ychecker',basePath+'a11ychecker/', 'plugin.js');
+            CKEDITOR.plugins.addExternal('balloonpanel',basePath+'balloonpanel/', 'plugin.js');
             /*
                To enable after the deadline uncomment these two lines and add atd-ckeditor to toolbar
                and to extraPlugins. This also needs extra stylesheets.
@@ -231,7 +235,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             //ckconfig.extraPlugins+="atd-ckeditor,";
             //ckconfig.contentsCss = [basePath+'atd-ckeditor/atd.css'];
 
-            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification";
+            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification,autolink,a11ychecker";
             ckconfig.extraPlugins+=",sharestream";
 
             //SAK-29648
