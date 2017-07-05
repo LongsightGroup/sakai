@@ -129,8 +129,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 
         fontAwesome_version : '4.6',
         fontAwesome_html_tag : 'i',
-        fontAwesome_size : 'class'
-        fontAwesome_unicode = false;
+        fontAwesome_size : 'class',
+        fontAwesome_unicode : false,
 
         // These two settings enable the browser's native spell checking and context menus.
         // Control-Right-Click (Windows/Linux) or Command-Right-Click (Mac) on highlighted words
