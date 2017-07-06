@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "morpheus-default"; // This is used for bootstrap font behaviour.
+$skin-name : "brock"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -348,6 +348,20 @@ input[type="radio"]:checked{
 
 .Mrphs-footer--nav__project--poweredby {
     display: none !important;
+}
+
+#tabs .ui-widget-content a {
+    color: #CC0000 !important;
+}
+
+@media (min-width: 768px) {
+.col-sm-5 {
+    width: 20% !important;
+  }
+}
+
+.ui-accordion-header-active {
+   background: #CC0000 !important;
 }
 
 @import "customization"; //it is created on-the-fly by maven.
