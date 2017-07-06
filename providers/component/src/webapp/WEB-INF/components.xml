@@ -133,6 +133,18 @@
 	</bean>
 -->
 
+        <!-- iMIS UserDirectoryProvider -->
+        <bean id="org.sakaiproject.user.api.UserDirectoryProvider"
+              class="org.sakaiproject.provider.user.iMISUserDirectoryProvider"
+              init-method="init"
+              destroy-method="destroy">
+            <property name="spAuthenticateUser"><value>password</value></property>
+            <property name="spStoredProcedure"><value>password</value></property>
+            <property name="wsdlUrl"><value>http://localhost/</value></property>
+            <property name="nsUrl"><value>http://localhost/</value></property>
+        </bean>
+
+
 <!-- Uncomment to use the sample AllHandsGroup Provider
      (read the code to see exactly what it does!)
 

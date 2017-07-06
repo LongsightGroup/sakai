@@ -25,6 +25,11 @@
 			<groupId>org.sakaiproject</groupId>
 			<artifactId>sakai-sample-provider</artifactId>
 		</dependency>
+	        <dependency>
+       			<groupId>org.sakaiproject</groupId>
+       			<artifactId>sakai-imis-provider</artifactId>
+       			<version>11-SNAPSHOT</version>
+     		</dependency>
 		<dependency>
 			<groupId>org.sakaiproject</groupId>
 			<artifactId>sakai-jldap-provider</artifactId>
