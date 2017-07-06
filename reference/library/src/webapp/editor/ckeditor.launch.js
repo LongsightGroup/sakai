@@ -162,7 +162,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
                 ? ['AudioRecorder','ResourceSearch','sharestream','Image','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']
                 : ['AudioRecorder','sharestream','Image','Table','HorizontalRule','Smiley','SpecialChar','fmath_formula','FontAwesome']),
             '/',
-            ['Styles','Format','Font','FontSize','FontAwesome'],
+            ['Styles','Format','Font','FontSize'],
             ['TextColor','BGColor'],
             ['Maximize', 'ShowBlocks']
         ],
