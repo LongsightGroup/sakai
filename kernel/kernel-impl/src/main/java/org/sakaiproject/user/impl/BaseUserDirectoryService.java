@@ -837,7 +837,14 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		{
 			user = getProvidedUserByEid(id, eid);
 			if (user == null) throw new UserNotDefinedException(eid);
-		}
+                        if(StringUtils.isNumeric(eid) && !eid.equals(user.getEid())){
+                                try{
+                                        user = (UserEdit)getUserByEid(user.getEid());
+                                }catch (UserNotDefinedException e){
+                                        return null;
+                                }
+                        }
+                }
 		putCachedUser(userReference(user.getId()), user);
 
 		return user;
@@ -1682,7 +1689,15 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			}
 			boolean authenticated = m_provider.authenticateUser(loginId, user, password);
 			if (!authenticated) user = null;
-		}
+		        //user was authenticated as the numberic username but was transfered to the non-numberic user eid by the provider
+                        if(user != null && StringUtils.isNumeric(loginId) && !loginId.equals(user.getEid())){
+                                try{
+                                        user = (UserEdit)getUserByEid(user.getEid());
+                                }catch (UserNotDefinedException e){
+                                        return null;
+                                }
+                        }
+                }
 		if (user != null)
 		{
 			checkAndEnsureMappedIdForProvidedUser(user);
