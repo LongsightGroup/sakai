@@ -219,7 +219,6 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             CKEDITOR.plugins.addExternal('wordcount',webJars+'wordcount/4897cb23a9f2ca7fb6b792add4350fb9e2a1722c/', 'plugin.js');
             CKEDITOR.plugins.addExternal('notification',basePath+'notification/', 'plugin.js');
             CKEDITOR.plugins.addExternal('fontawesome',basePath+'fontawesome/', 'plugin.js');
-            CKEDITOR.plugins.addExternal('autolink',basePath+'autolink/', 'plugin.js');
             CKEDITOR.plugins.addExternal('clipboard',basePath+'clipboard/', 'plugin.js');
             CKEDITOR.plugins.addExternal('a11ychecker',basePath+'a11ychecker/', 'plugin.js');
             CKEDITOR.plugins.addExternal('balloonpanel',basePath+'balloonpanel/', 'plugin.js');
@@ -242,7 +241,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             //ckconfig.extraPlugins+="atd-ckeditor,";
             //ckconfig.contentsCss = [basePath+'atd-ckeditor/atd.css'];
 
-            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification,autolink,a11ychecker,fontAwesome";
+            ckconfig.extraPlugins+="image2,audiorecorder,movieplayer,wordcount,fmath_formula,autosave,fontawesome,notification,a11ychecker,fontAwesome";
             ckconfig.extraPlugins+=",sharestream";
 
             ckconfig.contentsCss = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'];
