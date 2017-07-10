@@ -99,6 +99,7 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		return timezone.getVTimeZone();
 	}
 	
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -109,18 +110,6 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 			return null;
 		}
 		
-		//timezone. All dates are in GMT so we need to explicitly set that
-		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-		
-		//To prevent NPE on timezone
-		TimeZone timezone = null;
-		if (timeIsLocal == true) {
-			timezone = registry.getTimeZone(timeService.getLocalTimeZone().getID());
-		}
-		if (timezone == null) {
-			//This is guaranteed to return timezone if timeIsLocal == false or it fails and returns null
-			timezone = registry.getTimeZone("GMT");
-		}
 		VTimeZone tz = getTimeZone(timeIsLocal);
 
 		//start and end date
