@@ -87,7 +87,7 @@
     <jdom.version>1.0</jdom.version>
     <hamcrest.all.version>1.3</hamcrest.all.version>
     <junit.version>4.11</junit.version>
-
+    <inotado.version>2.1.0</inotado.version>
     <!-- Sakai modules that are versioned separately -->
     <!-- lessonbuilder tool pom depends on msgcntr ver prop. Need to add a profile to the LB tool pom to mark change between 10.x master and earlier versions -->
     <sakai.msgcntr.version>${sakai.version}</sakai.msgcntr.version> 

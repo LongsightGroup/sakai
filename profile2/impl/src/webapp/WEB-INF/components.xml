@@ -104,6 +104,7 @@
     	<property name="privacyLogic" ref="org.sakaiproject.profile2.logic.ProfilePrivacyLogic" />
     	<property name="connectionsLogic" ref="org.sakaiproject.profile2.logic.ProfileConnectionsLogic" />
     	<property name="preferencesLogic" ref="org.sakaiproject.profile2.logic.ProfilePreferencesLogic" />
+    	<property name="inotadoService" ref="edu.wfu.inotado.api.InotadoService" />
     </bean>
     
     <!-- ProfileMessagingLogic -->
