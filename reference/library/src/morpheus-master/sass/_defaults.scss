@@ -368,6 +368,10 @@ a.jqueryui-hideDivision {
     color: #000 !important;
 }
 
+.pasystem-banner-alert-toggle-list-item {
+    background-color: #CC0000 !important;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
