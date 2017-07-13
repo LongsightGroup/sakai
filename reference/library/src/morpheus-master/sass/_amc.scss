@@ -1,0 +1,129 @@
+/* Color palette */
+$background-color: #FFFFFF;
+
+$primary-color:                          #952a4e;
+$text-color:                             #000000;
+
+$portal-background-color: $background-color;
+
+$tool-background-color:		 $background-color;
+$tool-menu-background-color:   			 #FAFAFA;
+$tool-menu-color:      			 #333333;
+$tool-tab-background-color:    			 #FFFFFF;
+$tool-border-color:    			 #952a4e;
+$tool-tab-active-background-color:     			 $background-color !default;
+$tool-tab-active-border-color: 	 $background-color !important;
+$tool-menu-hover-color:  #333333 !important;
+$tool-menu-hover-background-color: #ECECEC !important;
+$tool-menu-current-background-color: #FFFFFF !important;
+$tool-menu-current-color: #1E80B5 !important;
+$tool-menu-current-border-color: $primary-color !important;
+$tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
+$tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
+$tool-sub-menu-hover-background-color: $primary-color !default;
+$tool-sub-menu-hover-color: $tool-menu-color !default;
+$tool-sub-menu-current-color: $primary-color !default;
+$tool-sub-menu-current-background-color: $background-color !default;
+$tool-sub-menu-current-hover-color: $tool-menu-color !important;
+$tool-sub-menu-current-hover-background-color: $background-color !default;
+
+
+$tool-menu-item-selected-text-color:                       #1E80B5 !default;
+$tool-menu-item-selected-icon-color:                       #1E80B5 !default;
+$tool-menu-item-background-color:                          #FAFAFA !default;
+$tool-menu-item-hover-text-color:                          #333333 !default;
+$tool-menu-item-hover-icon-color:                          #333333 !default;
+$tool-menu-item-hover-background-color:                    #ECECEC !default;
+//$tool-menu-item-hover-border-left:                         4px solid #FFFFFF !default;
+//$tool-menu-item-selected-border-left:                      4px solid #a40000 !default;
+
+$tool-tab-text-color:                                     $tool-menu-color !default;
+$tool-tab-background-color:                               $tool-menu-background-color !default;
+$tool-tab-border-color:                                   #E5E5E5 !default;
+$tool-tab-hover-text-color:                               #FFFFFF !default;
+$tool-tab-hover-background-color:                         #a40000 !default;
+$tool-tab-hover-highlight-color:                          #a40000 !default;
+$tool-tab-active-text-color:                              #a40000 !default;
+$tool-tab-active-background-color:                        #FFFFFF !default;
+$tool-tab-active-highlight-color:                         #a40000 !default;
+
+$main-content-background: $background-color !important;
+$top-header-background: #952a4e !important;
+$sites-nav-background: $top-header-background !important;
+
+$breadcrumbs-color:    			 #000000 !important;
+$breadcrumbs-tool-color:       		 #000000 !important;
+$breadcrumbs-hover-color:      		 #000000 !important;
+
+/* Link colors */
+$link-color: #347EB2;
+$link-active-color: #347EB2;
+$link-hover-color: #347EB2;
+$link-background-color: transparent !default;
+$link-active-background-color: transparent !default;
+$link-hover-background-color: transparent !default;
+
+/* Linknav button colors */
+$button-text-color: #333333;
+$button-border-color: #DDDDDD;
+$button-background-color: #EEEEEE !important;
+$button-background-secondary-color: #EEEEEE;
+/* General button colors */
+$button-color-text-color: #FFFFFF;
+$button-color-border-color: #1E80B5;
+$button-color-background-color: #326B97 !important;
+$button-color-background-secondary-color: #326B97;
+/* ///////////// */
+
+$ok-color:                  #DFF0D8 !default;
+$ok-background-color:        lighten($ok-color, 45%) !default;
+$warn-background-color:     #FCF8E3 !default;
+$warn-color:                darken($warn-background-color, 35%) !default;
+$error-background-color:    #F2DEDE !default;
+$error-color:               darken($error-background-color, 30%) !default;
+
+$sites-nav-menu-item-background:            #952a4e !important;
+$sites-nav-menu-item-color:                 #FFFFFF !important;
+$sites-nav-menu-item-color-hover:           #FFFFFF !default;
+$sites-nav-menu-item-border-top:            1px solid #E5E5E5 !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          #E5E5E5 !default;
+$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-left:           #E5E5E5 !default;
+$sites-nav-menu-item-selected-background:   #efefef !important;
+$sites-nav-menu-item-selected-color:        #000000 !important;
+$sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
+$sites-nav-menu-item-selected-border-top:   #326B97 !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: #326B97 !default;
+$sites-nav-menu-item-selected-border-bottom: #326B97 !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-left:  #326B97 !default;
+$sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
+$sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-color:              $sites-nav-menu-item-color;
+$sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !default;
+$sites-nav-submenu-item-border:             none !default;
+$sites-nav-submenu-item-border-hover:       none !default;
+$sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
+$sites-nav-submenu-item-selected-border:    none !default;
+
+/* Logo location */
+$logo: 'images/amc.png';
+$logo-height: 50px;
+$logo-width: 282px;
+
+.select {
+    color: #000000 !important;
+}
+
+.instruction {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: transparent !important;
+    border-left-color: transparent !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: #980033 !important;
+}
