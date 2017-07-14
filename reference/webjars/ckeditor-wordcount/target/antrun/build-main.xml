@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <mkdir dir="/home/ubuntu/src/sakai-11-nyu/reference/webjars/ckeditor-wordcount/target/classes/META-INF/resources/webjars/wordcount/4897cb23a9f2ca7fb6b792add4350fb9e2a1722c"/>
+  <get src="https://github.com/w8tcha/CKEditor-WordCount-Plugin/archive/4897cb23a9f2ca7fb6b792add4350fb9e2a1722c/4897cb23a9f2ca7fb6b792add4350fb9e2a1722c.zip" dest="/home/ubuntu/src/sakai-11-nyu/reference/webjars/ckeditor-wordcount/target/ckeditor-wordcount.zip"/>
+  <echo message="unzip archives"/>
+  <unzip src="/home/ubuntu/src/sakai-11-nyu/reference/webjars/ckeditor-wordcount/target/ckeditor-wordcount.zip" dest="/home/ubuntu/src/sakai-11-nyu/reference/webjars/ckeditor-wordcount/target">
+    <cutdirsmapper dirs="1"/>
+  </unzip>
+  <echo message="moving resources"/>
+  <move todir="/home/ubuntu/src/sakai-11-nyu/reference/webjars/ckeditor-wordcount/target/classes/META-INF/resources/webjars/wordcount/4897cb23a9f2ca7fb6b792add4350fb9e2a1722c">
+    <fileset excludes="samples/" dir="/home/ubuntu/src/sakai-11-nyu/reference/webjars/ckeditor-wordcount/target/wordcount"/>
+  </move>
+</target>
+</project>
