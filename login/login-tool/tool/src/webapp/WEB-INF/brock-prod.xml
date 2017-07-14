@@ -56,7 +56,7 @@
 
     <!-- Logger for SAML messages and events -->
     <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
-    
+
     <!-- Disable signing using cryptographic keys -->
     <!-- Central storage of cryptographic keys -->
     <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
@@ -91,7 +91,7 @@
                 <property name="entityId" value="https://sakai-prod.saml.brock.edu/samlauth" />
                 <!-- <property name="includeDiscoveryExtension" value="true"/> -->
                 <!-- <property name="extendedMetadata">
-                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
+                                         <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         <property name="idpDiscoveryEnabled" value="true"/>
                         <property name="signMetadata" value="false"/>
                     </bean>
@@ -100,14 +100,16 @@
         </constructor-arg>
     </bean>
 
-	
+
     <!-- The filter is waiting for connections on URL suffixed with filterSuffix and presents SP metadata there -->
     <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
 
     <!-- Configure HTTP Client to accept certificates from the keystore for HTTPS verification -->
+<!--
     <bean class="org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer">
-        <property name="sslHostnameVerification" value="default"/>
+        <property name="sslHostnameVerification" value="allowAll"/>
     </bean>
+-->
 
     <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
     <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
@@ -146,7 +148,7 @@
 
                 <!-- Example of classpath metadata with Extended Metadata -->
 <!--
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
                             <constructor-arg>
@@ -169,26 +171,29 @@
 
                 <!-- Example of HTTP metadata without Extended Metadata -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                  <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://adfs.brocku.ca/federationmetadata/2007-06/federationmetadata.xml</value>
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
+                            <constructor-arg>
+                                <value type="java.lang.String">https://adfs.brocku.ca/federationmetadata/2007-06/federationmetadata.xml</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="int">45000</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="java.lang.String">sakai/saml/idp.xml</value>
+                            </constructor-arg>
+                            <property name="parserPool" ref="parserPool"/>
+                        </bean>
                     </constructor-arg>
                     <constructor-arg>
-                        <value type="int">60000</value>
+                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
                     </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
+                    <property name="metadataTrustCheck" value="false"/>
                 </bean>
-                  </constructor-arg>
-                  <constructor-arg>
-                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                  </constructor-arg>
-                  <property name="metadataTrustCheck" value="false"/>
-                </bean>
-                
+
                 <!-- Example of file system metadata without Extended Metadata -->
                 <!--
-                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                                     <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
                     <constructor-arg>
                         <value type="java.io.File">/usr/local/metadata/idp.xml</value>
                     </constructor-arg>
