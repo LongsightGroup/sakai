@@ -162,6 +162,15 @@ public class SakaiBLTIUtil {
 	public static final String CANVAS_PLACEMENTS_ASSIGNMENTSELECTION = "Canvas.placements.assignmentSelection";
 	public static final String CANVAS_PLACEMENTS_LINKSELECTION = "Canvas.placements.linkSelection";
 	public static final String CANVAS_PLACEMENTS_CONTENTIMPORT = "Canvas.placements.contentImport";
+	
+  private static Object inotadoService = null;
+	
+	private static Object getInotadoService(){
+		if(inotadoService == null){
+			inotadoService = ComponentManager.get("edu.wfu.inotado.api.InotadoService");
+		}
+		return inotadoService;
+	}
 
 	public static void dPrint(String str)
 	{
@@ -679,6 +688,22 @@ public class SakaiBLTIUtil {
 		// Send along the content link
 		String contentlink = toNull(getCorrectProperty(config,"contentlink", placement));
 		if ( contentlink != null ) setProperty(props,"ext_resource_link_content",contentlink);
+
+		// Send additional parameter section_id
+		if (getInotadoService() != null) {
+			try {
+				Method method;
+				method = inotadoService.getClass().getMethod("getSectionId",String.class);
+				String section_id = (String) method.invoke(inotadoService,
+						props.getProperty(BasicLTIConstants.CONTEXT_ID));
+				setProperty(props, "section_id", section_id);
+			} catch (Exception e) {
+				M_log.error("Failed to execute method due to error " + e.getMessage(), e);
+			}
+		} else {
+			M_log.warn("Unable to find the bean: inotadoService.");
+		}
+		
 	} 
 
 	public static void addGlobalData(Site site, Properties props, Properties custom, ResourceLoader rb)
