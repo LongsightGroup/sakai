@@ -138,9 +138,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/gcts.svg';
-$logo-height: 50px;
-$logo-width: 240px;
+$logo: '../images/gcts-logo.png';
+$logo-height: 54px;
+$logo-width: 405px;
 
 /* Tool icons */
 $skin-with-icons: true !default;
@@ -178,5 +178,14 @@ $footer-color: $background-color-secondary !default;
 @media only screen and (max-width: 800px) {
 .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
     width: 140px !important;
-    }
+    max-height: 48px !important;
+    margin: 0 !important;
+ }
+}
+.Mrphs-mainHeader .Mrphs-headerLogo span.Mrphs-headerLogo--institution {
+    margin: 4px 0 6px;
+    background-size: contain;
+}
+#Mrphs-xlogin .logo {
+  background-size: contain;
 }
