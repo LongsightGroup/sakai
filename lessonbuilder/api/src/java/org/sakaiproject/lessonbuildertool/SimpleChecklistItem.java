@@ -30,7 +30,4 @@ public interface SimpleChecklistItem {
 
     String getName();
     void setName(String name);
-
-    long getLink();
-    void setLink(Long link);
 }

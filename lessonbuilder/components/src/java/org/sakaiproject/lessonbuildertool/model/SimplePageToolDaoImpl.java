@@ -1600,7 +1600,7 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 			return ret;
 		for (Object i: checklistItems) {
 			Map checklistItem = (Map) i;
-			SimpleChecklistItem newChecklistItem = new SimpleChecklistItemImpl((Long)checklistItem.get("id"), (String)checklistItem.get("name"), (Long)checklistItem.get("link"));
+			SimpleChecklistItem newChecklistItem = new SimpleChecklistItemImpl((Long)checklistItem.get("id"), (String)checklistItem.get("name"));
 			ret.add(newChecklistItem);
 		}
 		return ret;
@@ -1614,7 +1614,7 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		for (Object i: checklistItems) {
 			Map checklistItem = (Map) i;
 			if (checklistItemId == (Long)checklistItem.get("id")) {
-				SimpleChecklistItem newChecklistItem = new SimpleChecklistItemImpl(checklistItemId, (String)checklistItem.get("name"), (Long)checklistItem.get("link"));
+				SimpleChecklistItem newChecklistItem = new SimpleChecklistItemImpl(checklistItemId, (String)checklistItem.get("name"));
 				return newChecklistItem;
 			}
 		}
@@ -1665,16 +1665,15 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		return max;
 	}
 
-	public Long addChecklistItem(SimplePageItem checklist, Long id, String name, Long linkedId) {
+	public Long addChecklistItem(SimplePageItem checklist, Long id, String name) {
 		// no need to check security. that happens when item is saved
 
 		List checklistItems = (List)checklist.getJsonAttribute("checklistItems");
 		if (checklistItems == null) {
 			checklistItems = new JSONArray();
 			checklist.setJsonAttribute("checklistItems", checklistItems);
-			if (id <= 0L) {
+			if (id <= 0L)
 				id = 1L;
-			}
 		} else if (id <= 0L) {
 			Long max = 0L;
 			for (Object i: checklistItems) {
@@ -1690,7 +1689,6 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		Map newChecklistItem = new JSONObject();
 		newChecklistItem.put("id", id);
 		newChecklistItem.put("name", name);
-		newChecklistItem.put("link", linkedId);
 		checklistItems.add(newChecklistItem);
 
 		return id;
