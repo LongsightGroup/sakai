@@ -372,6 +372,14 @@ a.jqueryui-hideDivision {
     background-color: #CC0000 !important;
 }
 
+input[type="reset"] {
+    color: #FFFFFF !important;
+}
+
+.Mrphs-sakai-resources .inactive button span {
+    color:#585858 !important;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
