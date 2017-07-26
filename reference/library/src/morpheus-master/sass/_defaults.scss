@@ -380,7 +380,12 @@ input[type="reset"] {
     color:#585858 !important;
 }
 
+.moresites-refresh-notification {
+    background-color: #CC0000 !important;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
+
 
