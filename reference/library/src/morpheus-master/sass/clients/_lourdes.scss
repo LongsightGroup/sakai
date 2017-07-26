@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "stlawu"; // This is used for bootstrap font behaviour.
+$skin-name : "lourdes"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -31,44 +31,42 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #4b2b23;
+$primary-color:                          #f97716;
 $text-color:                             #000000;
 
-$portal-background-color: #FFFFFF;
+$portal-background-color: $background-color;
 
-$tool-background-color:	 #FFFFFF;
-$tool-menu-background-color: #ededed;
-$tool-menu-color:      			 #000000;
-$tool-tab-background-color:  #ededed;
-$tool-border-color:    			 #4b2b23;
+$tool-background-color:		 $background-color;
+$tool-menu-background-color: #FFFFFF;
+$tool-menu-color:      			 #444444;
+$tool-tab-background-color:    			 #FFFFFF;
+$tool-border-color:    			 #5568b4;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #FFFFFF;
-$tool-menu-hover-background-color: -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%);
-$tool-menu-current-background-color: -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%);
-$tool-menu-current-color: #FFFFFF;
+$tool-menu-hover-color:  #FFFFFF !important;
+$tool-menu-hover-background-color: -webkit-linear-gradient(top, #44569c 0%,#5568b4 100%);
+$tool-menu-current-background-color: #FFFFFF;
+$tool-menu-current-color: #5568B4 !important;
 $tool-menu-current-border-color: $primary-color !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-hover-background-color: $primary-color !default;
-$tool-sub-menu-hover-color: #FFFFFF !important;
+$tool-sub-menu-hover-color: $tool-menu-color !default;
 $tool-sub-menu-current-color: $primary-color !default;
 $tool-sub-menu-current-background-color: $background-color !default;
 $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #4b2b23 !important;
+$top-header-background: #f97716 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 #000000 !important;
 $breadcrumbs-tool-color:       		 #000000 !important;
 $breadcrumbs-hover-color:      		 #000000 !important;
 
-$tool-nav-link-color:			 #4b2b23 !important;
-
 /* Link colors */
-$link-color: #006699;
+$link-color: #0064cd;
 $link-active-color:#4e5192;
 $link-hover-color: $primary-color;
 $link-background-color: transparent !default;
@@ -99,25 +97,25 @@ $error-color:               darken($error-background-color, 30%) !default;
 $topNav-text-color: #FFFFFF;
 
 /* This is the gradient in the header of the page */
-//$hlader-gradient-a: url(images/background_gray2.jpg) top left repeat;
-//$header-gradient-b: url(images/background_gray2.jpg) top left repeat;
-//$header-gradient-c: url(images/background_gray2.jpg) top left repeat;
-//$header-gradient-d: url(images/background_gray2.jpg) top left repeat;
+$header-gradient-a: #f9f9f9;
+$header-gradient-b: #f9f9f9;
+$header-gradient-c: #f9f9f9;
+$header-gradient-d: #f9f9f9;
 
-$sites-nav-menu-item-background:            -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%) !important;
+$sites-nav-menu-item-background:            #f97716 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           #FFFFFF !default;
-$sites-nav-menu-item-border-top:            1px solid #222222 ; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-right:          1px solid #222222;
+$sites-nav-menu-item-border-top:            1px solid #FFF ; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          1px solid #FFF;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-left:           1px solid #222222;
-$sites-nav-menu-item-selected-background:   -webkit-linear-gradient(top, #acacac 0%,#666666 100%) !important;
+$sites-nav-menu-item-border-left:           1px solid #FFF;
+$sites-nav-menu-item-selected-background:   #5568B4 !important;
 $sites-nav-menu-item-selected-color:        #FFFFFF !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
-$sites-nav-menu-item-selected-border-top:   1px solid #222222; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-right: 1px solid #222222;
+$sites-nav-menu-item-selected-border-top:   none; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: none;
 $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-left:  1px solid #222222;
+$sites-nav-menu-item-selected-border-left:  none;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
 $sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
 $sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
@@ -126,8 +124,8 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background: transparent !important;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !important;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -140,8 +138,8 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/stlawu.svg';
-$logo-height: 50px;
+$logo: '../images/lourdes.svg';
+$logo-height: 62px;
 $logo-width: 203px;
 
 /* Tool icons */
@@ -156,21 +154,13 @@ $footer-color: $background-color-secondary !default;
   border-radius: 6px;
 }
 
-//.Mrphs-topHeader a {
-//    color: #FFFFFF !important;
-//}
-
-//.userNav__subnav li a, #mastLogin #loginLinks ul li a {
-//    color: #4b2b23 !important;
-//}
-
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: $primary-color !important;
 }
 
 .instruction {
     border-color: $primary-color !important;
-    background-color: #ededed !important;
+    background-color: #f1f1f1 !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem>a {
@@ -179,53 +169,15 @@ $footer-color: $background-color-secondary !default;
 
 .Mrphs-siteHierarchy {
     color: #000000 !important;
-    background: url(images/background_gray2.jpg) top left repeat !important;
 }
 
 .fa-angle-down:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__drop:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:before {
-    color: #000000 !important;
+    color: #FFFFFF !important;
 }
 
 @media only screen and (max-width: 800px) {
 .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
     width: 140px !important;
     height: 50px !important;
-    }
-}
-
-body {
-    background: url(images/background_gray2.jpg) top left repeat !important;
-}
-
-.Mrphs-mainContent {
-    background: url(images/background_gray2.jpg) top left repeat !important;
-}
-
-#loginLink1 {
-    text-transform: uppercase;
-    font-weight: bold;
-    background-color: #ededed;
-    color: #000;
-    border-radius: 3px;
-    padding: 4px;
-    margin: 0px -139px 0px 0px;
-}
-
-
-#loginLink2 {
-    color: #fff !important;
-    padding: 35px 0px 0px 0px;
-    font-style: italic;
-}
-
-@media only screen and (max-width: 800px) {
-    .Mrphs-topHeader .Mrphs-loginNav {
-        margin:  -13px 7em -12px 0px !important;
-    }
-}
-
-@media only screen and (max-width: 800px) {
-    .Mrphs-topHeader {
-        font-size: 9px !important;
     }
 }
