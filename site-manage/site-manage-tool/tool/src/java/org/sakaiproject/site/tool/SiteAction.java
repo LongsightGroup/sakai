@@ -2886,7 +2886,10 @@ public class SiteAction extends PagedResourceActionII {
 				for (Map.Entry<String, Map<String, Object>> entry : currentLtiTools.entrySet() ) {
 					 Map<String, Object> toolMap = entry.getValue();
 					 String toolId = entry.getKey();
-					// get the proper html for tool input
+					// get the configuration html for tool is post-add configuration has been requested (by Laura)
+					Object showDialog = toolMap.get("siteinfoconfig");
+					if ( showDialog == null || ! "1".equals(showDialog.toString()) ) continue;
+
 					String ltiToolId = toolMap.get("id").toString();
 					String[] contentToolModel=m_ltiService.getContentModel(Long.valueOf(ltiToolId));
 					// attach the ltiToolId to each model attribute, so that we could have the tool configuration page for multiple tools
@@ -11632,14 +11635,20 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 				else if (toolId.startsWith(LTITOOL_ID_PREFIX))
 				{
 					String ltiToolId = toolId.substring(LTITOOL_ID_PREFIX.length());
-					// whether there is any lti tool been selected
+					Map<String,Object> toolMap = ltiTools.get(ltiToolId);
+					if ( toolMap == null ) continue;
+
+					// Decide if any LTI tools need a configuration dialog
+					Object showDialog = toolMap.get("siteinfoconfig");
+					if ( showDialog == null || ! "1".equals(showDialog.toString()) ) continue;
 					if (existingLtiIds == null)
 					{
 						ltiToolSelected = true;
 					}
 					else
 					{
-						if (!existingLtiIds.keySet().contains(ltiToolId))
+						if (!existingLtiIds.keySet().contains(ltiToolId) && 
+							showDialog!= null && "1".equals(showDialog.toString()))
 						{
 							// there are some new lti tool(s) selected
 							ltiToolSelected = true;
