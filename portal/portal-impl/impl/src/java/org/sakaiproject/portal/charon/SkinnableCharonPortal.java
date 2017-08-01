@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -742,6 +743,11 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		toolMap.put("toolRenderResult", renderResult);
 		toolMap.put("hasRenderResult", Boolean.TRUE);
 		toolMap.put("toolUrl", toolUrl);
+		
+		// Allow a tool to suppress the rendering of its title nav. Defaults to false if not specified, and title nav is rendered.
+		// Set suppressTitle = true to suppress
+		boolean suppressTitle = BooleanUtils.toBoolean(placement.getConfig().getProperty("suppressTitle"));
+		toolMap.put("suppressTitle", suppressTitle);
 
 		Session s = SessionManager.getCurrentSession();
 		ToolSession ts = s.getToolSession(placement.getId());
@@ -1046,10 +1052,16 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			rcontext.put("googleTagManagerContainerId", googleTagManagerContainerId);
 		}
 
-		Session s = SessionManager.getCurrentSession();
-		rcontext.put("loggedIn", Boolean.valueOf(s.getUserId() != null));
-		rcontext.put("userId", s.getUserId());
-		rcontext.put("userEid", s.getUserEid());
+				
+		User currentUser = UserDirectoryService.getCurrentUser();
+		Role role = site.getUserRole(currentUser.getId());
+
+		rcontext.put("loggedIn", Boolean.valueOf(currentUser.getId() != null));
+		rcontext.put("userId", currentUser.getId());
+		rcontext.put("userEid", currentUser.getEid());
+		rcontext.put("userType", currentUser.getType());
+		rcontext.put("userSiteRole", role != null ? role.getId() : "");
+
 		rcontext.put("loggedOutUrl",ServerConfigurationService.getLoggedOutUrl());
 		rcontext.put("portalPath",ServerConfigurationService.getPortalUrl());
 		rcontext.put("timeoutDialogEnabled",Boolean.valueOf(ServerConfigurationService.getBoolean("timeoutDialogEnabled", true)));
