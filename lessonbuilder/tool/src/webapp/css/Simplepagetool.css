@@ -1094,6 +1094,7 @@ img {
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	border-radius: 3px;
+	font-size: 13px;
 }
 .backgroundHighlight {
 	border: 2px solid black;
