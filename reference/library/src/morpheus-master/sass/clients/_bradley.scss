@@ -123,3 +123,10 @@ $topNav-text-color:                         #FFFFFF;
 .Mrphs-mainHeader.is-maximized .siteNavWrap {
     border-top: 1px solid #fff;
 }
+
+@media (max-width: 800px) {
+  body.is-logged-out #mastLogin > * {
+    height: 1.4em;
+    line-height: 1.4em;
+  }
+}
