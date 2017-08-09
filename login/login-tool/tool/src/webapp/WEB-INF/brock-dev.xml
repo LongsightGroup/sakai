@@ -31,10 +31,15 @@
         <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
     </security:http>
 
+    <bean id="containerRedirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy">
+        <property name="contextRelative" value="true"/>
+    </bean>
+
     <!-- Handler deciding where to redirect user after successful login -->
     <bean id="successRedirectHandler"
           class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
         <property name="defaultTargetUrl" value="/portal"/>
+        <property name="redirectStrategy" ref="containerRedirectStrategy"/>
     </bean>
 
     <!-- Handler deciding where to redirect user after failed login -->
@@ -42,11 +47,13 @@
           class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
         <property name="useForward" value="true"/>
         <property name="defaultFailureUrl" value="/portal/xlogin"/>
+        <property name="redirectStrategy" ref="containerRedirectStrategy"/>
     </bean>
 
     <!-- Handler for successful logout -->
     <bean id="successLogoutHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
         <property name="defaultTargetUrl" value="/portal"/>
+        <property name="redirectStrategy" ref="containerRedirectStrategy"/>
     </bean>
 
     <security:authentication-manager alias="authenticationManager">
@@ -56,7 +63,7 @@
 
     <!-- Logger for SAML messages and events -->
     <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
-    
+
     <!-- Disable signing using cryptographic keys -->
     <!-- Central storage of cryptographic keys -->
     <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
@@ -100,7 +107,6 @@
         </constructor-arg>
     </bean>
 
-	
     <!-- The filter is waiting for connections on URL suffixed with filterSuffix and presents SP metadata there -->
     <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
 
@@ -137,64 +143,34 @@
 			               <property name="signingKey" value="brockdevkey"/>
 			               <property name="encryptionKey" value="brockdevkey"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
-			               <property name="requireLogoutRequestSigned" value="false"/>
-			               <property name="requireLogoutResponseSigned" value="false"/>
+			               <property name="requireLogoutRequestSigned" value="true"/>
+			               <property name="requireLogoutResponseSigned" value="true"/>
 			               <property name="idpDiscoveryEnabled" value="false"/>
 			            </bean>
 			        </constructor-arg>
 			    </bean>
 
-                <!-- Example of classpath metadata with Extended Metadata -->
-<!--
+                <!-- Example of HTTP metadata without Extended Metadata -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <bean class="java.util.Timer"/>
+                                <value type="java.lang.String">https://adfs.brocku.ca/federationmetadata/2007-06/federationmetadata.xml</value>
                             </constructor-arg>
                             <constructor-arg>
-                                <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="sakai/saml/incommon.xml"/>
-                                </bean>
+                                <value type="int">45000</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="java.lang.String">sakai/saml/idp.xml</value>
                             </constructor-arg>
                             <property name="parserPool" ref="parserPool"/>
                         </bean>
                     </constructor-arg>
                     <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                        </bean>
+                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
                     </constructor-arg>
+                    <property name="metadataTrustCheck" value="false"/>
                 </bean>
-   -->
-
-                <!-- Example of HTTP metadata without Extended Metadata -->
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                  <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
-                    <constructor-arg>
-                        <value type="java.lang.String">https://adfs.brocku.ca/federationmetadata/2007-06/federationmetadata.xml</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <value type="int">60000</value>
-                    </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
-                </bean>
-                  </constructor-arg>
-                  <constructor-arg>
-                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                  </constructor-arg>
-                  <property name="metadataTrustCheck" value="false"/>
-                </bean>
-                
-                <!-- Example of file system metadata without Extended Metadata -->
-                <!--
-                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
-                    <constructor-arg>
-                        <value type="java.io.File">/usr/local/metadata/idp.xml</value>
-                    </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
-                </bean>
-                -->
             </list>
         </constructor-arg>
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
@@ -230,9 +206,12 @@
     </bean>
 
     <!-- Logout handler terminating local session -->
-    <bean id="logoutHandler"
-          class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
-        <property name="invalidateHttpSession" value="false"/>
+    <bean id="logoutHandler" class="org.sakaiproject.login.filter.SakaiLogoutSamlFilter">
+        <property name="usageSessionService" ref="org.sakaiproject.event.api.UsageSessionService"/>
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+        <property name="invalidateHttpSession" value="true"/>
+        <property name="invalidateSakaiSession" value="true"/>
+        <property name="clearAuthentication" value="true"/>
     </bean>
 
     <!-- Override default logout processing filter with the one processing SAML messages -->
@@ -321,7 +300,7 @@
         <constructor-arg ref="parserPool"/>
     </bean>
 
-    <!-- Initialization of OpenSAML library-->
+    <!-- Initialization of OpenSAML library -->
     <bean class="org.springframework.security.saml.SAMLBootstrap"/>
 
     <!-- Initialization of the velocity engine -->
