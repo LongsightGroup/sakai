@@ -52,9 +52,9 @@ $main-content-background: $background-color !important;
 $top-header-background: #a40000 !important;
 $sites-nav-background: $top-header-background;
 
-$breadcrumbs-color:    			 #FFFFFF !important;
-$breadcrumbs-tool-color:       		 #FFFFFF !important;
-$breadcrumbs-hover-color:      		 #FFFFFF !important;
+$breadcrumbs-color:    			 #a40000 !important;
+$breadcrumbs-tool-color:       		 #a40000 !important;
+$breadcrumbs-hover-color:      		 #a40000 !important;
 
 /* Link colors */
 $link-color: #2a94c0;
@@ -126,8 +126,18 @@ $logo: 'images/bradley.svg';
 $logo-height: 51px;
 $logo-width: 156px;
 
+$banner-height: 63px;
+
 $topNav-text-color:                         #FFFFFF;
 
 .Mrphs-mainHeader .Mrphs-headerLogo {
    border-bottom: 1px solid #fff;
+}
+
+.Mrphs-topHeader a:hover {
+   color: #000 !important;
+}
+
+#Mrphs-xlogin .logo {
+    background: #a40000 url("images/bradley.svg") no-repeat center center !important;
 }
