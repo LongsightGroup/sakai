@@ -45,6 +45,9 @@
                     "sitenav": false // This is not allowed in morpheus
                 },
                 "pageScriptPath" : "$!{pageScriptPath}",
+                "editor" : {
+                    "type": "$!{editorType}",
+                },
                 "portalCDNQuery" : "$!{portalCDNQuery}"
             };
         </script>
