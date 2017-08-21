@@ -105,6 +105,10 @@ public class ChatMessage implements Entity {
       }
       this.body = formattedBody;
    }
+   
+   public void setRawBody(String body){
+	   this.body = body;
+   }
 
    public ChatChannel getChatChannel() {
       return chatChannel;
