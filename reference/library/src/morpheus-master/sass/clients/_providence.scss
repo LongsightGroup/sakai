@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "morpheus-master"; // This is used for bootstrap font behaviour.
+$skin-name : "providence"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -154,4 +154,8 @@ $footer-color: $background-color-secondary !default;
 
 .instruction {
    background-color: #CCCCCC !important;
+}
+
+#Mrphs-xlogin .logo {
+    background: #cacaca url("../images/providence.svg") no-repeat center center !important;
 }

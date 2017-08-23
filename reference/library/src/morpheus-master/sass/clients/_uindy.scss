@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "wscc"; // This is used for bootstrap font behaviour.
+$skin-name : "uindy"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -31,25 +31,25 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 /* Color palette */
 $background-color: #FFFFFF;
 
-$primary-color:                          #3F6622;
+$primary-color:                          #911934;
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
 
 $tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #d0dcc9;
-$tool-menu-color:      			 #000000;
-$tool-tab-background-color:    			 #d0dcc9;
-$tool-border-color:    			 #437329;
+$tool-menu-background-color: #CCCCCC;
+$tool-menu-color:      			 #444444;
+$tool-tab-background-color:    		 #ebebeb;
+$tool-border-color:    			 #0d213d;
 $tool-tab-active-background-color:     			 $background-color !default;
 $tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #000000 !important;
-$tool-menu-hover-background-color: #FFFFFF !important;
-$tool-menu-current-background-color: #FFFFFF !important;
-$tool-menu-current-color: #000000 !important;
-$tool-menu-current-border-color: $primary-color !important;
+$tool-menu-hover-color:  #0d213d !important;
+$tool-menu-hover-background-color: #EEEEEE;
+$tool-menu-current-background-color: #F1AB1C;
+$tool-menu-current-color: #0d213d !important;
+$tool-menu-current-border-color: #0d213d !important;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
-$tool-sub-menu-background-color: $tool-menu-background-color;
+$tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-hover-background-color: $primary-color !default;
 $tool-sub-menu-hover-color: $tool-menu-color !default;
 $tool-sub-menu-current-color: $primary-color !default;
@@ -58,62 +58,64 @@ $tool-sub-menu-current-hover-color: $tool-menu-color !important;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
-$top-header-background: #3F6622 !important;
+$top-header-background: #911934 !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #FFFFFF !important;
-$breadcrumbs-hover-color:      		 #FFFFFF !important;
+$breadcrumbs-color:    			 #000 !important;
+$breadcrumbs-tool-color:       		 #000 !important;
+$breadcrumbs-hover-color:      		 #000 !important;
 
 /* Link colors */
-$link-color: #000000;
-$link-active-color: #000000;
-$link-hover-color: #000000;
+$link-color: #0064cd;
+$link-active-color:#4e5192;
+$link-hover-color: $primary-color;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
 
 /* Linknav button colors */
-$button-text-color:    	 #000000;
-$button-border-color: #000000;
-$button-background-color: #f3f3f3 !important;
-$button-background-secondary-color: #f3f3f3;
+$button-text-color:    	 #444444;
+$button-border-color: #CCCCCC;
+$button-background-color: -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !important;
+$button-background-secondary-color: #e7e7e7;
 /* General button colors */
-$button-color-text-color: #000000;
-$button-color-border-color: #000000;
-$button-color-background-color: #f3f3f3 !important;
-$button-color-background-secondary-color: #f3f3f3;
+$button-color-text-color: #2683BC;
+$button-color-border-color: #E0E3E5;
+$button-color-background-color: -webkit-linear-gradient(top, #f6f6f5 0%,#e0e0e0 93%,#e0e0e0 97%,#e9e9e9 100%);
+$button-color-background-secondary-color: #e0e0e0;
 /* ///////////// */
 
 $info-color:                $primary-color;
-$info-background-color:     #FFFFFF !important;
-$ok-color:                  #DFF0D8 !default;
+$info-background-color:     lighten($primary-color, 45%) !default;
+$ok-color:                  #3c763d !default;
 $ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #FCF*E3 !default;
+$warn-background-color:     #F6ECB7 !default;
 $warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #F2DEDE !default;
+$error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-/* This is the gradient in the header of the page */
-$header-gradient-a: #3F6622;
-$header-gradient-b: #d0dcc9;
-$header-gradient-c: #d0dcc9;
-$header-gradient-d: #3F6622;
+$topNav-text-color: #FFFFFF;
 
-$sites-nav-menu-item-background:            #3F6622 !important;
-$sites-nav-menu-item-color:                 #FFFFFF !important;
-$sites-nav-menu-item-color-hover:           #FFFFFF !default;
-$sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-right:          none !default;
-$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #fc5e04 !important;
+/* This is the gradient in the header of the page */
+$header-gradient-a: #999999;
+$header-gradient-b: #999999;
+$header-gradient-c: #999999;
+$header-gradient-d: #999999;
+
+$sites-nav-menu-item-background:            #FFFFFF !important;
+$sites-nav-menu-item-color:                 #555555 !important;
+$sites-nav-menu-item-color-hover:           #555555 !default;
+$sites-nav-menu-item-border-top:            1px solid #ccc ; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          1px solid #ccc;
+$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-left:           1px solid #ccc;
+$sites-nav-menu-item-selected-background:   #F1AB1C !important;
 $sites-nav-menu-item-selected-color:        #FFFFFF !important;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
-$sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-right: none !default;
-$sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-left:  none !default;
+$sites-nav-menu-item-selected-border-top:   1px solid #fff; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: 1px solid #fff;
+$sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-left:  1px solid #fff;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
 $sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
 $sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
@@ -122,7 +124,7 @@ $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !defau
 $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
 $sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
 $sites-nav-submenu-item-selected-border:    none !default;
 
@@ -136,58 +138,51 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/wscc.svg';
-$logo-height: 52px;
-$logo-width: 290px;
+$logo: '../images/uindy.svg';
+$logo-height: 108px;
+$logo-width: 244px;
 
 /* Tool icons */
-$skin-with-icons: false !important;
+$skin-with-icons: true !default;
 $icon-size: 20px !default;
 
 /* Footer */
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
-$info-color:                $primary-color  !default;
-$info-background-color:     $background-color !important;
-
-.img_site_toolmenu {
-    display: none !important;
-}
-
-.select {
-    background-color: #F0F0F0 !important;
-    color: #000000 !important;
-}
-
 .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #000000;
-}
-
-.navIntraTool li span a {
-    color: #000000 !important;
-}
-
-.instruction {
-    border-color: #3F6622 !important;
-    background-color: #FFFFFF !important;
+  border-radius: 6px;
 }
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
-   border-color: #3F6622 !important;
+   border-color: $primary-color !important;
 }
 
-.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
-    color: #FFFFFF !important;
+.instruction {
+    border-color: $primary-color !important;
+    background-color: #f1f1f1 !important;
 }
 
-.Mrphs-sakai-schedule table.calendar .borderGrayBackground {
-    background-color: #eee;
+#linkNav ul li.Mrphs-sitesNav__menuitem>a {
+    border-radius: 3px !important;
 }
+
+.Mrphs-siteHierarchy {
+    color: #000 !important;
+}
+
+//.fa-angle-down:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__drop:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:before {
+//    color: #FFFFFF !important;
+//}
 
 @media only screen and (max-width: 800px) {
 .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
     width: 140px !important;
     height: 50px !important;
     }
+}
+
+body.Mrphs-toolMenu-collapsed #toolMenu ul li a:hover .Mrphs-toolsNav__menuitem--title, body.Mrphs-toolMenu-collapsed #subSites ul li a:hover .Mrphs-toolsNav__menuitem--title {
+    color: #FFF;
+    border-color: #0d213d !important;
 }

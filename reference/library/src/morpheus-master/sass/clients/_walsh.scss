@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/walsh.png';
-$logo-height: 50px;
-$logo-width: 120px;
+$logo: '../images/walsh.svg';
+$logo-height: 64px;
+$logo-width: 126px;
 
 /* Tool icons */
 $skin-with-icons: false !important;
@@ -173,3 +173,15 @@ $info-background-color:     $background-color !important;
     background-color: #FFFFFF !important;
 }
 
+
+@media only screen and (max-width: 800px) {
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: 120px !important;
+    height: 50px !important;
+    }
+}
+
+#toolMenu ul li .Mrphs-toolsNav__category, #subSites ul li .Mrphs-toolsNav__category {
+    background-color: #ddd !important;
+    font-weight: 700;
+}

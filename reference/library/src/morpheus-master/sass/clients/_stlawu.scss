@@ -229,3 +229,22 @@ body {
         font-size: 9px !important;
     }
 }
+
+@media (min-width: 600px) {
+  #loginLinksImage #loginLink2 {
+    padding:0;
+    margin: 8px 0 0 0;
+    font-size: 0.9em;
+    text-align: right;
+    display: block;
+  }
+  #loginLinksImage #loginLink1 {
+    padding: 8px 12px;
+    margin: 0;
+    text-decoration: none;
+  }
+}
+
+.select, select {
+    font-size: 11px !important;
+}
