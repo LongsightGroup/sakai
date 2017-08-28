@@ -141,3 +141,9 @@ $topNav-text-color:                         #FFFFFF;
 #Mrphs-xlogin .logo {
     background: #a40000 url("images/bradley.svg") no-repeat center center !important;
 }
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #FFF !important;
+    }
+}

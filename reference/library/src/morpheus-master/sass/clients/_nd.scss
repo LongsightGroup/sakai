@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-" !default;
-$skin-name : "nddev" !default; // This is used for bootstrap font behaviour.
+$skin-name : "notredame" !default; // This is used for bootstrap font behaviour.
 
 $break-small-end: 	800px !default;
 $break-medium-end: 	1030px !default;
@@ -367,4 +367,28 @@ $overview-portlet-title-background-color: $tool-tab-background-color !default;
 
 .stylized .logo { 
     background: #092240 url(/library/skin/morpheus-default/images/logo.png) no-repeat center center !important;
+}
+
+.sylized {
+    color: #092240 !important;
+}
+
+.stylized .topheading {
+    color: #092240 !important;
+}
+
+.stylized label {
+    color: #092240 !important;
+}
+
+.activateLegend {
+    color: #092240;
+}
+
+.yellowBackground {
+    color: #092240;
+}
+
+.genTitle {
+    visibility: hidden !important;
 }
