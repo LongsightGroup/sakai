@@ -201,6 +201,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJobUCS101"
@@ -234,6 +235,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2170"
@@ -266,6 +268,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2170"
@@ -300,6 +303,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2171"
@@ -332,6 +336,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2171"
@@ -366,6 +371,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2172"
@@ -398,6 +404,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2172"
@@ -432,6 +439,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2176"
@@ -464,6 +472,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2176"
@@ -497,6 +506,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2175"
@@ -529,6 +539,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2175"
@@ -564,6 +575,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -597,6 +609,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2179"
@@ -630,6 +643,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2178"
@@ -662,6 +676,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2178"
@@ -695,6 +710,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2180"
@@ -727,6 +743,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -761,6 +778,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2181"
@@ -793,6 +811,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2181"
@@ -826,6 +845,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -859,6 +879,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -894,6 +915,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 <!-- this is the helper that will register the above bean with the job scheduler -->
 <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMTestSyncJob2186"
@@ -926,6 +948,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -960,6 +983,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -993,6 +1017,7 @@
     </property>
     <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
     <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 </bean>
 
 <!-- this is the helper that will register the above bean with the job scheduler -->
@@ -1032,6 +1057,7 @@
         </property>
         <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
         <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
     </bean>
     <!-- this is the helper that will register the above bean with the job scheduler -->
     <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJobUCS101"
