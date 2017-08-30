@@ -18,17 +18,6 @@
     			<th id="login-choice-header" colspan="2">${choiceRequired}</th>
     		</tr>
     		<tr>
-    			<td class="form" id="login-choice-container">
-					<p>
-						<a href="${containerLoginUrl}">
-    						#if("$containerLoginChoiceIcon" != "")
-    							<img src="${containerLoginChoiceIcon}" alt="${containerLoginChoiceText}" />
-    						#end
-    						${containerLoginChoiceText}
-    					</a>
-					</p>
-					
-				</td>
 				
 				<td class="form" id="login-choice-xlogin">
 					<p>
@@ -38,6 +27,17 @@
     						#end
     						${xloginChoiceText}
 						</a>
+					</p>
+					
+				</td>
+    			<td class="form" id="login-choice-container">
+					<p>
+						<a href="${containerLoginUrl}">
+    						#if("$containerLoginChoiceIcon" != "")
+    							<img src="${containerLoginChoiceIcon}" alt="${containerLoginChoiceText}" />
+    						#end
+    						${containerLoginChoiceText}
+    					</a>
 					</p>
 					
 				</td>
