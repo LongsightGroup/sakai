@@ -33,6 +33,7 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
+import org.sakaiproject.samigo.util.SamigoConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.math3.util.Precision;
@@ -170,6 +171,8 @@ public class ItemContentsBean implements Serializable {
 	private String studentComment;
 	
 	private String imageSrc = "";
+
+	private int answerCounter = 1;
 
 	public ItemContentsBean() {
 	}
@@ -1357,7 +1360,7 @@ public class ItemContentsBean implements Serializable {
                                      "new value " + score);
                   answer.setScore(score);
               }
-              EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "siteId=" + AgentFacade.getCurrentSiteId() + ", itemId=" + itemData.getItemId(), true));
+              EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_REVISE, "siteId=" + AgentFacade.getCurrentSiteId() + ", itemId=" + itemData.getItemId(), true));
           }
           itemService.saveItem(item);
           itemData.setScore(score);
@@ -1406,7 +1409,7 @@ public class ItemContentsBean implements Serializable {
                   answer.setScore(optionScore);
                   answer.setDiscount(optionScore);
               }
-              EventTrackingService.post(EventTrackingService.newEvent("sam.assessment.revise", "itemId=" + itemData.getItemId(), true));
+              EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_REVISE, "itemId=" + itemData.getItemId(), true));
           }
           
           itemService.saveItem(item);
@@ -1581,6 +1584,10 @@ public class ItemContentsBean implements Serializable {
   public Map<String,String> getHtmlStripped() {
 	return htmlStripped;  
   }
-  
+
+  // SAM-3131 We need an index/counter of the current answer to display helper text for screen-reader users
+  public int getAnswerCounter() {
+    return answerCounter++;
+  }
 }
 
