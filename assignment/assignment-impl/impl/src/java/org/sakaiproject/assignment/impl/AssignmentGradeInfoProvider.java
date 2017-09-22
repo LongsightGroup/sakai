@@ -87,9 +87,9 @@ public class AssignmentGradeInfoProvider implements ExternalAssignmentProvider, 
         if (assignmentReference != null) {
             aref = entityManager.newReference(assignmentReference);
             SecurityAdvisor accessAssignmentAdvisor = new MySecurityAdvisor(sessionManager.getCurrentSessionUserId(),
-                "asn.read", assignmentReference);
+                assignmentService.SECURE_ACCESS_ASSIGNMENT, assignmentReference);
             SecurityAdvisor accessGroupsAdvisor = new MySecurityAdvisor(sessionManager.getCurrentSessionUserId(),
-                "asn.all.groups", siteService.siteReference(aref.getContext()));
+                assignmentService.SECURE_ALL_GROUPS, siteService.siteReference(aref.getContext()));
             try {
                 securityService.pushAdvisor(accessAssignmentAdvisor);
                 securityService.pushAdvisor(accessGroupsAdvisor);
@@ -100,8 +100,8 @@ public class AssignmentGradeInfoProvider implements ExternalAssignmentProvider, 
                 log.info("Unexpected Permission Exception while using security advisor "
                         + "for assignment with ID: " + id);
             } finally {
-                securityService.popAdvisor(accessGroupsAdvisor);
                 securityService.popAdvisor(accessAssignmentAdvisor);
+                securityService.popAdvisor(accessGroupsAdvisor);
             }
         } else {
             if (log.isDebugEnabled()) {

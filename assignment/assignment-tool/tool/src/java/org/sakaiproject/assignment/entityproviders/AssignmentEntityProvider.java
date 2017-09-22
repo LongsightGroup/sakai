@@ -481,10 +481,10 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 							+ "): e.g. /assignment/a/{context}/{assignmentId}");
 		}
 
-		SecurityAdvisor securityAdvisor = new MySecurityAdvisor(sessionManager
-			.getCurrentSessionUserId(),
-			AssignmentService.SECURE_ADD_ASSIGNMENT,
-			BaseAssignmentService.getContextReference(context));
+        SecurityAdvisor securityAdvisor = new MySecurityAdvisor(sessionManager
+            .getCurrentSessionUserId(),
+            AssignmentService.SECURE_ADD_ASSIGNMENT,
+            BaseAssignmentService.getContextReference(context));
 
 		try {
 			// enable permission to view possible draft assignment
