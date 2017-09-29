@@ -89,7 +89,7 @@ public class LessonsGradeInfoProvider implements ExternalAssignmentProvider {
     // the item from the id by finding the item number
     // at the end and that looking up by ID
 
-    public boolean isAssignmentDefined(String id) {
+    public boolean isAssignmentDefined(String externalAppName, String id) {
 	if (!id.startsWith("lesson-builder:"))
 	    return false;
 	int i = id.lastIndexOf(":");
