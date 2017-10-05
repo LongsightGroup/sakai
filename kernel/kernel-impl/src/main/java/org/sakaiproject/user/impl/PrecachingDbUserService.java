@@ -203,30 +203,14 @@ public abstract class PrecachingDbUserService extends DbUserService
                 if (log.isDebugEnabled()) {
                     log.debug("doCacheRefresh(): NEW key==[" + key + "] in cache? after removing:  " + m_callCache.containsKey(key));
                 }
+            }
 
-                // redo the lookup of this user which will reload the cache
-                try {
+            // redo the lookup of this user which will reload the cache
                     long before = System.currentTimeMillis();
-                    if (log.isDebugEnabled()) {
-                        log.debug("doCacheRefresh(): key==[" + key + "] in cache? before accessing:  " + m_callCache.containsKey(key));
-                    }
-                    getUser(userId);
-                    if (log.isDebugEnabled()) {
-                        log.debug("doCacheRefresh(): key==[" + key + "] in cache? after accessing:  " + m_callCache.containsKey(key));
-                    }
+                    getUsers(userIds);
                     long after = System.currentTimeMillis();
                     totalTime += after - before;
                     accessedCount++;
-                    if (logUsersAccessed) {
-                        accessedUsers.add(userId);
-                    }
-                } catch (UserNotDefinedException e) {
-                    notAccessedCount++;
-                    if (logUsersNotAccessed) {
-                        notAccessedUsers.add(userId);
-                    }
-                }
-            }
 
             // now output the results of cache reset in the logs as configured
             String delimiter = "";
