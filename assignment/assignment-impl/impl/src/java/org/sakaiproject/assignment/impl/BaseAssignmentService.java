@@ -931,7 +931,13 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				retVal.setDropDeadTime(existingAssignment.getDropDeadTime());
 				retVal.setCloseTime(existingAssignment.getCloseTime());
 				retVal.setDraft(true);
-                                retVal.setGroup(existingAssignment.isGroup());
+                		retVal.setGroup(existingAssignment.isGroup());
+               			retVal.setAllowPeerAssessment(existingAssignment.getAllowPeerAssessment());
+               			retVal.setPeerAssessmentInstructions(existingAssignment.getPeerAssessmentInstructions());
+                		retVal.setPeerAssessmentAnonEval(existingAssignment.getPeerAssessmentAnonEval());
+                		retVal.setPeerAssessmentNumReviews(existingAssignment.getPeerAssessmentNumReviews());
+                		retVal.setPeerAssessmentPeriod(existingAssignment.getPeerAssessmentPeriod());
+                		retVal.setPeerAssessmentStudentViewReviews(existingAssignment.getPeerAssessmentStudentViewReviews());
 				ResourcePropertiesEdit pEdit = (BaseResourcePropertiesEdit) retVal.getProperties();
 				pEdit.addAll(existingAssignment.getProperties());
 				addLiveProperties(pEdit);
@@ -6942,7 +6948,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							nAssignment.setTitle(oAssignment.getTitle());
 							nAssignment.setPosition_order(oAssignment.getPosition_order());
 							
-							nAssignment.setAllowPeerAssessment(nAssignment.getAllowPeerAssessment());
+							nAssignment.setAllowPeerAssessment(oAssignment.getAllowPeerAssessment());
 							nAssignment.setPeerAssessmentAnonEval(oAssignment.getPeerAssessmentAnonEval());
 							nAssignment.setPeerAssessmentInstructions(oAssignment.getPeerAssessmentInstructions());
 							nAssignment.setPeerAssessmentNumReviews(oAssignment.getPeerAssessmentNumReviews());
