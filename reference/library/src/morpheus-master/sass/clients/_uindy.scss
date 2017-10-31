@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "uindy"; // This is used for bootstrap font behaviour.
+$skin-name : "uindydev"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -185,4 +185,12 @@ $footer-color: $background-color-secondary !default;
 body.Mrphs-toolMenu-collapsed #toolMenu ul li a:hover .Mrphs-toolsNav__menuitem--title, body.Mrphs-toolMenu-collapsed #subSites ul li a:hover .Mrphs-toolsNav__menuitem--title {
     color: #FFF;
     border-color: #0d213d !important;
+}
+
+.Mrphs-siteStatus.is-unpublished {
+    background-color: #FF00FF !important;
+}
+
+.Mrphs-sakai-resources .inactive button span {
+    color: #999 !important;
 }

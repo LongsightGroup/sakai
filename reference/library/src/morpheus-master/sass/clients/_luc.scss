@@ -30,6 +30,7 @@ $header-font-weight: 700 !default;     										// 400 or 700 as you wish
 
 /* Color palette */
 $background-color: #FFFFFF;
+$background-color-secondary: #A30042;
 
 $primary-color:                          #000000;
 $text-color:                             #000000;
@@ -59,7 +60,7 @@ $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 $main-content-background: $background-color !important;
 $top-header-background: #A30042 !important;
-$sites-nav-background: $top-header-background !important;
+$sites-nav-background: $top-header-background;
 
 $breadcrumbs-color:    			 $background-color !important;
 $breadcrumbs-tool-color:       		 #FFFFFF !important;
@@ -92,13 +93,17 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #F2DEDE !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
+$swapped-view-primary:           $primary-color;
+$swapped-view-text-color:        $text-color;
+$swapped-view-sites-nav-background: $sites-nav-menu-item-background;
+
 /* This is the gradient in the header of the page */
 $header-gradient-a: #A30042;
 $header-gradient-b: #A30042;
 $header-gradient-c: #A30042;
 $header-gradient-d: #A30042;
 
-$sites-nav-menu-item-background:            #A30042 !important;
+$sites-nav-menu-item-background:            #A30042;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
 $sites-nav-menu-item-color-hover:           #FFFFFF !default;
 $sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
