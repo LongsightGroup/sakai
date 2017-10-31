@@ -280,8 +280,6 @@ public class DeliveryBean
   
   private boolean isFromPrint;
   
-  private ExtendedTimeService extendedTimeService = null;
-
   private boolean showTimeWarning;
   private boolean hasShowTimeWarning;
   private boolean turnIntoTimedAssessment;
@@ -1701,7 +1699,7 @@ public class DeliveryBean
                                                           .collect(Collectors.joining(";")));
       }	  
 
-	  EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SUBMITTED, notificationValues.toString(), AgentFacade.getCurrentSiteId(), true, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
+	  EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_NOTI, notificationValues.toString(), AgentFacade.getCurrentSiteId(), true, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
  
 	  return returnValue;
 	  }
@@ -3226,8 +3224,6 @@ public class DeliveryBean
       assessmentGrading = service.load(adata.getAssessmentGradingId().toString(), false);
     }
     
-    extendedTimeService = new ExtendedTimeService(publishedAssessment);
-    
     // log.debug("check 0");
     if (isRemoved()){
         return "isRemoved";
@@ -3389,42 +3385,34 @@ public class DeliveryBean
 	  boolean isAvailable = true;
 	  Date currentDate = new Date();
 		Date startDate;
-		if (extendedTimeService.hasExtendedTime()) {
-			startDate = extendedTimeService.getStartDate();
-		} else {
-			startDate = publishedAssessment.getAssessmentAccessControl().getStartDate();
-		}
+		startDate = publishedAssessment.getAssessmentAccessControl().getStartDate();
 	  if (startDate != null && startDate.after(currentDate)){
 		  isAvailable = false;
 	  }
 	  return isAvailable;
   }
   
-  private boolean pastDueDate(){
+  public boolean pastDueDate(){
     boolean pastDue = true;
     Date currentDate = new Date();
 		Date dueDate;
-		if (extendedTimeService.hasExtendedTime()) {
-			dueDate = extendedTimeService.getDueDate();
-		} else {
-			dueDate = publishedAssessment.getAssessmentAccessControl().getDueDate();
-		}
+		dueDate = publishedAssessment.getAssessmentAccessControl().getDueDate();
     if (dueDate == null || dueDate.after(currentDate)){
         pastDue = false;
     }
     return pastDue;
   }
 
-  private boolean isRetracted(boolean isSubmitForGrade){
+  public boolean isAcceptLateSubmission() {
+	  boolean acceptLateSubmission = AssessmentAccessControlIfc.ACCEPT_LATE_SUBMISSION.equals(publishedAssessment.getAssessmentAccessControl().getLateHandling());
+	  return acceptLateSubmission;
+  }
+
+  public boolean isRetracted(boolean isSubmitForGrade){
     boolean isRetracted = true;
     Date currentDate = new Date();
     Date retractDate;
-    if (extendedTimeService.hasExtendedTime()) {
-    	retractDate = extendedTimeService.getRetractDate();
-    }
-    else {
-    	retractDate = publishedAssessment.getAssessmentAccessControl().getRetractDate();
-    }
+    retractDate = publishedAssessment.getAssessmentAccessControl().getRetractDate();
     if (retractDate == null || retractDate.after(currentDate)){
         isRetracted = false;
     }
@@ -3736,7 +3724,7 @@ public class DeliveryBean
 
 		  // We get the id of the question
 		  String radioId = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("radioId");
-		  StringBuffer redrawAnchorName = new StringBuffer("p");
+		  StringBuilder redrawAnchorName = new StringBuilder("p");
 		  String tmpAnchorName = "";
 		  ArrayList parts = this.pageContents.getPartsContents();
 
