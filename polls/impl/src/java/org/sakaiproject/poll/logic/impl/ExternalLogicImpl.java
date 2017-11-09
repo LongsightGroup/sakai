@@ -59,6 +59,7 @@ import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
+import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.event.api.LearningResourceStoreService;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Actor;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Object;
@@ -103,6 +104,14 @@ public class ExternalLogicImpl implements ExternalLogic {
 	/**
 	 * Injected services
 	 */
+	
+    private LearningResourceStoreService learningResourceStoreService;
+    
+	public void setLearningResourceStoreService(
+			LearningResourceStoreService learningResourceStoreService) {
+		this.learningResourceStoreService = learningResourceStoreService;
+	}
+    
 	private DeveloperHelperService developerHelperService;
 	public void setDeveloperHelperService(
 			DeveloperHelperService developerHelperService) {
@@ -531,7 +540,8 @@ public class ExternalLogicImpl implements ExternalLogic {
 		return ret;
 	}
 
-    private LRS_Statement getStatementForUserVotedInPoll(LRS_Actor student, String text, Vote vote) {
+    private LRS_Statement getStatementForUserVotedInPoll(String text, Vote vote) {
+    	LRS_Actor student = learningResourceStoreService.getActor(sessionManager.getCurrentSessionUserId());
         String url = serverConfigurationService.getPortalUrl();
         LRS_Verb verb = new LRS_Verb(SAKAI_VERB.interacted);
         LRS_Object lrsObject = new LRS_Object(url + "/poll", "voted-in-poll");
@@ -544,7 +554,8 @@ public class ExternalLogicImpl implements ExternalLogic {
         return new LRS_Statement(student, verb, lrsObject);
     }
 
-    private LRS_Statement getStatementForUserEditPoll(LRS_Actor student, String text, boolean newPoll) {
+    private LRS_Statement getStatementForUserEditPoll(String text, boolean newPoll) {
+    	LRS_Actor student = learningResourceStoreService.getActor(sessionManager.getCurrentSessionUserId());
         String url = serverConfigurationService.getPortalUrl();
         LRS_Verb verb = new LRS_Verb(SAKAI_VERB.interacted);
         LRS_Object lrsObject = new LRS_Object(url + "/poll", newPoll ? "new-poll" : "updated-poll");
@@ -562,11 +573,10 @@ public class ExternalLogicImpl implements ExternalLogic {
      */
     @Override
     public void registerStatement(String pollText, Vote vote) {
-        LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-                .get("org.sakaiproject.event.api.LearningResourceStoreService");
-        if (null != lrss) {
-            Event event = eventTrackingService.newEvent("poll", "vote", true);
-            lrss.registerStatement(getStatementForUserVotedInPoll(lrss.getEventActor(event), pollText, vote), "polls");
+        if (null != learningResourceStoreService) {
+            LRS_Statement statement = getStatementForUserVotedInPoll(pollText, vote);
+            Event event = eventTrackingService.newEvent("poll.vote", "vote", null, true, NotificationService.NOTI_OPTIONAL, statement);
+            eventTrackingService.post(event);
         }
     }
 
@@ -575,11 +585,10 @@ public class ExternalLogicImpl implements ExternalLogic {
      */
     @Override
     public void registerStatement(String pollText, boolean newPoll) {
-        LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-                .get("org.sakaiproject.event.api.LearningResourceStoreService");
-        if (null != lrss) {
-            Event event = eventTrackingService.newEvent("poll", "edit poll", true);
-            lrss.registerStatement(getStatementForUserEditPoll(lrss.getEventActor(event), pollText, newPoll), "polls");
+        if (null != learningResourceStoreService) {
+            LRS_Statement statement = getStatementForUserEditPoll(pollText, newPoll);
+            Event event = eventTrackingService.newEvent("poll.edit", "edit poll", null, true, NotificationService.NOTI_OPTIONAL, statement);
+            eventTrackingService.post(event);
         }
     }
 

@@ -64,7 +64,7 @@ import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.LearningResourceStoreService;
 import org.sakaiproject.event.api.LearningResourceStoreService.*;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
-import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
 import org.sakaiproject.exception.*;
 import org.sakaiproject.id.cover.IdManager;
@@ -170,6 +170,17 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	public void setContentReviewService(ContentReviewService contentReviewService) {
 		this.contentReviewService = contentReviewService;
 	}
+
+	protected EventTrackingService eventTrackingService;
+	public void setEventTrackingService(EventTrackingService eventTrackingService) {
+		this.eventTrackingService = eventTrackingService;
+	}
+	
+	protected LearningResourceStoreService learningResourceStoreService;
+	public void setLearningResourceStoreService(LearningResourceStoreService learningResourceStoreService) {
+		this.learningResourceStoreService = learningResourceStoreService;
+	}
+	
 	
 	private AssignmentPeerAssessmentService assignmentPeerAssessmentService = null;
 	public void setAssignmentPeerAssessmentService(AssignmentPeerAssessmentService assignmentPeerAssessmentService){
@@ -1477,7 +1488,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		}
 
 		// track it
-		EventTrackingService.post(EventTrackingService.newEvent(((BaseAssignmentEdit) assignment).getEvent(), assignment
+		eventTrackingService.post(eventTrackingService.newEvent(((BaseAssignmentEdit) assignment).getEvent(), assignment
 				.getReference(), true));
 
 		// close the edit object
@@ -1544,7 +1555,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			m_assignmentStorage.remove(assignment);
 
 			// track event
-			EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT, assignment.getReference(), true));
+			eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT, assignment.getReference(), true));
 
 			// close the edit object
 			((BaseAssignmentEdit) assignment).closeEdit();
@@ -1668,7 +1679,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			}
 			
 			// track event
-			EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT, assignment.getReference(), true));
+			eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT, assignment.getReference(), true));
 
 		}
 
@@ -2071,7 +2082,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		M_log.debug(this + " GOT ASSIGNMENT CONTENT : ID : " + content.getId());
 
 		// track event
-		// EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT_CONTENT, content.getReference(), false));
+		// eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT_CONTENT, content.getReference(), false));
 
 		return content;
 
@@ -2155,7 +2166,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		m_contentStorage.commit(content);
 				
 		// track it
-		EventTrackingService.post(EventTrackingService.newEvent(((BaseAssignmentContentEdit) content).getEvent(), content
+		eventTrackingService.post(eventTrackingService.newEvent(((BaseAssignmentContentEdit) content).getEvent(), content
 				.getReference(), true));
 
 		// close the edit object
@@ -2228,7 +2239,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			m_contentStorage.remove(content);
 
 			// track event
-			EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT_CONTENT, content.getReference(),
+			eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT_CONTENT, content.getReference(),
 					true));
 
 			// close the edit object
@@ -2466,7 +2477,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			if (!s.getSubmitted())
 			{
 				// saving a submission
-				EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_SAVE_ASSIGNMENT_SUBMISSION, submissionRef, true));
+				eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_SAVE_ASSIGNMENT_SUBMISSION, submissionRef, true));
 			}
 			else if (returnedTime == null && !s.getReturned() && (submittedTime == null /*grading non-submissions*/
 																|| (submittedTime != null && (s.getTimeLastModified().getTime() - submittedTime.getTime()) > 1000*60 /*make sure the last modified time is at least one minute after the submit time*/)))
@@ -2475,18 +2486,17 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					&& StringUtils.trimToNull(s.getGrade()) == null && StringUtils.trimToNull(s.getFeedbackText()) == null && StringUtils.trimToNull(s.getFeedbackComment()) == null && s.getFeedbackAttachments().isEmpty() )
 				{
 					// auto add submission for those not submitted
-					//EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_ADD_ASSIGNMENT_SUBMISSION, submissionRef, true));
+					//eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ADD_ASSIGNMENT_SUBMISSION, submissionRef, true));
 				}
 				else
 				{
 					// graded and saved before releasing it
-                    Event event = EventTrackingService.newEvent(AssignmentConstants.EVENT_GRADE_ASSIGNMENT_SUBMISSION, submissionRef, true);
-                    EventTrackingService.post(event);
-                    LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-                            .get("org.sakaiproject.event.api.LearningResourceStoreService");
-                    if (null != lrss && StringUtils.isNotEmpty(s.getGrade())) {
+                    if (StringUtils.isNotEmpty(s.getGrade())) {
                         for (User user : s.getSubmitters()) {
-                            lrss.registerStatement(getStatementForAssignmentGraded(lrss.getEventActor(event), event, a, s, user), "assignment");
+                            LRS_Statement statement = getStatementForAssignmentGraded(submissionRef, submission.getAssignment(), submission, user);
+                            // graded and saved before releasing it
+                            Event event = eventTrackingService.newEvent(AssignmentConstants.EVENT_GRADE_ASSIGNMENT_SUBMISSION, submissionRef, null, true, NotificationService.NOTI_OPTIONAL, statement);
+                            eventTrackingService.post(event);
                         }
                     }
 				}
@@ -2496,13 +2506,12 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 											|| (submittedTime != null && submittedTime.after(returnedTime) && s.getTimeLastModified().after(submittedTime))/*grading the resubmitted assignment*/))
 			{
 				// releasing a submitted assignment or releasing grade to an unsubmitted assignment
-                Event event = EventTrackingService.newEvent(AssignmentConstants.EVENT_GRADE_ASSIGNMENT_SUBMISSION, submissionRef, true);
-                EventTrackingService.post(event);
-                LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-                        .get("org.sakaiproject.event.api.LearningResourceStoreService");
-                if (null != lrss && StringUtils.isNotEmpty(s.getGrade())) {
+                if (StringUtils.isNotEmpty(s.getGrade())) {
                     for (User user : s.getSubmitters()) {
-                        lrss.registerStatement(getStatementForAssignmentGraded(lrss.getEventActor(event), event, a, s, user), "assignment");
+                        LRS_Statement statement = getStatementForAssignmentGraded(submissionRef, submission.getAssignment(), submission, user);
+                        // releasing a submitted assignment or releasing grade to an unsubmitted assignment
+                        Event event = eventTrackingService.newEvent(AssignmentConstants.EVENT_GRADE_ASSIGNMENT_SUBMISSION, submissionRef, null, true, NotificationService.NOTI_OPTIONAL, statement);
+                        eventTrackingService.post(event);
                     }
                 }
 				
@@ -2514,21 +2523,17 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			else if (submittedTime == null) /*grading non-submission*/
 			{
 				// releasing a submitted assignment or releasing grade to an unsubmitted assignment
-                Event event = EventTrackingService.newEvent(AssignmentConstants.EVENT_GRADE_ASSIGNMENT_SUBMISSION, submissionRef, true);
-                EventTrackingService.post(event);
-                LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-                        .get("org.sakaiproject.event.api.LearningResourceStoreService");
-                if (null != lrss) {
-                    for (User user : s.getSubmitters()) {
-                        lrss.registerStatement(getStatementForUnsubmittedAssignmentGraded(lrss.getEventActor(event), event, a, s, user),
-                                "sakai.assignment");
-                    }
-                }
-			}
+          for (User user : s.getSubmitters()) {
+              LRS_Statement statement = getStatementForUnsubmittedAssignmentGraded(submissionRef, submission.getAssignment(), submission, user);
+              // releasing a submitted assignment or releasing grade to an unsubmitted assignment
+              Event event = eventTrackingService.newEvent(AssignmentConstants.EVENT_GRADE_ASSIGNMENT_SUBMISSION, submissionRef, null, true, NotificationService.NOTI_OPTIONAL, statement);
+              eventTrackingService.post(event);
+          }
+            }
 			else
 			{
 				// submitting a submission
-				EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_SUBMIT_ASSIGNMENT_SUBMISSION, submissionRef, true));
+				eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_SUBMIT_ASSIGNMENT_SUBMISSION, submissionRef, true));
 			
 				// only doing the notification for real online submissions
 				if (a.getContent().getTypeOfSubmission() != Assignment.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION)
@@ -3119,7 +3124,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			m_submissionStorage.remove(submission);
 
 			// track event
-			EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT_SUBMISSION, submission.getReference(),
+			eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT_SUBMISSION, submission.getReference(),
 					true));
 
 			// close the edit object
@@ -3735,7 +3740,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			}
 		}
 		// track event
-		// EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT_SUBMISSION, submission.getReference(), false));
+		// eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT_SUBMISSION, submission.getReference(), false));
 
 		return submission;
 
@@ -11606,7 +11611,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			}
 			
 			// track event
-			//EventTrackingService.post(EventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT, retVal.getReference(), false));
+			//eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ACCESS_ASSIGNMENT, retVal.getReference(), false));
 
 			return m_asn;
 		}
@@ -14363,10 +14368,11 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
                 }
         }
 
-    private LRS_Statement getStatementForAssignmentGraded(LRS_Actor instructor, Event event, Assignment a, AssignmentSubmission s,
+    private LRS_Statement getStatementForAssignmentGraded(String reference, Assignment a, AssignmentSubmission s,
             User studentUser) {
+        LRS_Actor instructor = learningResourceStoreService.getActor(SessionManager.getCurrentSessionUserId());
         LRS_Verb verb = new LRS_Verb(SAKAI_VERB.scored);
-        LRS_Object lrsObject = new LRS_Object(m_serverConfigurationService.getPortalUrl() + event.getResource(),
+        LRS_Object lrsObject = new LRS_Object(m_serverConfigurationService.getPortalUrl() + reference,
                 "received-grade-assignment");
         HashMap<String, String> nameMap = new HashMap<String, String>();
         nameMap.put("en-US", "User received a grade");
@@ -14399,10 +14405,11 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
         return result;
     }
 
-    private LRS_Statement getStatementForUnsubmittedAssignmentGraded(LRS_Actor instructor, Event event, Assignment a,
+    private LRS_Statement getStatementForUnsubmittedAssignmentGraded(String reference, Assignment a,
             AssignmentSubmission s, User studentUser) {
+        LRS_Actor instructor = learningResourceStoreService.getActor(SessionManager.getCurrentSessionUserId());
         LRS_Verb verb = new LRS_Verb(SAKAI_VERB.scored);
-        LRS_Object lrsObject = new LRS_Object(m_serverConfigurationService.getAccessUrl() + event.getResource(), "received-grade-unsubmitted-assignment");
+        LRS_Object lrsObject = new LRS_Object(m_serverConfigurationService.getAccessUrl() + reference, "received-grade-unsubmitted-assignment");
         HashMap<String, String> nameMap = new HashMap<String, String>();
         nameMap.put("en-US", "User received a grade");
         lrsObject.setActivityName(nameMap);
