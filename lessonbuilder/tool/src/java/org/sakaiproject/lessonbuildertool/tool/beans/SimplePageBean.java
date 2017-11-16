@@ -3369,7 +3369,8 @@ public class SimplePageBean {
 		     return null;
 		 if (page.isHidden())
 		     return messageLocator.getMessage("simplepage.hiddenpage");
-		 if (page.getReleaseDate() != null && page.getReleaseDate().after(new Date())) {
+		 // for index of pages we need to show even out of date release dates
+		 if (page.getReleaseDate() != null) { // && page.getReleaseDate().after(new Date())) {
 		     DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
 		     TimeZone tz = TimeService.getLocalTimeZone();
 		     df.setTimeZone(tz);
@@ -7061,7 +7062,6 @@ public class SimplePageBean {
 			
 			item.setAttribute("questionShowPoll", String.valueOf(questionShowPoll));
 
-			simplePageToolDao.syncQRTotals(item);
 
 		}
 		
@@ -7123,6 +7123,10 @@ public class SimplePageBean {
 		setItemGroups(item, selectedGroups);
 
 		saveOrUpdate(item);
+
+		if(questionType.equals("multipleChoice")) {
+			simplePageToolDao.syncQRTotals(item);
+		}
 
 		regradeAllQuestionResponses(item.getId());
 		

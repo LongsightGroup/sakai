@@ -325,6 +325,7 @@ public class PortletIFrame extends GenericPortlet {
 						StringBuilder alertMsg = new StringBuilder();
 						if ( siteInfo != null ) siteInfo = validator.processFormattedText(siteInfo, alertMsg);
 						context.put("siteInfo", siteInfo);
+						context.put("height",height);
 						vHelper.doTemplate(vengine, "/vm/info.vm", context, out);
 						return;
 					}
@@ -469,6 +470,9 @@ public class PortletIFrame extends GenericPortlet {
             HttpURLConnection con =
                 (HttpURLConnection) new URL(url).openConnection();
             con.setRequestMethod("HEAD");
+
+            String sakaiVersion = ServerConfigurationService.getString("version.sakai", "?");
+            con.setRequestProperty("User-Agent","Java Sakai/"+sakaiVersion);
 
             Map headerfields = con.getHeaderFields();
             Set headers = headerfields.entrySet(); 

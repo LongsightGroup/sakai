@@ -53,6 +53,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.calendar.api.CalendarEvent;
 import org.sakaiproject.calendaring.logic.SakaiProxy;
 import org.sakaiproject.time.api.TimeRange;
+import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.user.api.User;
 
 /**
@@ -63,6 +64,9 @@ import org.sakaiproject.user.api.User;
  */
 @Slf4j
 public class ExternalCalendaringServiceImpl implements ExternalCalendaringService {
+	
+	@Setter
+	private TimeService timeService;
 
 	/**
 	 * {@inheritDoc}
@@ -70,21 +74,43 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	public VEvent createEvent(CalendarEvent event) {
 		return createEvent(event, null);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public VEvent createEvent(CalendarEvent event, Set<User> attendees) {
+		//Default to time in GMT
+		return createEvent(event, null, false);
+	}
+
+	public VTimeZone getTimeZone(boolean timeIsLocal) {
+		//timezone. All dates are in GMT so we need to explicitly set that
+		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
+		
+		//To prevent NPE on timezone
+		TimeZone timezone = null;
+		if (timeIsLocal == true) {
+			timezone = registry.getTimeZone(timeService.getLocalTimeZone().getID());
+		}
+		if (timezone == null) {
+			//This is guaranteed to return timezone if timeIsLocal == false or it fails and returns null
+			timezone = registry.getTimeZone("GMT");
+		}
+		return timezone.getVTimeZone();
+	}
+	
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public VEvent createEvent(CalendarEvent event, Set<User> attendees, boolean timeIsLocal) {
 		
 		if(!isIcsEnabled()) {
 			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
 			return null;
 		}
 		
-		//timezone. All dates are in GMT so we need to explicitly set that
-		TimeZoneRegistry registry = TimeZoneRegistryFactory.getInstance().createRegistry();
-		TimeZone timezone = registry.getTimeZone("GMT");
-		VTimeZone tz = timezone.getVTimeZone();
+		VTimeZone tz = getTimeZone(timeIsLocal);
 
 		//start and end date
 		DateTime start = new DateTime(getStartDate(event.getRange()).getTime());
@@ -238,13 +264,13 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 	 * {@inheritDoc}
 	 */
 	public Calendar createCalendar(List<VEvent> events) {
-		return createCalendar(events, null);
+		return createCalendar(events, null, true);
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
-	public Calendar createCalendar(List<VEvent> events, String method) {
+	public Calendar createCalendar(List<VEvent> events, String method, boolean timeIsLocal) {
 		
 		if(!isIcsEnabled()) {
 			log.debug("ExternalCalendaringService is disabled. Enable via calendar.ics.generation.enabled=true in sakai.properties");
@@ -262,6 +288,11 @@ public class ExternalCalendaringServiceImpl implements ExternalCalendaringServic
 		
 		//add vevents to calendar
 		calendar.getComponents().addAll(events);
+		
+		//add vtimezone
+		VTimeZone tz = getTimeZone(timeIsLocal);
+
+		calendar.getComponents().add(tz);
 		
 		//validate
 		try {
