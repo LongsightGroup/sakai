@@ -966,4 +966,10 @@ public interface AssignmentService extends EntityProducer
 	 * @return The url as a String
 	 */
 	public String getDeepLink(String context, String assignmentId) throws Exception;
+
+	/**
+	* This will return the internationalized title of the tool.
+	* This is used when creating a new gradebook item.
+	*/
+	public String getToolTitle();
 }

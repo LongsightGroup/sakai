@@ -82,6 +82,7 @@ import org.sakaiproject.time.api.Time;
 import org.sakaiproject.time.cover.TimeService;
 import org.sakaiproject.tool.api.SessionBindingEvent;
 import org.sakaiproject.tool.api.SessionBindingListener;
+import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.user.api.User;
@@ -6102,6 +6103,18 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	public String getLabel()
 	{
 		return "assignment";
+	}
+
+	public String getToolTitle() {
+		Tool tool = ToolManager.getTool("sakai.assignment.grades");
+		String toolTitle = null;
+
+		if (tool == null)
+			toolTitle = "Assignments";
+		else
+			toolTitle = tool.getTitle();
+
+		return toolTitle;
 	}
 
 	/**
