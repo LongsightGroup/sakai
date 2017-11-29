@@ -14382,9 +14382,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
         lrsObject.setDescription(descMap);
         LRS_Actor student = new LRS_Actor(studentUser.getEmail());
         student.setName(studentUser.getDisplayName());
-        LRS_Context context = new LRS_Context(instructor);
-        context.setActivity("other", "assignment");
-        LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(a, s, true), context);
+        LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(a, s, true), null);
         return statement;
     }
 
@@ -14418,9 +14416,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
         lrsObject.setDescription(descMap);
         LRS_Actor student = new LRS_Actor(studentUser.getEmail());
         student.setName(studentUser.getDisplayName());
-        LRS_Context context = new LRS_Context(instructor);
-        context.setActivity("other", "assignment");
-        LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(a, s, false), context);
+        LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(a, s, false), null);
         return statement;
     }
     

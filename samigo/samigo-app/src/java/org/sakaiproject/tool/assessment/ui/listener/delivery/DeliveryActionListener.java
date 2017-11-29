@@ -475,8 +475,8 @@ public class DeliveryActionListener
             			  eventRef.append(timeRemaining);
             		  }
             		  
-                      event = eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_TAKE,
-                              "siteId=" + site_id + ", " + eventRef.toString(), "samigo",true,0,SamigoLRSStatements.getStatementForTakeAssessment(delivery.getAssessmentTitle(), delivery.getPastDue(), publishedAssessment.getReleaseTo(), false));
+                      event = eventTrackingService.newEvent("sam.assessment.take",
+                              "siteId=" + site_id + ", " + eventRef.toString(), site_id,true,0,SamigoLRSStatements.getStatementForTakeAssessment(delivery.getAssessmentTitle(), delivery.getPastDue(), publishedAssessment.getReleaseTo(), false));
                       eventTrackingService.post(event);
             	  }
             	  else if (action == DeliveryBean.TAKE_ASSESSMENT_VIA_URL) {
