@@ -78,6 +78,11 @@
 
 package org.sakaiproject.dav;
 
+import com.unboundid.ldap.sdk.BindResult;
+import com.unboundid.ldap.sdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPException;
+import com.unboundid.ldap.sdk.SimpleBindRequest;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -160,6 +165,7 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.AuthenticationManager;
 import org.sakaiproject.user.cover.UserDirectoryService;
+import org.sakaiproject.util.ExternalTrustedEvidence;
 import org.sakaiproject.util.IdPwEvidence;
 import org.sakaiproject.util.RequestFilter;
 import org.sakaiproject.util.StringUtil;
@@ -1076,7 +1082,7 @@ public class DavServlet extends HttpServlet
 		{
 			String eid = prin.getName();
 			String pw = ((DavPrincipal) prin).getPassword();
-			Evidence e = new IdPwEvidence(eid, pw);
+			Evidence e = new ExternalTrustedEvidence(eid);
 
 			// in older versions of this code, we didn't authenticate
 			// if there was a session for this user. Unfortunately the
@@ -1107,7 +1113,7 @@ public class DavServlet extends HttpServlet
 				
 				if ((UsageSessionService.getSession() == null || UsageSessionService.getSession().isClosed()
 						|| !a.getEid().equals(UsageSessionService.getSession().getUserEid()))
-						&& !UsageSessionService.login(a, req, UsageSessionService.EVENT_LOGIN_DAV))
+						&& (!checkWFULdapAuth(eid, pw) || !UsageSessionService.login(a, req, UsageSessionService.EVENT_LOGIN_DAV)))
 				{
 					// login failed
 					res.addHeader("WWW-Authenticate","Basic realm=\"DAV\"");
@@ -1149,6 +1155,27 @@ public class DavServlet extends HttpServlet
 		finally
 		{
 			log(req, info);
+		}
+	}
+
+	private boolean checkWFULdapAuth(String eid, String pw) {
+		String ldapPath = ServerConfigurationService.getString("dav.ldap.path", "ou=Users");
+		String ldapHost = ServerConfigurationService.getString("dav.ldap.host", "localhost");
+		int ldapPort = ServerConfigurationService.getInt("dav.ldap.port", 389);
+
+		LDAPConnection conn = null; 
+
+		try {
+			conn = new LDAPConnection(ldapHost, ldapPort);
+			BindResult br = conn.bind("uid=" + eid + "," + ldapPath, pw);
+			M_log.debug("DAV bind result: " + br.toString());
+			return true;
+		} catch (LDAPException e) {
+			M_log.info("DAV auth rejection: " + eid + ":" + e.getMessage());
+			return false;
+		}
+		finally {
+			if (conn != null) conn.close();
 		}
 	}
 
