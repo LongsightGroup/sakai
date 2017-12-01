@@ -180,7 +180,7 @@
 				
 
 		#if ($authorizationRequired)
-			#if ($termCourseList && $currentUserId != $userId)
+			#if (1==6 && $termCourseList && $currentUserId != $userId)
 					<div class="shorttext required form-group row ">											
 						<label for="uniqname" class="col-sm-3 form-control-label">		
 						   <span class="reqStar">*</span>	

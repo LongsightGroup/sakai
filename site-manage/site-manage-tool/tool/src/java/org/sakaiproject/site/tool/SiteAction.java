@@ -3601,10 +3601,11 @@ public class SiteAction extends PagedResourceActionII {
 			 */
 			bar = new MenuImpl(portlet, data, (String) state
 					.getAttribute(STATE_ACTION));
-			if (SiteService.allowAddSite(null)) {
+			//String realm = SiteService.siteReference(site.getId());
+                        //if (!AuthzGroupService.allowUpdate(realm)) {
 				bar.add(new MenuEntry(rb.getString("java.addclasses"),
 						"doMenu_siteInfo_addClass"));
-			}
+			//}
 			context.put("menu", bar);
 
 			context.put("siteTitle", site.getTitle());
