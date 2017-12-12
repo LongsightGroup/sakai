@@ -179,7 +179,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="https://www.ohsu.edu/idp/shibboleth"/>
+        <property name="defaultIDP" value="https://idp.ohsu.edu/idp/shibboleth"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
