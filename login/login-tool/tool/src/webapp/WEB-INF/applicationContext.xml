@@ -5,5 +5,6 @@
 
     <!-- We have not been able to get a SAML config working in TOMCAT_HOME/sakai/xlogin-context.xml. -->
     <!-- import resource="xlogin-context.saml.xml" / -->
+    <import resource="${saml.env}.xml" />
 </beans>
 
