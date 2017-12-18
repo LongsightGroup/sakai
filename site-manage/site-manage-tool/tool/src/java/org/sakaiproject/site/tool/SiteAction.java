@@ -3144,6 +3144,11 @@ public class SiteAction extends PagedResourceActionII {
 			// Add the menus to vm
 			MenuBuilder.buildMenuForSiteInfo(portlet, data, state, context, site, rb, siteTypeProvider, SiteInfoActiveTab.IMPORT_FROM_SITE);
 
+            boolean superUser = SecurityService.isSuperUser();
+    		context.put("importdataReplace", ServerConfigurationService.getBoolean("site-manage.importdata.replace", true) || superUser);
+    		context.put("importdataMerge", ServerConfigurationService.getBoolean("site-manage.importdata.merge", true) || superUser);
+    		context.put("importdataUser", ServerConfigurationService.getBoolean("site-manage.importdata.user", true) || superUser);
+	
 			putImportSitesInfoIntoContext(context, site, state, false);
 			return (String) getContext(data).get("template") + TEMPLATE[58];
 		case 59:
@@ -3482,6 +3487,7 @@ public class SiteAction extends PagedResourceActionII {
 			MenuBuilder.buildMenuForSiteInfo(portlet, data, state, context, site, rb, siteTypeProvider, SiteInfoActiveTab.EDIT_CLASS_ROSTERS);
 
 			context.put("allowAddRoster", true);
+			context.put("siteTitle", site.getTitle());
 			coursesIntoContext(state, context, site);
 
 			return (String) getContext(data).get("template") + TEMPLATE[43];

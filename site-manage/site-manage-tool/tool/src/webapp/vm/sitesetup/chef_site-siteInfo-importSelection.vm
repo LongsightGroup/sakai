@@ -16,6 +16,8 @@
 				$tlang.getString("sitinfimp.selection")
 			</p>
 			<br>
+
+            #if ($!importdataReplace)
 			<div class="indnt2">
 				<a href="#toolLink("SiteAction" "doMenu_siteInfo_importMigrate")" title ="$tlang.getString('sitinfimp.migrate')">
 					$tlang.getString("sitinfimp.migrate")
@@ -25,6 +27,8 @@
 				$tlang.getString("sitinfimp.migrate.info")
 			</p>
 			<p></p>
+            #end
+            #if ($!importdataMerge)
 			<div class="indnt2">
 				<a href="#toolLink("SiteAction" "doMenu_siteInfo_import")" title ="$tlang.getString('sitinfimp.import')">
 					$tlang.getString("sitinfimp.import")
@@ -34,6 +38,8 @@
 				$tlang.getString("sitinfimp.import.info")
 			</p>
 			<p></p>
+            #end
+            #if ($!importdataUser)
 			<div class="indnt2">
 				<a href="#toolLink("SiteAction" "doMenu_siteInfo_import_user")" title ="$tlang.getString('sitinfimp.import.user')">
 					$tlang.getString("sitinfimp.import.user")
@@ -42,6 +48,7 @@
 			<p class="indnt2">
 				$tlang.getString("sitinfimp.import.user.info")
 			</p>
+            #end
 		#else
 			## show "no site available warning"
 			<p class="instruction">
