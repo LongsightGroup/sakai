@@ -18,23 +18,29 @@
 			<br>
 			<ul>
 				<li>
+				#if ($!importdataMerge)
 					<a href="#toolLink("SiteAction" "doMenu_siteInfo_import")" class="siteimport-method-link" title ="$tlang.getString('sitinfimp.import')">
 						$tlang.getString("sitinfimp.import")
 					</a>
 					<p class="siteimport-method-info">$tlang.getString("sitinfimp.import.info")</p>
 				</li>
+				#end
+				#if ($!importdataReplace)
 				<li>
 					<a href="#toolLink("SiteAction" "doMenu_siteInfo_importMigrate")" class="siteimport-method-link" title ="$tlang.getString('sitinfimp.migrate')">
 						$tlang.getString("sitinfimp.migrate")
 					</a>
 					<p class="siteimport-method-info">$tlang.getString("sitinfimp.migrate.info")</p>
 				</li>
+				#end
+				#if ($!importdataUser)
 				<li>
 					<a href="#toolLink("SiteAction" "doMenu_siteInfo_import_user")" class="siteimport-method-link" title ="$tlang.getString('sitinfimp.import.user')">
 						$tlang.getString("sitinfimp.import.user")
 					</a>
 					<p class="siteimport-method-info">$tlang.getString("sitinfimp.import.user.info")</p>
 				</li>
+				#end
 			</ul>
 		#else
 			## show "no site available warning"
