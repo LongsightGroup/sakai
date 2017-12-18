@@ -1,0 +1,5 @@
+* LS-141 Allow instructors to combin erosters without having site.add realm permission
+  * Don't display the manual site addition
+    * Done via a property in 10.x: wsetup.skipManualCourseCreation=true
+* LS-153 Allow instructors to merge rosters even if they are not official instructor in SIS
+* LS-192 KFH-318453 - Allow disabling various import options 
