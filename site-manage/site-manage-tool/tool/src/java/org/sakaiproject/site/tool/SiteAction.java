@@ -3100,6 +3100,11 @@ public class SiteAction extends PagedResourceActionII {
 			// Add the menus to vm
 			MenuBuilder.buildMenuForSiteInfo(portlet, data, state, context, site, rb, siteTypeProvider, SiteInfoActiveTab.IMPORT_FROM_SITE);
 
+            boolean superUser = securityService.isSuperUser();
+    		context.put("importdataReplace", serverConfigurationService.getBoolean("site-manage.importdata.replace", true) || superUser);
+    		context.put("importdataMerge", serverConfigurationService.getBoolean("site-manage.importdata.merge", true) || superUser);
+    		context.put("importdataUser", serverConfigurationService.getBoolean("site-manage.importdata.user", true) || superUser);
+	
 			putImportSitesInfoIntoContext(context, site, state, false);
 			return (String) getContext(data).get("template") + TEMPLATE[58];
 		case 59:
