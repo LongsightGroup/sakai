@@ -20,10 +20,15 @@
  **********************************************************************************/
 package org.sakaiproject.sitemanage.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sakaiproject.site.api.Site;
+import org.sakaiproject.site.api.SiteService.SortType;
+import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.sitemanage.api.AffiliatedSectionProvider;
 
 /**
@@ -37,7 +42,21 @@ public class AffiliatedSectionProviderImpl implements AffiliatedSectionProvider 
 	
 	public List getAffiliatedSectionEids(String userEid, String academicSessionEid)
 	{
-		return null;
+                List walshSites = SiteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.UPDATE, null, null, null, SortType.TITLE_ASC, null);
+		if (walshSites.size() > 0) {
+                        List<String> l = new ArrayList<String>();
+
+                        Iterator i = walshSites.iterator();
+                        while (i.hasNext()) {
+                                Site s = (Site) i.next();
+                                l.add (s.getId());
+                        }
+
+                        return l;
+                }
+                else {
+		        return null;
+                }
 	}
 	
 	public void init() {

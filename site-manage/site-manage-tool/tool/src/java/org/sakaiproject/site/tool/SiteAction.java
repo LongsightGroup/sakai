@@ -3216,6 +3216,11 @@ public class SiteAction extends PagedResourceActionII {
 			 * buildContextForTemplate chef_siteinfo-importSelection.vm
 			 * 
 			 */
+            boolean superUser = SecurityService.isSuperUser();
+    		context.put("importdataReplace", ServerConfigurationService.getBoolean("site-manage.importdata.replace", true) || superUser);
+    		context.put("importdataMerge", ServerConfigurationService.getBoolean("site-manage.importdata.merge", true) || superUser);
+    		context.put("importdataUser", ServerConfigurationService.getBoolean("site-manage.importdata.user", true) || superUser);
+	
 			putImportSitesInfoIntoContext(context, site, state, false);
 			return (String) getContext(data).get("template") + TEMPLATE[58];
 		case 59:
@@ -3512,10 +3517,11 @@ public class SiteAction extends PagedResourceActionII {
 			 */
 			bar = new MenuImpl(portlet, data, (String) state
 					.getAttribute(STATE_ACTION));
-			if (SiteService.allowAddSite(null)) {
+			//String realm = SiteService.siteReference(site.getId());
+                        //if (!AuthzGroupService.allowUpdate(realm)) {
 				bar.add(new MenuEntry(rb.getString("java.addclasses"),
 						"doMenu_siteInfo_addClass"));
-			}
+			//}
 			context.put("menu", bar);
 
 			context.put("siteTitle", site.getTitle());
