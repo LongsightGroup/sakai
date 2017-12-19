@@ -211,8 +211,6 @@ public abstract class DbUserService extends BaseUserDirectoryService
 	 */
 	protected class DbStorage extends BaseDbFlatStorage implements Storage, SqlReader
 	{
-		private static final String EIDCACHE = "eid:";
-		private static final String IDCACHE = "id:";
 
 		/**
 		 * Construct.
@@ -551,7 +549,7 @@ public abstract class DbUserService extends BaseUserDirectoryService
 			if (!m_separateIdEid) return;
 
 			// clear both sides of the cache
-            String eid = (String) cache.get(EIDCACHE+id);
+			String eid = (String) cache.get(EIDCACHE+id);
 			if ( eid != null ) {
 				cache.remove(IDCACHE+eid);
 			}

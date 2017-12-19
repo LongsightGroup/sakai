@@ -88,7 +88,10 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 	/** A cache of users */
 	protected Cache m_callCache = null;
-	
+
+	/** A cache of users' id/eid map */
+	protected Cache<String, String> m_userCache = null;
+
 	/** Optional service to provide site-specific aliases for a user's display ID and display name. */
 	protected ContextualUserDisplayService m_contextualUserDisplayService = null;
 	
@@ -546,6 +549,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			}
 
             // caching for users
+            m_userCache = memoryService().getCache("org.sakaiproject.user.api.UserDirectoryService");
             m_callCache = memoryService().getCache("org.sakaiproject.user.api.UserDirectoryService.callCache");
             if (!m_callCache.isDistributed()) {
                 // KNL_1229 use an Observer for cache cleanup when the cache is not distributed
@@ -625,7 +629,9 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
                     )
                 ) {
                     String userRef = event.getResource();
-                    removeCachedUser(userRef);
+                    UserEdit u = getCachedUser(userRef);
+                    String oldEid = u != null ? u.getEid() : null;
+                    removeCachedUser(userRef, oldEid);
                 }
             }
 
@@ -642,8 +648,8 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		m_provider = null;
 		m_anon = null;
 		m_passwordPolicyProvider = null;
-        m_callCache.close();
-        m_userCacheObserver = null;
+		m_callCache.close();
+		m_userCacheObserver = null;
 
 		M_log.info("destroy()");
 	}
@@ -1596,7 +1602,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		}
 
 		// Remove from cache.
-		removeCachedUser(ref);
+		removeCachedUser(ref, user.getEid());
 	}
 
 	/**
@@ -1789,11 +1795,16 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		}
 	}
 
-	protected void removeCachedUser(String ref)
+	protected void removeCachedUser(String ref, String eid)
 	{
 		if (m_callCache != null)
 		{
 			m_callCache.remove(ref);
+		}
+
+		if (m_userCache != null && StringUtils.isNotBlank(eid))
+		{
+			m_userCache.remove(IDCACHE + eid);
 		}
 	}
 
@@ -1984,6 +1995,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 				}
 				user.setEid(newEmail);
 				user.setEmail(newEmail);
+				((BaseUserEdit) user).setEvent(SECURE_UPDATE_USER_ANY);
 				commitEdit(user);
 				return true;
 			}
@@ -2000,6 +2012,38 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		}
 	}
 
+	public boolean updateUserEid(String id, String newEid)
+	{
+		try {
+			List<String> locksSucceeded = new ArrayList<String>();
+
+			List<String> locks = new ArrayList<String>();
+			locks.add(SECURE_UPDATE_USER_ANY);
+			locksSucceeded = unlock(locks, userReference(id));
+
+			if(!locksSucceeded.isEmpty()) {
+				UserEdit user = m_storage.edit(id);
+				if (user == null) {
+					M_log.warn("Can't find user " + id + " when trying to update user eid");
+					return false;
+				}
+				user.setEid(newEid);
+				((BaseUserEdit) user).setEvent(SECURE_UPDATE_USER_ANY);
+				commitEdit(user);
+				return true;
+			}
+			else {
+				M_log.warn("User with id: "+id+" failed permission checks" );
+				return false;
+			}
+		} catch (UserPermissionException e) {
+			M_log.warn("You do not have sufficient permission to edit the user eid with Id: "+id, e);
+			return false;
+		} catch (UserAlreadyDefinedException e) {
+			M_log.error("A user already exists with EID of: "+id +"having eid :"+ newEid, e);
+			return false;
+		}
+	}
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * UserEdit implementation
