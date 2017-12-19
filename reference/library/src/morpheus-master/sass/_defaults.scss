@@ -364,8 +364,4 @@ $overview-portlet-shadow: 1px 1px 5px rgba(0,0,0,0.2) !default;
 $overview-portlet-title-background-color: $tool-tab-background-color !default;
 
 
-#authorIndexForm .ui-state-active, #authorIndexForm .ui-widget-content .ui-state-active, #authorIndexForm .ui-widget-header .ui-state-active {
-  background: #5AABBC !important;
-}
-
 @import url(#{$font-family-url});

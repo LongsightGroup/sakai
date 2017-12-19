@@ -12,6 +12,7 @@ $banner-height: 64px !default;
 $background-color: #FFFFFF;
 
 $primary-color:                          #770124;
+$alt-colour:				 #770124; 
 $text-color:                             #000000;
 
 $portal-background-color: $background-color;
@@ -49,7 +50,7 @@ $tool-menu-item-selected-border-left:                      4px solid #770124 !de
 
 $tool-tab-text-color:                                     $tool-menu-color !default;
 $tool-tab-background-color:                               $tool-menu-background-color !default;
-$tool-tab-active-highlight-color:                         #9e7e38 !default;
+$tool-tab-active-highlight-color:                         #770124 !default;
 
 
 $main-content-background: $background-color;
@@ -146,7 +147,7 @@ $sites-nav-menu-item-selected-hover-icon-color:   #000 !default;
 
 .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
    border-color: $primary-color !important;
-   background: #9c7d37 !important;
+   background: #eee !important;
 }
 
 @media only screen and (max-width: 800px) {
@@ -159,4 +160,28 @@ $sites-nav-menu-item-selected-hover-icon-color:   #000 !default;
 #toolMenu ul li .Mrphs-toolsNav__category, #subSites ul li .Mrphs-toolsNav__category {
     background-color: #ddd !important;
     font-weight: 700;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: 1px solid #f0ca03 !important;
+    background: #f0ca03 !important;
+}
+
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a {
+        color: #000 !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #000 !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+         color: #000 !important;
+    }
 }
