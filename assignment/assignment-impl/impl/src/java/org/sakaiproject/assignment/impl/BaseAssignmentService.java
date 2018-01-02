@@ -14380,7 +14380,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
         HashMap<String, String> descMap = new HashMap<String, String>();
         descMap.put("en-US", "User received a grade for their assginment: " + a.getTitle() + "; Submission #: " + s.getResubmissionNum());
         lrsObject.setDescription(descMap);
-        LRS_Actor student = new LRS_Actor(studentUser.getEmail());
+        LRS_Actor student = learningResourceStoreService.getActor(studentUser.getId());
         student.setName(studentUser.getDisplayName());
         LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(a, s, true), null);
         return statement;
@@ -14414,7 +14414,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
         HashMap<String, String> descMap = new HashMap<String, String>();
         descMap.put("en-US", "User received a grade for an unsubmitted assginment: " + a.getTitle());
         lrsObject.setDescription(descMap);
-        LRS_Actor student = new LRS_Actor(studentUser.getEmail());
+        LRS_Actor student = learningResourceStoreService.getActor(studentUser.getId());
         student.setName(studentUser.getDisplayName());
         LRS_Statement statement = new LRS_Statement(student, verb, lrsObject, getLRS_Result(a, s, false), null);
         return statement;
