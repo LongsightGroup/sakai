@@ -215,3 +215,10 @@ $tool-nav-link-color: #FFFFFF;
 .dropzone {
     color: #FFF;
 }
+
+@media only screen and (max-width: 800px) { 
+    .Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
+	color: #000 !important;
+	background: transparent !important;
+    }
+}

@@ -181,3 +181,11 @@ $footer-color: $background-color-secondary !default;
     height: 50px !important;
     }
 }
+
+ul.favoriteSiteList>li, #selectQuickLink>li {
+    width: 370px !important;
+}
+
+.fav-title {
+    width: 310px !important;
+}

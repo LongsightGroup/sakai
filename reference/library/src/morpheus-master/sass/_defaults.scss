@@ -166,6 +166,9 @@ $tool-menu-icon-on-left: false !default;
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
+$calendar-event-background-color: $button-color-border-color;
+$calendar-event-text-color: $button-color-text-color;
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});

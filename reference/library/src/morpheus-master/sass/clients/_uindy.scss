@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "uindydev"; // This is used for bootstrap font behaviour.
+$skin-name : "uindy"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -193,4 +193,8 @@ body.Mrphs-toolMenu-collapsed #toolMenu ul li a:hover .Mrphs-toolsNav__menuitem-
 
 .Mrphs-sakai-resources .inactive button span {
     color: #999 !important;
+}
+
+#Mrphs-sakai-roster .roster-group-cell {
+    display: inline !important;
 }

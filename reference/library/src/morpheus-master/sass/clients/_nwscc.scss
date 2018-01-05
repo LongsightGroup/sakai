@@ -176,3 +176,23 @@ $footer-color: $background-color-secondary !default;
 .fa-angle-down:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__drop:before, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:before {
     color: #FFFFFF !important;
 }
+
+  #loginLink1 {
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #ededed;
+    color: #000;
+    border-radius: 3px;
+    padding: 8px;
+  }
+  #loginLinksImage #loginLink2 {
+    padding: 0;
+    margin: 10px 0 0 0;
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: right;
+    display: block;
+  }
+  #loginLinksImage #loginLink2:hover {
+    color: #ccc;
+  }

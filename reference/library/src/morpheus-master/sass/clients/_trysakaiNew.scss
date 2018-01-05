@@ -48,7 +48,7 @@ $skin-with-icons: true;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem ul.is-visible {
-background:#d3d3d3 !important;
+    background:#d3d3d3 !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected ul {
@@ -61,11 +61,11 @@ background:#d3d3d3 !important;
 
 
 .Mrphs-topHeader {
-background: #444444 !important;
+    background: #444444 !important;
 }
 
 .select, select {
-color: #4A4A4A !important;
+    color: #4A4A4A !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected a {
@@ -75,5 +75,9 @@ color: #4A4A4A !important;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.Mrphs-sitesNav__menuitem--myworkspace a {
-top: -3px !important;
+    top: -3px !important;
+}
+
+a.button {
+    background-color: #00aa9e !important;
 }

@@ -185,6 +185,16 @@ $info-background-color:     $background-color !important;
     background-color: #eee;
 }
 
+#toolMenu ul li .Mrphs-toolsNav__category, #subSites ul li .Mrphs-toolsNav__category {
+  font-weight: 600;
+  border-bottom: 1px solid #999;
+}
+
+.icon-wscc-library:before{content:"";font:normal normal normal 14px/1 FontAwesome;}
+.icon-wscc-coursetech:before{content:"";font:normal normal normal 14px/1 FontAwesome;}
+.icon-wscc-resources:before{content:"";font:normal normal normal 14px/1 FontAwesome;}
+.icon-wscc-student:before{content:"";font:normal normal normal 14px/1 FontAwesome;}
+
 @media only screen and (max-width: 800px) {
 .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
     width: 140px !important;
