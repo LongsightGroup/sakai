@@ -765,6 +765,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
  		{
  			contentReviewService = (ContentReviewService) ComponentManager.get(ContentReviewService.class.getName());
  		}
+ 		
 	} // init
 
 	/**
@@ -3561,11 +3562,14 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					for (Group _g : groups)
 					{
 						M_log.debug("Checking submission for group: " + _g.getTitle());
-						submission = getSubmission(a.getReference(), _g.getId());
-						if (submission != null && allowGetSubmission(submission.getReference()))
+						if(a.getGroups().contains(_g.getReference()))
 						{
-							userSubmissionMap.put(user, submission);
-							break;
+							submission = getSubmission(a.getReference(), _g.getId());
+							if (submission != null && allowGetSubmission(submission.getReference()))
+							{
+								userSubmissionMap.put(user, submission);
+								break;
+							}
 						}
 					}
 				}
@@ -10902,6 +10906,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				String iconUrl = contentReviewService.getIconUrlforScore(Long.valueOf(reviewScore));
 				reviewResult.setReviewIconURL(iconUrl);
 				reviewResult.setReviewError(getReviewError(cr));
+				
+				ContentReviewItem cri = findReportByContentId(cr.getId());
+				reviewResult.setContentReviewItem(cri);
 
 				if ("true".equals(cr.getProperties().getProperty(PROP_INLINE_SUBMISSION)))
 				{
@@ -10913,6 +10920,30 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				}
 			}
 			return reviewResults;
+		}
+		
+		/**
+		 * Gets a report from contentReviewService given its contentId
+		 * This function should be provided by content-review in Sakai 12+,
+		 * meanwhile in Sakai 11.x we need to get the full report list and iterate over it.
+		 */
+		private ContentReviewItem findReportByContentId(String contentId){
+			String siteId = this.m_context;
+			if(StringUtils.isBlank(contentId)){
+				return null;
+			}
+			try{
+				List<ContentReviewItem> reports = contentReviewService.getReportList(siteId);
+				
+				for(ContentReviewItem item : reports) {
+					if(StringUtils.isNotBlank(item.getContentId()) && contentId.equals(item.getContentId())){
+						return item;
+					}
+				}
+			}catch(Exception e){
+				M_log.error("Error getting reports list for site "+siteId, e);
+			}
+			return null;
 		}
 		
 		/**
