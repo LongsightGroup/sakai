@@ -29,6 +29,9 @@ import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entity.api.*;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.api.EventTrackingService;
+import org.sakaiproject.event.api.Notification;
+import org.sakaiproject.event.api.NotificationAction;
+import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdInvalidException;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
@@ -56,6 +59,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
+
 import org.sakaiproject.component.cover.ComponentManager;
 
 /**
@@ -418,6 +422,12 @@ public abstract class BaseSiteService implements SiteService, Observer
 	 * @return the IdManager collaborator.
 	 */
 	protected abstract IdManager idManager();
+	
+	/**
+	 * 
+	 * @return the NotificationService collaborator
+	 */
+	protected abstract NotificationService notificationService();
 
 	/**********************************************************************************************************************************************************************************************************************************************************
 	 * Init and Destroy
@@ -975,12 +985,9 @@ public abstract class BaseSiteService implements SiteService, Observer
 		// complete the edit
 		storage().save(site);
 		
-		// Check to see if an this is an interesting enough change to invalidate the user-site cache.
-		// For now, we just check if the title changed because that persists in the portal navigation.
-		// As with other areas, if the main and user-site caches were more integrated (keeping references
-		// for users rather than copies), we would not have to synchronize explicitly here.
+		// Invalidate the user-site cache.
 		Site cached = getCachedSite(site.getId());
-		if (cached != null && site.getTitle() != null && !site.getTitle().equals(cached.getTitle())) {
+		if (cached != null ) {
 			clearUserCacheForSite(site);
 		}
 		cacheSite(site);
@@ -1392,6 +1399,12 @@ public abstract class BaseSiteService implements SiteService, Observer
 		for (SiteRemovalAdvisor advisor: siteRemovalAdvisors)
 		{
 			advisor.removed(site);
+		}
+
+		// Invalidate the user-site cache.
+		Site cached = getCachedSite(site.getId());
+		if (cached != null ) {
+			clearUserCacheForSite(site);
 		}
 		
 		// complete the edit
@@ -3497,6 +3510,11 @@ public abstract class BaseSiteService implements SiteService, Observer
 		{
 			clearUserCacheForUser(event.getUserId());
 		}
+		else if(SiteService.SECURE_UPDATE_SITE_MEMBERSHIP.equals(eventType) || SiteService.SECURE_UPDATE_GROUP_MEMBERSHIP.equals(eventType)
+				|| SiteService.SECURE_UPDATE_SITE.equals(eventType))
+		{
+			notifySiteParticipant("/gradebook/" + event.getContext() + "/");
+		}
 	}
 	protected Storage storage() {
 		return m_storage;
@@ -3551,6 +3569,24 @@ public abstract class BaseSiteService implements SiteService, Observer
 		else
 		{
 			return site.getTitle();
+		}
+	}
+	
+	public void notifySiteParticipant(String filter) {		
+		List<Notification> notifications = notificationService().findNotifications(
+				"gradebook.updateItemScore", 
+				filter);
+		
+		for (Notification notification : notifications) {
+			String eventDataString = notification.getProperties().getProperty("SAKAI:conditionEventState");
+			
+			Event event = eventTrackingService().newEvent(
+					"cond+" + notification.getFunction(), 
+					notification.getResourceFilter() + eventDataString, 
+					false);
+			
+			NotificationAction action = notification.getAction();
+			action.notify(notification, event);
 		}
 	}
 }

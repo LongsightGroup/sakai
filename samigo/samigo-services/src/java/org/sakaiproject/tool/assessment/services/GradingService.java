@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -55,6 +56,7 @@ import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingAttachment;
@@ -104,8 +106,8 @@ public class GradingService
   final String CALCULATION_OPEN = "[["; // not regex safe
   final String CALCULATION_CLOSE = "]]"; // not regex safe
   final String FORMAT_MASK = "0E0";
-  final Double MAX_THRESHOLD = 10000.0;
-  final Double MIN_THRESHOLD = 0.0001;
+  final BigDecimal DEFAULT_MAX_THRESHOLD = BigDecimal.valueOf(1.0e+11);
+  final BigDecimal DEFAULT_MIN_THRESHOLD = BigDecimal.valueOf(0.0001);
   /**
    * regular expression for matching the contents of a variable or formula name 
    * in Calculated Questions
@@ -261,7 +263,7 @@ public class GradingService
       for (int i=0; i<gdataList.size(); i++){
         AssessmentGradingData ag = (AssessmentGradingData)gdataList.get(i);
         saveOrUpdateAssessmentGrading(ag);
-        EventTrackingService.post(EventTrackingService.newEvent("sam.total.score.update", 
+        EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_TOTAL_SCORE_UPDATE, 
         		"siteId=" + AgentFacade.getCurrentSiteId() +
         		", gradedBy=" + AgentFacade.getAgentString() + 
         		", assessmentGradingId=" + ag.getAssessmentGradingId() + 
@@ -351,18 +353,12 @@ public class GradingService
             l.add(a);
         }
         // if scores are not modified but comments are added, include it for update
-        else if (a.getComments()!=null)
-        	{
-            	if (b.getComments()!=null)
-            	{
-                    if (!a.getComments().equals(b.getComments())) {
-                            l.add(a);
-                    }
-            	}
-            	else {
-                    l.add(a);
-            	}
-        	}
+        Optional<String> commentsA = Optional.ofNullable(a.getComments());
+        Optional<String> commentsB = Optional.ofNullable(b.getComments());
+
+        if ( !commentsA.orElse("").equals(commentsB.orElse("")) ){
+        	l.add(a);
+        }
       }
     }
     return l;
@@ -1155,7 +1151,7 @@ public class GradingService
       // that means the user didn't answer all of the correct answers only.  
       // We need to set their score to 0 for all ItemGrading items
       for(Entry<Long, Double[]> entry : mcmcAllOrNothingCheck.entrySet()){
-    	  if(Double.compare(entry.getValue()[0], entry.getValue()[1]) != 0){    		  
+    	  if(!Precision.equalsIncludingNaN(entry.getValue()[0], entry.getValue()[1], 0.001d)) {	  
     		  //reset all scores to 0 since the user didn't get all correct answers
     		  iter = itemGradingSet.iterator();
     		  while(iter.hasNext()){
@@ -2787,14 +2783,14 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
    */
   public String toScientificNotation(String numberStr,int decimalPlaces){
 	  
-	  BigDecimal x = new BigDecimal(numberStr);
-	  x.setScale(decimalPlaces,RoundingMode.HALF_UP);	
+	  BigDecimal bdx = new BigDecimal(numberStr);
+	  bdx.setScale(decimalPlaces,RoundingMode.HALF_UP);	
 	  
 	  NumberFormat formatter;
 	  
-	  if (((( Math.abs(x.doubleValue())) >= MAX_THRESHOLD) || ( Math.abs(x.doubleValue()) <= MIN_THRESHOLD) 
-        || (numberStr.contains("e")) || numberStr.contains("E") ) 
-	    && (x.doubleValue() != 0)) {
+	  if ((bdx.abs().compareTo(DEFAULT_MAX_THRESHOLD) >= 0 || bdx.abs().compareTo(DEFAULT_MIN_THRESHOLD) <= 0
+        || numberStr.contains("e") || numberStr.contains("E") ) 
+	    && bdx.doubleValue() != 0) {
 		  formatter = new DecimalFormat(FORMAT_MASK);
 	  } else {
 		  formatter = new DecimalFormat("0");
@@ -2803,7 +2799,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	  formatter.setRoundingMode(RoundingMode.HALF_UP);	  
 	  formatter.setMaximumFractionDigits(decimalPlaces);
 	  
-	  String formattedNumber = formatter.format(x);
+	  String formattedNumber = formatter.format(bdx);
 
 	  return formattedNumber.replace(",",".");
   }

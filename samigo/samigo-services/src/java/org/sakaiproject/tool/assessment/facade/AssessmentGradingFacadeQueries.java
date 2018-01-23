@@ -1509,15 +1509,14 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	    }
 	    
 	    // get AssessmentGradingAttachments
-	    Map<Long, List<AssessmentGradingAttachment>> map = getAssessmentGradingAttachmentMap(publishedAssessmentId);
-	    List<AssessmentGradingAttachment> attachments = map.get(ag.getAssessmentGradingId());
-	    if (attachments != null) {
-	    	ag.setAssessmentGradingAttachmentList(attachments);
+	    List<AssessmentGradingAttachment> attachments = new ArrayList<AssessmentGradingAttachment>();
+	    if (ag != null) {
+	    	Map<Long, List<AssessmentGradingAttachment>> map = getAssessmentGradingAttachmentMap(publishedAssessmentId);
+	    	if (map != null && map.containsKey(ag.getAssessmentGradingId())) {
+	    		attachments = map.get(ag.getAssessmentGradingId());
+	    	}
+	        ag.setAssessmentGradingAttachmentList(attachments);
 	    }
-	    else {
-	    	ag.setAssessmentGradingAttachmentList(new ArrayList<AssessmentGradingAttachment>());
-	    }
-	    
 	    return ag;
 	  }
 
@@ -3176,9 +3175,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 				if (anonymous) {
 					Long aFirstElement = (Long) ((ArrayList) a).get(0);
 					Long bFirstElement = (Long) ((ArrayList) b).get(0);
-					if (collator.compare(aFirstElement,bFirstElement) < 0)
+					if (aFirstElement.compareTo(bFirstElement) < 0)
 						return -1;
-					else if (collator.compare(aFirstElement,bFirstElement) > 0)
+					else if (aFirstElement.compareTo(bFirstElement) > 0)
 						return 1;
 					else
 						return 0;
@@ -3589,7 +3588,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     					+ adata.getAgentId() + "-" + adata.getSubmittedDate().toString();
     				notiValues.put( "confirmationNumber", confirmationNumber );
 
-    				EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_AUTO_SUBMITTED, notiValues.toString(), AgentFacade.getCurrentSiteId(), false, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
+    				EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_AUTO, notiValues.toString(), AgentFacade.getCurrentSiteId(), false, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
     			}
 
 	    		lastPublishedAssessmentId = adata.getPublishedAssessmentId();

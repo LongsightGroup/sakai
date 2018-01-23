@@ -13,7 +13,7 @@
   }
 </style>
 
-<script type="text/javascript" src="/sakai-content-tool/js/content.js">
+#javascript("/sakai-content-tool/js/content.js")
 <!-- // -->
 </script>
 
@@ -26,8 +26,9 @@
     }    
 </script>
 
-<script src="/sakai-content-tool/js/jstree/dist/jstree.min.js"></script>
-<link rel="stylesheet" href="/sakai-content-tool/js/jstree/dist/themes/default/style.min.css" />
+#javascript("/sakai-content-tool/js/jstree/dist/jstree.min.js")
+#css("/sakai-content-tool/js/jstree/dist/themes/default/style.min.css")
+<div id="dialog-copyright"></div>
 #set($num = 0)
 <div class="portletBody specialLink">
 	#set($itemsOnLine = 0)
@@ -227,7 +228,7 @@
             #end
             #if (!$dropboxMode)
               <span class="hidden-sm hidden-xs pull-right">
-                <button style="margin:0" type="button" class="btn btn-default btn-sm dropdown-toggle colPicker" data-toggle="dropdown">
+                <button style="margin:0" type="button" class="btn btn-default btn-sm resources-dropdown colPicker" aria-expanded="false" data-toggle="dropdown">
                   $clang.getString('list.cols.columns')
                   <span class="caret"></span>
                 </button>
@@ -481,7 +482,7 @@
 					
 					<td headers="actions2" class="attach actions2">
                         <div class="btn-group  pull-right">
-                            <button type="button" class="btn dropdown-toggle btn-xs" data-toggle="dropdown" title="$clang.getString('gen.actions')">
+                            <button type="button" class="btn resources-dropdown btn-xs" aria-expanded="false" data-toggle="dropdown" title="$clang.getString('gen.actions')">
                                 <span class="sr-only">$validator.escapeHtml($item.name) $clang.getString('gen.actions')</span>
                                 <span class="hidden-xs hidden-sm">$clang.getString('gen.actions')</span>
                                 <span class="caret"></span>
@@ -755,7 +756,7 @@
 					#end ## foreach $root in $other_sites
 	
 				#else
-					<tr class="hidden-xs hidden-sm">
+					<tr class="hidden-xs">
 						<th colspan="10">
 						<h3>
 							<a href="#" onclick="document.getElementById('sakai_action').value='doShowOtherSites';document.getElementById('showForm').submit();"
@@ -796,11 +797,52 @@
 		#if($counter.getValue("selectall") > 0)
 			document.getElementById("selectall").disabled = false;
 		#end
-		function openCopyrightWindow(theURL,winName,winSettings) 
-		{ 
-		  window.open(theURL,winName,winSettings);
-		  return false;
-		}
+
+		jQuery(function() {
+			jQuery("#dialog-copyright").dialog({
+				resizable: false,
+				autoOpen: false,
+				height:300,
+				width:600,
+				modal: true
+			});
+		});
+
+		function openCopyrightWindow(url,winName,winSettings) {
+			//Idea from http://stackoverflow.com/q/16086162/3708872
+			jQuery.ajax({
+				type: "GET",
+				url: url,
+				dataType: "html",
+				success: function(response, status, request) {
+					var disp = request.getResponseHeader('Content-Disposition');
+					//Might just want to do attachments, but for now put everything in a new window
+					if (disp) {
+						var form = jQuery('<form method="GET" action="' + url + '" target="_blank">');
+						jQuery('body').append(form);
+						form.submit();
+					} 
+					else {
+						jQuery.get(url, function(data, textStatus, jqXHR){
+							jQuery('#dialog-copyright').html(data);
+							jQuery('#dialog-copyright').dialog('open');
+						}, "html");
+					}
+
+					return false;
+				},
+			error: function (xhr, ajaxOptions, thrownError) {
+				window.console && console.log("Error from GET request"+thrownError);
+				//If its a URL match it might be denied by CORS, just try to post it, it's should have already passed copyright
+				if (url.match(/\.URL$/)) {
+					var form = jQuery('<form method="GET" action="' + url + '" target="_blank">');
+					jQuery('body').append(form);
+					form.submit();
+				}
+			}
+			});
+		};
+
 		function toggleSelectAll(caller, elementName)
 		{
 			var newValue = caller.checked;

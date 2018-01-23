@@ -144,7 +144,7 @@ public class EditMeetingSignupMBean extends SignupUIBaseBean {
 		showAttendeeName = false;
 		sendEmail = DEFAULT_SEND_EMAIL;		
 		//sendEmailAttendeeOnly = false;
-		sendEmailToSelectedPeopleOnly = SEND_EMAIL_ONLY_ORGANIZER_COORDINATORS;
+		sendEmailToSelectedPeopleOnly = DEFAULT_SEND_EMAIL_TO_SELECTED_PEOPLE_ONLY;
 		
 		unlimited = false;
 
@@ -663,6 +663,17 @@ public class EditMeetingSignupMBean extends SignupUIBaseBean {
 		//set the creator/organiser
 		this.signupMeeting.setCreatorUserId(creatorUserId);
 		this.creatorUserId="";
+
+		// Need to filter for bad HTML
+		StringBuilder descriptionErrors = new StringBuilder();
+		String filteredDescription = sakaiFacade.getFormattedText()
+				.processFormattedText(this.signupMeeting.getDescription(), descriptionErrors, true);
+		this.signupMeeting.setDescription(filteredDescription);
+		if (descriptionErrors.length() > 0) {
+			validationError = true;
+			Utilities.addErrorMessage(descriptionErrors.toString());
+			return;
+		}
 
 	}
 	

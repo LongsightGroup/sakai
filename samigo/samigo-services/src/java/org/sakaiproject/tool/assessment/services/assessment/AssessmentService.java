@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
-import org.sakaiproject.authz.cover.SecurityService;
+import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
@@ -51,6 +51,7 @@ import org.sakaiproject.exception.OverQuotaException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.ServerOverloadException;
 import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentTemplateData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AttachmentData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.ItemData;
@@ -94,6 +95,7 @@ public class AssessmentService {
 	private Logger log = LoggerFactory.getLogger(AssessmentService.class);
 	public static final int UPDATE_SUCCESS = 0;
 	public static final int UPDATE_ERROR_DRAW_SIZE_TOO_LARGE = 1;
+	private SecurityService securityService = ComponentManager.get(SecurityService.class);
 
 
 	/**
@@ -448,7 +450,8 @@ public class AssessmentService {
 							.toString());
 					if (poolIds.size() == 0) {
 						// System.out.println("not in pool " + item.getItemId());
-						itemService.deleteItem(item.getItemId(), agentId);
+						Long deleteId = item.getItemId();
+						itemService.deleteItem(deleteId, agentId);
 						itemIter.remove();
 					} // else System.out.println("in pool " + item.getItemId());
 				}
@@ -842,7 +845,19 @@ public class AssessmentService {
 		// java.lang.NoClassDefFoundError: org/sakaiproject/util/Validator
 		filename = filename.replaceAll("http://","http:__");
 		ContentResource cr_copy = null;
+		SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
+			@Override
+			public SecurityAdvice isAllowed(String arg0, String arg1,
+					String arg2) {
+				if(ContentHostingService.AUTH_RESOURCE_READ.equals(arg1)){
+					return SecurityAdvice.ALLOWED;
+				}else{
+					return SecurityAdvice.PASS;
+				}
+			}
+		};		
 		try {
+			securityService.pushAdvisor(securityAdvisor);
 			// create a copy of the resource
 			ContentResource cr = AssessmentService.getContentHostingService().getResource(resourceId);
 			String escapedName = escapeResourceName(filename);
@@ -860,6 +875,8 @@ public class AssessmentService {
 			}
 		} catch (Exception e) {
 			log.warn("Could not copy resource " + resourceId + ", " + e.getMessage());
+		} finally{
+			securityService.popAdvisor();
 		}
 		return cr_copy;
 	}
@@ -1077,39 +1094,47 @@ public class AssessmentService {
 				}
 				if (attachments.size() > 0) {
 					log.info("Found " + attachments.size() + " attachments buried in question or answer text");
-					SecurityService.pushAdvisor(new SecurityAdvisor(){
+					SecurityAdvisor securityAdvisor = new SecurityAdvisor(){
 						@Override
 						public SecurityAdvice isAllowed(String arg0, String arg1,
 								String arg2) {
-							if("content.read".equals(arg1)){
+							if(ContentHostingService.AUTH_RESOURCE_READ.equals(arg1)){
 								return SecurityAdvice.ALLOWED;
 							}else{
 								return SecurityAdvice.PASS;
 							}
 						}
-					});
-					for (String attachment : attachments) {
-						String resourceIdOrig = "/" + StringUtils.substringAfter(attachment, "/access/content/");
-						String resourceId = URLDecoder.decode(resourceIdOrig);
-						String filename = StringUtils.substringAfterLast(attachment, "/");
-
-						try {
-							cr = AssessmentService.getContentHostingService().getResource(resourceId);
-						} catch (IdUnusedException e) {
-							log.warn("Could not find resource (" + resourceId + ") that was embedded in a question or answer");
-						} catch (TypeException e) {
-							log.warn("TypeException for resource (" + resourceId + ") that was embedded in a question or answer", e);
-						} catch (PermissionException e) {
-							log.warn("No permission for resource (" + resourceId + ") that was embedded in a question or answer");
-						}
-
-						if (cr != null && StringUtils.isNotEmpty(filename)) {
-							
-							ContentResource crCopy = createCopyOfContentResource(cr.getId(), filename, toContext);
-							text = StringUtils.replace(text, resourceIdOrig, StringUtils.substringAfter(crCopy.getReference(), "/content"));
+					};
+					try{
+						securityService.pushAdvisor(securityAdvisor);
+						for (String attachment : attachments) {
+							String resourceIdOrig = "/" + StringUtils.substringAfter(attachment, "/access/content/");
+							String resourceId = URLDecoder.decode(resourceIdOrig);
+							String filename = StringUtils.substringAfterLast(attachment, "/");
+	
+							try {
+								cr = AssessmentService.getContentHostingService().getResource(resourceId);
+							} catch (IdUnusedException e) {
+								log.warn("Could not find resource (" + resourceId + ") that was embedded in a question or answer");
+							} catch (TypeException e) {
+								log.warn("TypeException for resource (" + resourceId + ") that was embedded in a question or answer", e);
+							} catch (PermissionException e) {
+								log.warn("No permission for resource (" + resourceId + ") that was embedded in a question or answer");
+							}
+	
+							if (cr != null && StringUtils.isNotEmpty(filename)) {
+								
+								ContentResource crCopy = createCopyOfContentResource(cr.getId(), filename, toContext);
+								text = StringUtils.replace(text, resourceIdOrig, StringUtils.substringAfter(crCopy.getReference(), "/content"));
+							}
 						}
 					}
-					SecurityService.popAdvisor();
+					catch(Exception e){
+						log.error(e.getMessage());
+					}
+					finally{
+						securityService.popAdvisor();
+					}
 				}
 			}
 			return text;
@@ -1276,28 +1301,33 @@ public class AssessmentService {
 		for (Object sectionObj : assessment.getSectionArray()) {
 			SectionFacade section = (SectionFacade)sectionObj;
 			List<ItemDataIfc> items = null;
-						
-			if (StringUtils.equals(section.getSectionMetaDataByLabel(SectionDataIfc.AUTHOR_TYPE), SectionDataIfc.QUESTIONS_AUTHORED_ONE_BY_ONE.toString()))
-  			{
-				items = section.getItemArray();
-  			}
-			else 
-			{
-				QuestionPoolService qpService = new QuestionPoolService();
-				try {
-					Long qpId = Long.valueOf(section.getSectionMetaDataByLabel(SectionDataIfc.POOLID_FOR_RANDOM_DRAW));
-					items = qpService.getAllItems(qpId);
-				} catch (NumberFormatException e) {
-					log.error("NumberFormatException converting to Long: " + section.getSectionMetaDataByLabel(SectionDataIfc.POOLID_FOR_RANDOM_DRAW));
+			if (section != null) {
+				if (section.getSectionMetaDataByLabel(SectionDataIfc.AUTHOR_TYPE) == null || StringUtils.equals(section.getSectionMetaDataByLabel(SectionDataIfc.AUTHOR_TYPE), SectionDataIfc.QUESTIONS_AUTHORED_ONE_BY_ONE.toString()))
+				{
+					items = section.getItemArray();
+				}
+				else if (StringUtils.equals(section.getSectionMetaDataByLabel(SectionDataIfc.AUTHOR_TYPE), SectionDataIfc.RANDOM_DRAW_FROM_QUESTIONPOOL.toString()))
+				{
+					QuestionPoolService qpService = new QuestionPoolService();
+					try {
+						Long qpId = Long.valueOf(section.getSectionMetaDataByLabel(SectionDataIfc.POOLID_FOR_RANDOM_DRAW));
+						items = qpService.getAllItems(qpId);
+					} catch (NumberFormatException e) {
+						log.error("NumberFormatException converting to Long: " + section.getSectionMetaDataByLabel(SectionDataIfc.POOLID_FOR_RANDOM_DRAW));
+					}
 				}
 			}
-  				
-			for (ItemDataIfc item : items) 
-			{
-				// only exports these questions types
-				if (isQuestionTypeExportable2MarkupText(item.getTypeId())) {
-					exportToMarkupText = true;
-					break;
+			if (items == null) {
+				log.info("Items for assessment {} section {} is null in isExportable", assessment.getAssessmentId(), section.getSectionId());
+			}
+			else {
+				for (ItemDataIfc item : items) 
+				{
+					// only exports these questions types
+					if (isQuestionTypeExportable2MarkupText(item.getTypeId())) {
+						exportToMarkupText = true;
+						break;
+					}
 				}
 			}
 			if (exportToMarkupText) {
@@ -1329,6 +1359,11 @@ public class AssessmentService {
 
 	public static String copyStringAttachment(String stringWithAttachment) {
 		AssessmentService assessmentService = new AssessmentService();
-		return assessmentService.copyContentHostingAttachments(stringWithAttachment, AgentFacade.getCurrentSiteId());
+		
+		if(AgentFacade.getCurrentSiteId()!=null){
+			return assessmentService.copyContentHostingAttachments(stringWithAttachment, AgentFacade.getCurrentSiteId());
+		}
+		
+		return stringWithAttachment;
 	}
 }

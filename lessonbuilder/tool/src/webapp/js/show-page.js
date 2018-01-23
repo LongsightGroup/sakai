@@ -331,14 +331,14 @@ $(document).ready(function() {
 
 		$('#addContentDiv').dialog({
 			autoOpen: false,
-			modal: true,
+			modal: false,
 			resizable: false,
 			draggable: false
                 }).parent('.ui-dialog').css('zIndex',150000);
 
 		$('#moreDiv').dialog({
 			autoOpen: false,
-			modal: true,
+			modal: false,
 			resizable: false,
 			draggable: false
 		}).parent('.ui-dialog').css('zIndex',150000);
@@ -1376,6 +1376,18 @@ $(document).ready(function() {
 			$("#grouplist").show();
 		    });
 
+		$('#add-comments-link').click(function() {
+			$("#comments-addBefore").val(addAboveItem);
+                        $("#add-comments").click();
+			return false;
+		    });
+
+		$('#add-student-link').click(function() {
+			$("#add-student-addBefore").val(addAboveItem);
+                        $("#add-student").click();
+			return false;
+		    });
+
 		$('.change-resource-movie').click(function(){
 			closeMovieDialog();
 			mm_test_reset();
@@ -2020,6 +2032,7 @@ $(document).ready(function() {
 			}
 			insist = false;
 			$("#delete-confirm-message").text(message);
+		        $("#delete-confirm").dialog('option', 'title', msg('simplepage.delete-item'));
 			$("#delete-confirm").dialog('open');
 			return false;
 		    };
@@ -2131,8 +2144,9 @@ $(document).ready(function() {
 			pollGraph.parent().find(".questionPollData").each(function(index) {
 				var text = $(this).find(".questionPollText").text();
 				var count = $(this).find(".questionPollNumber").text();
+				var legend = $(this).find(".questionPollLegend").text();
 				
-				pollData[index] = [parseInt(count), text];
+				pollData[index] = [parseInt(count), text, '#000000', legend];
 			});
 			
 			pollGraph.show();
@@ -2145,8 +2159,6 @@ $(document).ready(function() {
 			
 			$(this).attr("value",($(this).parents(".questionDiv").find(".show-poll").text()));
 		}
-
-        resizeFrame('grow');
 	});
 	
 	$('.add-break-section').click(function(e) {
@@ -2293,6 +2305,7 @@ $(document).ready(function() {
 		} else {
 			$("#defaultClosedSpan").show();
 		}
+	    $('#column-dialog').dialog('option', 'title', msg('simplepage.columnopen'));
 	    $('#column-dialog').dialog('open');
 	    return false;
 	}
@@ -2869,9 +2882,9 @@ $(function() {
 		} else if ($('#mm-file-input-itemname').size() === 0) {
 		    var nameInput = $('.mm-file-input-names').first();
 		    nameInput.attr('id', 'mm-file-input-itemname');
-		    nameInput.after('<label></label>');
-		    nameInput.next().text($('#mm-name').prev().text());
-		    nameInput.next().attr('for','mm-file-input-itemname');
+		    nameInput.before('<label></label>');
+		    nameInput.prev().text($('#mm-name').prev().text());
+		    nameInput.prev().attr('for','mm-file-input-itemname');
 		}
 	    }
 	}
@@ -2891,11 +2904,17 @@ $(function() {
 		var newStuff = '<span class="mm-file-input-name"></span> <span title="' + msg('simplepage.remove_from_uploads') + '"><span class="mm-file-input-delete fa fa-times"></span></span>';
 		// only do this if we're doing names
 		if (doingNames) {
-		    newStuff = newStuff + '<input class="mm-file-input-names" type="text" size="30" maxlength="255"/>';
+		    for (i = 0; i < lastInput[0].files.length; i++) {
+			newStuff = newStuff + '<input class="mm-file-input-names" type="text" size="30" maxlength="255"/>';
+		    }
 		}
 		lastInput.after(newStuff);
 		lastInput.parent().addClass('mm-file-group');
-		lastInput.next().text(lastInput[0].files[0].name);
+		var names = "";
+		for (i = 0; i < lastInput[0].files.length; i++) {
+		    names = names + ", " + lastInput[0].files[i].name;
+		}
+		lastInput.next().text(names.substring(2));
 		// arm the delete
 		lastInput.next().next().on('click', mmFileInputDelete);
 		// and hide the actual button
@@ -2911,16 +2930,19 @@ $(function() {
 			firsttime = true;
 		    }
 		    $('#mm-name-section').hide();
-		    var nameInput = lastInput.next().next().next();
+		    var nameInput = lastInput.parent().find('.mm-file-input-names');
 		    nameInput.addClass('mm-file-input-itemname');
 		    nameInput.attr('title', msg('simplepage.title_for_upload'));
+		    // rest is just for the first. nameInput can be more than one if user selected multiple files
+		    // only put the label on the first
+		    nameInput = nameInput.first();
 		    nameInput.val(itemName);
 		    if (firsttime) {
 			// add a label for the name field. I think it's too much to do it for all of them
 			nameInput.attr('id', 'mm-file-input-itemname');
-			nameInput.after('<label></label>');
-			nameInput.next().text($('#mm-name').prev().text());
-			nameInput.next().attr('for','mm-file-input-itemname');
+			nameInput.before('<label></label>');
+			nameInput.prev().text($('#mm-name').prev().text());
+			nameInput.prev().attr('for','mm-file-input-itemname');
 		    }
 		    nameInput.show();
 		}
@@ -2940,14 +2962,14 @@ var addAboveLI = null;
 function buttonOpenDropdown() {
     oldloc = $("#dropdown");
     addAboveItem = "";
-    openDropdown($("#moreDiv"), $("#dropdown"));
+    openDropdown($("#moreDiv"), $("#dropdown"), msg("simplepage.more-tools"));
 }
 
 function buttonOpenDropdownc() {
     oldloc = $("#dropdownc");
     addAboveItem = "";
     $(".addbreak").hide();
-    openDropdown($("#addContentDiv"), $("#dropdownc"));
+    openDropdown($("#addContentDiv"), $("#dropdownc"), msg("simplepage.add-content"));
 }
 
 function buttonOpenDropdowna() {
@@ -2955,7 +2977,7 @@ function buttonOpenDropdowna() {
     oldloc = addAboveLI.find(".plus-edit-icon");
     addAboveItem = addAboveLI.find("span.itemid").text();
     $(".addbreak").show();
-    openDropdown($("#addContentDiv"), $("#dropdownc"));
+    openDropdown($("#addContentDiv"), $("#dropdownc"), msg('simplepage.add-above'));
 }
 
 function buttonOpenDropdownb() {
@@ -2963,19 +2985,23 @@ function buttonOpenDropdownb() {
     addAboveItem = '-' + $(this).closest('.column').find('ul.mainList').children().last().find("span.itemid").text();
     addAboveLI = $(this).closest('.column').find('ul.mainList').children().last().closest("li");
     $(".addbreak").show();
-    openDropdown($("#addContentDiv"), $("#dropdownc"));
+    openDropdown($("#addContentDiv"), $("#dropdownc"), msg('simplepage.add-item-column'));
     return false;
 }
 
-function openDropdown(dropDiv, button) {
+function openDropdown(dropDiv, button, title) {
     closeDropdowns();
     hideMultimedia();
+    dropDiv.dialog('option', 'title', title);
+    dropDiv.dialog('option', 'position', { my: 'left top', at: 'left bottom', of: button });
     dropDiv.dialog('open');
     dropDiv.find("a").first().focus();
     if (addAboveItem === '')
 	dropDiv.find(".addContentMessage").show();
     else
 	dropDiv.find(".addContentMessage").hide();
+    //jquery-ui#position does not work properly with large scrolls : https://bugs.jqueryui.com/ticket/15253. (if the ticket is solved, remove the line below)
+    $("[aria-describedby='addContentDiv']").offset({top : button.offset().top + button.height()});
     return false;
 }
 
@@ -3281,23 +3307,6 @@ function mm_test_reset() {
    $('#mm-test-oembed-results .oembedall-container').remove();
    $('#mm-file-replace-group').hide();
 }
-
-resizeFrame = function (updown) {
-      var frame = parent.document.getElementById( window.name );
-      if( frame ) {
-        if(updown==='shrink')
-        {
-        var clientH = document.body.clientHeight + 30;
-      }
-      else
-      {
-      var clientH = document.body.clientHeight + 30;
-      }
-        $( frame ).height( clientH );
-      } else {
-        throw( "resizeFrame did not get the frame (using name=" + window.name + ")" );
-      }
-    };
 
 function toggleShortUrlOutput(defaultUrl, checkbox, textbox) {
     if($(checkbox).is(':checked')) {

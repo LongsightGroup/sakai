@@ -207,7 +207,7 @@
   					</h:outputLabel>
   			</h:panelGroup>
   			<h:panelGroup styleClass="shorttext">
-					<h:inputText value="#{PrivateMessagesTool.forwardSubject}" id="subject" size="45">
+					<h:inputText value="#{PrivateMessagesTool.forwardSubject}" id="subject" size="45" styleClass="form-control">
 						<f:validateLength minimum="1" maximum="255"/>
 					</h:inputText>
 				</h:panelGroup>		
@@ -219,7 +219,6 @@
 			<h4><h:outputText value="#{msgs.pvt_message}" /></h4>
 					   	
 	     	<sakai:inputRichText textareaOnly="#{PrivateMessagesTool.mobileSession}" rows="#{ForumTool.editorRows}" cols="132" id="df_compose_body" value="#{PrivateMessagesTool.forwardBody}">
-				<f:validateLength maximum="65000"/>
 		 	</sakai:inputRichText>
             
             <%--********************* Attachment *********************--%>	

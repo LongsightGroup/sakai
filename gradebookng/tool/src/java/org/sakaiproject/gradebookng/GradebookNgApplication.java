@@ -6,9 +6,11 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.IRequestHandler;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.settings.IRequestCycleSettings.RenderStrategy;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.sakaiproject.gradebookng.framework.GradebookNgStringResourceLoader;
 import org.sakaiproject.gradebookng.tool.pages.ErrorPage;
 import org.sakaiproject.gradebookng.tool.pages.GradebookPage;
 import org.sakaiproject.gradebookng.tool.pages.ImportExportPage;
@@ -28,7 +30,7 @@ public class GradebookNgApplication extends WebApplication {
 		super.init();
 
 		// page mounting for bookmarkable URLs
-		mountPage("/", GradebookPage.class);
+		mountPage("/grades", GradebookPage.class);
 		mountPage("/settings", SettingsPage.class);
 		mountPage("/importexport", ImportExportPage.class);
 		mountPage("/permissions", PermissionsPage.class);
@@ -38,6 +40,9 @@ public class GradebookNgApplication extends WebApplication {
 
 		// Configure for Spring injection
 		getComponentInstantiationListeners().add(new SpringComponentInjector(this));
+
+		// Add ResourceLoader that integrates with Sakai's Resource Loader
+		getResourceSettings().getStringResourceLoaders().add(0, new GradebookNgStringResourceLoader());
 
 		// Don't throw an exception if we are missing a property, just fallback
 		getResourceSettings().setThrowExceptionOnMissingResource(false);
@@ -63,6 +68,9 @@ public class GradebookNgApplication extends WebApplication {
 				return new RenderPageRequestHandler(new PageProvider(new ErrorPage(e)));
 			}
 		});
+
+		// Disable Wicket's loading of jQuery - we load Sakai's preferred version in BasePage.java
+		getJavaScriptLibrarySettings().setJQueryReference(new PackageResourceReference(GradebookNgApplication.class,"empty.js"));
 
 		// cleanup the HTML
 		getMarkupSettings().setStripWicketTags(true);

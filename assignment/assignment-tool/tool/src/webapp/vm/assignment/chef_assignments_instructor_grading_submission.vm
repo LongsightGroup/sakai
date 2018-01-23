@@ -2,7 +2,7 @@
 <!-- start: check_assignments_instructor_grading_submission.vm  -->
 #set( $H = '-' )
 <!-- jQuery already loaded in assignment_chef_header -->
-<script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+#javascript("/library/js/lang-datepicker/lang-datepicker.js")
 
 <script type="text/javascript">
 	focus_path = [ '$fField' ];
@@ -225,6 +225,11 @@
 											$tlang.getString("submission.inline")
 										#else
 											$validator.escapeHtml($props.getPropertyFormatted($props.NamePropDisplayName))
+										#end
+
+										#if (!$reviewResult.getReviewReport().equals("Error") &&
+											$reviewResult.contentReviewItem.optOutUrl)
+												(<a href="$!reviewResult.contentReviewItem.optOutUrl" target="_blank">$tlang.getString("review.report.urkund.optoutlink")</a>)
 										#end
 									</div>
 								#end

@@ -100,7 +100,7 @@ public class PageListProducer
                 if (tools.size() > 0) {
                     toolId = tools.get(0).getToolId().replaceAll("\\.", "-");
                 }
-                UIOutput.make(pagerow, "tool-icon").decorate(new UIFreeAttributeDecorator("class", String.format("tool-icon icon-%s", toolId)));
+                UIOutput.make(pagerow, "tool-icon").decorate(new UIFreeAttributeDecorator("class", String.format("tool-icon icon-sakai--%s", toolId)));
 
                 PageEditViewParameters param = new PageEditViewParameters();
                                 
@@ -138,6 +138,7 @@ public class PageListProducer
                     //for all tools that want special configuration and/or allow multiple instances 
                     //per site
                     if ("sakai.iframe".equals(tool.getToolId())) {
+                        UIMessage.make(pagerow, "page-config-label", "url");
                         UIInput.make(pagerow, "page-config-input", "#{SitePageEditHandler.nil}", 
                                 tool.getPlacementConfig().getProperty("source"));
                     }

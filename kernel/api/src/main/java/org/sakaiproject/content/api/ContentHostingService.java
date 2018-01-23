@@ -22,6 +22,7 @@
 package org.sakaiproject.content.api;
 
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -437,8 +438,9 @@ public interface ContentHostingService extends EntityProducer
 	 * Access a List of all the ContentResource objects in this path (and below) which the current user has access.
 	 * 
 	 * @param id
-	 *        A collection id.
+	 *        A collection id. This cannot be the root collection.
 	 * @return a List of the ContentResource objects.
+	 * @throws IllegalArgumentException If the getting all the resources for this collection isn't allowed (eg root).
 	 */
 	public List<ContentResource> getAllResources(String id);
 
@@ -2019,6 +2021,14 @@ public interface ContentHostingService extends EntityProducer
 	 */
 	public void removeDeletedResource(String resourceId) throws PermissionException, IdUnusedException, TypeException, InUseException; 
 
+	/**
+	 * Return a direct link to retrieve the asset instead of streaming the asset inside the JVM. See SAK-30325
+	 *
+	 * @param resourceId The file resource that may have a direct link available
+	 *
+	 * @return URI that will return the asset directly
+	 */
+	public URI getDirectLinkToAsset(ContentResource resource) throws Exception;
 
 	/**
 	 * Expand the supplied resource under its parent collection. See KNL-273

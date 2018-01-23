@@ -1,8 +1,7 @@
 ##<textarea id="debugger" rows="50" cols="100"></textarea>
 <script type="text/javascript">includeLatestJQuery('content_sakai_properties');</script>
-<script type="text/javascript" src="#libraryLink('js/jquery/cookie/jquery.cookie.js')"></script>
+#javascript("/library/js/jquery/cookie/jquery.cookie.js")
 <script type="text/javascript">
-	<!--
 	var DOT = "$DOT";
 	var defaultMimeCategory = "$!model.mimeCategory";
 	var defaultMimeSubtype = "$!model.mimeSubtype";
@@ -626,16 +625,14 @@
 			{
 				propertiesDiv.style.display = "block";
 				propertiesDiv.style.border = "none";
-				removeTextNodes(element);
-				var newText = document.createTextNode("$tlang.getString("edit.hide")");
-				element.appendChild(newText);
+				propertiesDiv.setAttribute("aria-expanded", "true");
+				element.textContent = "$tlang.getString("edit.hide")";
 			}
 			else
 			{
 				propertiesDiv.style.display = "none";
-				removeTextNodes(element);
-				var newText = document.createTextNode("$tlang.getString("edit.show")");
-				element.appendChild(newText);
+				propertiesDiv.setAttribute("aria-expanded", "false");
+				element.textContent = "$tlang.getString("edit.show")";
 			}
 			resizeFrame('grow');
 		}
@@ -1605,9 +1602,8 @@
 #end
 #end
 #end
--->
 </script>
 #if($calendarcounter > 0)
-<script type="text/javascript" src="/library/calendar/sakai-calendar.js"></script>	
-<script type="text/javascript" src="/library/calendar/js/calendar2.js"></script>
+#javascript("/library/calendar/sakai-calendar.js")
+#javascript("/library/calendar/js/calendar2.js")
 #end

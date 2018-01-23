@@ -128,13 +128,21 @@ code {
 
 /*format the th - since jsf cannot do <th> vertically in a column,
  certain tds are classed (header) in jsf based tools to render the same as the th*/
-.itemSummary th, .itemSummary td.header, .itemSummaryLite td.header{
+.itemSummary th, .itemSummary td.header, .itemSummaryHeader, .itemSummaryLite td.header{
 	font-weight: bold;
 	color: #555;
 	white-space: nowrap;
 	vertical-align: top;
 	text-align: left;
 	padding: .3em 1em .3em .3em;
+}
+
+.itemSummaryHeader {
+	padding: .3em 1em 0em .3em;
+}
+  
+.itemSummaryValue {
+	padding: 0em 1em .3em .3em;
 }
 
 table.itemSummary td, td.itemSummaryLite{
@@ -545,11 +553,12 @@ input.upload{
 
 /*informational texts intended for screen readers - renders offscreen*/
 .skip, .fl-offScreen-hidden {
-	display: inline;
-	position: absolute;
-	top: -999px;
-	left: -999px;
-	height: 0;
+	position: absolute !important;
+	height: 1px; width: 1px; 
+	overflow: hidden;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: polygon(0px 0px, 0px 0px,0px 0px, 0px 0px); 
 }
 /*"inactive" gets applied to a container whose children you want to make look grayed out (not inactive per se) - applies to all textual elements and images
 placeholder till more standard way of doing it*/
@@ -668,8 +677,9 @@ order to display them in the same cell they need to be wrapped in a h:panelGroup
 	margin: 0;
 }
 
-.jsfFormTable td .shorttext label{
+.jsfFormTable td .shorttext .syllabusLabel{
 	width: 17em;
+	display: inline-block;
 }
 
 .jsfFormTable td .required input {
@@ -854,6 +864,14 @@ blockquote:before {
   color: #ccc;
   content: open-quote;
   font-size: 3em; 
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote:after {
+  color: #ccc;
+  content: close-quote;
+  font-size: 3em;
   line-height: 0.1em;
   margin-right: 0.25em;
   vertical-align: -0.4em;

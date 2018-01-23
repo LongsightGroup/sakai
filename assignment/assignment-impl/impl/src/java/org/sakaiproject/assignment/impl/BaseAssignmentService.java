@@ -34,6 +34,12 @@ import org.apache.poi.ss.util.WorkbookUtil;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementService;
 import org.sakaiproject.assignment.api.*;
+import org.sakaiproject.assignment.api.model.AssignmentAllPurposeItem;
+import org.sakaiproject.assignment.api.model.AssignmentAllPurposeItemAccess;
+import org.sakaiproject.assignment.api.model.AssignmentModelAnswerItem;
+import org.sakaiproject.assignment.api.model.AssignmentNoteItem;
+import org.sakaiproject.assignment.api.model.AssignmentSupplementItemAttachment;
+import org.sakaiproject.assignment.api.model.AssignmentSupplementItemService;
 import org.sakaiproject.assignment.taggable.api.AssignmentActivityProducer;
 import org.sakaiproject.authz.api.*;
 import org.sakaiproject.authz.cover.FunctionManager;
@@ -107,6 +113,7 @@ import java.util.zip.ZipOutputStream;
 
 //Export to excel
 import java.text.DecimalFormat;
+
 import org.sakaiproject.entitybroker.DeveloperHelperService;
 
 /**
@@ -758,6 +765,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
  		{
  			contentReviewService = (ContentReviewService) ComponentManager.get(ContentReviewService.class.getName());
  		}
+ 		
 	} // init
 
 	/**
@@ -924,7 +932,13 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				retVal.setDropDeadTime(existingAssignment.getDropDeadTime());
 				retVal.setCloseTime(existingAssignment.getCloseTime());
 				retVal.setDraft(true);
-                                retVal.setGroup(existingAssignment.isGroup());
+                		retVal.setGroup(existingAssignment.isGroup());
+               			retVal.setAllowPeerAssessment(existingAssignment.getAllowPeerAssessment());
+               			retVal.setPeerAssessmentInstructions(existingAssignment.getPeerAssessmentInstructions());
+                		retVal.setPeerAssessmentAnonEval(existingAssignment.getPeerAssessmentAnonEval());
+                		retVal.setPeerAssessmentNumReviews(existingAssignment.getPeerAssessmentNumReviews());
+                		retVal.setPeerAssessmentPeriod(existingAssignment.getPeerAssessmentPeriod());
+                		retVal.setPeerAssessmentStudentViewReviews(existingAssignment.getPeerAssessmentStudentViewReviews());
 				ResourcePropertiesEdit pEdit = (BaseResourcePropertiesEdit) retVal.getProperties();
 				pEdit.addAll(existingAssignment.getProperties());
 				addLiveProperties(pEdit);
@@ -3548,11 +3562,14 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					for (Group _g : groups)
 					{
 						M_log.debug("Checking submission for group: " + _g.getTitle());
-						submission = getSubmission(a.getReference(), _g.getId());
-						if (submission != null && allowGetSubmission(submission.getReference()))
+						if(a.getGroups().contains(_g.getReference()))
 						{
-							userSubmissionMap.put(user, submission);
-							break;
+							submission = getSubmission(a.getReference(), _g.getId());
+							if (submission != null && allowGetSubmission(submission.getReference()))
+							{
+								userSubmissionMap.put(user, submission);
+								break;
+							}
 						}
 					}
 				}
@@ -4710,7 +4727,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	        if (a != null)
 	        {
 	        	Site st = SiteService.getSite(contextString);
-	        	if (allOrOneGroup.equals(AssignmentConstants.ALL))
+	        	if (StringUtils.equals(allOrOneGroup, AssignmentConstants.ALL) || StringUtils.isEmpty(allOrOneGroup))
 	        	{
 		            if (a.getAccess().equals(Assignment.AssignmentAccess.SITE))
 		            {
@@ -6935,7 +6952,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							nAssignment.setTitle(oAssignment.getTitle());
 							nAssignment.setPosition_order(oAssignment.getPosition_order());
 							
-							nAssignment.setAllowPeerAssessment(nAssignment.getAllowPeerAssessment());
+							nAssignment.setAllowPeerAssessment(oAssignment.getAllowPeerAssessment());
 							nAssignment.setPeerAssessmentAnonEval(oAssignment.getPeerAssessmentAnonEval());
 							nAssignment.setPeerAssessmentInstructions(oAssignment.getPeerAssessmentInstructions());
 							nAssignment.setPeerAssessmentNumReviews(oAssignment.getPeerAssessmentNumReviews());
@@ -7009,6 +7026,81 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 						}
 					}
 				} // if-else
+				//Import supplementary items if they are present in the assignment to be imported
+				AssignmentSupplementItemService assignmentSupplementItemService =
+						(AssignmentSupplementItemService) ComponentManager.get("org.sakaiproject.assignment.api.model.AssignmentSupplementItemService");
+				// Model Answer
+				AssignmentModelAnswerItem oModelAnswerItem = assignmentSupplementItemService.getModelAnswer(oAssignmentId);
+				if (oModelAnswerItem != null) {
+					AssignmentModelAnswerItem nModelAnswerItem = assignmentSupplementItemService.newModelAnswer();
+					assignmentSupplementItemService.saveModelAnswer(nModelAnswerItem);
+					nModelAnswerItem.setAssignmentId(nAssignment.getId());
+					nModelAnswerItem.setText(oModelAnswerItem.getText());
+					nModelAnswerItem.setShowTo(oModelAnswerItem.getShowTo());
+					Set oAttachments = oModelAnswerItem.getAttachmentSet();
+					Set<AssignmentSupplementItemAttachment> nAttachments = new HashSet<AssignmentSupplementItemAttachment>();
+					for (Iterator iter = oAttachments.iterator(); iter.hasNext();) {
+						AssignmentSupplementItemAttachment a = (AssignmentSupplementItemAttachment) iter.next();
+						AssignmentSupplementItemAttachment nAttach = assignmentSupplementItemService.newAttachment();
+						// New attachment creation
+						String nAttachId = transferAttachment(fromContext, toContext, null, a.getAttachmentId().replaceFirst("/content", ""));
+						if (StringUtils.isNotEmpty(nAttachId)) {
+							nAttach.setAssignmentSupplementItemWithAttachment(nModelAnswerItem);
+							nAttach.setAttachmentId(nAttachId);
+							assignmentSupplementItemService.saveAttachment(nAttach);
+							nAttachments.add(nAttach);
+						}
+					}
+					nModelAnswerItem.setAttachmentSet(nAttachments);
+					assignmentSupplementItemService.saveModelAnswer(nModelAnswerItem);
+				}
+				// Private Note
+				AssignmentNoteItem oNoteItem = assignmentSupplementItemService.getNoteItem(oAssignmentId);
+				if (oNoteItem != null) {
+					AssignmentNoteItem nNoteItem = assignmentSupplementItemService.newNoteItem();
+					//assignmentSupplementItemService.saveNoteItem(nNoteItem);
+					nNoteItem.setAssignmentId(nAssignment.getId());
+					nNoteItem.setNote(oNoteItem.getNote());
+					nNoteItem.setShareWith(oNoteItem.getShareWith());
+					nNoteItem.setCreatorId(UserDirectoryService.getCurrentUser().getId());
+					assignmentSupplementItemService.saveNoteItem(nNoteItem);
+				}
+				// All Purpose 
+				AssignmentAllPurposeItem oAllPurposeItem = assignmentSupplementItemService.getAllPurposeItem(oAssignmentId);
+				if (oAllPurposeItem != null) {
+					AssignmentAllPurposeItem nAllPurposeItem = assignmentSupplementItemService.newAllPurposeItem();
+					assignmentSupplementItemService.saveAllPurposeItem(nAllPurposeItem);
+					nAllPurposeItem.setAssignmentId(nAssignment.getId());
+					nAllPurposeItem.setTitle(oAllPurposeItem.getTitle());
+					nAllPurposeItem.setText(oAllPurposeItem.getText());
+					nAllPurposeItem.setHide(oAllPurposeItem.getHide());
+					nAllPurposeItem.setReleaseDate(null);
+					nAllPurposeItem.setRetractDate(null);
+					Set oAttachments = oAllPurposeItem.getAttachmentSet();
+					Set<AssignmentSupplementItemAttachment> nAttachments = new HashSet<AssignmentSupplementItemAttachment>();
+					for (Iterator iter = oAttachments.iterator(); iter.hasNext();) {
+						AssignmentSupplementItemAttachment a = (AssignmentSupplementItemAttachment) iter.next();
+						AssignmentSupplementItemAttachment nAttach = assignmentSupplementItemService.newAttachment();
+						// New attachment creation
+						String nAttachId = transferAttachment(fromContext, toContext, null, a.getAttachmentId().replaceFirst("/content", ""));
+						if (StringUtils.isNotEmpty(nAttachId)) {
+							nAttach.setAssignmentSupplementItemWithAttachment(nAllPurposeItem);
+							nAttach.setAttachmentId(nAttachId);
+							assignmentSupplementItemService.saveAttachment(nAttach);
+							nAttachments.add(nAttach);
+						}
+					}
+					nAllPurposeItem.setAttachmentSet(nAttachments);
+					assignmentSupplementItemService.cleanAllPurposeItemAccess(nAllPurposeItem);
+					Set<AssignmentAllPurposeItemAccess> accessSet = new HashSet<AssignmentAllPurposeItemAccess>();
+					AssignmentAllPurposeItemAccess access = assignmentSupplementItemService.newAllPurposeItemAccess();
+					access.setAccess(UserDirectoryService.getCurrentUser().getId());
+					access.setAssignmentAllPurposeItem(nAllPurposeItem);
+					assignmentSupplementItemService.saveAllPurposeItemAccess(access);
+					accessSet.add(access);
+					nAllPurposeItem.setAccessSet(accessSet);
+					assignmentSupplementItemService.saveAllPurposeItem(nAllPurposeItem);
+				}
 			} // if
 		} // for
 		return transversalMap;
@@ -10814,6 +10906,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				String iconUrl = contentReviewService.getIconUrlforScore(Long.valueOf(reviewScore));
 				reviewResult.setReviewIconURL(iconUrl);
 				reviewResult.setReviewError(getReviewError(cr));
+				
+				ContentReviewItem cri = findReportByContentId(cr.getId());
+				reviewResult.setContentReviewItem(cri);
 
 				if ("true".equals(cr.getProperties().getProperty(PROP_INLINE_SUBMISSION)))
 				{
@@ -10825,6 +10920,30 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				}
 			}
 			return reviewResults;
+		}
+		
+		/**
+		 * Gets a report from contentReviewService given its contentId
+		 * This function should be provided by content-review in Sakai 12+,
+		 * meanwhile in Sakai 11.x we need to get the full report list and iterate over it.
+		 */
+		private ContentReviewItem findReportByContentId(String contentId){
+			String siteId = this.m_context;
+			if(StringUtils.isBlank(contentId)){
+				return null;
+			}
+			try{
+				List<ContentReviewItem> reports = contentReviewService.getReportList(siteId);
+				
+				for(ContentReviewItem item : reports) {
+					if(StringUtils.isNotBlank(item.getContentId()) && contentId.equals(item.getContentId())){
+						return item;
+					}
+				}
+			}catch(Exception e){
+				M_log.error("Error getting reports list for site "+siteId, e);
+			}
+			return null;
 		}
 		
 		/**
@@ -11728,7 +11847,14 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				String gradeGB=this.getGradeForUserInGradeBook(null);
 				if(gradeGB!=null)
 				{
-					rv=gradeGB;
+					if(!gradeGB.equals(""))
+					{
+						rv=gradeGB;
+					}
+					else
+					{
+						rv=null;
+					}
 				}
 			}
 			return rv;
@@ -11862,6 +11988,21 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 						DecimalFormat dcformat = (DecimalFormat) nbFormat;
 						Double dblGrade = dcformat.parse(rv).doubleValue();
 						rv = nbFormat.format(dblGrade);
+					}
+					
+					/*
+					 * SAK-32201 - We need to know if 'userId' is an id of a Group because
+					 * there is'nt a correspondence between the general grade of a group
+					 * in an assignment with Group Submission and any grade from Gradebook so always is null.
+					 */
+					
+					else if(m_gradeReleased)
+					{
+						Site site = SiteService.getSite(m.getContext());
+						if (site.getGroup(userId)==null)
+						{
+							rv="";
+						}
 					}
 				}
 				catch (Exception e)
@@ -14282,6 +14423,10 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		{
 			List submissionLog=submission.getSubmissionLog();
 			
+			//Special case for old submissions prior to Sakai 10 where the submission log did not exist. Just return true for backward compatibility.
+			if (submissionLog == null || submissionLog.size() == 0) {
+				return true;
+			}
 			for (int x = 0; x < submissionLog.size(); x++)
 			{
 			    String itemString = (String) submissionLog.get(x);

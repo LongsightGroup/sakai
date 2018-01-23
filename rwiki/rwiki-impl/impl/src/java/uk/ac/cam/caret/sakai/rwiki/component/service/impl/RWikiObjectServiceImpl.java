@@ -189,7 +189,6 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 		renderService = (RenderService) load(cm, RenderService.class.getName());
 		preferenceService = (PreferenceService) load(cm,
 				PreferenceService.class.getName());
-
 		userDirectoryService = (UserDirectoryService) load(cm,UserDirectoryService.class.getName());
 		entityManager.registerEntityProducer(this,
 				RWikiObjectService.REFERENCE_ROOT);
@@ -585,7 +584,6 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 
 		if (content != null && !content.equals(rwo.getContent()))
 		{
-
 			// create a history instance
 			RWikiHistoryObject rwho = hdao.createRWikiHistoryObject(rwo);
 
@@ -1741,6 +1739,14 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 	public boolean checkUpdate(RWikiObject rwo)
 	{
 		return wikiSecurityService.checkUpdate((RWikiEntity) getEntity(rwo));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean checkCreate(RWikiObject rwo)
+	{
+		return wikiSecurityService.checkCreate((RWikiEntity) getEntity(rwo));
 	}
 
 	/**

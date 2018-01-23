@@ -10,7 +10,6 @@
 			position: relative;
 			text-transform: uppercase;
 			width: calc(100% - 90px);
-			z-index: 21;
 			a{
 				color: rgba(21,21,21,0.5);
 				font-weight: 400;
@@ -64,22 +63,17 @@
 		}
 	}
 	.#{$namespace}toolTitleNav__button_container{
+		position: absolute;
 		float: right;
-		display: block;
-		position: relative;
-		margin: 0px 0 -20px 0;
-		top: 9px;
+		top: 5px;
+		right: 4px;
 		z-index: 1;
 		@media #{$tablet}{
-			left: 0.35em;
 			font-size: 1.5em;
-			margin: 0px 0 0px 0;
-			top: -4px;
-			z-index: 1;
 		}
 	}
 	.#{$namespace}toolTitleNav__link{
-		//color: lighten( $text-color, 70% );
+		color: $tool-nav-link-color;
 		border: 1px solid #e0e0e0;
 		background: $tool-tab-background-color;
 		margin-right: 0.25em;
@@ -88,8 +82,8 @@
 		vertical-align: 0%;
 		&:hover{
 			background: $tool-background-color;
-			color: $primary-color;
-			box-shadow: 0 0 6px 0 rgba(0,0,0,.15);
+			color: $swapped-view-text-color;
+			text-decoration: none;
 		}
 		@media #{$tablet}{
 			background: $tool-background-color;
@@ -135,7 +129,7 @@
 			/*font-size: $default-font-size;*/
 			text-transform: uppercase;
 			font-size: 0.8em;
-			letter-spacing: 1.2px;
+			letter-spacing: 1px;
 			@media #{$tablet}{
 				display: none;
 			}
@@ -162,6 +156,9 @@
 	> * {
 		position: relative;
 		top: -2px;
+	}
+	> .modal {
+		position: fixed;
 	}
 }
 

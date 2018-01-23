@@ -8167,7 +8167,7 @@ public class AssignmentAction extends PagedResourceActionII
 		String aOldAccessString = null;
 		
 		// assignment old group setting
-		Collection aOldGroups = null;
+		Collection<String> aOldGroups = null;
 		
 		// assignment old open date setting
 		Time oldOpenTime = null;
@@ -8335,7 +8335,7 @@ public class AssignmentAction extends PagedResourceActionII
 			// set group property
 			String range = (String) state.getAttribute(NEW_ASSIGNMENT_RANGE);
 			
-			Collection groups = new ArrayList();
+			Collection<Group> groups = new ArrayList<Group>();
 			try
 			{
 				Site site = SiteService.getSite(siteId);
@@ -8412,6 +8412,66 @@ public class AssignmentAction extends PagedResourceActionII
 				// comment the changes to Assignment object
 				commitAssignmentEdit(state, post, ac, a, title, visibleTime, openTime, dueTime, closeTime, enableCloseDate, section, range, groups, isGroupSubmit, 
 						usePeerAssessment,peerPeriodTime, peerAssessmentAnonEval, peerAssessmentStudentViewReviews, peerAssessmentNumReviews, peerAssessmentInstructions);
+
+				// Locking and unlocking groups   
+				List<String> lockedGroupsReferences = new ArrayList<String>();
+				if (isGroupSubmit && !groups.isEmpty()) {
+					for (Group group : groups) {
+						String groupAssignmentReference = group.getReference() + "/assignment/" + a.getId();
+
+						M_log.debug("Getting groups from reference: {}", groupAssignmentReference);
+						lockedGroupsReferences.add(group.getReference());
+						M_log.debug("Adding group: {}", group.getReference());
+
+						if (!aOldGroups.contains(group.getReference()) || !group.isLocked(groupAssignmentReference)) {
+							M_log.debug("locking group: {}", group.getReference());
+							group.lockGroup(groupAssignmentReference);
+							M_log.debug("locked group: {}", group.getReference());
+
+							try {
+								SiteService.save(group.getContainingSite());
+							}
+							catch (IdUnusedException e)
+							{
+								M_log.warn(":doUpdate_options  Cannot find site with id {}", siteId);
+								addAlert(state, rb.getFormattedMessage("options_cannotFindSite", new Object[]{siteId}));
+							}
+							catch (PermissionException e)
+							{
+								M_log.warn(":doUpdate_options Do not have permission to edit site with id {}", siteId);
+								addAlert(state, rb.getFormattedMessage("options_cannotEditSite", new Object[]{siteId}));
+							}
+						}
+					}
+				}
+
+				if (!aOldGroups.isEmpty()) {
+					try {
+						Site site = SiteService.getSite(siteId);
+
+						for (String reference : aOldGroups) {
+								if (!lockedGroupsReferences.contains(reference)) {
+									M_log.debug("Not contains: {}", reference);
+									Group group = site.getGroup(reference);
+									if (group != null) {
+										String groupReferenceAssignment = group.getReference() + "/assignment/" + a.getId();
+										group.unlockGroup(groupReferenceAssignment);
+										SiteService.save(group.getContainingSite());
+									}
+								}
+						}
+					}
+					catch (IdUnusedException e)
+					{
+						M_log.warn(":doUpdate_options  Cannot find site with id {}", siteId);
+						addAlert(state, rb.getFormattedMessage("options_cannotFindSite", new Object[]{siteId}));
+					}
+					catch (PermissionException e)
+					{
+						M_log.warn(":doUpdate_options Do not have permission to edit site with id {}", siteId);
+						addAlert(state, rb.getFormattedMessage("options_cannotEditSite", new Object[]{siteId}));
+					}
+				}
 
 				if (post)
 				{
@@ -10386,6 +10446,31 @@ public class AssignmentAction extends PagedResourceActionII
 				// we use to check "assignment.delete.cascade.submission" setting. But the implementation now is always remove submission objects when the assignment is removed.
 				// delete assignment and its submissions altogether
 				deleteAssignmentObjects(state, aEdit, true);
+
+				Collection<String> groups = aEdit.getGroups();
+				String siteId = (String) state.getAttribute(STATE_CONTEXT_STRING);
+
+				try {
+					Site site = SiteService.getSite(siteId);
+
+					for (String reference : groups) {
+						Group group = site.getGroup(reference);
+						if (group != null) {
+							group.unlockGroup(group.getReference() + "/assignment/" + aEdit.getId());
+							SiteService.save(group.getContainingSite());
+						}
+					}
+				}
+				catch (IdUnusedException e)
+				{
+					M_log.warn(this + ":doDelete_assignment Cannot find site with id {}", siteId);
+					addAlert(state, rb.getFormattedMessage("options_cannotFindSite", new Object[]{}));
+				}
+				catch (PermissionException e)
+				{
+					M_log.warn(this + ":doDelete_assignment Do not have permission to edit site with id {}", siteId);
+					addAlert(state, rb.getFormattedMessage("options_cannotEditSite", new Object[]{}));
+				}
 			}
 		} // for
 
@@ -14426,7 +14511,7 @@ public class AssignmentAction extends PagedResourceActionII
 			}
 
 			if ( assignment != null && assignment.isGroup()) {
-
+				allOrOneGroup =  MODE_INSTRUCTOR_GRADE_ASSIGNMENT.equals(mode)?"all":allOrOneGroup;
 				Collection<Group> submitterGroups = AssignmentService.getSubmitterGroupList("false", allOrOneGroup, "", aRef, contextString);
 
 				// construct the group-submission list
@@ -14876,8 +14961,16 @@ public class AssignmentAction extends PagedResourceActionII
 				{
 					if (index == 0)
 					{
+						int trailingData = point.substring(1).length();
 						// if the point is the first char, add a 0 for the integer part
 						point = "0".concat(point.substring(1));
+						// ensure that the point value has the correct # of decimals
+						// by padding with zeros
+						if(trailingData < dec) {
+							for(int i = trailingData; i < dec; i++) {
+								point = point + "0";
+							}
+						}
 					}
 					else if (index < point.length() - 1)
 					{
@@ -17110,7 +17203,8 @@ public class AssignmentAction extends PagedResourceActionII
 		String mode = (String) state.getAttribute(STATE_MODE);
 		List attachments;
 
-		if(MODE_STUDENT_REVIEW_EDIT.equals(mode)) {
+		boolean inPeerReviewMode = MODE_STUDENT_REVIEW_EDIT.equals(mode);
+		if(inPeerReviewMode) {
 			// construct the state variable for peer attachment list
 			attachments = state.getAttribute(PEER_ATTACHMENTS) != null? (List) state.getAttribute(PEER_ATTACHMENTS) : EntityManager.newReferenceList();
 		} else {
@@ -17191,7 +17285,7 @@ public class AssignmentAction extends PagedResourceActionII
 
 						// Check if the file is acceptable with the ContentReviewService
 						boolean blockedByCRS = false;
-						if (allowReviewService && contentReviewService != null && contentReviewService.isSiteAcceptable(s))
+						if (!inPeerReviewMode && allowReviewService && contentReviewService != null && contentReviewService.isSiteAcceptable(s))
 						{
 							String assignmentReference = (String) state.getAttribute(VIEW_SUBMISSION_ASSIGNMENT_REFERENCE);
 							Assignment a = getAssignment(assignmentReference, "doAttachUpload", state);
@@ -17227,7 +17321,7 @@ public class AssignmentAction extends PagedResourceActionII
 							}
 						}
 
-						if(MODE_STUDENT_REVIEW_EDIT.equals(mode)) {
+						if(inPeerReviewMode) {
 							state.setAttribute(PEER_ATTACHMENTS, attachments);
 						} else {
 							state.setAttribute(ATTACHMENTS, attachments);

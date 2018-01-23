@@ -36,6 +36,8 @@
 // Customized to fix a small bug in a for..in loop over an array, where it would also loop over other structures
 // in the array, such as "contains"
 
+// Customized to add legends to data array and legendsAtTitle to display legends as title in the div
+
 (function($) {
 	var opts = new Array;
 	var level = new Array;
@@ -45,7 +47,7 @@
 	init = function(el){
 
 		opts[el.id] = $.extend({}, $.fn.jqBarGraph.defaults, options);
-		$(el).css({ 'width': opts[el.id].width, 'height': opts[el.id].height, 'position':'relative', 'text-align':'center' });
+		$(el).css({ 'width': opts[el.id].width, 'position':'relative', 'text-align':'center', 'display':'flex', 'align-items':'flex-end' });
 		doGraph(el);
 
 	};
@@ -109,7 +111,7 @@
 		space = arr.barSpace; //space between bars
 		legendWidth = arr.legend ? arr.legendWidth : 0; //width of legend box
 		fieldWidth = ($(el).width()-legendWidth)/data.length; //width of bar
-		totalHeight =  $(el).height(); //total height of graph box
+		totalHeight =  opts[el.id].height;
 		var leg = new Array(); //legends array
 		
 		//max value in data, I use this to calculate height of bar
@@ -126,8 +128,12 @@
  			
  			lbl = data[val][1];
  			color = data[val][2];
-			unique = val+el.id; //unique identifier
-			
+ 			legendLbl = data[val][3];
+ 			unique = val+el.id; //unique identifier
+ 			
+ 			if (legendLbl == undefined && arr.legends !== undefined) {
+ 				legendLbl = legends[val];
+ 			}
  			if (color == undefined && arr.colors == false) 
  				color = arr.color;
  				
@@ -142,24 +148,24 @@
  				
  			if (lbl == undefined) lbl = arr.lbl;
  		
- 			out  = "<div class='graphField"+el.id+"' id='graphField"+unique+"' style='position: absolute'>";
+ 			out  = "<div class='graphField"+el.id+"' id='graphField"+unique+"' class='jqGraphField'>";
  			out += "<div class='graphValue"+el.id+"' id='graphValue"+unique+"'>"+prefix+value+postfix+"</div>";
  			
  			out += "<div class='graphBar"+el.id+"' id='graphFieldBar"+unique+"' style='background-color:"+color+";position: relative; overflow: hidden;'></div>";
 
 			// if there is no legend or exist legends display lbl at the bottom
  			if(!arr.legend || arr.legends)
- 				out += "<div class='graphLabel"+el.id+"' id='graphLabel"+unique+"'>"+lbl+"</div>";
+ 				out += "<div class='graphLabel"+el.id+"' id='graphLabel"+unique+"' style='white-space:nowrap;overflow:hidden;text-overflow:clip' title='"+legendLbl+"'>"+lbl+"</div>";
  			out += "</div>";
  			
 			$(el).append(out);
  			
  			//size of bar
- 			totalHeightBar = totalHeight - $('.graphLabel'+el.id).height() - $('.graphValue'+el.id).height(); 
+ 			totalHeightBar = totalHeight;
  			fieldHeight = (totalHeightBar*value)/max;	
  			$('#graphField'+unique).css({ 
- 				'left': (fieldWidth)*val, 
- 				'width': fieldWidth-space, 
+ 				'flex': '0 1 ' + (fieldWidth-space) + 'px', 
+				'max-width': (100.0 / data.length) + '%',
  				'margin-left': space});
  	
  			// multi array
@@ -167,7 +173,7 @@
  				
 				if(arr.type=="multi"){
 					maxe = maxMulti(data);
-					totalHeightBar = fieldHeight = totalHeight - $('.graphLabel'+el.id).height();
+					totalHeightBar = fieldHeight = totalHeight;
 					$('.graphValue'+el.id).remove();
 				} else {
 					maxe = max;
@@ -195,7 +201,7 @@
 
 			//creating legend array from lbl if there is no legends param
  			if(!arr.legends)
- 				leg.push([ color, lbl, el.id, unique ]); 
+ 				leg.push([ color, legendLbl, el.id, unique ]); 
  			
  			// animated apearing
  			if(arr.animate){

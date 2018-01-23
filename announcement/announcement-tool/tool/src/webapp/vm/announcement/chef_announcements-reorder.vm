@@ -1,5 +1,5 @@
-<script type="text/javascript" src="/library/js/fluid/1.5/MyInfusion.js"></script>
-<script type="text/javascript" src="/library/js/reorderer.js"></script>
+#javascript("/library/js/fluid/1.5/MyInfusion.js")
+#javascript("/library/js/reorderer.js")
 <div class="portletBody container-fluid">
 	#if($menu && $EnabledMenuItemExists)
 			#toolbar($menu)
@@ -13,7 +13,7 @@
 			#set ($SiteColumnFlag = $SiteColumnFlag + 1)
 		#end
 	#end
-	<h3>$tlang.getString("reorder.title")</h3>
+	<div class="page-header"><h3>$tlang.getString("reorder.title")</h3></div>
  	
 	#if ($alertMessage)<div class="alertMessage">$tlang.getFormattedMessage("gen.alert.message", $alertMessage)</div><div class="clear"></div>#end
 	<div class="navPanel">

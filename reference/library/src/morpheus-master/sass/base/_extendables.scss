@@ -90,7 +90,7 @@
 }
 
 .select{
-	background-color: $button-background-secondary-color;
+	background-color: $button-background-color;
 	background-image: url("images/icon-arrow-down.png");
 	background-position: right 50%;
 	background-repeat: no-repeat;
@@ -151,6 +151,9 @@
 	text-decoration: none !important;
 	@include appearance(none);
 	@include border-radius(3px);
+	&:focus {
+		outline-color: darken( $button-border-color, 50% ) !important;
+	}
 	&:hover{
 		text-decoration: none;
 		background: linear-gradient( $button-background-secondary-color, $button-background-color );

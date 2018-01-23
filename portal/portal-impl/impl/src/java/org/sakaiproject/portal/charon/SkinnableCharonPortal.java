@@ -44,15 +44,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.sakaiproject.authz.api.SecurityAdvisor;
+import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
+import org.sakaiproject.event.api.UsageSession;
+import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.PermissionException;
+import org.sakaiproject.exception.SakaiException;
 import org.sakaiproject.pasystem.api.PASystem;
 import org.sakaiproject.portal.api.Editor;
 import org.sakaiproject.portal.api.PageFilter;
@@ -299,7 +301,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		String title = ServerConfigurationService.getString("ui.service","Sakai") + " : Portal";
 
 		// start the response
-		PortalRenderContext rcontext = startPageContext("", title, null, req);
+		PortalRenderContext rcontext = startPageContext("", title, null, req, null);
 
 		showSession(rcontext, true);
 
@@ -527,7 +529,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			siteSkin = site.getSkin();
 		}
 
-		PortalRenderContext rcontext = startPageContext(siteType, title, siteSkin, req);
+		PortalRenderContext rcontext = startPageContext(siteType, title, siteSkin, req, site);
 
 		// Make the top Url where the "top" url is
 		String portalTopUrl = Web.serverUrl(req)
@@ -535,7 +537,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		if (prefix != null) portalTopUrl = portalTopUrl + prefix + "/";
 
 		rcontext.put("portalTopUrl", portalTopUrl);
-		rcontext.put("loggedIn", Boolean.valueOf(session.getUserId() != null));
+		rcontext.put("loggedIn", StringUtils.isNotBlank(session.getUserId()));
 		rcontext.put("siteId", siteId);
 
 		if (placement != null)
@@ -741,6 +743,11 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		toolMap.put("toolRenderResult", renderResult);
 		toolMap.put("hasRenderResult", Boolean.TRUE);
 		toolMap.put("toolUrl", toolUrl);
+		
+		// Allow a tool to suppress the rendering of its title nav. Defaults to false if not specified, and title nav is rendered.
+		// Set suppressTitle = true to suppress
+		boolean suppressTitle = BooleanUtils.toBoolean(placement.getConfig().getProperty("suppressTitle"));
+		toolMap.put("suppressTitle", suppressTitle);
 
 		Session s = SessionManager.getCurrentSession();
 		ToolSession ts = s.getToolSession(placement.getId());
@@ -1001,7 +1008,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	}
 
 	public PortalRenderContext startPageContext(String siteType, String title,
-			String skin, HttpServletRequest request)
+			String skin, HttpServletRequest request, Site site)
 	{
 		PortalRenderEngine rengine = portalService
 		.getRenderEngine(portalContext, request);
@@ -1045,10 +1052,16 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			rcontext.put("googleTagManagerContainerId", googleTagManagerContainerId);
 		}
 
-		Session s = SessionManager.getCurrentSession();
-		rcontext.put("loggedIn", Boolean.valueOf(s.getUserId() != null));
-		rcontext.put("userId", s.getUserId());
-		rcontext.put("userEid", s.getUserEid());
+				
+		User currentUser = UserDirectoryService.getCurrentUser();
+		Role role = site != null && currentUser != null ? site.getUserRole(currentUser.getId()) : null;
+
+		rcontext.put("loggedIn", StringUtils.isNotBlank(currentUser.getId()));
+		rcontext.put("userId", currentUser.getId());
+		rcontext.put("userEid", currentUser.getEid());
+		rcontext.put("userType", currentUser.getType());
+		rcontext.put("userSiteRole", role != null ? role.getId() : "");
+
 		rcontext.put("loggedOutUrl",ServerConfigurationService.getLoggedOutUrl());
 		rcontext.put("portalPath",ServerConfigurationService.getPortalUrl());
 		rcontext.put("timeoutDialogEnabled",Boolean.valueOf(ServerConfigurationService.getBoolean("timeoutDialogEnabled", true)));
@@ -1089,6 +1102,9 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 
 		rcontext.put("toolDirectUrlEnabled", ServerConfigurationService.getBoolean("portal.tool.direct.url.enabled", true));
 		rcontext.put("toolShortUrlEnabled", ServerConfigurationService.getBoolean("shortenedurl.portal.tool.enabled", true));
+		
+		//SAK-32224. Ability to disable the animated tool menu by property
+		rcontext.put("scrollingToolbarEnabled", ServerConfigurationService.getBoolean("portal.scrolling.toolbar.enabled",false));
 		
 		return rcontext;
 	}
@@ -1274,7 +1290,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	{
 		Properties retval = new Properties();
 
-		String headCss = CSSUtils.getCssHead(skin,ToolUtils.isInlineRequest(req));
+		boolean isInlineReq = ToolUtils.isInlineRequest(req);
+		String headCss = CSSUtils.getCssHead(skin, isInlineReq);
 		
 		Editor editor = portalService.getActiveEditor(placement);
 		String preloadScript = editor.getPreloadScript() == null ? ""
@@ -1369,8 +1386,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		retval.setProperty("sakai.html.head", head);
 		retval.setProperty("sakai.html.head.css", headCss);
 		retval.setProperty("sakai.html.head.lang", rloader.getLocale().getLanguage());
-		retval.setProperty("sakai.html.head.css.base", CSSUtils.getCssToolBaseLink(skin,ToolUtils.isInlineRequest(req)));
-		retval.setProperty("sakai.html.head.css.skin", CSSUtils.getCssToolSkinLink(skin));
+		retval.setProperty("sakai.html.head.css.base", CSSUtils.getCssToolBaseLink(skin, isInlineReq));
+		retval.setProperty("sakai.html.head.css.skin", CSSUtils.getCssToolSkinLink(skin, isInlineReq));
 		retval.setProperty("sakai.html.head.js", headJs.toString());
 
 		return retval;
@@ -1686,42 +1703,15 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
                         if(sakaiTutorialEnabled && thisUser != null) {
                         	if (!("1".equals(prefs.getProperties().getProperty("sakaiTutorialFlag")))) {
                         		rcontext.put("tutorial", true);
-                        		//now save this in the user's prefefences so we don't show it again
+                        		//now save this in the user's preferences so we don't show it again
                         		PreferencesEdit preferences = null;
-                        		SecurityAdvisor secAdv = null;
                         		try {
-                        			secAdv = new SecurityAdvisor(){
-                        				@Override
-                        				public SecurityAdvice isAllowed(String userId, String function,
-                        						String reference) {
-                        					if("prefs.add".equals(function) || "prefs.upd".equals(function)){
-                        						return SecurityAdvice.ALLOWED;
-                        					}
-                        					return null;
-                        				}
-                        			};
-                        			securityService.pushAdvisor(secAdv);
-                        			
-                        			try {
-                        				preferences = preferencesService.edit(thisUser);
-                        			} catch (IdUnusedException ex1 ) {
-                        				try {
-                        					preferences = preferencesService.add( thisUser );
-                        				} catch (IdUsedException | PermissionException ex2) {
-                        					M_log.error(ex2.getMessage());
-                        				}
-                        			}
-                            		if (preferences != null) {
-                            			ResourcePropertiesEdit props = preferences.getPropertiesEdit();
-                            			props.addProperty("sakaiTutorialFlag", "1");
-                            			preferencesService.commit(preferences);   
-                            		}
-                        		} catch (Exception e1) {
+                        			preferences = preferencesService.edit(thisUser);
+                        			ResourcePropertiesEdit props = preferences.getPropertiesEdit();
+                        			props.addProperty("sakaiTutorialFlag", "1");
+                        			preferencesService.commit(preferences);   
+                        		} catch (SakaiException e1) {
                         			M_log.error(e1.getMessage(), e1);
-                        		}finally{
-                        			if(secAdv != null){
-                        				securityService.popAdvisor(secAdv);
-                        			}
                         		}
                         	}
                         }
@@ -1797,6 +1787,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			// for showing user display name and id next to logout (SAK-10492)
 			String loginUserDispName = null;
 			String loginUserDispId = null;
+			String loginUserId = null;
 			String loginUserFirstName = null;
 			boolean displayUserloginInfo = ServerConfigurationService.
 			getBoolean("display.userlogin.info", true);
@@ -1859,14 +1850,23 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				{
 					User thisUser = UserDirectoryService.getCurrentUser();
 					loginUserDispId = Validator.escapeHtml(thisUser.getDisplayId());
+					loginUserId = Validator.escapeHtml(thisUser.getId());
 					loginUserDispName = Validator.escapeHtml(thisUser.getDisplayName());
 					loginUserFirstName = Validator.escapeHtml(thisUser.getFirstName());
 				}
+				
+				// check if current user is being impersonated (by become user/sutool)
+				String impersonatorDisplayId = getImpersonatorDisplayId();
+				if (!impersonatorDisplayId.isEmpty())
+				{
+					message = rloader.getFormattedMessage("sit_return", impersonatorDisplayId);
+				}
 
 				// check for a logout text override
-				message = StringUtils.trimToNull(ServerConfigurationService
-						.getString("logout.text"));
-				if (message == null) message = rloader.getString("sit_log");
+				if (message == null)
+				{
+					message = ServerConfigurationService.getString("logout.text", rloader.getString("sit_log"));
+				}
 
 				// check for an image for the logout
 				image1 = StringUtils.trimToNull(ServerConfigurationService
@@ -1881,11 +1881,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			rcontext.put("loginTopLogin", Boolean.valueOf(topLogin));
 			rcontext.put("logoutWarningMessage", logoutWarningMessage);
 
-			// display portal links - SAK-22983
-			String portalLinks = portalService.getPortalLinks();
-			if (portalLinks != null) {
-				rcontext.put("portalLinks",portalLinks);
-			}						
 			if (!topLogin)
 			{
 
@@ -1936,6 +1931,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				rcontext.put("loginUserDispName", loginUserDispName);
 				rcontext.put("loginUserFirstName", loginUserFirstName);
 				rcontext.put("loginUserDispId", loginUserDispId);
+				rcontext.put("loginUserId", loginUserId);
 			}
 			rcontext.put("displayUserloginInfo", displayUserloginInfo && loginUserDispId != null);
 		}
@@ -2192,7 +2188,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	protected void sendPortalRedirect(HttpServletResponse res, String url)
 	throws IOException
 	{
-		PortalRenderContext rcontext = startPageContext("", null, null, null);
+		PortalRenderContext rcontext = startPageContext("", null, null, null, null);
 		rcontext.put("redirectUrl", url);
 		sendResponse(rcontext, res, "portal-redirect", null);
 	}
@@ -2330,6 +2326,36 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		}
 		
 		return rval;
+	}
+	
+	/**
+	 * Checks if current user is being impersonated (via become user/sutool) and returns displayId of
+	 * the impersonator. Adapted from SkinnableLogin's isImpersonating()
+	 * @return displayId of impersonator, or empty string if not being impersonated
+	 */
+	private String getImpersonatorDisplayId()
+	{
+		Session currentSession = SessionManager.getCurrentSession();
+		UsageSession originalSession = (UsageSession) currentSession.getAttribute(UsageSessionService.USAGE_SESSION_KEY);
+		
+		if (originalSession != null)
+		{
+			String originalUserId = originalSession.getUserId();
+			if (!StringUtils.equals(currentSession.getUserId(), originalUserId))
+			{
+				try
+				{
+					User originalUser = UserDirectoryService.getUser(originalUserId);
+					return originalUser.getDisplayId();
+				}
+				catch (UserNotDefinedException e)
+				{
+					M_log.debug("Unable to retrieve user for id: " + originalUserId);
+				}
+			}
+		}
+		
+		return "";
 	}
 
 }

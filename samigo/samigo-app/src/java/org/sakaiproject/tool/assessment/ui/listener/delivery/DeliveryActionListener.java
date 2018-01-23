@@ -44,6 +44,7 @@ import javax.faces.event.ActionListener;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
+import org.sakaiproject.samigo.util.SamigoConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.math3.util.Precision;
@@ -56,7 +57,7 @@ import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Object;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
-import org.sakaiproject.event.cover.EventTrackingService;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
@@ -103,6 +104,7 @@ import org.sakaiproject.tool.assessment.ui.queue.delivery.TimedAssessmentQueue;
 import org.sakaiproject.tool.assessment.ui.web.session.SessionUtil;
 import org.sakaiproject.tool.assessment.util.ExtendedTimeService;
 import org.sakaiproject.tool.assessment.util.FormatException;
+import org.sakaiproject.tool.assessment.util.SamigoLRSStatements;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 
@@ -125,6 +127,8 @@ public class DeliveryActionListener
   private boolean resetPageContents = true;
   private long previewGradingId = (long)(Math.random() * 1000);
   private static ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
+  private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+
 
   /**
    * ACTION.
@@ -155,6 +159,21 @@ public class DeliveryActionListener
       	// Bug 1547: If this is during review and the assessment is retracted for edit now, 
     	// there is no action needed (the outcome is set in BeginDeliveryActionListener).
       	return;
+      }
+
+      if (delivery.pastDueDate() && (DeliveryBean.TAKE_ASSESSMENT == action || DeliveryBean.TAKE_ASSESSMENT_VIA_URL == action)) {
+        if (delivery.isAcceptLateSubmission()) {
+          if(delivery.getTotalSubmissions() > 0) {
+            // Not during a Retake
+            if (delivery.getActualNumberRetake() == delivery.getNumberRetake()) {
+              return;
+            }
+          }
+        } else {
+          if(delivery.isRetracted(false)){
+              return;
+          }
+        }
       }
       // Clear elapsed time, set not timed out
       clearElapsedTime(delivery);
@@ -290,8 +309,8 @@ public class DeliveryActionListener
               eventRef.append(delivery.getAssessmentId());
               eventRef.append(", submissionId=");
               eventRef.append(agData.getAssessmentGradingId());
-              event = EventTrackingService.newEvent("sam.assessment.review", eventRef.toString(), true);
-              EventTrackingService.post(event);
+              event = eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_REVIEW, eventRef.toString(), true);
+              eventTrackingService.post(event);
               break;
  
       case 4: // Grade assessment
@@ -455,10 +474,10 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-                      event = EventTrackingService.newEvent("sam.assessment.take",
-                              "siteId=" + site_id + ", " + eventRef.toString(), true);
-                      EventTrackingService.post(event);
-                      registerIrss(delivery, event, false);
+            		  
+                      event = eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_TAKE,
+                              "siteId=" + site_id + ", " + eventRef.toString(), "samigo",true,0,SamigoLRSStatements.getStatementForTakeAssessment(delivery.getAssessmentTitle(), delivery.getPastDue(), publishedAssessment.getReleaseTo(), false));
+                      eventTrackingService.post(event);
             	  }
             	  else if (action == DeliveryBean.TAKE_ASSESSMENT_VIA_URL) {
             		  eventRef = new StringBuffer("publishedAssessmentId=");
@@ -472,10 +491,9 @@ public class DeliveryActionListener
             			  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             			  eventRef.append(timeRemaining);
             		  }
-                      event = EventTrackingService.newEvent("sam.assessment.take.via_url",
-                                "siteId=" + site_id + ", " + eventRef.toString(), site_id, true, NotificationService.NOTI_REQUIRED);
-                      EventTrackingService.post(event);
-                      registerIrss(delivery, event, true);
+                      event = eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_TAKE_VIAURL,
+                                "siteId=" + site_id + ", " + eventRef.toString(), site_id, true, NotificationService.NOTI_REQUIRED, SamigoLRSStatements.getStatementForTakeAssessment(delivery.getAssessmentTitle(), delivery.getPastDue(), publishedAssessment.getReleaseTo(), true));
+                      eventTrackingService.post(event);
             	  }
               }
               else {
@@ -500,9 +518,9 @@ public class DeliveryActionListener
             		  int timeRemaining = Integer.parseInt(delivery.getTimeLimit()) - Integer.parseInt(delivery.getTimeElapse());
             		  eventRef.append(timeRemaining);
             	  }
-                  event = EventTrackingService.newEvent("sam.assessment.resume",
+                  event = eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_RESUME,
                                 "siteId=" + site_id + ", " + eventRef.toString(), site_id, true, NotificationService.NOTI_REQUIRED);
-                  EventTrackingService.post(event);
+                  eventTrackingService.post(event);
               }
               
               // extend session time out
@@ -579,19 +597,6 @@ public class DeliveryActionListener
 
   }
   
-  protected void registerIrss(DeliveryBean delivery, Event event, boolean isViaURL) {
-	  LearningResourceStoreService lrss = (LearningResourceStoreService) ComponentManager
-			  .get("org.sakaiproject.event.api.LearningResourceStoreService");
-	  if (null != lrss && lrss.getEventActor(event) != null) {
-		  StringBuffer lrssMetaInfo = new StringBuffer("Assesment: " + delivery.getAssessmentTitle());
-		  lrssMetaInfo.append(", Past Due?: " + delivery.getPastDue());
-		  if (isViaURL) {
-			  lrssMetaInfo.append(", Assesment taken via URL.");
-		  }
-		  lrss.registerStatement(getStatementForTakeAssessment(lrss.getEventActor(event), event, lrssMetaInfo.toString()), "samigo");
-	  }
-  }
-
   /**
    * Look up item grading data and set assesment grading data from it or,
    * if there is none set null if setNullOK.
@@ -1363,10 +1368,7 @@ public class DeliveryActionListener
     		   
     	}
     	if ( (item.getTypeId().equals(TypeIfc.EXTENDED_MATCHING_ITEMS)) || (item.getTypeId().equals(TypeIfc.MULTIPLE_CORRECT) )|| (item.getTypeId().equals(TypeIfc.MATCHING) )){
-    		if (mcmc_match_counter==correctAnswers){
-    			haswronganswer=false;
-    		}
-    		else {
+    		if (mcmc_match_counter != correctAnswers){
     			haswronganswer=true;
     		}
     	}
@@ -1926,12 +1928,12 @@ public class DeliveryActionListener
                 pubAnswer.getIsCorrect().booleanValue())
             {
               mbean.setFeedback(pubAnswer.getCorrectAnswerFeedback());
-              mbean.setIsCorrect(true);
+              mbean.setIsCorrect(Boolean.TRUE);
             }
             else
             {
               mbean.setFeedback(pubAnswer.getInCorrectAnswerFeedback());
-              mbean.setIsCorrect(false);
+              mbean.setIsCorrect(Boolean.FALSE);
             }
           } else if (NONE_OF_THE_ABOVE.equals(data.getPublishedAnswerId())) {
         	  mbean.setResponse(data.getPublishedAnswerId().toString());
@@ -1970,7 +1972,7 @@ public class DeliveryActionListener
       List<ItemGradingData> datas = bean.getItemGradingDataArray();
       if (datas == null || datas.isEmpty())
       {
-        fbean.setIsCorrect(false);
+        fbean.setIsCorrect(Boolean.FALSE);
       }
       else
       {
@@ -1994,10 +1996,10 @@ public class DeliveryActionListener
             }
             else {
             	if (data.getIsCorrect().booleanValue()) {
-            		fbean.setIsCorrect(true);
+            		fbean.setIsCorrect(Boolean.TRUE);
             	}
             	else {
-            		fbean.setIsCorrect(false);
+            		fbean.setIsCorrect(Boolean.FALSE);
             	}
             }
           }
@@ -2120,7 +2122,7 @@ public class DeliveryActionListener
       List<ItemGradingData> datas = bean.getItemGradingDataArray();
       if (datas == null || datas.isEmpty())
       {
-        fbean.setIsCorrect(false);
+        fbean.setIsCorrect(Boolean.FALSE);
       }
       else
       {
@@ -2149,10 +2151,10 @@ public class DeliveryActionListener
             }
             else {
             	if (data.getIsCorrect().booleanValue()) {
-            		fbean.setIsCorrect(true);
+            		fbean.setIsCorrect(Boolean.TRUE);
             	}
             	else {
-            		fbean.setIsCorrect(false);
+            		fbean.setIsCorrect(Boolean.FALSE);
             	}
             }
           }
@@ -2397,7 +2399,7 @@ public class DeliveryActionListener
           List<ItemGradingData> datas = bean.getItemGradingDataArray();
           if (datas == null || datas.isEmpty())
           {
-              fbean.setIsCorrect(false);
+              fbean.setIsCorrect(Boolean.FALSE);
           } else {
               for (ItemGradingData data : datas) {
 
@@ -2468,7 +2470,16 @@ public class DeliveryActionListener
         if (data.getPublishedItemTextId().equals(text.getId()))
         {
           mbean.setItemGradingData(data);
-		  mbean.setIsCorrect(data.getIsCorrect());
+		  if (data.getIsCorrect() != null &&
+				  data.getIsCorrect().booleanValue())
+		  {
+			  mbean.setIsCorrect(true);
+		  }
+		  else
+		  {
+			  mbean.setIsCorrect(false);
+		  }
+ 
           if (data.getAnswerText() != null)
           {
             mbean.setResponse(data.getAnswerText());
@@ -3011,17 +3022,5 @@ public class DeliveryActionListener
 	  return gradingId;
   }
   
-    protected LRS_Statement getStatementForTakeAssessment(LRS_Actor actor, Event event, String assessmentName) {
-      String url = ServerConfigurationService.getPortalUrl();
-      LRS_Verb verb = new LRS_Verb(SAKAI_VERB.attempted);
-      LRS_Object lrsObject = new LRS_Object(url + "/assessment", "attempted-assessment");
-      HashMap<String, String> nameMap = new HashMap<String, String>();
-      nameMap.put("en-US", "User attempted assessment");
-      lrsObject.setActivityName(nameMap);
-      HashMap<String, String> descMap = new HashMap<String, String>();
-      descMap.put("en-US", "User attempted assessment: " + assessmentName);
-      lrsObject.setDescription(descMap);
-      return new LRS_Statement(actor, verb, lrsObject);
-  }
 }
 
