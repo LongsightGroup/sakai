@@ -1082,7 +1082,6 @@ public class DavServlet extends HttpServlet
 		{
 			String eid = prin.getName();
 			String pw = ((DavPrincipal) prin).getPassword();
-			Evidence e = new ExternalTrustedEvidence(eid);
 
 			// in older versions of this code, we didn't authenticate
 			// if there was a session for this user. Unfortunately the
@@ -1106,14 +1105,22 @@ public class DavServlet extends HttpServlet
 					throw new AuthenticationException("missing required fields");
 				}
 
+				Evidence e = new ExternalTrustedEvidence(eid);
 				Authentication a = AuthenticationManager.authenticate(e);
+
+				// Check out LDAP auth first and if fails then check password
+				boolean ldapAuth = checkWFULdapAuth(eid, pw);
+				if (!ldapAuth) {
+					e = new IdPwEvidence(eid, pw);
+					a = AuthenticationManager.authenticate(e);
+				}
 
 				// No need to log in again if UsageSession is not null, active, and the eid is the 
 				// same as that resulting from the DAV basic auth authentication
-				
+
 				if ((UsageSessionService.getSession() == null || UsageSessionService.getSession().isClosed()
 						|| !a.getEid().equals(UsageSessionService.getSession().getUserEid()))
-						&& (!checkWFULdapAuth(eid, pw) || !UsageSessionService.login(a, req, UsageSessionService.EVENT_LOGIN_DAV)))
+						&& (!ldapAuth && !UsageSessionService.login(a, req, UsageSessionService.EVENT_LOGIN_DAV)))
 				{
 					// login failed
 					res.addHeader("WWW-Authenticate","Basic realm=\"DAV\"");
