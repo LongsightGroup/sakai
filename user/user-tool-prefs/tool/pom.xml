@@ -82,7 +82,7 @@
     <dependency>
       <groupId>taglibs</groupId>
       <artifactId>standard</artifactId>
-      <version>1.0.4</version>
+      <version>1.1.2</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -115,6 +115,10 @@
     <dependency>
       <groupId>org.springframework</groupId>
 	  <artifactId>spring-beans</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-lang3</artifactId>
     </dependency>
   </dependencies>
   <build>

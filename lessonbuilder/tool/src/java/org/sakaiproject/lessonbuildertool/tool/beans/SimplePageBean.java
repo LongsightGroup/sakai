@@ -1802,7 +1802,10 @@ public class SimplePageBean {
 					}
 					if(item != null && item.getShowComments() != null && item.getShowComments()) {
 						//copy the attribute string from the top student section page  to each student page
-						items.add(0, simplePageToolDao.findItem(student.getCommentsSection()));
+						SimplePageItem commentsSection = simplePageToolDao.findItem(student.getCommentsSection());
+						if(commentsSection != null) {
+							items.add(0, commentsSection);
+						}
 					}
 				}
 			}
@@ -3369,7 +3372,8 @@ public class SimplePageBean {
 		     return null;
 		 if (page.isHidden())
 		     return messageLocator.getMessage("simplepage.hiddenpage");
-		 if (page.getReleaseDate() != null && page.getReleaseDate().after(new Date())) {
+		 // for index of pages we need to show even out of date release dates
+		 if (page.getReleaseDate() != null) { // && page.getReleaseDate().after(new Date())) {
 		     DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale);
 		     TimeZone tz = TimeService.getLocalTimeZone();
 		     df.setTimeZone(tz);

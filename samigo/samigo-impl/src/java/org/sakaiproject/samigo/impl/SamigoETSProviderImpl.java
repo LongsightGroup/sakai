@@ -97,10 +97,10 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
             case SamigoConstants.EVENT_ASSESSMENT_SUBMITTED:
                 handleAssessmentSubmitted(notificationValues, event);
                 break;
-            case SamigoConstants.EVENT_ASSESSMENT_AUTO_SUBMITTED:
+            case SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_AUTO:
                 handleAssessmentAutoSubmitted(notificationValues, event);
                 break;
-            case SamigoConstants.EVENT_ASSESSMENT_TIMED_SUBMITTED:
+            case SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_TIMER_THREAD:
                 handleAssessmentTimedSubmitted(notificationValues, event);
                 break;
         }
@@ -183,11 +183,13 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
 
         try{
             Site            site                    = siteService.getSite(siteID);
-            Set<String>     siteUsersHasRole;
+            Set<String>     siteUsersHasRole        = new HashSet<>();
             
             if (replacementValues.get("releaseToGroups") != null){
             	siteUsersHasRole = extractInstructorsFromGroups(site,replacementValues.get("releaseToGroups") );
-            }else{
+            }
+
+            if (siteUsersHasRole.isEmpty()) {
             	AuthzGroup azGroup = authzGroupService.getAuthzGroup("/site/" + siteID);
             	siteUsersHasRole = site.getUsersHasRole(azGroup.getMaintainRole());
             }

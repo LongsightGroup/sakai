@@ -1337,11 +1337,12 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     int retryCount = persistenceHelper.getRetryCount();
     while (retryCount > 0){ 
       try {
-        /* for testing the catch block - daisyf 
-        if (retryCount >2)
-          throw new Exception("uncategorized SQLException for SQL []; SQL state [61000]; error code [60]; ORA-00060: deadlock detected while waiting for resource");
-	*/ 
-        getHibernateTemplate().saveOrUpdate((AssessmentGradingData)assessment);
+        if (assessment.getAssessmentGradingId() != null) {
+            getHibernateTemplate().merge((AssessmentGradingData)assessment);
+        }
+        else {
+            getHibernateTemplate().save((AssessmentGradingData)assessment);
+        }
         retryCount = 0;
       }
       catch (Exception e) {
@@ -1865,7 +1866,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     while (retryCount > 0){ 
       try {
           for (ItemGradingData itemGradingData : c) {
-              getHibernateTemplate().saveOrUpdate(itemGradingData);
+              getHibernateTemplate().merge(itemGradingData);
           }
         retryCount = 0;
       }
@@ -3588,7 +3589,7 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
     					+ adata.getAgentId() + "-" + adata.getSubmittedDate().toString();
     				notiValues.put( "confirmationNumber", confirmationNumber );
 
-    				EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_AUTO_SUBMITTED, notiValues.toString(), AgentFacade.getCurrentSiteId(), false, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
+    				EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_AUTO, notiValues.toString(), AgentFacade.getCurrentSiteId(), false, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
     			}
 
 	    		lastPublishedAssessmentId = adata.getPublishedAssessmentId();
