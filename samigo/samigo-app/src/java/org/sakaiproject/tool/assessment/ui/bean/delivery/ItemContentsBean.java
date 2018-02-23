@@ -232,17 +232,17 @@ public class ItemContentsBean implements Serializable {
 	public boolean getModelAnswerIsNotEmpty() {
 		String k = getKey();
 		if (k != null)
-			return isNotEmpty(strip(ContextUtil.stringWYSIWYG(k)));
+			return isNotEmpty(k);
 		else
 			return false;
 	}
 	
 	public boolean getFeedbackIsNotEmpty() {
-		return isNotEmpty(strip(ContextUtil.stringWYSIWYG(getFeedback())));
+		return isNotEmpty(getFeedback());
 	}
 
 	public boolean getGradingCommentIsNotEmpty() {
-		return isNotEmpty(strip(getGradingComment()));
+		return isNotEmpty(getGradingComment());
 	}
 
 	public String getStrippedKey() {
