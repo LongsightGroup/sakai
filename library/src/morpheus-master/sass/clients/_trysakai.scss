@@ -46,16 +46,26 @@ $tool-menu-item-selected-hover-text-color:                 #FFFFFF !default;
 $tool-menu-item-selected-hover-icon-color:                 #FFFFFF !default;
 $tool-menu-item-selected-hover-background-color:           #00aa9e !default;
 $tool-menu-item-selected-hover-border-left:                4px solid #00aa9e !default;
-$tool-menu-collapse-active-background-color:               #00aa9e !default;
 $tool-menu-collapse-active-hover-background-color:         #00aa9e !default;
-
+$tool-menu-collapse-active-text-color:                     #00aa9e !default;
 $sites-nav-background: #00aa9e;
 
 /* Logo location */
 $logo: '../images/trysakai.png';
-$logo-height: 50px;
-$logo-width: 226px;
+$logo-height: 32px;
+$logo-width: 184px;
 
 .select {
-    color: #FFF !important;
+    color: #000 !important;
+    background-color: #EEE !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: #000 !important;
+   background-color: #EEE !important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #000 !important;
+    background: #00aa9e !important;
 }
