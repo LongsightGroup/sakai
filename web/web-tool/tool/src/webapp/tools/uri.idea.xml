@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<registration>
+
+       <tool
+                       id="uri.idea"
+                       title="IDEA Course Evaluation"
+                       description="Online student ratings of instruction">
+
+               <configuration name="source" value="https://web.uri.edu/provost/ideas" />
+               <configuration name="height" value="800px" />
+	       <configuration name="sakai:menuClass" value="fa-line-chart"/>
+               <configuration name="reset.button" value="false" type="final" />
+
+              <category name="course" />
+
+               <!-- Allow this to be set -->
+               <configuration name="functions.require" />
+
+               <!-- Allow multiple instances of this tool within one site -->
+               <configuration name="allowMultipleInstances" value="false" />
+
+       </tool>
+
+</registration>
