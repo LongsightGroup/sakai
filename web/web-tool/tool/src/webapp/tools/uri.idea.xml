@@ -11,6 +11,7 @@
                <configuration name="height" value="800px" />
 	       <configuration name="sakai:menuClass" value="fa-line-chart"/>
                <configuration name="reset.button" value="false" type="final" />
+               <configuration name="popup" value="true" />
 
               <category name="course" />
 
