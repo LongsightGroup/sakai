@@ -13,7 +13,6 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.NonCachingImage;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
@@ -33,7 +32,6 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.sakaiproject.gradebookng.business.GbGradingType;
-import org.sakaiproject.gradebookng.business.GradebookNgBusinessService;
 import org.sakaiproject.gradebookng.business.model.GbGradeInfo;
 import org.sakaiproject.gradebookng.business.model.GbStudentGradeInfo;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
@@ -41,15 +39,12 @@ import org.sakaiproject.gradebookng.tool.component.GbAjaxLink;
 import org.sakaiproject.gradebookng.tool.component.JFreeChartImageWithToolTip;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 
-public class GradeStatisticsPanel extends Panel {
+public class GradeStatisticsPanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private final ModalWindow window;
 	private final GbGradingType gradingType;
-
-	@SpringBean(name = "org.sakaiproject.gradebookng.business.GradebookNgBusinessService")
-	protected GradebookNgBusinessService businessService;
 
 	public GradeStatisticsPanel(final String id, final IModel<Long> model, final ModalWindow window) {
 		super(id, model);
@@ -316,5 +311,59 @@ public class GradeStatisticsPanel extends Panel {
 	private boolean isExtraCredit(Double grade, Assignment assignment) {
 		return (GbGradingType.PERCENTAGE.equals(gradingType) && grade > 100) ||
 			(GbGradingType.POINTS.equals(gradingType) && grade > assignment.getPoints());
+	}
+}
+
+class JFreeChartImageWithToolTip extends NonCachingImage {
+	private final String imageMapId;
+	private final int width;
+	private final int height;
+	private final ChartRenderingInfo chartRenderingInfo = new ChartRenderingInfo(new StandardEntityCollection());
+
+	public JFreeChartImageWithToolTip(final String id, final IModel<JFreeChart> model,
+			final String imageMapId, final int width, final int height) {
+		super(id, model);
+		this.imageMapId = imageMapId;
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	protected IResource getImageResource() {
+		IResource imageResource = null;
+		final JFreeChart chart = (JFreeChart) getDefaultModelObject();
+		imageResource = new DynamicImageResource() {
+			@Override
+			protected byte[] getImageData(final Attributes attributes) {
+				final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				try {
+					if (chart != null) {
+						JFreeChartImageWithToolTip.this.chartRenderingInfo.clear();
+						ChartUtilities.writeChartAsPNG(stream, chart, JFreeChartImageWithToolTip.this.width,
+								JFreeChartImageWithToolTip.this.height, JFreeChartImageWithToolTip.this.chartRenderingInfo);
+					}
+				} catch (final IOException ex) {
+					// TODO logging for rendering chart error
+				}
+				return stream.toByteArray();
+			}
+		};
+		return imageResource;
+	}
+
+	@Override
+	public void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag) {
+		final JFreeChart chart = (JFreeChart) getDefaultModelObject();
+		if (chart == null) {
+			return;
+		}
+		final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		try {
+			this.chartRenderingInfo.clear();
+			ChartUtilities.writeChartAsPNG(stream, chart, this.width, this.height, this.chartRenderingInfo);
+		} catch (final IOException ex) {
+			// do something
+		}
+		replaceComponentTagBody(markupStream, openTag, ChartUtilities.getImageMap(this.imageMapId, this.chartRenderingInfo));
 	}
 }
