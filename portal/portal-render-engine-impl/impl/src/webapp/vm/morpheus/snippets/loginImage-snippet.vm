@@ -1,22 +1,5 @@
 <div id="loginLinksImage" class="Mrphs-loginUser" tabindex="0">
 
-    #if (${loginHasImage1})
-
-        <p class="Mrphs-loginUser__menuitem">
-            <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="Mrphs-loginUser__image" data-warning="${logoutWarningMessage}"><img src="${loginImage1}" alt="${loginMessage}"></a>
-        </p>
-
-    #else
-
-        <p class="Mrphs-loginUser__menuitem">
-            <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="Mrphs-loginUser__message" data-warning="${logoutWarningMessage}">
-                <i class="login-Icon"></i>
-                <span class="Mrphs-login-Message">${loginMessage}</span>
-            </a>
-        </p>
-
-    #end ## END of IF (${loginHasImage1})
-
     #if (${loginHasLogInOutUrl2})
 
         #if (${loginHasImage2})
@@ -37,5 +20,23 @@
         #end ## END of IF (${loginHasImage2})
 
    #end ## END of IF (${loginHasLogInOutUrl2})
+
+
+    #if (${loginHasImage1})
+
+        <p class="Mrphs-loginUser__menuitem">
+            <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="Mrphs-loginUser__image" data-warning="${logoutWarningMessage}"><img src="${loginImage1}" alt="${loginMessage}"></a>
+        </p>
+
+    #else
+
+        <p class="Mrphs-loginUser__menuitem">
+            <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="Mrphs-loginUser__message" data-warning="${logoutWarningMessage}">
+                <i class="login-Icon"></i>
+                <span class="Mrphs-login-Message">${loginMessage}</span>
+            </a>
+        </p>
+
+    #end ## END of IF (${loginHasImage1})
 
 </div>

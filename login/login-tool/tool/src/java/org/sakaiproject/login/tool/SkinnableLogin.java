@@ -272,8 +272,8 @@ public class SkinnableLogin extends HttpServlet implements Login {
 
 					// Present the choice template
 					LoginRenderContext rcontext = startChoiceContext("", req, res);
-					rcontext.put("containerLoginUrl", containerCheckUrl);
 					rcontext.put("xloginUrl", xloginUrl);
+					rcontext.put("containerLoginUrl", containerCheckUrl);
 
 					sendResponse(rcontext, res, "choice", null);
 
