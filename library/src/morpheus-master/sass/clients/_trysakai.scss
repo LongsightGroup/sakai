@@ -48,12 +48,20 @@ $tool-menu-item-selected-hover-background-color:           #00aa9e !default;
 $tool-menu-item-selected-hover-border-left:                4px solid #00aa9e !default;
 $tool-menu-collapse-active-hover-background-color:         #00aa9e !default;
 $tool-menu-collapse-active-text-color:                     #00aa9e !default;
+$tool-sub-menu-hover-color:				   #000; 
 $sites-nav-background: #00aa9e;
 
 /* Logo location */
 $logo: '../images/trysakai.png';
 $logo-height: 32px;
 $logo-width: 184px;
+
+
+$info-background-color:   #efefef;
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    border-color: $primary-color !important;
+}
 
 .select {
     color: #000 !important;
@@ -69,3 +77,12 @@ $logo-width: 184px;
     border: 1px solid #000 !important;
     background: #00aa9e !important;
 }
+
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
+    color: #000 !important;
+}
+
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary {
+    color: #000 !important;
+}
+
