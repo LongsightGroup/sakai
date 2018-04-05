@@ -319,6 +319,7 @@
    <bean id="AutoSubmitAssessments" class="org.sakaiproject.tool.assessment.services.AutoSubmitAssessmentsJob" 
    	init-method="init" destroy-method="destroy">
        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService"/>
+       <property name="samigoETSProvider" ref="org.sakaiproject.samigo.api.SamigoETSProvider"/>
    </bean>
 
    <bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.AutoSubmitAssessments"

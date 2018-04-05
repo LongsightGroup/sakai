@@ -59,6 +59,7 @@ import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.spring.SpringBeanLocator;
+import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingAttachment;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingAttachment;
@@ -74,11 +75,13 @@ import org.sakaiproject.tool.assessment.data.ifc.assessment.PublishedAssessmentI
 import org.sakaiproject.tool.assessment.data.ifc.grading.StudentGradingSummaryIfc;
 import org.sakaiproject.tool.assessment.data.ifc.shared.TypeIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
+import org.sakaiproject.tool.assessment.facade.EventLogFacade;
 import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.assessment.facade.TypeFacade;
 import org.sakaiproject.tool.assessment.facade.TypeFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
+import org.sakaiproject.tool.assessment.services.assessment.EventLogService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.util.SamigoExpressionError;
 import org.sakaiproject.tool.assessment.util.SamigoExpressionParser;
@@ -106,8 +109,8 @@ public class GradingService
   final String CALCULATION_OPEN = "[["; // not regex safe
   final String CALCULATION_CLOSE = "]]"; // not regex safe
   final String FORMAT_MASK = "0E0";
-  final Double MAX_THRESHOLD = 10000.0;
-  final Double MIN_THRESHOLD = 0.0001;
+  final BigDecimal DEFAULT_MAX_THRESHOLD = BigDecimal.valueOf(1.0e+11);
+  final BigDecimal DEFAULT_MIN_THRESHOLD = BigDecimal.valueOf(0.0001);
   /**
    * regular expression for matching the contents of a variable or formula name 
    * in Calculated Questions
@@ -1268,17 +1271,34 @@ public class GradingService
     return totalAutoScore;
   }
 
-  private void notifyGradebookByScoringType(AssessmentGradingData data, PublishedAssessmentIfc pub){
+  public void notifyGradebookByScoringType(AssessmentGradingData data, PublishedAssessmentIfc pub){
+    if (pub == null || pub.getEvaluationModel() == null) {
+      // should not come to here
+      log.warn("publishedAssessment is null or publishedAssessment.getEvaluationModel() is null");
+      return;
+    }
     Integer scoringType = pub.getEvaluationModel().getScoringType();
     if (updateGradebook(data, pub)){
       AssessmentGradingData d = data; // data is the last submission
       // need to decide what to tell gradebook
-      if ((scoringType).equals(EvaluationModelIfc.HIGHEST_SCORE))
+      if ((scoringType).equals(EvaluationModelIfc.HIGHEST_SCORE)) {
         d = getHighestSubmittedAssessmentGrading(pub.getPublishedAssessmentId().toString(), data.getAgentId());
+      }
+      // Send the average score if average was selected for multiple submissions
+      else if (scoringType.equals(EvaluationModelIfc.AVERAGE_SCORE)) {
+        // status = 5: there is no submission but grader update something in the score page
+        if(data.getStatus() == AssessmentGradingData.NO_SUBMISSION) {
+          d.setFinalScore(data.getFinalScore());
+        } else {
+          Double averageScore = PersistenceService.getInstance().getAssessmentGradingFacadeQueries().
+            getAverageSubmittedAssessmentGrading(pub.getPublishedAssessmentId(), data.getAgentId());
+          d.setFinalScore(averageScore);
+        }
+      }
       notifyGradebook(d, pub);
     }
   }
-  
+
   private double getScoreByQuestionType(ItemGradingData itemGrading, ItemDataIfc item,
                                        Long itemType, Map publishedItemTextHash, 
                                        Map totalItems, Map fibAnswersMap, Map<Long, Map<Long,Set<EMIScore>>> emiScoresMap,
@@ -1506,7 +1526,49 @@ public class GradingService
     return answer.getScore().doubleValue();
   }
 
-  public void notifyGradebook(AssessmentGradingData data, PublishedAssessmentIfc pub) throws GradebookServiceException {
+  public void updateAutosubmitEventLog(AssessmentGradingData adata) {
+	  EventLogService eventService = new EventLogService();
+	  EventLogFacade eventLogFacade = new EventLogFacade();
+	  Long gradingId = adata.getAssessmentGradingId();
+
+	  List<EventLogData> eventLogDataList = eventService.getEventLogData(gradingId);
+	  if (!eventLogDataList.isEmpty()) {
+		  EventLogData eventLogData= (EventLogData) eventLogDataList.get(0);
+		  //will do the i18n issue later.
+		  eventLogData.setErrorMsg("No Errors (Auto submit)");
+		  Date endDate = new Date();
+		  eventLogData.setEndDate(endDate);
+		  if(eventLogData.getStartDate() != null) {
+			  double minute= 1000*60;
+			  int eclipseTime = (int)Math.ceil(((endDate.getTime() - eventLogData.getStartDate().getTime())/minute));
+			  eventLogData.setEclipseTime(eclipseTime); 
+		  } else {
+			  eventLogData.setEclipseTime(null); 
+			  eventLogData.setErrorMsg("Error during auto submit");
+		  }
+		  eventLogFacade.setData(eventLogData);
+		  eventService.saveOrUpdateEventLog(eventLogFacade);
+	  }
+
+	  EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_AUTO_SUBMIT_JOB,
+			  AutoSubmitAssessmentsJob.safeEventLength("publishedAssessmentId=" + adata.getPublishedAssessmentId() + 
+					  ", assessmentGradingId=" + gradingId), true));
+
+	  Map<String, Object> notiValues = new HashMap<>();
+	  notiValues.put("publishedAssessmentID", adata.getPublishedAssessmentId());
+	  notiValues.put("assessmentGradingID", gradingId);
+	  notiValues.put("userID", adata.getAgentId());
+	  notiValues.put("submissionDate", adata.getSubmittedDate());
+
+	  String confirmationNumber = adata.getAssessmentGradingId() + "-" + adata.getPublishedAssessmentId() + "-"
+
+			  + adata.getAgentId() + "-" + adata.getSubmittedDate().toString();
+	  notiValues.put( "confirmationNumber", confirmationNumber );
+
+	  EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_AUTO, notiValues.toString(), AgentFacade.getCurrentSiteId(), false, SamigoConstants.NOTI_EVENT_ASSESSMENT_SUBMITTED));
+  }
+  
+  private void notifyGradebook(AssessmentGradingData data, PublishedAssessmentIfc pub) throws GradebookServiceException {
     // If the assessment is published to the gradebook, make sure to update the scores in the gradebook
     String toGradebook = pub.getEvaluationModel().getToGradeBook();
 
@@ -2783,14 +2845,14 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
    */
   public String toScientificNotation(String numberStr,int decimalPlaces){
 	  
-	  BigDecimal x = new BigDecimal(numberStr);
-	  x.setScale(decimalPlaces,RoundingMode.HALF_UP);	
+	  BigDecimal bdx = new BigDecimal(numberStr);
+	  bdx.setScale(decimalPlaces,RoundingMode.HALF_UP);	
 	  
 	  NumberFormat formatter;
 	  
-	  if (((( Math.abs(x.doubleValue())) >= MAX_THRESHOLD) || ( Math.abs(x.doubleValue()) <= MIN_THRESHOLD) 
-        || (numberStr.contains("e")) || numberStr.contains("E") ) 
-	    && (x.doubleValue() != 0)) {
+	  if ((bdx.abs().compareTo(DEFAULT_MAX_THRESHOLD) >= 0 || bdx.abs().compareTo(DEFAULT_MIN_THRESHOLD) <= 0
+        || numberStr.contains("e") || numberStr.contains("E") ) 
+	    && bdx.doubleValue() != 0) {
 		  formatter = new DecimalFormat(FORMAT_MASK);
 	  } else {
 		  formatter = new DecimalFormat("0");
@@ -2799,7 +2861,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	  formatter.setRoundingMode(RoundingMode.HALF_UP);	  
 	  formatter.setMaximumFractionDigits(decimalPlaces);
 	  
-	  String formattedNumber = formatter.format(x);
+	  String formattedNumber = formatter.format(bdx);
 
 	  return formattedNumber.replace(",",".");
   }
@@ -3133,6 +3195,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
       } else {
           formula = StringUtils.trimToEmpty(formula).replaceAll("\\s+", " ");
       }
+
       return formula;
   }
 
@@ -3334,12 +3397,13 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 	    return list;
   }
   
-  public void autoSubmitAssessments() {
+  public int autoSubmitAssessments() {
 	  try {
-		  PersistenceService.getInstance().
+		  return PersistenceService.getInstance().
 		  getAssessmentGradingFacadeQueries().autoSubmitAssessments();
 	  } catch (Exception e) {
 		  log.error(e.getMessage(), e);
+		  return 1;
 	  }
   }
   

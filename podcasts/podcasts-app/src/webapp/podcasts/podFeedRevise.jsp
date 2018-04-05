@@ -8,9 +8,7 @@
 </jsp:useBean>
 
   <f:view>
-        <link href="./css/podcaster.css" type="text/css" rel="stylesheet" media="all" />
-
-    <sakai:view>
+    <sakai:view toolCssHref="css/podcaster.css">
     <h:form id="podFeedRev" >
 
     <div>  <!-- Page title and Instructions -->
@@ -29,12 +27,12 @@
     <table class="indnt1 nolines">
       <tr> <!--  ****** Feed Address (non-editable) ****** -->
         <td colspan=2><h:outputText value="#{msgs.podfeed_revise_url_caption}" /></td>
-        <td><b><h:outputText id="feedURL" value="#{podHomeBean.URL}" /></b></td>
+        <td><b><h:outputText id="feedURL" styleClass="feedUrl" value="#{podHomeBean.URL}" /></b></td>
       </tr>
       <tr>  <!-- ****** Feed Title ****** -->
         <td class="reqStarInline">*</td>
         <td><h:outputText value="#{msgs.title_prompt}" /></td>
- 	    <td><h:inputText id="podtitle" value="#{podfeedBean.podfeedTitle}" size="35" maxlength="255" /></td>
+ 	    <td><h:inputText id="podtitle" styleClass="podTitle" value="#{podfeedBean.podfeedTitle}" size="35" maxlength="255" /></td>
  	  </tr>
 	  <tr>
   	    <td colspan="3"><h:messages styleClass="alertMessage" id="errorMessages" rendered="#{! empty facesContext.maximumSeverity}" /> </td>

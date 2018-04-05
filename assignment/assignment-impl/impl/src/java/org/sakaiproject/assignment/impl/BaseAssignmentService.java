@@ -765,6 +765,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
  		{
  			contentReviewService = (ContentReviewService) ComponentManager.get(ContentReviewService.class.getName());
  		}
+ 		
 	} // init
 
 	/**
@@ -931,7 +932,13 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				retVal.setDropDeadTime(existingAssignment.getDropDeadTime());
 				retVal.setCloseTime(existingAssignment.getCloseTime());
 				retVal.setDraft(true);
-                                retVal.setGroup(existingAssignment.isGroup());
+                		retVal.setGroup(existingAssignment.isGroup());
+               			retVal.setAllowPeerAssessment(existingAssignment.getAllowPeerAssessment());
+               			retVal.setPeerAssessmentInstructions(existingAssignment.getPeerAssessmentInstructions());
+                		retVal.setPeerAssessmentAnonEval(existingAssignment.getPeerAssessmentAnonEval());
+                		retVal.setPeerAssessmentNumReviews(existingAssignment.getPeerAssessmentNumReviews());
+                		retVal.setPeerAssessmentPeriod(existingAssignment.getPeerAssessmentPeriod());
+                		retVal.setPeerAssessmentStudentViewReviews(existingAssignment.getPeerAssessmentStudentViewReviews());
 				ResourcePropertiesEdit pEdit = (BaseResourcePropertiesEdit) retVal.getProperties();
 				pEdit.addAll(existingAssignment.getProperties());
 				addLiveProperties(pEdit);
@@ -1035,6 +1042,13 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			// and those deleted but not non-electronic assignments but the user has made submissions to them
 			accessible = true;
 		}
+		if(assignment.getAccess() == Assignment.AssignmentAccess.GROUPED){
+			Collection<Group> asgGroups = assignment.getGroups();
+			Collection<Group> allowedGroups = getGroupsAllowFunction(SECURE_UPDATE_ASSIGNMENT, assignment.getContext(), userId);
+			if(isIntersectionGroupRefsToGroups(asgGroups, allowedGroups)){
+				accessible=true;
+			}
+		}
 		return accessible;
 	}
 
@@ -1074,6 +1088,20 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 		return assignment;
 	}
 
+	protected Assignment findAssignmentFromContent(String context, String contentId){
+		if(context == null || contentId == null){
+			return null;
+		}
+		List<Assignment> assignmentList = getUnfilteredAssignments(context);
+		for(Assignment assignment : assignmentList){
+			String contentReference = assignment.getContentReference();
+			if(contentId.equals(contentReference)){
+				return assignment;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Access all assignment objects - known to us (not from external providers).
 	 * 
@@ -1101,7 +1129,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 	{
 		List rv = new ArrayList();
 		
-		if (!allowGetAssignment(context))
+		if (!allowGetAssignment(context) && getGroupsAllowGetAssignment(context).isEmpty())
 		{
 			// no permission to read assignment in context
 			return rv;
@@ -3555,11 +3583,14 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					for (Group _g : groups)
 					{
 						M_log.debug("Checking submission for group: " + _g.getTitle());
-						submission = getSubmission(a.getReference(), _g.getId());
-						if (submission != null && allowGetSubmission(submission.getReference()))
+						if(a.getGroups().contains(_g.getReference()))
 						{
-							userSubmissionMap.put(user, submission);
-							break;
+							submission = getSubmission(a.getReference(), _g.getId());
+							if (submission != null && allowGetSubmission(submission.getReference()))
+							{
+								userSubmissionMap.put(user, submission);
+								break;
+							}
 						}
 					}
 				}
@@ -6321,8 +6352,8 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 
 		try
 		{
-			// for assignment
-			if (REF_TYPE_ASSIGNMENT.equals(ref.getSubType()))
+			// for assignment and content
+			if (REF_TYPE_ASSIGNMENT.equals(ref.getSubType()) || REF_TYPE_CONTENT.equals(ref.getSubType()))
 			{
 				// assignment
 				rv.add(ref.getReference());
@@ -6338,7 +6369,12 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 					// TODO: check for efficiency, cache and thread local caching usage -ggolden
 					if (ref.getId() != null)
 					{
-						Assignment a = findAssignment(ref.getReference());
+						Assignment a = null;
+						if(REF_TYPE_ASSIGNMENT.equals(ref.getSubType())){
+							a = findAssignment(ref.getReference());
+						} else if(REF_TYPE_CONTENT.equals(ref.getSubType())){
+							a = findAssignmentFromContent(ref.getContext(), ref.getReference());
+						}
 						if (a != null)
 						{
 							grouped = Assignment.AssignmentAccess.GROUPED == a.getAccess();
@@ -6364,7 +6400,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			{
 				rv.add(ref.getReference());
 				
-				// for content and submission, use site security setting
+				// for submission, use site security setting
 				ref.addSiteContextAuthzGroup(rv);
 			}
 		}
@@ -6942,7 +6978,7 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 							nAssignment.setTitle(oAssignment.getTitle());
 							nAssignment.setPosition_order(oAssignment.getPosition_order());
 							
-							nAssignment.setAllowPeerAssessment(nAssignment.getAllowPeerAssessment());
+							nAssignment.setAllowPeerAssessment(oAssignment.getAllowPeerAssessment());
 							nAssignment.setPeerAssessmentAnonEval(oAssignment.getPeerAssessmentAnonEval());
 							nAssignment.setPeerAssessmentInstructions(oAssignment.getPeerAssessmentInstructions());
 							nAssignment.setPeerAssessmentNumReviews(oAssignment.getPeerAssessmentNumReviews());
@@ -8790,9 +8826,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 			else
 			{
 				// verify that the user has permission to add in the site context
-				if (!allowAddSiteAssignment(m_context))
+				if (!allowAddAssignment(m_context))
 				{
-					throw new PermissionException(SessionManager.getCurrentSessionUserId(), "access:site", getReference());				
+					throw new PermissionException(SessionManager.getCurrentSessionUserId(), "access:site", getReference());
 				}
 			}
 
@@ -10896,6 +10932,9 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				String iconUrl = contentReviewService.getIconUrlforScore(Long.valueOf(reviewScore));
 				reviewResult.setReviewIconURL(iconUrl);
 				reviewResult.setReviewError(getReviewError(cr));
+				
+				ContentReviewItem cri = findReportByContentId(cr.getId());
+				reviewResult.setContentReviewItem(cri);
 
 				if ("true".equals(cr.getProperties().getProperty(PROP_INLINE_SUBMISSION)))
 				{
@@ -10907,6 +10946,30 @@ public abstract class BaseAssignmentService implements AssignmentService, Entity
 				}
 			}
 			return reviewResults;
+		}
+		
+		/**
+		 * Gets a report from contentReviewService given its contentId
+		 * This function should be provided by content-review in Sakai 12+,
+		 * meanwhile in Sakai 11.x we need to get the full report list and iterate over it.
+		 */
+		private ContentReviewItem findReportByContentId(String contentId){
+			String siteId = this.m_context;
+			if(StringUtils.isBlank(contentId)){
+				return null;
+			}
+			try{
+				List<ContentReviewItem> reports = contentReviewService.getReportList(siteId);
+				
+				for(ContentReviewItem item : reports) {
+					if(StringUtils.isNotBlank(item.getContentId()) && contentId.equals(item.getContentId())){
+						return item;
+					}
+				}
+			}catch(Exception e){
+				M_log.error("Error getting reports list for site "+siteId, e);
+			}
+			return null;
 		}
 		
 		/**

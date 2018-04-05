@@ -174,7 +174,7 @@ public class PersistenceService{
 	public void setAssessmentGradingFacadeQueries(AssessmentGradingFacadeQueriesAPI assessmentGradingFacadeQueries){
 	    this.assessmentGradingFacadeQueries = assessmentGradingFacadeQueries;
 	}
-
+	
         public AuthorizationFacadeQueriesAPI getAuthorizationFacadeQueries(){
 	  return authorizationFacadeQueries;
         }

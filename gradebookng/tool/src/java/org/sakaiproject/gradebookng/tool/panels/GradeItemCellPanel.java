@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.validator.routines.DoubleValidator;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
@@ -22,14 +21,11 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.sakaiproject.gradebookng.business.GbGradingType;
 import org.sakaiproject.gradebookng.business.GbRole;
 import org.sakaiproject.gradebookng.business.GradeSaveResponse;
-import org.sakaiproject.gradebookng.business.GradebookNgBusinessService;
 import org.sakaiproject.gradebookng.business.model.GbGradeInfo;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
 import org.sakaiproject.gradebookng.tool.model.GbModalWindow;
@@ -42,12 +38,9 @@ import org.sakaiproject.gradebookng.tool.pages.GradebookPage;
  * @author Steve Swinsburg (steve.swinsburg@gmail.com)
  *
  */
-public class GradeItemCellPanel extends Panel {
+public class GradeItemCellPanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
-
-	@SpringBean(name = "org.sakaiproject.gradebookng.business.GradebookNgBusinessService")
-	protected GradebookNgBusinessService businessService;
 
 	IModel<Map<String, Object>> model;
 	Map<String, Object> modelData;
@@ -134,7 +127,7 @@ public class GradeItemCellPanel extends Panel {
 		this.formattedGrade = FormatHelper.formatGrade(this.rawGrade);
 		
 		//TODO move this to the format helper?
-		this.displayGrade = formatDisplayGrade(this.formattedGrade);
+		this.displayGrade = formatDisplayGrade(FormatHelper.formatGradeForDisplay(this.formattedGrade));
 
 		// RENDER
 		if (isExternal || !this.gradeable) {
@@ -206,14 +199,12 @@ public class GradeItemCellPanel extends Panel {
 					clearNotifications();
 
 					// perform validation here so we can bypass the backend
-					final DoubleValidator validator = new DoubleValidator();
-
-					if (StringUtils.isNotBlank(rawGrade) && (!validator.isValid(rawGrade) || Double.parseDouble(rawGrade) < 0)) {
+					if (StringUtils.isNotBlank(rawGrade) && FormatHelper.validateDouble(rawGrade)!= null && (!FormatHelper.isValidDouble(rawGrade) || FormatHelper.validateDouble(rawGrade) < 0)) {
 						// show warning and revert button
 						markWarning(getComponent());
 						target.add(page.updateLiveGradingMessage(getString("feedback.error")));
 					} else {
-						final String newGrade = FormatHelper.formatGrade(rawGrade);
+						final String newGrade = FormatHelper.formatGradeFromUserLocale(rawGrade);
 						
 						// for concurrency, get the original grade we have in the UI and pass it into the service as a check
 						final GradeSaveResponse result = GradeItemCellPanel.this.businessService.saveGrade(assignmentId, studentUuid,
