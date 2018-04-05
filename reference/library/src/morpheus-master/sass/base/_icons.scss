@@ -80,7 +80,22 @@
   .icon-sakai--kaltura-media {                              @extend .fa-file-video-o; }
   .icon-sakai--kaltura-my-media {                           @extend .fa-file-video-o; }
   .icon-sakai--sakai-bbb {                                  @extend .fa-video-camera; }
+  .icon-sakai--sakai-irubric {                              @extend .fa-table; }
+  .icon-sakai--sakai-gradebook-gwt-rpc {                    @extend .fa-book; }
   .icon-sakai--sakai-rsf-evaluation {                       @extend .fa-commenting; }
+  .icon-sakai--com-sonicfoundry-mediasite-mymediasite {     @extend .fa-users; }
+  .icon-sakai--com-sonicfoundry-mediasite-catalog {         @extend .fa-youtube-play; }
+  .icon-sakai--sakai-blogwow {                              @extend .fa-commenting; }
+  .icon-sakai--com-rsmart-certification {                   @extend .fa-certificate; }
+  .icon-sakai--sakai-sms-user {                             @extend .fa-comments; }
+  .icon-sakai--sakai-sms-admin {                            @extend .fa-comments; }
+  .icon-sakai--sakai-turningpoint {                         @extend .fa-check; }
+  .icon-sakai--sakai-qna {                                  @extend .fa-commenting-o; }
+  .icon-sakai--sakai-melete {                               @extend .fa-book; }
+  .icon-sakai--sakai-iclicker {                             @extend .fa-play; }
+  .icon-sakai--sakai-videoconference-connect {              @extend .fa-group; }
+  .icon-sakai--sakai-scorm-tool {                           @extend .fa-book; }
+  .icon-sakai--sakai-scorm-singlepackage-tool {             @extend .fa-book; }
 
   // other icons
   .icon-sakai--check {                                      @extend .fa-check; }
