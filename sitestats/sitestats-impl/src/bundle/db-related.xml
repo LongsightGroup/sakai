@@ -36,7 +36,7 @@
 	<!-- Database:  load specific session factory and transaction manager defenitions
 					for internal (Sakai) and external DB. -->
     <import resource="hbm-db.xml" />
-	<import resource="internal-db.xml" />
+	<!--import resource="internal-db.xml" / -->
 	<import resource="external-db.xml" />
 	
 	
