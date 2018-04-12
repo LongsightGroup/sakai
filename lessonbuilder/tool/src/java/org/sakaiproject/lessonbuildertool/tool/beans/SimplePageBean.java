@@ -4667,9 +4667,9 @@ public class SimplePageBean {
 				SimplePageItem item = findItem(itemId);
 				//If sakaiId is not empty, the item is a page, if not is an item
 				if(!StringUtils.isEmpty(item.getSakaiId())){
-					EventTrackingService.post(EventTrackingService.newEvent(LessonBuilderEvents.PAGE_READ, "/lessonbuilder/page/" + item.getSakaiId(), complete));
+					EventTrackingService.post(EventTrackingService.newEvent("lessonbuilder.page.read", "/lessonbuilder/page/" + item.getSakaiId(), complete));
 				}else{
-					EventTrackingService.post(EventTrackingService.newEvent(LessonBuilderEvents.ITEM_READ, "/lessonbuilder/item/" + item.getId(), complete));
+					EventTrackingService.post(EventTrackingService.newEvent("lessonbuilder.item.read", "/lessonbuilder/item/" + item.getId(), complete));
 				}
 				trackComplete(item, complete);
 				studentPageId = -1L;
@@ -4694,9 +4694,9 @@ public class SimplePageBean {
 				SimplePageItem item = findItem(itemId);
 				//If sakaiId is not empty, the item is a page, if not is an item
 				if(!StringUtils.isEmpty(item.getSakaiId())){
-					EventTrackingService.post(EventTrackingService.newEvent(LessonBuilderEvents.PAGE_READ, "/lessonbuilder/page/" + item.getSakaiId(), complete));
+					EventTrackingService.post(EventTrackingService.newEvent("lessonbuilder.page.read", "/lessonbuilder/page/" + item.getSakaiId(), complete));
 				}else{
-					EventTrackingService.post(EventTrackingService.newEvent(LessonBuilderEvents.ITEM_READ, "/lessonbuilder/item/" + item.getId(), complete));
+					EventTrackingService.post(EventTrackingService.newEvent("lessonbuilder.item.read", "/lessonbuilder/item/" + item.getId(), complete));
 				}
 				if (complete != wasComplete)
 				    trackComplete(item, complete);
