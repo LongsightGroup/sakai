@@ -54,6 +54,7 @@ import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.GradebookAssignment;
 import org.sakaiproject.tool.gradebook.GradingEvent;
 import org.sakaiproject.tool.gradebook.GradingEvents;
+import org.sakaiproject.tool.gradebook.GradingScale;
 import org.sakaiproject.tool.gradebook.LetterGradePercentMapping;
 import org.sakaiproject.tool.gradebook.Spreadsheet;
 import org.sakaiproject.tool.gradebook.business.GbSynchronizer;
@@ -1601,6 +1602,22 @@ public abstract class GradebookManagerHibernateImpl extends GradebookServiceHibe
 	}
 
 
+    public void addDukeGradingScales(final Long id) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
+				Gradebook gradebook = (Gradebook)session.load(Gradebook.class, id);
+				GradingScale gradingScale = gradebook.getSelectedGradeMapping().getGradingScale();
+				String []dukeGrades = new String[]{"AD" ,"CR" ,"I" ,"N" ,"NC" ,"P" ,"S" ,"U" ,"W" ,"WA" ,"X" ,"Z"};
+				for (String grade: dukeGrades) {
+					if (!gradingScale.getGrades().contains(grade)) {
+						gradingScale.getGrades().add(grade);
+					}
+				}
+				session.save(gradingScale);
+				return null;
+			}
+		});
+    }
     /**
      *
      * @param spreadsheetId

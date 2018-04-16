@@ -33,6 +33,7 @@ import org.sakaiproject.tool.gradebook.business.GradebookManager;
 import org.sakaiproject.tool.gradebook.business.GradebookScoringAgentManager;
 import org.sakaiproject.tool.gradebook.facades.Authn;
 import org.sakaiproject.tool.gradebook.facades.Authz;
+import org.sakaiproject.tool.gradebook.ui.duke.CsvMappingFileHelper;
 import org.sakaiproject.tool.gradebook.facades.ContextManagement;
 import org.sakaiproject.tool.gradebook.facades.EventTrackingService;
 import org.sakaiproject.tool.gradebook.facades.UserDirectoryService;
@@ -64,6 +65,7 @@ public class GradebookBean extends InitializableBean {
     private GradebookExternalAssessmentService gradebookExternalAssessmentService;
     private GradebookScoringAgentManager scoringAgentManager;
     private GradebookFrameworkService gradebookFrameworkService;
+    private CsvMappingFileHelper csvMappingFileHelper;
     
     /**
      * @return Returns the gradebookId.
@@ -183,6 +185,20 @@ public class GradebookBean extends InitializableBean {
     public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
         this.userDirectoryService = userDirectoryService;
     }
+    
+    /**
+     * @return Returns the csvMappingFileHelper.
+     */
+    public CsvMappingFileHelper getCsvMappingFileHelper() {
+        return csvMappingFileHelper;
+    }
+    /**
+     * @param csvMappingFileHelper The csvMappingFileHelper to set
+     */
+    public void setCsvMappingFileHelper(CsvMappingFileHelper csvMappingFileHelper) {
+    	this.csvMappingFileHelper = csvMappingFileHelper;
+    }
+    
     /**
      * @return Returns the authnService.
      */

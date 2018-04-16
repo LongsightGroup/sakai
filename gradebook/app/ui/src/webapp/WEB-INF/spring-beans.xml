@@ -103,6 +103,8 @@
                 <value>spreadsheetEntireGBVerify</value>
                 <value>gradebookSetup</value>
                 <value>graderRules</value>
+                <value>sissGradeExportChoices</value>
+                <value>sissGradeExportStudentGrades</value>
             </list>
 		</property>
 		<property name="userAbleToGradePages">
@@ -115,6 +117,8 @@
 				<value>instructorView</value>
 				<value>studentView</value>
 				<value>calculateCourseGrades</value>
+                <value>sissGradeExportChoices</value>
+                <value>sissGradeExportStudentGrades</value>
 			</list>
 		</property>
 		<property name="userAbleToViewOwnGradesPages">
@@ -132,5 +136,13 @@
 	  <bean id="org_sakaiproject_tool_gradebook_business_GradebookScoringAgentManager" class="org.sakaiproject.tool.gradebook.business.impl.GradebookScoringAgentManagerImpl">
 		<property name="scoringService" ref="org.sakaiproject.scoringservice.api.ScoringService"/>
 	</bean>
+
+  <bean id="csvMappingFileHelper" class="org.sakaiproject.tool.gradebook.ui.duke.CsvMappingFileHelper"
+  	init-method="init" destroy-method="destroy">
+  	<!-- 
+  	<property name="batchFilePath" value="/Users/thomas/Clients/Unicon/duke/sakai/gradebook/app/ui/src"/>
+  	 -->
+  	<property name="hasHeader" value="false"/>
+  </bean>
 
 </beans>
