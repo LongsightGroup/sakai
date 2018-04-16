@@ -197,6 +197,26 @@ function updateRunningTotal(thisForm) {
   	runningTotalEl.className = "highlight courseGrade";
 }
 
+//for toggling display of gradebook items associated with a category
+function showHideDiv1(currentElement, hideDivisionNo, context, expandAlt, collapseAlt, expandTitle, collapseTitle)
+{
+	var gradeDataDivisionNo = currentElement.parentNode.nextElementSibling.id;
+	var gradeDataElem = getTheElement(gradeDataDivisionNo);
+	if (gradeDataElem.style.display == "none") {
+		// display grades
+		gradeDataElem.style.display="block";
+		currentElement.src = context + "/images/expand.gif";
+		currentElement.alt = expandAlt;		
+		currentElement.title = expandTitle;		
+	} else {
+		// hide grades
+		gradeDataElem.style.display="none";
+		currentElement.src = context + "/images/collapse.gif";
+		currentElement.alt = collapsAlt;		
+		currentElement.title = collapseTitle;		
+	}
+}
+
 // for toggling display of gradebook items associated with a category
 function showHideDiv(hideDivisionNo, context, expandAlt, collapseAlt, expandTitle, collapseTitle)
 {

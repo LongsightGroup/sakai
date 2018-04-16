@@ -75,6 +75,12 @@
 		</p>
 
 <!-- GRADE MAPPING TABLE -->
+		<div id="gradingMapTable">
+         	<table>
+         		<tr>
+         		  <td>
+ 					<div>
+
 		<t:dataTable cellpadding="0" cellspacing="0"
 			id="mappingTable"
 			value="#{feedbackOptionsBean.gradeRows}"
@@ -102,9 +108,29 @@
 				<h:message for="mappingValue" styleClass="validationEmbedded" />
 			</h:column>
 		</t:dataTable>
+					</div>
+ 					</td>
+ 				    <td valign="top" style="padding-left: 1.5em; display: none">
+ 					  <t:div rendered="#{not empty feedbackOptionsBean.gradeScales}">
+ 					  	<h4><h:outputText value="#{msgs.feedback_options_additional_grades}"/></h4>
+ 			 		    <t:dataTable cellpadding="0" cellspacing="0"
+ 						  id="mappingTable"
+ 						  value="#{feedbackOptionsBean.gradeScales}"
+ 						  var="gradeScale"
+ 						  styleClass="listHier narrowTable"
+ 						  columnClasses="shorttext">
+ 						  <h:column>
+ 						  	<h:outputText value="#{gradeScale}"/>
+ 						  </h:column>
+ 						  </t:dataTable>
+ 					  </t:div>
+ 					</td>
+ 				  </tr>
+ 				</table>
+ 		  </div>
 
 		</div> <!-- END INDNT1 -->
-
+		<div>
 		<p class="act">
 			<h:commandButton
 				id="saveButton"
@@ -121,8 +147,8 @@
 				onclick="SPNR.disableControlsAndSpin( this, null );" >
 				<f:param name="pageName" value="gradebookSetup" />
 			</h:commandButton>
-		</p>
-
+		  </p>
+		</div>
 	</h:form>
   </div>
 </f:view>
