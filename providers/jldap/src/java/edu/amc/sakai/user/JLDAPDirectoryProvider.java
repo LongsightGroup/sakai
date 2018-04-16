@@ -39,6 +39,7 @@ import com.novell.ldap.LDAPSocketFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.user.api.*;
 
 /**
@@ -380,6 +381,11 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			log.debug("authenticateUser(): denying authentication attempt [userLogin = " + userLogin + "]. All authentication has been disabled via configuration");
 			return false;
 		}
+
+		if ( !(isSearchableEid(userLogin)) ) {
+			log.debug("authenticateUser(): user id in blacklist [userLogin = " + userLogin + "]");
+			return false;
+		}
 		
 		if ( StringUtils.isBlank(password) )
 		{
@@ -389,22 +395,23 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			return false;
 		}
 
-		LDAPConnection conn = null;
+		LDAPConnection duke = new LDAPConnection();
+		String endUserDN = null;
 
 		try
 		{
-
-			// conn is implicitly bound as manager, if necessary
-			if ( log.isDebugEnabled() ) {
-				log.debug("authenticateUser(): allocating connection for login [userLogin = " + userLogin + "]");
+			// Hardcoded connection because idms-authdir does not allow user binds
+			duke.connect(ServerConfigurationService.getString("duke.ldapauth.host", "ldap.duke.edu"), ServerConfigurationService.getInt("duke.ldapauth.port", 636));
+			LDAPSearchResults dukeSearch = duke.search(scrubSearchBaseDn(null), searchScope, ldapAttributeMapper.getFindUserByEidFilter(userLogin), null, false);
+			while ( dukeSearch.hasMore() ) {
+				LDAPEntry entry = dukeSearch.next();
+				endUserDN = entry.getDN();
+				break;
 			}
-			conn = ldapConnectionManager.getConnection();
 
-			// look up the end-user's DN, which could be nested at some 
-			// arbitrary depth below getBasePath().
-			// TODO: optimization opportunity if user entries are 
-			// directly below getBasePath()
-			final String endUserDN = lookupUserBindDn(userLogin, conn);
+			if ( log.isDebugEnabled() ) {
+				log.debug("authenticateUser(): duke endUserDN: " + endUserDN + "::" + userLogin);
+			}
 
 			if ( endUserDN == null ) {
 				if ( log.isDebugEnabled() ) {
@@ -413,16 +420,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 				return false;
 			}
 
-			if ( log.isDebugEnabled() ) {
-				log.debug("authenticateUser(): returning connection to pool [userLogin = " + userLogin + "]");
-			}
-			ldapConnectionManager.returnConnection(conn);
-			conn = null;
-			if ( log.isDebugEnabled() ) {
-				log.debug("authenticateUser(): attempting to allocate bound connection [userLogin = " + 
-						userLogin + "][bind dn [" + endUserDN + "]");
-			}
-			conn = ldapConnectionManager.getBoundConnection(endUserDN, password);
+			duke.bind(LDAPConnection.LDAP_V3, endUserDN, password.getBytes("UTF8"));
 
 			if ( log.isDebugEnabled() ) {
 				log.debug("authenticateUser(): successfully allocated bound connection [userLogin = " + 
@@ -451,12 +449,13 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 					"authenticateUser(): Exception during authentication attempt [userLogin = "
 					+ userLogin + "]", e);
 		} finally {
-			if ( conn != null ) {
+			if ( duke != null ) {
 				if ( log.isDebugEnabled() ) {
-					log.debug("authenticateUser(): returning connection to connection manager");
+					log.debug("authenticateUser(): closing duke conn");
 				}
-				ldapConnectionManager.returnConnection(conn);
+				ldapConnectionManager.returnConnection(duke);
 			}
+
 		}
 	}
 
@@ -676,9 +675,22 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 						}
 							ldapEid = ldapEid.toLowerCase();
 
+						if (StringUtils.isNotEmpty (ldapEid)) {
+							ldapEid = ldapEid.toLowerCase();
 						UserEdit ue = usersToSearchInLDAP.get(ldapEid);
+							if (ue != null) {
 						mapUserDataOntoUserEdit(ldapUserData, ue);
+							}
+							else {
+								log.warn("getUsers: LDAP results contain a user we didn't ask for: " + ldapEid);
+							}
 						usersToSearchInLDAP.remove(ldapEid);
+					}
+						else {
+							if (log.isDebugEnabled()) {
+								log.debug("usersToSearchInLDAP: null user: " + eid);
+							}
+						}
 					}
 					
 					// see if there are any users that we could not find in the LDAP query
