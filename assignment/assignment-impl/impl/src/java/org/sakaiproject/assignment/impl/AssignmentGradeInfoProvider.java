@@ -100,8 +100,8 @@ public class AssignmentGradeInfoProvider implements ExternalAssignmentProvider, 
                 log.info("Unexpected Permission Exception while using security advisor "
                         + "for assignment with ID: " + id);
             } finally {
-                securityService.popAdvisor(accessAssignmentAdvisor);
                 securityService.popAdvisor(accessGroupsAdvisor);
+                securityService.popAdvisor(accessAssignmentAdvisor);
             }
         } else {
             if (log.isDebugEnabled()) {
