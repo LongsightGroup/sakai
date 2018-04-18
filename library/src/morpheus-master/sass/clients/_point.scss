@@ -14,8 +14,9 @@ $logo-height: 						50px;
 $logo-width: 						280px;
 
 // Tab colors
-$tool-tab-text-color:			 		#000;
-$tool-tab-background-color:              		#f1f1f1 !default;
+$tool-tab-text-color:			 		#FFF;
+$tool-tab-background-color:              		#00407A !default;
+$tool-tab-active-background-color:			#FFF !default;
 $tool-tab-active-text-color:             		#000 !default;
 $tool-tab-active-highlight-color:        		#b0c7db !default;
 
@@ -45,8 +46,9 @@ $button-primary-hover-background-color:                 #FFF !default;
 $button-primary-hover-border-color:                     $primary-color;
 
 // Link , Edit, Help Buttons
-$button-secondary-text-color:            		#000 !default;
-$button-secondary-icon-color:            		#000 !default;
+$button-secondary-background-color:			#00407A !default;
+$button-secondary-text-color:            		#FFF !default;
+$button-secondary-icon-color:            		#FFF !default;
 
 
 // Sites Navigation 
@@ -54,19 +56,20 @@ $button-secondary-icon-color:            		#000 !default;
 $sites-nav-menu-item-background:         		#00407A !default;
 $sites-nav-menu-item-color:              		#FFFFFF !default;
 $sites-nav-menu-item-icon-color:         		#FFFFFF !default;
+$sites-nav-menu-item-border-color:         		#00407A !default;
 //Selected
 $sites-nav-menu-item-selected-background:		#FCC917 !default;
 $sites-nav-menu-item-selected-color:			#00407A !default;
 $sites-nav-menu-item-selected-hover-background: 	#F1F1F1 !default;
 $sites-nav-menu-item-selected-hover-color:      	#000 !default;
 $sites-nav-menu-item-selected-hover-icon-color: 	#000 !default;
-$sites-nav-menu-item-selected-border-color: 		#FFF !default;
+$sites-nav-menu-item-selected-border-color: 		#FCC917 !default;
 
 // TOOL MENU COLORS
 // non-selected
 $tool-menu-background-color:		 		#FAFAFA !default;
 $tool-menu-color: 			 		#FFF !default;
-$tool-border-color:			 		#00407A !default;
+$tool-border-color:			 		transparent !default;
 // non-selected hover
 $tool-menu-item-background-color:                       #00407A !default;
 $tool-menu-item-text-color:                       	#FFF !default;
@@ -91,3 +94,42 @@ $tool-sub-menu-hover-color:				#FFF;
 
 // info message colors
 $info-background-color:   				#efefef;
+
+.navIntraTool {
+    border-bottom:  2px solid #00407A !important;
+}
+
+#toolMenu ul li, #subSites ul li, .floatingToolMenu ul li {
+    border-bottom: none !important;
+}
+
+#toolMenu ul li.Mrphs-collapseTools.min, #subSites ul li.Mrphs-collapseTools.min, .floatingToolMenu ul li.Mrphs-collapseTools.min {
+    background-color: #FFF !important;
+}
+
+.Mrphs-multipleTools .Mrphs-toolTitleNav .Mrphs-toolTitleNav__title {
+    color: rgba(21, 21, 21, 0.5);
+}
+
+.Mrphs-multipleTools .Mrphs-container .Mrphs-container--toolTitleNav {
+    background: #fff !important;
+}
+
+.navIntraTool li span.current a {
+    color: #000;
+    background: #fff;
+}
+
+#mastLogin #loginLinks ul {
+    background-color: #fafafa !important;
+}
+
+.Mrphs-sakai-lessonbuildertool .navIntraTool {
+    padding: 0px 0px 10px 0px !important;
+}
+
+@media only screen and (max-width: 800px) {
+   .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+       color: #00407A !important;
+    }
+}  
