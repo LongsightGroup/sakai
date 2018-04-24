@@ -1,0 +1,7 @@
+LS-163 custom image URLs for users based on the md5 of eid plus a salt
+ * longsight.LS-163.salt=xxxxxxxxxxxxxxxxxxxxxxxx
+ * longsight.LS-163.urlpath=https://images.example.edu/userimages/
+LS-185 private URLs for instructors
+ * longsight.LS-185.salt=xxxxxxxxxxxxxxxxxxxxxxxx
+ * longsight.LS-185.urlpath=https://images.example.edu/userimages/
+
