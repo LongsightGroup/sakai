@@ -1,21 +1,21 @@
-$skin-name : "johnson-jucgs" !default; // This is used for bootstrap font behaviour.
+$skin-name : "simmons" !default; // This is used for bootstrap font behaviour.
 
 // Main Colors
-$primary-color:    			 		  	#5D829F !default;
+$primary-color:    			 		  	#54202D !default;
 $body-background-color: 		 			#FFFFFF !default;
-$background-color-secondary: 		 			#002b5c !default;
+$background-color-secondary: 		 			#343434 !default;
 $text-color:				 		    	#4E4D4E !default;
 $topNav-text-color:					    	#FFFFFF !default;
-$sites-nav-background: 						#9DABBE;
+$sites-nav-background: 						#E2B900;
 $skin-with-icons: 						false !important;
 
 /* Logo location */
-$logo: 								'../images/johnson-jucgs.jpg';
+$logo: 								'../images/simmons.jpg';
 $logo-height: 							50x;
-$logo-width: 							158px;
+$logo-width: 							218px;
 
 // Tab colors
-$tool-tab-text-color:			 			#002b5c !default;
+$tool-tab-text-color:			 			#343434 !default;
 $tool-tab-background-color:              			#E6E6E6 !default;
 $tool-tab-active-text-color:             			#000000 !default;
 $tool-tab-active-highlight-color:        			$primary-color !default;
@@ -32,17 +32,17 @@ $link-active-color: 			 			#000000 !default;
 $link-hover-color: 			 			#000000 !default;
 
 // Button colors
-$button-text-color:	 		 			#4d5e73 !default;
-$button-border-color: 			 			#5D829F !default;
-$button-background-color: 		 			#2681B5 !default;
-$button-background-secondary-color: 	 			#225377 !default;
+$button-text-color:	 		 			#FFFFFF !default;
+$button-border-color: 			 			#54202D !default;
+$button-background-color: 		 			#C90016 !default;
+$button-background-secondary-color: 	 			#810113 !default;
 
 $button-color-text-color: 		 			#FFFFFF !default;
 $button-color-border-color: 		 			#000000 !default;
-$button-color-background-color: 	 			#5D829F !default;
-$button-color-background-secondary-color:			#2681B5 !default;
+$button-color-background-color: 	 			#54202D !default;
+$button-color-background-secondary-color:			#C90016 !default;
 // Primary Button Color
-$button-primary-background-color:        			#5D829F !default;
+$button-primary-background-color:        			#54202D !default;
 $button-primary-text-color: 		 			#FFFFFF !default;
 $button-primary-hover-text-color:                   		$button-color-text-color;
 $button-primary-hover-background-color:             		$button-color-background-color !default;
@@ -50,37 +50,37 @@ $button-primary-hover-border-color:                 		$primary-color;
 
 // Link , Edit, Help Buttons
 $button-secondary-background-color:            			#E6E6E6 !default;
-$button-secondary-text-color:            			#49a942 !default;
-$button-secondary-icon-color:            			#49a942 !default;
+$button-secondary-text-color:            			#000000 !default;
+$button-secondary-icon-color:            			#000000 !default;
 
 
 // Sites Navigation
 // Non Selected
-$sites-nav-menu-item-background:         			#FFFFFF !default;
-$sites-nav-menu-item-color:              			#002b5c !default;
-$sites-nav-menu-item-icon-color:         			#002b5c !default;
+$sites-nav-menu-item-background:         			#E6E6E6 !default;
+$sites-nav-menu-item-color:              			#4E2E28 !default;
+$sites-nav-menu-item-icon-color:         			#4E2E28 !default;
 //Selected
-$sites-nav-menu-item-selected-background:			#5D829F !default;
+$sites-nav-menu-item-selected-background:			#54202D !default;
 $sites-nav-menu-item-selected-color:				#FFFFFF !default;
 $sites-nav-menu-item-selected-hover-background: 		#FFFFFF !default;
-$sites-nav-menu-item-selected-hover-color:      		#5D829F !default;
-$sites-nav-menu-item-selected-hover-icon-color: 		#5D829F !default;
-$sites-nav-menu-item-selected-border-color: 			#5D829F !default;
+$sites-nav-menu-item-selected-hover-color:      		#54202D !default;
+$sites-nav-menu-item-selected-hover-icon-color: 		#54202D !default;
+$sites-nav-menu-item-selected-border-color: 			#54202D !default;
 
 // TOOL MENU COLORS
 // non-selected
 $tool-menu-background-color:		 			#E6E6E6 !default;
-$tool-menu-color: 			 			#002b5c !default;
+$tool-menu-color: 			 			#343434 !default;
 $tool-border-color:			 			#9DABBE !default;
 // non-selected hover
 $tool-menu-item-hover-text-color:               		#FFFFFF !default;
 $tool-menu-item-hover-icon-color:               		#FFFFFF !default;
-$tool-menu-item-hover-background-color:         		#662d91 !default;
+$tool-menu-item-hover-background-color:         		#54202D !default;
 $tool-menu-item-hover-border-left:              		4px solid #FFFFFF !default;
 // selected
-$tool-menu-item-selected-text-color:            		#49a942 !default;
-$tool-menu-item-selected-icon-color:            		#49a942 !default;
-$tool-menu-item-selected-border-left:           		4px solid #49a942 !default;
+$tool-menu-item-selected-text-color:            		#54202D !default;
+$tool-menu-item-selected-icon-color:            		#54202D !default;
+$tool-menu-item-selected-border-left:           		4px solid #54202D !default;
 $tool-menu-item-selected-background-color:          		#FFFFFF !default;
 
 // submenu
@@ -88,12 +88,12 @@ $tool-sub-menu-hover-color:					#FFFFFF !default;
 // selected hover
 $tool-menu-item-selected-hover-text-color:      		#FFFFFF !default;
 $tool-menu-item-selected-hover-icon-color:      		#FFFFFF !default;
-$tool-menu-item-selected-hover-background-color:		#49a942 !default;
+$tool-menu-item-selected-hover-background-color:		#54202D !default;
 $tool-menu-item-selected-hover-border-left:         		4px solid #FFFFFF !default;
 // collapsed menu
 $tool-menu-collapse-active-hover-background-color:  		#E6E6E6 !default;
-$tool-menu-collapse-active-text-color:             		#002b5c !default;
-$tool-sub-menu-hover-color:					#002b5c;
+$tool-menu-collapse-active-text-color:             		#343434 !default;
+$tool-sub-menu-hover-color:					#343434;
 
 // info message colors
 $info-background-color:   					$body-background-color;
@@ -108,8 +108,8 @@ $warn-background-color:     					#FCF8E3 !default;
 }
 
 .select {
-    background-color: #9DABBE !important;
-    color: #FFFFFF !important;
+    background-color: #FFFFFF !important;
+    color: #414141 !important;
 }
 
 .Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
