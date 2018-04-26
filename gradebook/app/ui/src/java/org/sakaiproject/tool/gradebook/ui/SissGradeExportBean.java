@@ -187,7 +187,7 @@ public class SissGradeExportBean extends GradebookDependentBean implements Seria
 			Double grade = courseGradeRecord.getAutoCalculatedGrade();
 	    	String letterGrade = null;
 	    	if (grade != null)
-	    		letterGrade = gradeMapping.getMappedGrade(courseGradeRecord.getNonNullAutoCalculatedGrade());
+	    		letterGrade = gradeMapping.getGrade(courseGradeRecord.getNonNullAutoCalculatedGrade());
 	    	return letterGrade;
 		}
 		
