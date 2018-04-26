@@ -886,6 +886,4 @@ public interface GradebookManager {
     throws ConflictingAssignmentNameException, StaleObjectModificationException;    
     
     public void applyDropScores(Collection<AssignmentGradeRecord> gradeRecords);
-    
-    public void addDukeGradingScales(final Long gradebookId);
 }

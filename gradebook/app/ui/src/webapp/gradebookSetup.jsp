@@ -118,7 +118,6 @@
 					action="#{gradebookSetupBean.processCancelGradebookSetup}" immediate="true"
 					onclick="SPNR.disableControlsAndSpin( this, null ); reEnableCategoryDropInputs();"/>
 			</div>
-			</fieldset>
 			
 			<%
 			  String thisId = request.getParameter("panel");

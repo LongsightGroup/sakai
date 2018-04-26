@@ -110,16 +110,5 @@
             <to-view-id>/hideShowColumns.jsp</to-view-id>
         </navigation-case>
 		
-		<!--  adding navigation rules for SISS Grade Export -->
-		<navigation-case>
-            <from-outcome>sissGradeExportChoices</from-outcome>
-            <to-view-id>/sissGradeExportChoices.jsp</to-view-id>
-        </navigation-case>
-
-		<navigation-case>
-            <from-outcome>sissGradeExportStudentGrades</from-outcome>
-            <to-view-id>/sissGradeExportStudentGrades.jsp</to-view-id>
-        </navigation-case>
-		
     </navigation-rule>
 </faces-config>

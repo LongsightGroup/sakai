@@ -243,34 +243,3 @@ td.gbMessageAboveNumber {vertical-align:top; text-align:right; padding-right:2em
     vertical-align: middle;
     visibility: hidden;
 }
-
-.ssisExportTable {
-	cellpadding: 5;
-	width: 90%;
-}
-
-.ssisExportSectionHeader {
-	background-color: #DDD; 
-	border: 1px solid #999; 
-	padding: .2em 1.5em .2em .2em;
-}
-
-
-.ssisExportSectionDownload {
-	margin-right: 5em; 
-	float: right
-}
-
-.ssisExportGradeTable {
-	padding: .2em .2em .2em .2em;
-	cellpadding: 3;
-	width: 100%;
-}
-
-.ssisExportUserName {
-	width: 300px;	
-}
-
-.ssisExportGrade {
-	padding-left: 5em;	
-}

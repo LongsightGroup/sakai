@@ -41,11 +41,6 @@
 			<property-name>contextManagementService</property-name>
 			<value>#{org_sakaiproject_tool_gradebook_facades_ContextManagement}</value>
 		</managed-property>
-		<managed-property>
-			<description>CSV Mapping File Helper</description>
-			<property-name>csvMappingFileHelper</property-name>
-			<value>#{csvMappingFileHelper}</value>
-		</managed-property>
         <managed-property>
 			<description>Event Tracking Service</description>
 			<property-name>eventTrackingService</property-name>
@@ -174,16 +169,6 @@
 		<managed-property>
 			<property-name>pageName</property-name>
 			<value>editAssignment</value>
-		</managed-property>
-	</managed-bean>
-	
-	<managed-bean>
-		<managed-bean-name>sissGradeExportBean</managed-bean-name>
-		<managed-bean-class>org.sakaiproject.tool.gradebook.ui.SissGradeExportBean</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-		<managed-property>
-			<property-name>pageName</property-name>
-			<value>sissGradeExportChoices</value>
 		</managed-property>
 	</managed-bean>
 	

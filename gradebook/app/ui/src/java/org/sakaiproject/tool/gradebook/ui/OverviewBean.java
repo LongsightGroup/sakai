@@ -38,13 +38,7 @@ import org.sakaiproject.tool.gradebook.CourseGrade;
 import org.sakaiproject.tool.gradebook.GradableObject;
 import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.GradebookAssignment;
-import org.sakaiproject.service.gradebook.shared.GradingScaleDefinition;
-import org.sakaiproject.service.gradebook.shared.StaleObjectModificationException;
 import org.sakaiproject.tool.gradebook.jsf.FacesUtil;
-import org.sakaiproject.tool.gradebook.GradeMapping;
-import org.sakaiproject.tool.gradebook.GradingScale;
-import org.sakaiproject.tool.gradebook.business.GradebookManager;
-import org.sakaiproject.tool.gradebook.business.impl.GradebookManagerHibernateImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -114,8 +108,6 @@ public class OverviewBean extends GradebookDependentBean implements Serializable
 		this.gradebookItemList = new ArrayList();
 		this.courseGrade = new CourseGrade();
 
-		getGradebookManager().addDukeGradingScales(getGradebookId());
-		
 		if (getCategoriesEnabled()) {
 			/* if categories are enabled, we need to display a table that includes
 			 * categories, assignments, and the course grade.
@@ -601,28 +593,6 @@ public class OverviewBean extends GradebookDependentBean implements Serializable
         }
     }
 
-
-	private void updateDukeCourseGrades() {
-		Gradebook localGradebook = getGradebook();
-		GradeMapping localGradeMap = localGradebook.getSelectedGradeMapping();
-		GradingScale scale = localGradeMap.getGradingScale();
-		// check if the grade mapping already contains  one of the Duke grades
-		if ( scale != null && !scale.getGrades().contains("NC")) {
-			try {
-				scale.getGrades().add("NC");
-				localGradeMap.setGradingScale(scale);
-				localGradebook.setSelectedGradeMapping(localGradeMap);
-				getGradebookManager().updateGradebook(localGradebook);
-			} catch (IllegalStateException e) {
-	            System.out.println();
-	            FacesUtil.addErrorMessage("Failed to initialized duke grading options");
-			} catch (StaleObjectModificationException e) {
-	            System.out.println();
-	            FacesUtil.addErrorMessage("Failed to initialized duke grading options");
-			}
-		}
-	}
-	
 	/**
 	 * Special marker class to preserve the order when saving the sort order
 	 */
