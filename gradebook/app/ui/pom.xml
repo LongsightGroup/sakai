@@ -14,7 +14,6 @@
   <properties>
     <deploy.target />
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -258,14 +257,6 @@
     	<artifactId>poi-ooxml</artifactId>
     	<version>${sakai.poi.version}</version>    
     </dependency>
-
-    <dependency>
-	<groupId>net.sf.opencsv</groupId>
-	<artifactId>opencsv</artifactId>
-	<version>1.8</version>
-    </dependency>
-
-
   </dependencies>
 
     <build>

@@ -55,7 +55,6 @@ import lombok.extern.slf4j.Slf4j;
 public class CourseGradeDetailsBean extends EnrollmentTableBean {
 	// View maintenance fields - serializable.
 	private List scoreRows;
-        private List gradeScales;
 	private CourseGrade courseGrade;
 	private List updatedGradeRecords;
 	private GradeMapping gradeMapping;
@@ -249,20 +248,6 @@ public class CourseGradeDetailsBean extends EnrollmentTableBean {
 
 		this.enableCustomExport = ServerConfigurationService.getBoolean("gradebook.institutional.export.enabled",false);
 
-
-               gradeScales = new ArrayList();
-               for (Iterator iter = gradeMapping.getGrades().iterator(); iter.hasNext(); ) {
-                       String grade = (String)iter.next();
-
-                       // Bottom grades (with a lower bound of 0%) and manual-only
-                       // grades (which have no percentage equivalent) are not
-                       // editable.
-                       Double d = gradeMapping.getDefaultBottomPercents().get(grade);
-                       if (d == null) {
-                               gradeScales.add(grade);
-                       }
-               }
-
 		//Default standard export fields
 		this.standardExportDefaultFields = ServerConfigurationService.getString("gradebook.standard.export.default.fields","usereid,sortname,coursegrade");
 		updateExportFieldStatus(this.standardExportDefaultFields);
@@ -348,10 +333,6 @@ public class CourseGradeDetailsBean extends EnrollmentTableBean {
 			this.scoreRows.add(new ScoreRow(enrollment, gradeRecord, allEvents.getEvents(studentUid), userCanGrade));
 		}
 	}
-
-    public String getGradeScalesString() {
-        return StringUtils.join(gradeScales, ", ");
-    }
 
     public CourseGrade getCourseGrade() {
         return this.courseGrade;

@@ -40,20 +40,11 @@
 		</h:panelGrid>
 		</div>
 
-		<h4><h:outputText value="#{msgs.course_grade_details_grade}"/></h4>
+		<h4><h:outputText value="#{msgs.assignment_details_grading_table}"/></h4>
 		<div class="indnt1">
 
 		<%@ include file="/inc/globalMessages.jspf"%>
 		
-		<div class="instruction">
- 			<h:outputText value="#{msgs.course_grade_details_instruction}" escape="false"/>
- 			<h:outputFormat value="#{msgs.course_grade_details_instruction_duke}" escape="false">
- 				<f:param value="#{courseGradeDetailsBean.gradeScalesString}"/>
- 			</h:outputFormat>
- 
- 		</div>
-
-
 		<div class="instruction"><h:outputText value="#{msgs.course_grade_details_instruction}" escape="false"/></div>
 
 		<t:aliasBean alias="#{bean}" value="#{courseGradeDetailsBean}">
