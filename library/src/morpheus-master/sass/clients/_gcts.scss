@@ -1,0 +1,110 @@
+$skin-name : "gcts" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#062F4B !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#062F4B !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#820024 !default;
+$tool-border-color:			 		#410012 !default;
+$tool-menu-background-color:		 		#ececec !default;
+$banner-height: 					70px;
+$all-sites-tab-active-background-color:			#FFF;
+$all-sites-tab-active-text-color:			#820024;
+
+/* Logo location */
+$logo: 							'../images/gcts-logo.png';
+$logo-height: 						54px;
+$logo-width: 						405px;
+
+// Tab colors
+$tool-tab-text-color:			 		#000;
+$tool-tab-background-color:              		#ebebeb !default;
+$tool-tab-active-text-color:             		#FFF !default;
+$tool-tab-active-highlight-color:        		#820024 !default;
+$tool-tab-active-background-color:			#062F4B !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#0064cd !default;
+$link-active-color: 			 		#4e5192 !default;
+$link-hover-color: 			 		#062F4B !default;
+
+// Button colors 
+$button-text-color:	 		 		#444444 !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		#FFFFFF !default;
+$button-background-secondary-color: 	 		#FFFFFF !default;
+$button-color-border-color: 		 		#CCCCCC !default;
+$button-color-background-color: 	 		#FFFFFF !default;
+$button-color-background-secondary-color:		#FFFFFF !default;
+// Primary Button Color
+$button-primary-background-color:        		#062F4B!default;
+$button-primary-text-color: 		 		#FFF !default;
+$button-primary-hover-text-color:                       #062F4B !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     #062F4B !default;
+
+// Link , Edit, Help Buttons
+$button-secondary-text-color:            		#062F4B !default;
+$button-secondary-icon-color:            		#062F4B !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#062F4B !default;
+$sites-nav-menu-item-color:              		#FFFFFF !default;
+$sites-nav-menu-item-icon-color:         		#FFFFFF !default;
+$sites-nav-menu-item-border-color:         		#777 !default;
+//Selected
+//Selected
+$sites-nav-menu-item-selected-background:		#820024 !default;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+$sites-nav-menu-item-selected-hover-background: 	#FFF !default;
+$sites-nav-menu-item-selected-hover-color:      	#820024 !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#820024 !default;
+$sites-nav-menu-item-selected-border-color: 		#820024 !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:			#b9b9b9 !default;
+$tool-menu-item-color:					#444 !default;
+$tool-menu-item-icon-color:				#444 !default;
+
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               	#FFFFFF !default;
+$tool-menu-item-hover-background-color:         	-webkit-linear-gradient(top, #447a8c 0%, #062f4b 100%);
+$tool-menu-item-hover-border-left:              	4px solid #000 !default;
+// selected
+$tool-menu-item-selected-text-color:            	#447a8c !default;
+$tool-menu-item-selected-icon-color:            	#447a8c !default;
+$tool-menu-item-selected-border-left:           	4px solid #447a8c !default;
+// submenu
+$tool-sub-menu-hover-color:				#FFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:	#062F4B !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #062F4B !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #062F4B !default;
+$tool-menu-collapse-active-text-color:                  #062F4B !default;
+$tool-sub-menu-hover-color:				#000; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.navIntraTool li span.current a {
+    background: #062F4B;
+    color: #fff;
+}
