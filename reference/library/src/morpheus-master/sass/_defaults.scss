@@ -183,6 +183,12 @@ $footer-color: $background-color-secondary !default;
     border-radius: 3px !important;
 }
 
+@media only screen and (max-width: 800px) {
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 190px !important;
+    }
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
