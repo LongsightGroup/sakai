@@ -140,3 +140,7 @@ a.button {
 .fa-angle-double-left:before {
     color: #00407A;
 }
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: #00407A !important;
+}
