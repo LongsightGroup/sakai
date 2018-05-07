@@ -189,6 +189,10 @@ $footer-color: $background-color-secondary !default;
     }
 }
 
+#toolMenu ul li a, #subSites ul li a {
+    border-right: 1px solid #ccc;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
