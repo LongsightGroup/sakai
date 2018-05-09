@@ -312,7 +312,7 @@
     </bean>
 
     <!-- Initialization of OpenSAML library-->
-    <bean class="org.springframework.security.saml.SAMLBootstrap"/>
+    <bean class="org.sakaiproject.login.springframework.CustomADFSSAMLBootstrap"/>
 
     <!-- Initialization of the velocity engine -->
     <bean id="velocityEngine" class="org.springframework.security.saml.util.VelocityFactory" factory-method="getEngine"/>
