@@ -99,9 +99,9 @@ $tool-sub-menu-hover-color:					#0B6B2A;
 $info-background-color:   					$body-background-color;
 $info-color:                					$primary-color  !default;
 
-$error-background-color:    					# !default;
-$ok-color:                  					# !default;
-$warn-background-color:     					# !default;
+$error-background-color:                                        #F2DEDE !default;
+$ok-color:                                                      #DFF0D8 !default;
+$warn-background-color:                                         #FCF8E3 !default;
 
 .img_site_toolmenu {
     display: none !important;
