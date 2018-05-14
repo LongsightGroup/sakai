@@ -384,6 +384,11 @@ input[type="reset"] {
     background-color: #CC0000 !important;
 }
 
+.Mrphs-sakai-sections > .portletBody > #overviewForm > ul > li:nth-child(3){
+    visibility:hidden;
+    display:none;
+}
+
 @import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
