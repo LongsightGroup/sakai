@@ -17,19 +17,19 @@ $logo-width: 							169px;
 // Tab colors
 $tool-tab-text-color:			 			#d7dadd !default;
 $tool-tab-background-color:              			#0a2240 !default;
-$tool-tab-active-text-color:             			#000000 !default;
+$tool-tab-active-text-color:             			#4e92ce !default;
 $tool-tab-active-highlight-color:        			$primary-color !default;
 $tool-tab-active-background-color:				$body-background-color !default;
 
 // Breadcrumbs
 $breadcrumbs-color:			 			#0a2240 !default;
 $breadcrumbs-tool-color:		 			#0a2240 !default;
-$breadcrumbs-hover-color:		 			#0a2240 !default;
+$breadcrumbs-hover-color:		 			#e37022 !default;
 
 // Links
-$link-color: 				 			#000000 !default;
-$link-active-color: 			 			#000000 !default;
-$link-hover-color: 			 			#000000 !default;
+$link-color: 				 			#4e92ce !default;
+$link-active-color: 			 			#4e92ce !default;
+$link-hover-color: 			 			#4e92ce !default;
 
 // Button colors
 $button-text-color:	 		 			#00edfd !default;
@@ -56,16 +56,16 @@ $button-secondary-icon-color:            			#0A2240 !default;
 
 // Sites Navigation
 // Non Selected
-$sites-nav-menu-item-background:         			#0a2240 !default;
-$sites-nav-menu-item-color:              			#FFFFFF !default;
-$sites-nav-menu-item-icon-color:         			#FFFFFF !default;
+$sites-nav-menu-item-background:         			#d7dadd !default;
+$sites-nav-menu-item-color:              			#0a2240 !default;
+$sites-nav-menu-item-icon-color:         			#0a2240 !default;
 //Selected
-$sites-nav-menu-item-selected-background:			#d7dadd !default;
-$sites-nav-menu-item-selected-color:				#0a2240 !default;
-$sites-nav-menu-item-selected-hover-background: 		#0a2240 !default;
-$sites-nav-menu-item-selected-hover-color:      		#d7dadd !default;
-$sites-nav-menu-item-selected-hover-icon-color: 		#d7dadd !default;
-$sites-nav-menu-item-selected-border-color: 			#d7dadd !default;
+$sites-nav-menu-item-selected-background:			#0a2240 !default;
+$sites-nav-menu-item-selected-color:				#ffffff !default;
+$sites-nav-menu-item-selected-hover-background: 		#ffffff !default;
+$sites-nav-menu-item-selected-hover-color:      		#0a2240 !default;
+$sites-nav-menu-item-selected-hover-icon-color: 		#0a2240 !default;
+$sites-nav-menu-item-selected-border-color: 			#0a2240 !default;
 
 // TOOL MENU COLORS
 // non-selected
@@ -78,18 +78,18 @@ $tool-menu-item-hover-icon-color:               		#ffffff !default;
 $tool-menu-item-hover-background-color:         		#e37022 !default;
 $tool-menu-item-hover-border-left:              		4px solid #ffffff !default;
 // selected
-$tool-menu-item-selected-text-color:            		#0a2240 !default;
-$tool-menu-item-selected-icon-color:            		#0a2240 !default;
-$tool-menu-item-selected-border-left:           		4px solid #0a2240 !default;
-$tool-menu-item-selected-background-color:          		#ffffff !default;
+$tool-menu-item-selected-text-color:            		#ffffff !default;
+$tool-menu-item-selected-icon-color:            		#ffffff !default;
+$tool-menu-item-selected-border-left:           		4px solid #ffffff !default;
+$tool-menu-item-selected-background-color:          		#0a2240 !default;
 
 // submenu
 $tool-sub-menu-hover-color:					#ffffff !default;
 // selected hover
-$tool-menu-item-selected-hover-text-color:      		#ffffff !default;
-$tool-menu-item-selected-hover-icon-color:      		#ffffff !default;
-$tool-menu-item-selected-hover-background-color:		#0a2240 !default;
-$tool-menu-item-selected-hover-border-left:         		4px solid #ffffff !default;
+$tool-menu-item-selected-hover-text-color:      		#0a2240 !default;
+$tool-menu-item-selected-hover-icon-color:      		#0a2240 !default;
+$tool-menu-item-selected-hover-background-color:		#ffffff !default;
+$tool-menu-item-selected-hover-border-left:         		4px solid #0a2240 !default;
 // collapsed menu
 $tool-menu-collapse-active-hover-background-color:  		#0a2240 !default;
 $tool-menu-collapse-active-text-color:             		#d7dadd !default;
