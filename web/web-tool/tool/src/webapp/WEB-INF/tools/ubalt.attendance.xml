@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<registration>
+	<tool
+		id="ubalt.attendance"
+		title="Early Alert"
+		description="Web link to the University of Baltimore Early Alert">
+
+		<configuration name="height" value="800px" />
+                <configuration name="sakai.properties.url.key" value="ubalt.attendance.url" />
+                <configuration name="reset.button" value="false" type="final" />
+                <category name="course" />
+
+		<configuration name="functions.require" value="site.upd" /> 
+                <configuration name="allowMultipleInstances" value="false" />
+				
+		<!-- Event for accessing the sakai.iframe.annotatedurl tool; remove property to remove logging of event -->
+		<!--configuration name="webcontent.read" value="webcontent.read.annotatedurl" /--> 
+		
+		<!-- Event for modifying the sakai.iframe.annotatedurl tool configuration; remove property to remove logging of event -->
+		<!--configuration name="webcontent.revise" value="webcontent.revise.annotatedurl" /--> 
+		
+	</tool>
+
+</registration>
