@@ -110,3 +110,13 @@ ul.favoriteSiteList>li, #selectQuickLink>li {
 .Mrphs-siteStatus.is-unpublished {
     color: #000 !important;
 }
+
+.Mrphs-sakai-resources a.nil.fa-folder::after {
+    margin: 0.45em 0 0 -3.4em !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #0064cd !important;
+    }
+}

@@ -7,7 +7,7 @@ $background-color-secondary: 		 		#af0000 !default;
 $text-color:				 		#000000 !default;
 $topNav-text-color:					#FFF !default;
 $sites-nav-background: 					#171717 !default;
-$tool-border-color:			 		#9a0200 !default;
+$tool-border-color:			 		transparent !default;
 $tool-menu-background-color:		 		#f3f3f3 !default;
 $banner-height: 					89px;
 $all-sites-tab-active-background-color:			#FFF;
@@ -16,7 +16,7 @@ $all-sites-tab-active-background-color:			#FFF;
 /* Logo location */
 $logo: 							'../images/reggienet.svg';
 $logo-height: 						45px;
-$logo-width: 						260px;
+$logo-width: 						194px;
 
 // Tab colors
 $tool-tab-text-color:			 		#666;
@@ -161,7 +161,7 @@ $info-background-color:   				#efefef;
     position:fixed;
 }
 .Mrphs-skipNav__menu {
-    top:80px !important;
+    top: -3px !important;
 }
 
 .Mrphs-mainHeader .Mrphs-headerLogo {
@@ -170,6 +170,22 @@ $info-background-color:   				#efefef;
 
 .Mrphs-topHeader .Mrphs-loginNav {
     height: 62px !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-mainHeader .Mrphs-headerLogo {
+        height: 56px !important;
+        padding-top: 0px !important;
+    }
+    #mastLogin .has-avatar .Mrphs-userNav__submenuitem--profilepicture {
+        margin: -92px 4px 0 0 !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #2a94c0 !important;
+    }
 }
 
 #selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
