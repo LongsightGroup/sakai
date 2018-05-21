@@ -172,6 +172,10 @@ $info-background-color:   				#efefef;
     height: 62px !important;
 }
 
+.nav.nav-tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .nav.nav-tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .nav.nav-tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a, .sakai_tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .sakai_tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .sakai_tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a {
+    color: #FFF !important;
+}
+
 @media only screen and (max-width: 800px) {
     .Mrphs-mainHeader .Mrphs-headerLogo {
         height: 56px !important;
