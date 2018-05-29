@@ -1,7 +1,7 @@
 $skin-name : "tennesseewesleyan" !default; // This is used for bootstrap font behaviour.
 
 // Main Colors
-$primary-color:    			 		  	#5D829F !default;
+$primary-color:    			 		  	#0033a0 !default;
 $body-background-color: 		 			#FFFFFF !default;
 $background-color-secondary: 		 			#0033A0 !default;
 $text-color:				 		    	#4E4D4E !default;
@@ -34,16 +34,16 @@ $link-hover-color: 			 			#000000 !default;
 
 // Button colors
 $button-text-color:	 		 			#FFFFFF !default;
-$button-border-color: 			 			#5D829F !default;
+$button-border-color: 			 			#0033a0 !default;
 $button-background-color: 		 			#2681B5 !default;
 $button-background-secondary-color: 	 			#225377 !default;
 
 $button-color-text-color: 		 			#FFFFFF !default;
 $button-color-border-color: 		 			#000000 !default;
-$button-color-background-color: 	 			#5D829F !default;
+$button-color-background-color: 	 			#0033a0 !default;
 $button-color-background-secondary-color:			#2681B5 !default;
 // Primary Button Color
-$button-primary-background-color:        			#5D829F !default;
+$button-primary-background-color:        			#0033a0 !default;
 $button-primary-text-color: 		 			#FFFFFF !default;
 $button-primary-hover-text-color:                   		$button-color-text-color;
 $button-primary-hover-background-color:             		$button-color-background-color !default;
@@ -55,22 +55,22 @@ $button-secondary-background-color:                             $button-primary-
 
 // Link , Edit, Help Buttons
 $button-secondary-background-color:            			#E6E6E6 !default;
-$button-secondary-text-color:            			#5D829F !default;
-$button-secondary-icon-color:            			#5D829F !default;
+$button-secondary-text-color:            			#0033a0 !default;
+$button-secondary-icon-color:            			#0033a0 !default;
 
 
 // Sites Navigation
 // Non Selected
-$sites-nav-menu-item-background:         			#aec0cf !default;
+$sites-nav-menu-item-background:         			#FFFFFF !default;
 $sites-nav-menu-item-color:              			#3d3d3d !default;
 $sites-nav-menu-item-icon-color:         			#3d3d3d !default;
 //Selected
-$sites-nav-menu-item-selected-background:			#5D829F !default;
+$sites-nav-menu-item-selected-background:			#0033a0 !default;
 $sites-nav-menu-item-selected-color:				#FFFFFF !default;
 $sites-nav-menu-item-selected-hover-background: 		#FFFFFF !default;
-$sites-nav-menu-item-selected-hover-color:      		#5D829F !default;
-$sites-nav-menu-item-selected-hover-icon-color: 		#5D829F !default;
-$sites-nav-menu-item-selected-border-color: 			#5D829F !default;
+$sites-nav-menu-item-selected-hover-color:      		#0033a0 !default;
+$sites-nav-menu-item-selected-hover-icon-color: 		#0033a0 !default;
+$sites-nav-menu-item-selected-border-color: 			#0033a0 !default;
 
 // TOOL MENU COLORS
 // non-selected
@@ -84,9 +84,9 @@ $tool-menu-item-hover-icon-color:               		#FFFFFF !default;
 $tool-menu-item-hover-background-color:         		#ECECEC !default;
 $tool-menu-item-hover-border-left:              		4px solid #FFFFFF !default;
 // selected
-$tool-menu-item-selected-text-color:            		#5D829F !default;
-$tool-menu-item-selected-icon-color:            		#5D829F !default;
-$tool-menu-item-selected-border-left:           		4px solid #5D829F !default;
+$tool-menu-item-selected-text-color:            		#0033a0 !default;
+$tool-menu-item-selected-icon-color:            		#0033a0 !default;
+$tool-menu-item-selected-border-left:           		4px solid #0033a0 !default;
 $tool-menu-item-selected-background-color:          		#FFFFFF !default;
 
 // submenu
@@ -94,7 +94,7 @@ $tool-sub-menu-hover-color:					#FFFFFF !default;
 // selected hover
 $tool-menu-item-selected-hover-text-color:      		#FFFFFF !default;
 $tool-menu-item-selected-hover-icon-color:      		#FFFFFF !default;
-$tool-menu-item-selected-hover-background-color:		#5D829F !default;
+$tool-menu-item-selected-hover-background-color:		#0033a0 !default;
 $tool-menu-item-selected-hover-border-left:         		4px solid #FFFFFF !default;
 // collapsed menu
 $tool-menu-collapse-active-hover-background-color:  		#E6E6E6 !default;

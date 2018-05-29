@@ -73,10 +73,10 @@ $tool-menu-item-icon-color:                       	#000 !default;
 // non-selected hover
 $tool-menu-item-hover-text-color:               	#000 !default;
 $tool-menu-item-hover-icon-color:               	#000 !default;
-$tool-menu-item-hover-background-color:         	#FFF !default;
+$tool-menu-item-hover-background-color:         	#FFF !important;
 $tool-menu-item-hover-border-left:              	4px solid #FFF !default;
 // selected
-$tool-menu-item-selected-background-color:            	#FFF !default;
+$tool-menu-item-selected-background-color:            	#FFF !important;
 $tool-menu-item-selected-text-color:            	#000 !default;
 $tool-menu-item-selected-icon-color:            	#000 !default;
 $tool-menu-item-selected-border-left:           	4px solid #3F6622 !default;
@@ -106,4 +106,8 @@ $info-background-color:   				#efefef;
 .navIntraTool li span.current a {
     background: #FFF;
     color: #000;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
+    background-color: #d0dcc9 !important;
 }

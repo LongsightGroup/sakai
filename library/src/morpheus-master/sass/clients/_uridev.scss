@@ -7,5 +7,10 @@ $logo-width: 124px;
 
 // Main Colors
 $background-color-secondary:                            #e7e7e7 !default;
+$topNav-text-color:					#002147 !default;
 $sites-nav-menu-item-selected-background:               #002147 !default;
 $sites-nav-menu-item-selected-color:                    #FFF !default;
+
+#mastLogin #loginForm label {
+    color: #002147;
+}

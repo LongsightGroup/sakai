@@ -117,3 +117,12 @@ $info-background-color:   				#efefef;
 #favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
     background-color: #00355f !important;
 }
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #0064cd !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+}
