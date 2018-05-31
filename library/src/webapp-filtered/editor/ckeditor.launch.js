@@ -193,7 +193,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             //Delay for autosave
             delay: 120,
             //autosave_messageType can be "no" or "notification"
-            messageType : "statusbar"
+            messageType : "no"
         },
 
         //wordcount Plugin see https://github.com/w8tcha/CKEditor-WordCount-Plugin for more config options
