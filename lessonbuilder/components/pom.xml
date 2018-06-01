@@ -69,6 +69,10 @@
             <artifactId>spring-orm</artifactId>
         </dependency>
         <dependency>
+             <groupId>commons-lang</groupId>
+             <artifactId>commons-lang</artifactId>
+         </dependency>
+        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
 	        <version>${json.simple.version}</version>
@@ -77,6 +81,9 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+             <groupId>org.sakaiproject.scheduler</groupId>
+             <artifactId>scheduler-api</artifactId>
+         </dependency>
     </dependencies>
 
     <build>
