@@ -28,6 +28,47 @@ import com.opencsv.CSVParser;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+// import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.TimeZone;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import org.sakaiproject.lessonbuildertool.ActivityAlert;
+import org.sakaiproject.lessonbuildertool.ActivityAlertImpl;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -76,6 +117,7 @@ import org.sakaiproject.lessonbuildertool.cc.CartridgeLoader;
 import org.sakaiproject.lessonbuildertool.cc.Parser;
 import org.sakaiproject.lessonbuildertool.cc.PrintHandler;
 import org.sakaiproject.lessonbuildertool.cc.ZipLoader;
+import org.sakaiproject.lessonbuildertool.model.ActivityAlertService;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.lessonbuildertool.service.AjaxServer;
 import org.sakaiproject.lessonbuildertool.service.AssignmentEntity;
@@ -268,6 +310,9 @@ public class SimplePageBean {
     
 	public String questionType;
     public String questionText, questionCorrectText, questionIncorrectText;
+    public String addAlertRecurrence = "" + ActivityAlert.RECURRENCCE_ONCE;
+    public String addAlertStudentMessage, addAlertOtherMessage, addAlertBeginDate, addAlertEndDate;
+    public String[] addAlertRoles = new String[]{};
     public String questionAnswer;
     public Boolean questionShowPoll;
     private HashMap<Integer, String> questionAnswers = null;
@@ -697,7 +742,31 @@ public class SimplePageBean {
 	    Arrays.sort(htmlTypes);
 	}
 
+	private LessonEntity assignmentEntity = null;
+	public void setAssignmentEntity(Object e) {
+		assignmentEntity = (LessonEntity)e;
+	}
 
+        private LessonEntity bltiEntity = null;
+        public void setBltiEntity(Object e) {
+	    bltiEntity = (LessonEntity)e;
+        }
+	
+	@Setter private ActivityAlertService activityAlertService;
+	@Setter private AssignmentService assignmentService;
+	@Setter private ToolManager toolManager;
+	@Setter private LTIService ltiService;
+	@Setter private SecurityService securityService;
+	@Setter private SiteService siteService;
+	@Setter private AuthzGroupService authzGroupService;
+	@Setter private SimplePageToolDao simplePageToolDao;
+	@Setter private LessonsAccess lessonsAccess;
+        @Setter private LessonBuilderAccessService lessonBuilderAccessService;
+	@Getter @Setter private MessageLocator messageLocator;
+        @Setter private HttpServletResponse httpServletResponse;
+        @Setter private LessonBuilderEntityProducer lessonBuilderEntityProducer;
+
+    // End Injection
 
 	static Class levelClass = null;
 	static Object[] levels = null;
@@ -1975,6 +2044,42 @@ public class SimplePageBean {
 		return true;
 	    String ref = "/site/" + getCurrentSiteId();
 	    return securityService.unlock(SimplePage.PERMISSION_LESSONBUILDER_SEE_ALL, ref);
+	}
+
+	public void setLtiService(LTIService service) {
+		ltiService = service;
+	}
+
+	public void setToolManager(ToolManager toolManager) {
+		this.toolManager = toolManager;
+	}
+
+	public void setSecurityService(SecurityService service) {
+		securityService = service;
+	}
+
+	public void setSiteService(SiteService service) {
+		siteService = service;
+	}
+
+	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
+		this.authzGroupService = authzGroupService;
+	}
+
+	public void setSimplePageToolDao(Object dao) {
+		simplePageToolDao = (SimplePageToolDao) dao;
+	}
+	
+	public void setActivityAlertService(ActivityAlertService activityAlertService){
+		this.activityAlertService = activityAlertService;
+	}
+
+	public void setLessonsAccess(LessonsAccess a) {
+		lessonsAccess = a;
+	}
+
+	public void setLessonBuilderAccessService(LessonBuilderAccessService a) {
+		lessonBuilderAccessService = a;
 	}
 
 	public List<SimplePageItem>  getItemsOnPage(long pageid) {
@@ -6672,6 +6777,86 @@ public class SimplePageBean {
 		}
 	}
 
+        public void setupActivityAlert(){
+                if(canEditPage()){
+                        ActivityAlert alert = simplePageToolDao.findActivityAlert(getCurrentSiteId(), "sakai.lessonbuildertool", "" + getCurrentPageId());
+                        if(alert != null){
+                                addAlertStudentMessage = alert.getStudentMessage();
+                                addAlertOtherMessage = alert.getNonStudentMessage();
+                                addAlertRecurrence = alert.getRecurrence() == null ? "" + ActivityAlert.RECURRENCCE_ONCE : "" + alert.getRecurrence();
+                                addAlertBeginDate = alert.getBeginDate() == null ? "" : isoDateFormat.format(alert.getBeginDate());
+                                addAlertEndDate = alert.getEndDate() == null ? "" : isoDateFormat.format(alert.getEndDate());
+                                Set<String> recipientsRolesList = alert.getStudentRecipientsType(ActivityAlert.RECIPIENT_TYPE_ROLE);
+                                recipientsRolesList.addAll(alert.getNonStudentRecipientsType(ActivityAlert.RECIPIENT_TYPE_ROLE));
+                                addAlertRoles = recipientsRolesList.toArray(new String[recipientsRolesList.size()]);
+                        }
+                }
+        }
+
+        public void addAlert(){
+                if (!canEditPage())
+                        return;
+                if (!checkCsrf())
+                        return;
+
+                //there is only one activity alert per page, so always write over it:
+                ActivityAlert activityAlert = new ActivityAlertImpl();
+                activityAlert.setSiteId(getCurrentPage().getSiteId());
+                activityAlert.setTool("sakai.lessonbuildertool");
+                activityAlert.setReference("" + getCurrentPageId());
+
+                activityAlert.setStudentMessage(addAlertStudentMessage);
+                activityAlert.setNonStudentMessage(addAlertOtherMessage);
+                Integer recurrence = ActivityAlert.RECURRENCCE_ONCE;
+                try{
+                        recurrence = Integer.parseInt(addAlertRecurrence);
+                }catch(Exception e){
+                        log.warn(e.getMessage(), e);
+                }
+                activityAlert.setRecurrence(recurrence);
+                Date beginDate = null;
+                if(StringUtils.isNotEmpty(addAlertBeginDate)){
+                        try {
+                                beginDate = isoDateFormat.parse(addAlertBeginDate);
+                        } catch (java.text.ParseException e) {
+                                log.error(e.getMessage(), e);
+                        }
+                }
+                activityAlert.setBeginDate(beginDate);
+                Date endDate = null;
+                if(StringUtils.isNotEmpty(addAlertEndDate)){
+                        try {
+                                endDate = isoDateFormat.parse(addAlertEndDate);
+                        } catch (java.text.ParseException e) {
+                                log.error(e.getMessage(), e);
+                        }
+                }
+                if(beginDate != null && endDate != null && endDate.before(beginDate)){
+                        endDate = new Date(beginDate.getTime());
+                }
+                activityAlert.setEndDate(endDate);
+                StringBuilder studentRecipients = new StringBuilder();
+                StringBuilder nonStudentRecipients = new StringBuilder();
+                for(String role : addAlertRoles){
+                        if("access".equals(role) || "Student".equals(role)){
+                                if(StringUtils.isNotEmpty(studentRecipients.toString())){
+                                        studentRecipients.append(ActivityAlert.RECIPIENT_DELIMITER);
+                                }
+                                studentRecipients.append(ActivityAlert.RECIPIENT_TYPE_ROLE + role);
+                        }else{
+                                if(StringUtils.isNotEmpty(nonStudentRecipients.toString())){
+                                        nonStudentRecipients.append(ActivityAlert.RECIPIENT_DELIMITER);
+                                }
+                                nonStudentRecipients.append(ActivityAlert.RECIPIENT_TYPE_ROLE + role);
+                        }
+                }
+                activityAlert.setStudentRecipients(studentRecipients.toString());
+                activityAlert.setNonStudentRecipients(nonStudentRecipients.toString());
+
+                update(activityAlert, false);
+                activityAlertService.scheduleActivityAlert(activityAlert);
+        }
+	
 	// for types where we save the URL directly we need a unique Sakai id. It
 	// has to be unique, not too long, and it has to end in the right extension.
 	// has to be unique because this is sometimes used as a key for caching
