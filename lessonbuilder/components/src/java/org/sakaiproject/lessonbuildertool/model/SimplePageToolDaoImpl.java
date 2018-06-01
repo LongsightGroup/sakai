@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.hibernate.CacheMode;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
@@ -69,6 +71,7 @@ import org.sakaiproject.db.api.SqlReader;
 import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.lessonbuildertool.ActivityAlert;
 import org.sakaiproject.lessonbuildertool.ChecklistItemStatus;
 import org.sakaiproject.lessonbuildertool.SimpleChecklistItem;
 import org.sakaiproject.lessonbuildertool.SimpleChecklistItemImpl;
@@ -868,7 +871,9 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		}
 
 		try {
-			if(!(o instanceof SimplePageLogEntry)) {
+                        if(o instanceof ActivityAlert) {
+                               getHibernateTemplate().saveOrUpdate(o);
+                        }else if(!(o instanceof SimplePageLogEntry)) {
 				getHibernateTemplate().merge(o);
 			}else {
 				SimplePageLogEntry entry = (SimplePageLogEntry) o;
@@ -1021,6 +1026,21 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		}
 	}
 	
+       public boolean hasActivityForPage(String userId, long pageId) {
+               if (StringUtils.isBlank(userId)) {
+                       return false;
+               }
+               Object[] fields = new Object[3];
+               fields[0] = userId;
+               fields[1] = pageId;
+               fields[2] = pageId;
+               List<String> result = sqlService.dbRead("select count(0) > 0 from lesson_builder_log lbl join lesson_builder_items lbi on (lbl.itemId = lbi.id) where lbl.userId = ? and (lbi.pageId = ? or lbi.sakaiId = ?)", fields, null);
+
+               return "1".equals(result.get(0));
+       }
+
+
+
 	// owner not currently used. would need group as well
         public boolean isPageVisited(long pageId, String userId, String owner) {
 	    // if this is a student page, it's most likely the top level, so do that query first
@@ -1849,6 +1869,27 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		String hql = "select item from org.sakaiproject.lessonbuildertool.SimplePageItem item, org.sakaiproject.lessonbuildertool.SimplePage page where item.pageId = page.pageId and page.siteId = :site and item.type = 15";
 		return (List<SimplePageItem>) getHibernateTemplate().findByNamedParam(hql, "site", siteId);
 	}
+
+       @Override
+       public ActivityAlert findActivityAlert(String siteId, String tool, String pageId) {
+               DetachedCriteria d = DetachedCriteria.forClass(ActivityAlert.class)
+                               .add(Restrictions.eq("siteId", siteId))
+                               .add(Restrictions.eq("tool", tool))
+                               .add(Restrictions.eq("reference", pageId));
+               List<ActivityAlert> list = (List<ActivityAlert>)getHibernateTemplate().findByCriteria(d);
+
+               if(list.size() > 0) {
+                       return list.get(0);
+               }else {
+                       return null;
+               }
+       }
+
+       @Override
+       public void saveActityAlert(ActivityAlert alert) {
+               // TODO Auto-generated method stub
+
+       }
 
 
 	public String getLessonSubPageJSON(final String userId, final boolean isInstructor, final String siteId, final List pages) {
