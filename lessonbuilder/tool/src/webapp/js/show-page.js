@@ -434,6 +434,22 @@ $(document).ready(function () {
       return false;
     });
 
+		$('#add-alert').click(function(){
+			oldloc = $(".dropdown a");
+			closeDropdowns();
+			$('#add-alert-dialog').dialog('open');
+			setupdialog($('#add-alert-dialog'));
+			$("#add-alert-error-container").hide();
+			return false;
+		});
+
+		$('#add-alert-all-roles').click(function(){
+			var selected = $(this).prop("checked");
+			$(".add-alert-role").each(function(){
+				$(this).prop('checked', selected);
+			});
+		});
+
     $('#import-cc-submit').click(function () {
 
       $("#import-cc-loading").show();
@@ -2171,6 +2187,11 @@ $(document).ready(function () {
       setUpRequirements();
     });
 
+		$('.addAlertEndDateInputSpan').toggle(!$("#addAlertRecurrenceNone").is(':checked'));
+		$("input[name=add-alert-recurrence-selection]:radio").change(function(){
+			$('.addAlertEndDateInputSpan').toggle(!$("#addAlertRecurrenceNone").is(':checked'));
+		});
+
     function delete_confirm(event, message) {
 
       const deleteEl = document.querySelector("#delete-confirm");
@@ -3374,6 +3395,26 @@ function prepareQuestionDialog() {
   $("#multipleChoiceSelect").prop("disabled", false);
   $("#shortanswerSelect").prop("disabled", false);
   return true;
+}
+
+function prepareAddAlertDialog(){
+	if($("input.add-alert-role:checkbox:checked").length == 0){
+		$('#add-alert-error').text(msg("simplepage.add-alert-need-role"));
+	    $('#add-alert-error-container').show();
+	    $('#add-alert-dialog').scrollTop(0);
+		return false;
+	}else if(!$("#addAlertBeginDate").val()){
+		$('#add-alert-error').text(msg("simplepage.add-alert-need-begin-date"));
+	    $('#add-alert-error-container').show();
+	    $('#add-alert-dialog').scrollTop(0);
+		return false;
+	}else if(!$("#addAlertEndDate").val() && !$("#addAlertRecurrenceNone").is(':checked')){
+		$('#add-alert-error').text(msg("simplepage.add-alert-need-end-date"));
+	    $('#add-alert-error-container').show();
+	    $('#add-alert-dialog').scrollTop(0);
+		return false;
+	}
+	return true;
 }
 
 // Reset the multiple choice answers to prevent problems when submitting a shortanswer

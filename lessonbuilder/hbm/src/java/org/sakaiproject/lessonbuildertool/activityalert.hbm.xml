@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.sakaiproject.lessonbuildertool">
+
+   <!-- put your value object in the class name, 
+      the table name is optional but you should specify it to avoid collisions -->
+   <class name="org.sakaiproject.lessonbuildertool.ActivityAlertImpl" table="ACTIVITY_ALERT">
+
+       <cache usage="nonstrict-read-write" />
+
+
+    <composite-id>
+    	<key-property name="siteId">
+			<column name="siteId" length="99" not-null="true"/>
+		</key-property>
+    	<key-property name="tool">
+			<column name="tool" length="99" not-null="true"/>
+		</key-property>		
+		<key-property name="reference">
+			<column name="reference" length="99" not-null="true"/>
+		</key-property>
+	</composite-id>
+
+	<property name="studentMessage" type="materialized_clob" />
+	<property name="nonStudentMessage" type="materialized_clob" />	
+	<property name="recurrence" type="integer" length="2" not-null="true"/>
+	<property name="beginDate" type="timestamp" />
+	<property name="endDate" type="timestamp" />
+	<property name="studentRecipients" type="string" length="250" />
+	<property name="nonStudentRecipients" type="string" length="250" />
+
+   </class>
+</hibernate-mapping>

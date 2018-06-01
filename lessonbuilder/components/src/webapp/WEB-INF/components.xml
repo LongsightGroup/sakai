@@ -10,6 +10,7 @@
         class="org.sakaiproject.springframework.orm.hibernate.impl.AdditionalHibernateMappingsImpl">
     <property name="mappingResources">
       <list>
+        <value>org/sakaiproject/lessonbuildertool/activityalert.hbm.xml</value>
         <value>org/sakaiproject/lessonbuildertool/simplepageitem.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplepage.hbm.xml</value>
 		<value>org/sakaiproject/lessonbuildertool/simplepagelogentry.hbm.xml</value>
@@ -39,6 +40,14 @@
     <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
     <property name="eventTrackingService" ref="org.sakaiproject.event.api.EventTrackingService"/>
   </bean>
+  
+  <bean id="org.sakaiproject.lessonbuildertool.model.ActivityAlertService"
+    	class="org.sakaiproject.lessonbuildertool.model.ActivityAlertServiceImpl"
+    	>
+    	<property name="timeService" ref="org.sakaiproject.time.api.TimeService" />
+		<property name="scheduledInvocationManager" ref="org.sakaiproject.api.app.scheduler.ScheduledInvocationManager" />
+		<property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
+  </bean>  
 
 <!-- here's the version our code will access -->
 
