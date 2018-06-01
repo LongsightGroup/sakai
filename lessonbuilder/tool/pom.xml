@@ -182,6 +182,10 @@
             <version>3.7.0</version>
             <scope>test</scope>
         </dependency>
+	<dependency>
+            <groupId>org.sakaiproject.scheduler</groupId>
+            <artifactId>scheduler-api</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
