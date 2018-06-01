@@ -163,7 +163,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 			attributeMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
 		MessageFormat valueFormat = valueMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
 		if (valueFormat == null) {
-			return eidAttr + "=" + escapeSearchFilterTerm(eid);
+			return "(&(objectClass=user)(" + eidAttr + "=" + escapeSearchFilterTerm(eid) + "))";
 		} else {
 			valueFormat = (MessageFormat) valueFormat.clone();
 			return eidAttr + "=" + escapeSearchFilterTerm(valueFormat.format(new Object[]{eid}));
@@ -173,7 +173,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 	public String getFindUserByAidFilter(String aid) {
 		String eidAttr = 
 			attributeMappings.get(AttributeMappingConstants.AUTHENTICATION_ATTR_MAPPING_KEY);
-		return eidAttr + "=" + escapeSearchFilterTerm(aid);
+		return "(&(objectClass=user)(" + eidAttr + "=" + escapeSearchFilterTerm(aid) + "))";
 	}
 
 	/**
@@ -333,7 +333,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
         				"][value = " + attrValue + "]");
         	}
             userData.setLastName(attrValue);
-        } else if ( logicalAttrName.equals(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY) ) {
+          } else if ( logicalAttrName.equals(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY) && StringUtils.isNotEmpty(attrValue) ) {
         	if ( log.isDebugEnabled() ) {
         		log.debug("mapLdapAttributeOntoUserData() mapping attribute to User.email: " +
         				"[logical attr name = " + logicalAttrName + 
@@ -341,6 +341,21 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
         				"][value = " + attrValue + "]");
         	}
             userData.setEmail(attrValue);
+        } else if ( logicalAttrName.equals(AttributeMappingConstants.ALTEMAIL_ATTR_MAPPING_KEY) && StringUtils.isNotEmpty(attrValue) ) {
+                if (StringUtils.isNotBlank (userData.getEmail())) {
+        	        if ( M_log.isDebugEnabled() ) {
+        		        M_log.debug("mapLdapAttributeOntoUserData() NOT mapping alternate email attribute (" + attrValue + ") because User.email already set.");
+                        }
+                }
+                else {
+        	        if ( M_log.isDebugEnabled() ) {
+        		        M_log.debug("mapLdapAttributeOntoUserData() mapping alternate email attribute to User.email: " +
+        				"[logical attr name = " + logicalAttrName + 
+        				"][physical attr name = " + attribute.getName() + 
+        				"][value = " + attrValue + "]");
+                        }
+                        userData.setEmail(attrValue);
+        	}
         } else if ( logicalAttrName.equals(AttributeMappingConstants.DISPLAY_ID_ATTR_MAPPING_KEY) ) {
         	if ( log.isDebugEnabled() ) {
         		log.debug("mapLdapAttributeOntoUserData() mapping attribute to User display Id: " +
@@ -647,12 +662,14 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 	 * @inheritDoc
 	 */
 	public String getManyUsersInOneSearch(Set<String> criteria) {
+	        String eidAttr = attributeMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("(|");
 
 		for ( Iterator<String> eidIterator = criteria.iterator(); eidIterator.hasNext(); ) {
 			sb.append("(");
-			sb.append(getFindUserByEidFilter(eidIterator.next()));
+			sb.append(eidAttr).append("=").append(escapeSearchFilterTerm(eidIterator.next()));
 			sb.append(")");
 		}
 		

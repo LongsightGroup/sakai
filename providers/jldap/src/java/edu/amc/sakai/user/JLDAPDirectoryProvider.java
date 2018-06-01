@@ -21,6 +21,9 @@
 
 package edu.amc.sakai.user;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,6 +41,13 @@ import com.novell.ldap.LDAPSearchResults;
 import com.novell.ldap.LDAPSocketFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.db.api.SqlService;
+import org.sakaiproject.email.api.EmailService;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
+import org.apache.commons.lang.RandomStringUtils;
+import com.novell.ldap.LDAPReferralException;
 
 import org.sakaiproject.user.api.*;
 
@@ -176,6 +186,13 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 */
 	private Map<String,String> attributeMappings;
 
+	private MemoryService memoryService;
+	
+	// EST-3 LUC immutable id customization
+	private SqlService sqlService;
+	private EmailService emailService;
+	private ServerConfigurationService serverConfigurationService;
+	
 	/** Handles LDAPConnection allocation */
 	private LdapConnectionManager ldapConnectionManager;
 
@@ -207,6 +224,16 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 */
 	private boolean allowAuthentication = DEFAULT_ALLOW_AUTHENTICATION;
 	
+
+	/** 
+	 * Long-lasting authentication cache because some institutions have very 
+	 * unreliable LDAP servers
+	 */
+	private Cache authCache;
+	private String authCacheSalt;
+	private final int authCacheSaltLength = 8;
+	private final int authCacheHashIterations = 1000;
+	
 	/**
 	 * Flag for controlling the return value of 
 	 * {@link #authenticateWithProviderFirst(String)} on a global basis.
@@ -233,6 +260,10 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		if ( log.isDebugEnabled() ) {
 			log.debug("init()");
 		}
+
+		// setup the authcache and the salt
+		authCache = memoryService.newCache(getClass().getName()+".authCache");
+		authCacheSalt = RandomStringUtils.random(authCacheSaltLength);
 
 		// We don't want to allow people to break their config by setting the batch size to be more than the maxResultsSize.
 		if (batchSize > maxResultSize) {
@@ -370,8 +401,16 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 * 
 	 * @see #lookupUserBindDn(String, LDAPConnection)
 	 */
-	public boolean authenticateUser(final String userLogin, final UserEdit edit, final String password)
-	{
+ 	public boolean authenticateUser(final String userLoginMixedCase, final UserEdit edit, final String password)
+  	{
+ 		// FSK-841370 mixed-case by users
+ 		String userLogin = StringUtils.lowerCase(userLoginMixedCase);
+
+ 		if ( !isSearchableEid(userLogin) ) {
+ 			M_log.debug("authenticateUser(): passing on auth attempt because user is in the eid blacklist [userLogin = " + userLogin + "].");
+ 			return false;
+ 		}
+
 		if ( log.isDebugEnabled() ) {
 			log.debug("authenticateUser(): [userLogin = " + userLogin + "]");
 		}
@@ -399,6 +438,11 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 				log.debug("authenticateUser(): allocating connection for login [userLogin = " + userLogin + "]");
 			}
 			conn = ldapConnectionManager.getConnection();
+
+			// check the conn for validity
+			if (conn == null || !conn.isConnectionAlive()) {
+				return attemptCachedAuthentication (userLogin, password);
+			}
 
 			// look up the end-user's DN, which could be nested at some 
 			// arbitrary depth below getBasePath().
@@ -428,6 +472,49 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 				log.debug("authenticateUser(): successfully allocated bound connection [userLogin = " + 
 						userLogin + "][bind dn [" + endUserDN + "]");
 			}
+			
+			// put the successful authentication in the authCache
+			cacheAuthAttempt (userLogin, password);			
+			
+			// EST-3 make sure the LUC user hasn't changed their username
+			String[] ldapAttrs = {"employeeNumber"};
+			LdapUserData resolvedEntry = (LdapUserData)searchDirectoryForSingleEntry("samaccountname=" + userLogin, conn, null, ldapAttrs, null);
+			String employeeNumber = null;
+			try {
+				employeeNumber = resolvedEntry.getProperties().getProperty("employeeNumber");
+			} catch (Exception e) {
+				M_log.debug("JLDAP could not fetch employeeNumber for user: " + userLogin);
+			}
+            
+			if (StringUtils.isBlank(employeeNumber)) {
+				M_log.warn("JLDAP could not find employeeNumber of eid " + userLogin);
+			}
+			else {
+				Object[] fields = {employeeNumber};
+				List<String> previousEids = sqlService.dbRead("select eid from jldap_immutable where immutable_id = ?", fields, null);
+				if (!previousEids.isEmpty()) {
+					String previousEid = previousEids.get(0);
+					
+					if (!StringUtils.equals(previousEid, userLogin)) {
+						String emailBody = "Request to change " + previousEid + " to " + userLogin + " in Sakai.";
+						String fromStr = serverConfigurationService.getString("support.email","help@"+ serverConfigurationService.getServerUrl());
+						String toStr = serverConfigurationService.getString("luc.eid.change.email", "sakai@luc.edu");
+						String subject = serverConfigurationService.getString("luc.eid.change.subject", "LUC Sakai EID Change");
+						emailService.send(fromStr, toStr, subject, emailBody, null, null, null);
+						M_log.warn("JLDAP LUC EID change: " + emailBody);
+						return false;
+					}
+				}
+				else {
+					String insertImmutableSql = "insert into jldap_immutable (immutable_id, eid) VALUES (?,?)";
+					Object insertFields[] = new Object[2];
+					insertFields[0] = employeeNumber;
+					insertFields[1] = userLogin;
+					sqlService.dbWrite(insertImmutableSql, insertFields);
+					M_log.info("JLDAP added immutable id (" + employeeNumber + ") for eid " + userLogin);
+				}
+			}
+
 			return true;
 
 		}
@@ -441,10 +528,14 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 					log.warn("authenticateUser(): ldap service is unwilling to authenticate [userLogin = " + userLogin + "][reason = " + e.getLDAPErrorMessage() + "]");
 					return false;
 				default:
-					throw new RuntimeException(
+ 				M_log.warn(
 							"authenticateUser(): LDAPException during authentication attempt [userLogin = " +
 									userLogin + "][result code = " + e.resultCodeToString() +
 									"][error message = " + e.getLDAPErrorMessage() + "]", e);
+
+ 				// try to do a cached auth
+ 				return attemptCachedAuthentication (userLogin, password);
+  			}
 			}
 		} catch ( Exception e ) {
 			throw new RuntimeException(
@@ -648,7 +739,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			int cnt = 0;
 			for ( Iterator<UserEdit> userEdits = users.iterator(); userEdits.hasNext(); ) {
 				userEdit = (UserEdit) userEdits.next();
-				String eid = userEdit.getEid();
+				String eid = userEdit.getEid().toLowerCase();
 				
 				if ( !(isSearchableEid(eid)) ) {
 					userEdits.remove();
@@ -799,6 +890,13 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	 */
 	protected LdapUserData getUserByEid(String eid, LDAPConnection conn) 
 	throws LDAPException {
+
+ 		// Do not look up internal sakai ids in LDAP
+ 		// example: 52578688-0868-49ed-a382-ee06c80b9164
+ 		if ((eid.equals("null")) || (eid.length() == 36 && StringUtils.countMatches(eid, "-") == 4)) {
+ 			return null;
+ 		}
+
 		if ( log.isDebugEnabled() ) {
 			log.debug("getUserByEid(): [eid = " + eid + "]");
 		}
@@ -1006,8 +1104,13 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			List<LdapUserData> mappedResults = new ArrayList<LdapUserData>();
 			int resultCnt = 0;
 			while ( searchResults.hasMore() ) {
-				LDAPEntry entry = searchResults.next();
-				Object mappedResult = mapper.mapLdapEntry(entry, ++resultCnt);
+				Object mappedResult = null;
+				try {
+					LDAPEntry entry = searchResults.next();
+					mappedResult = mapper.mapLdapEntry(entry, ++resultCnt);
+				} catch (LDAPReferralException ldapEx) {
+					M_log.debug("LDAPReferralException: {}", ldapEx.getLDAPErrorMessage());
+				}
 				if ( mappedResult == null ) {
 					continue;
 				}
@@ -1617,12 +1720,37 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		}
 	}
 
-	/**
-	 * User caching is done centrally in the UserDirectoryService.callCache
-	 * @deprecated
-	**/
-	public void setMemoryService(org.sakaiproject.memory.api.MemoryService ignore) {
-		log.warn("DEPRECATION WARNING: memoryService is deprecated. Please remove it from your jldap-beans.xml configuration.");
+ 	public MemoryService getMemoryService() {
+ 		return memoryService;
+ 	}
+
+ 	public void setMemoryService(MemoryService memoryService) {
+ 		this.memoryService = memoryService;
+ 	}
+
+ 	// EST-3 custom for LUC immutable id checking
+ 	public SqlService getSqlService() {
+ 		return sqlService;
+ 	}
+
+ 	public void setSqlService(SqlService sqlService) {
+ 		this.sqlService = sqlService;
+ 	}
+
+ 	public EmailService getEmailService() {
+ 		return emailService;
+ 	}
+
+ 	public void setEmailService(EmailService emailService) {
+ 		this.emailService = emailService;
+ 	}
+
+ 	public ServerConfigurationService getServerConfigurationService() {
+ 		return serverConfigurationService;
+ 	}
+
+ 	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
+ 		this.serverConfigurationService = serverConfigurationService;
 	}
 
 	/** 
@@ -1733,6 +1861,60 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	public void setSearchAliases(boolean searchAliases)
 	{
 		this.searchAliases = searchAliases;
+	}
+	
+	private void cacheAuthAttempt (final String userLogin, final String password) 
+	{
+		byte[] hashedPassword = getPasswordHash (password);
+		
+		if (M_log.isDebugEnabled())
+		{
+			M_log.debug("Caching auth attempt for: " + userLogin);
+		}
+
+		authCache.put(userLogin, hashedPassword);	
+	}
+	
+	private boolean attemptCachedAuthentication (final String userLogin, final String password)
+	{
+		byte[] hashedPassword = getPasswordHash (password);
+		byte[] cachedPassword = (byte[]) authCache.get(userLogin);
+		
+		if (M_log.isDebugEnabled())
+		{
+			M_log.debug("attemptCachedAuthentication for " + userLogin + 
+					"; credentials match=" + Arrays.equals(hashedPassword, cachedPassword));
+		}
+		return hashedPassword != null && cachedPassword != null && Arrays.equals(hashedPassword, cachedPassword);
+	}
+	
+	private byte[] getPasswordHash (final String password)
+	{
+		MessageDigest messageDigest;
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.reset();
+			messageDigest.update(authCacheSalt.getBytes("UTF-8"));
+			byte[] input = messageDigest.digest(password.getBytes("UTF-8"));
+			
+			// now hash a whole bunch of times
+			for (int i = 0; i < authCacheHashIterations; i++) {
+				messageDigest.reset();
+				input = messageDigest.digest(input);
+			}
+			
+			return input;
+		} catch (NoSuchAlgorithmException e) {
+			M_log.warn("No SHA-256 on this server!", e);
+		} catch (UnsupportedEncodingException e) {
+			M_log.warn("Could not encode user's password to SHA-256!", e);
+		}
+		
+		try {
+			return password.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
 	}
 
 }
