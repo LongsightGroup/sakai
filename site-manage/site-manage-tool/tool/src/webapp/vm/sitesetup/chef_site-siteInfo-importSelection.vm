@@ -32,12 +32,12 @@
 				$tlang.getString("sitinfimp.import.info")
 			</p>
 			<p></p>
-			<div class="indnt2">
+			<div class="indnt2 hidden">
 				<a href="#toolLink("SiteAction" "doMenu_siteInfo_import_user")" title ="$tlang.getString('sitinfimp.import.user')">
 					$tlang.getString("sitinfimp.import.user")
 				</a>
 			</div>
-			<p class="indnt2">
+			<p class="indnt2 hidden">
 				$tlang.getString("sitinfimp.import.user.info")
 			</p>
 		#else
