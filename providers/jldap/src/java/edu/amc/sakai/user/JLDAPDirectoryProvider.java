@@ -407,7 +407,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
  		String userLogin = StringUtils.lowerCase(userLoginMixedCase);
 
  		if ( !isSearchableEid(userLogin) ) {
- 			M_log.debug("authenticateUser(): passing on auth attempt because user is in the eid blacklist [userLogin = " + userLogin + "].");
+ 			log.debug("authenticateUser(): passing on auth attempt because user is in the eid blacklist [userLogin = " + userLogin + "].");
  			return false;
  		}
 
@@ -483,11 +483,11 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			try {
 				employeeNumber = resolvedEntry.getProperties().getProperty("employeeNumber");
 			} catch (Exception e) {
-				M_log.debug("JLDAP could not fetch employeeNumber for user: " + userLogin);
+				log.debug("JLDAP could not fetch employeeNumber for user: " + userLogin);
 			}
             
 			if (StringUtils.isBlank(employeeNumber)) {
-				M_log.warn("JLDAP could not find employeeNumber of eid " + userLogin);
+				log.warn("JLDAP could not find employeeNumber of eid " + userLogin);
 			}
 			else {
 				Object[] fields = {employeeNumber};
@@ -501,7 +501,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 						String toStr = serverConfigurationService.getString("luc.eid.change.email", "sakai@luc.edu");
 						String subject = serverConfigurationService.getString("luc.eid.change.subject", "LUC Sakai EID Change");
 						emailService.send(fromStr, toStr, subject, emailBody, null, null, null);
-						M_log.warn("JLDAP LUC EID change: " + emailBody);
+						log.warn("JLDAP LUC EID change: " + emailBody);
 						return false;
 					}
 				}
@@ -511,7 +511,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 					insertFields[0] = employeeNumber;
 					insertFields[1] = userLogin;
 					sqlService.dbWrite(insertImmutableSql, insertFields);
-					M_log.info("JLDAP added immutable id (" + employeeNumber + ") for eid " + userLogin);
+					log.info("JLDAP added immutable id (" + employeeNumber + ") for eid " + userLogin);
 				}
 			}
 
@@ -528,7 +528,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 					log.warn("authenticateUser(): ldap service is unwilling to authenticate [userLogin = " + userLogin + "][reason = " + e.getLDAPErrorMessage() + "]");
 					return false;
 				default:
- 				M_log.warn(
+ 				log.warn(
 							"authenticateUser(): LDAPException during authentication attempt [userLogin = " +
 									userLogin + "][result code = " + e.resultCodeToString() +
 									"][error message = " + e.getLDAPErrorMessage() + "]", e);
@@ -536,7 +536,6 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
  				// try to do a cached auth
  				return attemptCachedAuthentication (userLogin, password);
   			}
-			}
 		} catch ( Exception e ) {
 			throw new RuntimeException(
 					"authenticateUser(): Exception during authentication attempt [userLogin = "
@@ -1109,7 +1108,7 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 					LDAPEntry entry = searchResults.next();
 					mappedResult = mapper.mapLdapEntry(entry, ++resultCnt);
 				} catch (LDAPReferralException ldapEx) {
-					M_log.debug("LDAPReferralException: {}", ldapEx.getLDAPErrorMessage());
+					log.debug("LDAPReferralException: {}", ldapEx.getLDAPErrorMessage());
 				}
 				if ( mappedResult == null ) {
 					continue;
@@ -1867,9 +1866,9 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 	{
 		byte[] hashedPassword = getPasswordHash (password);
 		
-		if (M_log.isDebugEnabled())
+		if (log.isDebugEnabled())
 		{
-			M_log.debug("Caching auth attempt for: " + userLogin);
+			log.debug("Caching auth attempt for: " + userLogin);
 		}
 
 		authCache.put(userLogin, hashedPassword);	
@@ -1880,9 +1879,9 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		byte[] hashedPassword = getPasswordHash (password);
 		byte[] cachedPassword = (byte[]) authCache.get(userLogin);
 		
-		if (M_log.isDebugEnabled())
+		if (log.isDebugEnabled())
 		{
-			M_log.debug("attemptCachedAuthentication for " + userLogin + 
+			log.debug("attemptCachedAuthentication for " + userLogin + 
 					"; credentials match=" + Arrays.equals(hashedPassword, cachedPassword));
 		}
 		return hashedPassword != null && cachedPassword != null && Arrays.equals(hashedPassword, cachedPassword);
@@ -1905,9 +1904,9 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			
 			return input;
 		} catch (NoSuchAlgorithmException e) {
-			M_log.warn("No SHA-256 on this server!", e);
+			log.warn("No SHA-256 on this server!", e);
 		} catch (UnsupportedEncodingException e) {
-			M_log.warn("Could not encode user's password to SHA-256!", e);
+			log.warn("Could not encode user's password to SHA-256!", e);
 		}
 		
 		try {

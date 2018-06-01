@@ -343,13 +343,13 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
             userData.setEmail(attrValue);
         } else if ( logicalAttrName.equals(AttributeMappingConstants.ALTEMAIL_ATTR_MAPPING_KEY) && StringUtils.isNotEmpty(attrValue) ) {
                 if (StringUtils.isNotBlank (userData.getEmail())) {
-        	        if ( M_log.isDebugEnabled() ) {
-        		        M_log.debug("mapLdapAttributeOntoUserData() NOT mapping alternate email attribute (" + attrValue + ") because User.email already set.");
+        	        if ( log.isDebugEnabled() ) {
+        		        log.debug("mapLdapAttributeOntoUserData() NOT mapping alternate email attribute (" + attrValue + ") because User.email already set.");
                         }
                 }
                 else {
-        	        if ( M_log.isDebugEnabled() ) {
-        		        M_log.debug("mapLdapAttributeOntoUserData() mapping alternate email attribute to User.email: " +
+        	        if ( log.isDebugEnabled() ) {
+        		        log.debug("mapLdapAttributeOntoUserData() mapping alternate email attribute to User.email: " +
         				"[logical attr name = " + logicalAttrName + 
         				"][physical attr name = " + attribute.getName() + 
         				"][value = " + attrValue + "]");
