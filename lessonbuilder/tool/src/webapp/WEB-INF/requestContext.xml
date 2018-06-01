@@ -288,6 +288,9 @@
 		<property name="simplePageToolDao">
 			<ref bean="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
 		</property>
+		<property name="activityAlertService">
+			<ref bean="org.sakaiproject.lessonbuildertool.model.ActivityAlertService" />
+		</property>
 		<property name="httpServletResponse" ref="httpServletResponse" />
 		<property name="multipartMap" ref="multipartMap" />
 		<property name="forumEntity" ref="org.sakaiproject.lessonbuildertool.service.ForumEntity"/>

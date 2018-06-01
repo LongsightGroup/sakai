@@ -28,12 +28,12 @@ import java.util.Map;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.sakaiproject.lessonbuildertool.ActivityAlert;
 import org.sakaiproject.lessonbuildertool.SimplePage;
 import org.sakaiproject.lessonbuildertool.SimplePageComment;
 import org.sakaiproject.lessonbuildertool.SimplePageGroup;
 import org.sakaiproject.lessonbuildertool.SimplePageItem;
 import org.sakaiproject.lessonbuildertool.SimplePageLogEntry;
-
 import org.sakaiproject.lessonbuildertool.SimplePageQuestionAnswer;
 import org.sakaiproject.lessonbuildertool.SimplePageQuestionResponse;
 import org.sakaiproject.lessonbuildertool.SimplePageQuestionResponseTotals;
@@ -214,6 +214,9 @@ public interface SimplePageToolDao {
 	
     // includes the dummy entries for preauthoized pages, but that's OK
 	public boolean isPageVisited(long pageId, String userId, String owner);
+	
+	// if user has any activity on the page, doesn't look at student pages
+	public boolean hasActivityForPage(String userId, long pageId);
 
 	public List<SimplePageLogEntry> getStudentPageLogEntries(long itemId, String userId);
 
@@ -329,6 +332,10 @@ public interface SimplePageToolDao {
 
     // returns map of old to new sakaiid's after a site copy or import
     public Map<String,String> getObjectMap(String siteId);
+
+    public ActivityAlert findActivityAlert(String siteId, String tool, String pageId);
+
+    public void saveActityAlert(ActivityAlert alert);
 
     public boolean doesPageFolderExist(final String siteId, final String folder);
 

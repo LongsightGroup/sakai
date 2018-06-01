@@ -396,6 +396,11 @@
 		      </form>
                       <!-- just a message, so will display when it should not-->
                     </li>
+                    <li>
+                      <a href="#" role="menuitem" rsf:id="add-alert" id="add-alert"><span rsf:id="msg=simplepage.add-alert"></span></a>
+                      <!-- just a message, so will display when it should not-->
+                      <div rsf:id="msg=simplepage.add-alert-descrip"></div>
+                    </li>
 		  </ul>
 		</div>
 
@@ -1083,6 +1088,8 @@
 			  <p rsf:id="msg=simplepage.title_for_upload" id="simplepage.title_for_upload"></p>
 			  <p rsf:id="siteid" id="siteid"></p>
 			  <p rsf:id="locale" id="locale"></p>
+			  <p rsf:id="msg=simplepage.add-alert-need-role" id="simplepage.add-alert-need-role"></p>
+			  <p rsf:id="msg=simplepage.add-alert-need-begin-date" id="simplepage.add-alert-need-begin-date"></p>
 			</div>
 
 			<div id="subpage-dialog" rsf:id="subpage-dialog" class="lessonsDialog">
@@ -1520,6 +1527,96 @@
 
                     </div>
                 </form>
+			</div>
+			
+			<div id="add-alert-dialog" rsf:id="add-alert-dialog">
+				<div class="ui-widget" id="add-alert-error-container" style="display:none">
+					<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+						<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+						<strong rsf:id="msg=simplepage.error_colon"></strong> <span id="add-alert-error"></span></p>
+					</div>
+				</div>
+				<form action="#" rsf:id="add-alert-form" method="post" enctype="multipart/form-data" class="controlPanel">
+					<input type="hidden" rsf:id="csrf23" />
+					<div>
+					  <div>
+					  <label rsf:id="msg=simplepage.add-alert.select" id="add-alert-select-label">Select the roles that should receive the notification</label>
+					  <table style="margin-left: 20px">
+					  	<tr>
+					  		<td>
+					  			<!-- Select All -->
+					  			<input type="checkbox" id="add-alert-all-roles"/>
+					    		<label rsf:id="msg=simplepage.add-alert-all-roles" for="add-alert-all-roles" id="add-alert-all-roles-label">All Roles</label> 
+					    		<hr style="margin-top: 0"/>
+					    		<span rsf:id="addAlertRoleSelect"/>
+					    		<span rsf:id="role:" role="listitem">
+						    		<input rsf:id="roleOption" class="add-alert-role" type="checkbox"/>
+						    		<label rsf:id="roleOptionLabel">Role 1</label> 
+						    		<br/>
+					    		</span>
+					  		</td>
+					  	</tr>
+					  </table>
+					  </div>
+					  <div style="margin-top: 10px">
+					  	<span rsf:id="msg=simplepage.add-alert.recurrence" id="simplepage.add-alert.recurrence">Choose the frequency this alert should occur</span>
+					  	<br/>
+					  	<span rsf:id="add-alert-recurrence" style="margin-left: 20px"/>
+                      	<input type="radio" name="addAlertRecurrenceGroup" rsf:id="addAlertRecurrenceNone" id="addAlertRecurrenceNone" onchange="$('#addAlertEndDateInput').toggle($(this).is(':checked'));"/>
+                      	<label for="addAlertRecurrenceNone" rsf:id="msg=simplepage.add-alert.none" />
+                      	<input type="radio" name="addAlertRecurrenceGroup" rsf:id="addAlertRecurrenceDaily" id="addAlertRecurrenceDaily" />
+                      	<label for="addAlertRecurrenceDaily" rsf:id="msg=simplepage.add-alert.daily" />
+                      	<input type="radio" name="addAlertRecurrenceGroup" rsf:id="addAlertRecurrenceWeekly" id="addAlertRecurrenceWeekly" />
+                      	<label for="addAlertRecurrenceWeekly" rsf:id="msg=simplepage.add-alert.weekly" />
+					  </div>
+					  <div style="margin-top: 10px">	
+					  	<label rsf:id="msg=simplepage.add-alert.specify-dates" id="add-alert.specify-dates-label">Choose when the alert notification should be sent by specifying the date(s)</label>
+					  	<br/>
+					  	<span rsf:id="msg=simplepage.add-alert.beginning" id="simplepage.add-alert.beginning" style="margin-left: 20px">Beginning</span>:&nbsp;<input id="addAlertBeginDateInput" type="text" /><input rsf:id="addAlertBeginDate" id="addAlertBeginDate" type="hidden" />
+					  	<script type="text/javascript">
+		                  localDatePicker({
+		                    input: '#addAlertBeginDateInput',
+		                    useTime: 1,
+		                    parseFormat: 'YYYY-MM-DD HH:mm:ss',
+		                    val: $("#addAlertBeginDate").val(),
+		                    ashidden: { iso8601: 'addAlertBeginDate' }
+		                  });
+		              	</script>
+					  	<span class="addAlertEndDateInputSpan">
+					      <br />
+						  <span rsf:id="msg=simplepage.add-alert.ending" id="simplepage.add-alert.ending" style="margin-left: 20px">Ending</span>:&nbsp;<input id="addAlertEndDateInput" type="text" /><input rsf:id="addAlertEndDate" id="addAlertEndDate" type="hidden" />
+						  <script type="text/javascript">
+			                localDatePicker({
+			                    input: '#addAlertEndDateInput',
+			                    useTime: 1,
+			                    parseFormat: 'YYYY-MM-DD HH:mm:ss',
+			                    val: $("#addAlertEndDate").val(),
+			                    ashidden: { iso8601: 'addAlertEndDate' },
+			                	minDate: new Date($("#addAlertBeginDate").val())
+			                });
+			                console.log('adding addAlertEndDate');
+			              </script>
+					  	</span>
+					  </div>
+					  
+					  <div style="margin-top: 10px">
+						<label for="add-alert-student-message"><span rsf:id="msg=simplepage.add-alert-student-message-label"></span>:</label>
+							<div>
+								<textarea rsf:id="add-alert-student-message" id="add-alert-student-message" rows="6" columns="50" style="width: 100%"></textarea>
+                            </div>
+					  </div>
+					  <div style="margin-top: 10px">
+						<label for="add-alert-other-message"><span rsf:id="msg=simplepage.add-alert-other-message-label"></span>:</label>
+							<div>
+								<textarea rsf:id="add-alert-other-message" id="add-alert-other-message" placeholder="msg=simplepage.add-alert-message-default" rows="6" columns="50" style="width: 100%"></textarea>
+                            </div>
+					  </div>
+					  <p>
+					  	<input class="bold" type="submit" onclick="return prepareAddAlertDialog();" id="add-alert-submit" rsf:id="add-alert-submit" />
+					    <input type="submit" rsf:id="add-alert-cancel" onclick="closeAddAlertDialog(); return false" />
+					  </p>
+					</div>
+				</form>
 			</div>
 
 			<div id="export-cc-dialog" rsf:id="export-cc-dialog" class="lessonsDialog">

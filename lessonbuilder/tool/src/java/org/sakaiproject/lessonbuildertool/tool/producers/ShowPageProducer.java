@@ -109,8 +109,10 @@ import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.lessonbuildertool.ActivityAlert;
 import org.sakaiproject.lessonbuildertool.ChecklistItemStatus;
 import org.sakaiproject.lessonbuildertool.ChecklistItemStatusImpl;
 import org.sakaiproject.lessonbuildertool.SimplePage;
@@ -144,6 +146,7 @@ import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.portal.util.CSSUtils;
 import org.sakaiproject.portal.util.PortalUtils;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.site.api.Site;
 import org.sakaiproject.time.api.TimeService;
 import org.sakaiproject.tool.api.Placement;
 import org.sakaiproject.tool.api.Session;
@@ -754,6 +757,8 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 				createToolBarLink(PermissionsHelperProducer.VIEW_ID, tofill, "permissions", "simplepage.permissions", currentPage, "simplepage.permissions.tooltip");
 				UIOutput.make(tofill, "import-cc").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.import_cc.tooltip")));
 				UIOutput.make(tofill, "export-cc").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.export_cc.tooltip")));
+				UIOutput.make(tofill, "add-alert").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.add-alert.tooltip")));
+
 
 				// Check to see if we have tools registered for external import
 				List<Map<String, Object>> toolsImportItem = simplePageBean.getToolsImportItem();
@@ -3521,6 +3526,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		createRemovePageDialog(tofill, currentPage, pageItem);
 		createImportCcDialog(tofill);
 		createExportCcDialog(tofill);
+ 		createAddAlertDialog(tofill);
 		createYoutubeDialog(tofill, currentPage);
 		createMovieDialog(tofill, currentPage);
 		createCommentsDialog(tofill);
@@ -4676,6 +4682,58 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		UIInternalLink.make(form, "export-cc-link", "export cc link", view);
 
 	}
+
+ 	private void createAddAlertDialog(UIContainer tofill) {
+ 		if(simplePageBean.canEditPage()){
+ 			simplePageBean.setupActivityAlert();
+
+ 			UIOutput.make(tofill, "add-alert-dialog").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.add-alert-title") + " - " + simplePageBean.getPageTitle()));
+
+ 			UIForm form = UIForm.make(tofill, "add-alert-form");
+ 			makeCsrf(form, "csrf23");
+
+ 			//Roles:
+ 			String currentSiteId = toolManager.getCurrentPlacement().getContext();
+ 			Site site = null;
+ 			List<String> roles = new ArrayList<String>();
+ 			try {
+ 				site = siteService.getSite(currentSiteId);
+ 				for(Role role : site.getRoles()){
+ 					roles.add(role.getId());
+ 				}
+ 			} catch (Exception e) {
+ 				log.warn(e.getMessage(), e);
+ 			}
+ 			Collections.sort(roles);
+ 			UISelect select = UISelect.makeMultiple(form, "addAlertRoleSelect", roles.toArray(new String[roles.size()]), "#{simplePageBean.addAlertRoles}", simplePageBean.addAlertRoles);
+ 			for(String role: roles){
+ 				UIBranchContainer row = UIBranchContainer.make(form, "role:", String.valueOf(roles.indexOf(role)));
+ 				UISelectChoice.make(row, "roleOption", select.getFullID(), roles.indexOf(role));
+ 				UIOutput.make(row, "roleOptionLabel", role);
+ 			}
+
+ 			//BeginDate:
+ 			UIInput.make(form, "addAlertBeginDate", "#{simplePageBean.addAlertBeginDate}");
+
+ 			//EndDate:
+ 			UIInput.make(form, "addAlertEndDate", "#{simplePageBean.addAlertEndDate}");
+
+ 			//Recurrence:
+ 			UISelect questionType = UISelect.make(form, "add-alert-recurrence", new String[] {"" + ActivityAlert.RECURRENCCE_ONCE, "" + ActivityAlert.RECURRENCCE_DAILY, "" + ActivityAlert.RECURRENCCE_WEEKLY}, "#{simplePageBean.addAlertRecurrence}", simplePageBean.addAlertRecurrence);
+ 			UISelectChoice.make(form, "addAlertRecurrenceNone", questionType.getFullID(), 0);
+ 			UISelectChoice.make(form, "addAlertRecurrenceDaily", questionType.getFullID(), 1);
+ 			UISelectChoice.make(form, "addAlertRecurrenceWeekly", questionType.getFullID(), 2);
+
+ 			//Student alert message:
+ 			UIInput.make(form, "add-alert-student-message", "#{simplePageBean.addAlertStudentMessage}").decorate(new UIFreeAttributeDecorator("placeholder", messageLocator.getMessage("simplepage.add-alert-message-default")));
+
+ 			//Other alert message:
+ 			UIInput.make(form, "add-alert-other-message", "#{simplePageBean.addAlertOtherMessage}").decorate(new UIFreeAttributeDecorator("placeholder", messageLocator.getMessage("simplepage.add-alert-message-default")));
+
+ 			UICommand.make(form, "add-alert-submit", messageLocator.getMessage("simplepage.save"), "#{simplePageBean.addAlert}");
+ 			UICommand.make(form, "add-alert-cancel", messageLocator.getMessage("simplepage.cancel"), null);
+ 		}
+ 	}
 
 	private void createEditMultimediaDialog(UIContainer tofill, SimplePage currentPage) {
 		UIOutput.make(tofill, "edit-multimedia-dialog").decorate(new UIFreeAttributeDecorator("title", messageLocator.getMessage("simplepage.editMultimedia")));

@@ -351,6 +351,14 @@ $(document).ready(function() {
 			draggable: false
 		});
 
+		$('#add-alert-dialog').dialog({
+			autoOpen: false,
+			width: modalDialogWidth(),
+			modal: true,
+			resizable: false,
+			draggable: false
+		});
+
 		$('#comments-dialog').dialog({
 			autoOpen: false,
 			width: modalDialogWidth(),
@@ -415,7 +423,7 @@ $(document).ready(function() {
 			var modalDialogList = ['#subpage-dialog', '#edit-item-dialog', '#edit-multimedia-dialog',
 			'#add-multimedia-dialog', '#edit-title-dialog', '#new-page-dialog', '#remove-page-dialog',
 			'#youtube-dialog', '#movie-dialog', '#import-cc-dialog', '#export-cc-dialog',
-		        '#comments-dialog', '#student-dialog', '#question-dialog', '#delete-confirm'];
+		        '#comments-dialog', '#student-dialog', '#question-dialog', '#delete-confirm', '#add-alert-dialog'];
 			for (var i = 0; i < modalDialogList.length; i++) {
 				$(modalDialogList[i]).dialog("option", "width", modalDialogWidth());
 			}
@@ -610,6 +618,22 @@ $(document).ready(function() {
 			closeExportCcDialog();
 			return false;
 		    });
+
+		$('#add-alert').click(function(){
+			oldloc = $(".dropdown a");
+			closeDropdowns();
+			$('#add-alert-dialog').dialog('open');
+			setupdialog($('#add-alert-dialog'));
+			$("#add-alert-error-container").hide();
+			return false;
+		});
+
+		$('#add-alert-all-roles').click(function(){
+			var selected = $(this).prop("checked");
+			$(".add-alert-role").each(function(){
+				$(this).prop('checked', selected);
+			});
+		});
 
 		$('#import-cc-submit').click(function() {
 			// prevent double clicks
@@ -2229,6 +2253,11 @@ $(document).ready(function() {
 			setUpRequirements();
 		});
 		
+		$('.addAlertEndDateInputSpan').toggle(!$("#addAlertRecurrenceNone").is(':checked'));
+		$("input[name=add-alert-recurrence-selection]:radio").change(function(){
+			$('.addAlertEndDateInputSpan').toggle(!$("#addAlertRecurrenceNone").is(':checked'));
+		});
+
 		function delete_confirm(event, message) {
 			if (insist) {
 			    insist = false;
@@ -2289,6 +2318,7 @@ $(document).ready(function() {
 				$('#movie-dialog').dialog('isOpen') ||
 				$('#import-cc-dialog').dialog('isOpen') ||
 				$('#export-cc-dialog').dialog('isOpen') ||
+                                $('#add-alert-dialog').dialog('isOpen') ||
 				$('#add-forum-summary-dialog').dialog('isOpen') ||
 				$('#comments-dialog').dialog('isOpen') ||
 				$('#add-twitter-dialog').dialog('isOpen')||
@@ -2805,6 +2835,11 @@ function closeImportCcDialog() {
 
 function closeExportCcDialog() {
 	$('#export-cc-dialog').dialog('close');
+	oldloc.focus();
+}
+
+function closeAddAlertDialog(){
+	$('#add-alert-dialog').dialog('close');
 	oldloc.focus();
 }
 
@@ -3367,6 +3402,26 @@ function prepareQuestionDialog() {
 	// RSF bugs out if we don't undisable these before submitting
 	$("#multipleChoiceSelect").prop("disabled", false);
 	$("#shortanswerSelect").prop("disabled", false);
+	return true;
+}
+
+function prepareAddAlertDialog(){
+	if($("input.add-alert-role:checkbox:checked").length == 0){
+		$('#add-alert-error').text(msg("simplepage.add-alert-need-role"));
+	    $('#add-alert-error-container').show();
+	    $('#add-alert-dialog').scrollTop(0);
+		return false;
+	}else if(!$("#addAlertBeginDate").val()){
+		$('#add-alert-error').text(msg("simplepage.add-alert-need-begin-date"));
+	    $('#add-alert-error-container').show();
+	    $('#add-alert-dialog').scrollTop(0);
+		return false;
+	}else if(!$("#addAlertEndDate").val() && !$("#addAlertRecurrenceNone").is(':checked')){
+		$('#add-alert-error').text(msg("simplepage.add-alert-need-end-date"));
+	    $('#add-alert-error-container').show();
+	    $('#add-alert-dialog').scrollTop(0);
+		return false;
+	}
 	return true;
 }
 
