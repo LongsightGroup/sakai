@@ -59,6 +59,14 @@
             <version>tomcat-${sakai.tomcat.version}</version>
         </dependency>
 -->
+
+<!-- CUSTOM LDAP AUTH FOR WEBDAV ONLY -->
+        <dependency>
+            <groupId>com.unboundid</groupId>
+            <artifactId>unboundid-ldapsdk</artifactId>
+            <version>5.1.1</version>
+        </dependency>
+
     </dependencies>
 
 </project>
