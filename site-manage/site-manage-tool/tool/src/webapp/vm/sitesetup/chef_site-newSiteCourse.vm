@@ -85,9 +85,6 @@
 						#set($crosslisted=1)	
 					#end
 					</th>
-					<th>
-						$tlang.getString("useOfficialDescription")
-					</th>
 					</tr>
 					#foreach($courseOfferingObject in $courseObject.courseOfferingObjects)
 						<tr class="exclude"><td colspan="3" style="white-space:nowrap">
@@ -150,18 +147,6 @@
 									#end
 									#set ($courseNumber = $courseNumber +1)
 									</h5>
-								</td>
-								<td>
-									#set($sectionDescription=false)
-									#set($sectionDescription=$!sectionObject.description)
-									#if ($!sectionDescription && !$!sectionDescription.isEmpty())
-										<input type="checkbox" name="providerCourseAddDescription" value="$!sectionObject.eid" id="courseDesc$courseNumber" 
-											#if ($!selectedProviderCourseDescription.contains($!sectionObject.eid))
-												checked="checked"
-											#end 
-										/>
-                                        <label for="courseDesc$courseNumber" class="skip">$tlang.getString("useOfficialDescription"): $validator.escapeHtml($sectionObject.title) ($sectionObject.eid) $!sectionObject.getCategoryDescription()</label>
-									#end
 								</td>
 								</tr>
 							#end
