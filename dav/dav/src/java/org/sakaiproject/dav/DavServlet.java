@@ -81,6 +81,7 @@ package org.sakaiproject.dav;
 import org.sakaiproject.util.Xml;
 
 import static org.sakaiproject.content.util.IdUtil.isolateContainingId;
+import com.unboundid.ldap.sdk.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -168,6 +169,8 @@ import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.AuthenticationManager;
 import org.sakaiproject.util.WebDavEvidence;
+import org.sakaiproject.util.ExternalTrustedEvidence;
+import org.sakaiproject.util.IdPwEvidence;
 import org.sakaiproject.util.RequestFilter;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
@@ -1070,7 +1073,15 @@ public class DavServlet extends HttpServlet
 					throw new AuthenticationException("missing required fields");
 				}
 
+				e = new ExternalTrustedEvidence(eid);
 				Authentication a = authenticationManager.authenticate(e);
+
+				// Check out LDAP auth first and if fails then check password
+				boolean ldapAuth = checkLdapAuth(eid, pw);
+				if (!ldapAuth) {
+					e = new IdPwEvidence(eid, pw, req.getRemoteAddr());
+					a = authenticationManager.authenticate(e);
+				}
 
 				// No need to log in again if UsageSession is not null, active, and the eid is the 
 				// same as that resulting from the DAV basic auth authentication
@@ -1120,6 +1131,41 @@ public class DavServlet extends HttpServlet
 		{
 			log(req, info);
 		}
+	}
+
+	private boolean checkLdapAuth(String eid, String pw) {
+		String ldapHost = serverConfigurationService.getString("dav.ldap.host", "localhost");
+		String ldapBindUser = serverConfigurationService.getString("dav.ldap.user", "dn=user");
+		String ldapBindPass = serverConfigurationService.getString("dav.ldap.pass", "password");
+		String ldapBasePath = serverConfigurationService.getString("dav.ldap.base", "cn=people,dc=example,dc=edu");
+		String findUserByAttribute = serverConfigurationService.getString("dav.ldap.userAttribute", "uid");
+		int ldapPort = serverConfigurationService.getInt("dav.ldap.port", 389);
+
+		LDAPConnection conn = null; 
+
+		try {
+			conn = new LDAPConnection(ldapHost, ldapPort);
+			BindResult adminBind = conn.bind(ldapBindUser, ldapBindPass);
+			log.debug("DAV admin bind result: {}", adminBind.toString());
+
+			// Create Search Request
+			Filter findUserfilter = Filter.createEqualityFilter(findUserByAttribute, eid);
+			SearchRequest searchRequest = new SearchRequest(ldapBasePath, SearchScope.SUB, findUserfilter);
+			searchRequest.setSizeLimit(1); // We will error if we get more than one hit
+			SearchResult searchResult = conn.search(searchRequest);
+			for (SearchResultEntry entry : searchResult.getSearchEntries()) {
+					String userDN = entry.getDN();
+					BindResult br = conn.bind(userDN, pw);
+					log.debug("DAV bind result: " + br.toString());
+					return true;
+			}
+		} catch (LDAPException e) {
+			log.info("DAV auth rejection: " + eid + ":" + e.getMessage());
+		}
+		finally {
+			if (conn != null) conn.close();
+		}
+		return false;
 	}
 
 	/** log a request processed */
