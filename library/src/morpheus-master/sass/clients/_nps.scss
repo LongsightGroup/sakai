@@ -82,7 +82,7 @@ $tool-menu-item-hover-icon-color:               	#FFFFFF !default;
 $tool-menu-item-hover-background-color:         	#35434c !default;
 $tool-menu-item-hover-border-left:              	4px solid #526472 !default;
 // selected
-$tool-menu-item-selected-background-color:            	#35434c !default;
+$tool-menu-item-selected-background-color:            	#35434c !important;
 $tool-menu-item-selected-text-color:            	#FFFFFF !default;
 $tool-menu-item-selected-icon-color:            	#FFFFFF !default;
 $tool-menu-item-selected-border-left:           	4px solid #35434c !default;
@@ -108,4 +108,12 @@ $info-background-color:   				#efefef;
 .navIntraTool li span.current a {
     background: #35434c;
     color: #fff;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
+    background: #526472 !important;
+}
+
+#toolMenu ul li, #subSites ul li, .floatingToolMenu ul li {
+    border-bottom: 0px solid transparent !important;
 }
