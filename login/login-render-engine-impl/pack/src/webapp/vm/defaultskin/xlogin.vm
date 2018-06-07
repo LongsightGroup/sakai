@@ -32,7 +32,7 @@
     			</p>
     			#if (${passwordResetUrl})
     				<p>
-    					<a href="${passwordResetUrl}">${passwordResetWording}</a>
+    					<a href="https://sakai.ithaca.edu/portal/directtool/e1639ef9-02e6-4e6f-92c4-222f78f71a6a/">Login Help?</a>
     				</p>
     			#end
     		</fieldset>
