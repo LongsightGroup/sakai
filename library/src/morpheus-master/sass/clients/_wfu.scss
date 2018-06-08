@@ -160,3 +160,20 @@ $sites-nav-submenu-item-hover-left-border-color: #3c3937 !important;
 #toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
     background-color: #e6e1da !important;
 }
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-resources a.nil.fa-folder::after {
+    margin: 0.45em 0 0 -3.4em !important;
+}
+
+.navIntraTool li span.current a {
+    background: #FFF;
+    color: #000;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}

@@ -1,0 +1,158 @@
+$skin-name : "csc" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#660034 !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#24292e !default;
+$text-color:				 		#24292e !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#c9c9c9 !default;
+$tool-border-color:			 		#E0E0E0 !default;
+$all-sites-tab-active-background-color:			#FAFAFA !default;
+$all-sites-tab-active-text-color:			#24292e !default;
+
+/* Logo location */
+$logo: 							'../images/csc.svg';
+$logo-height: 						50px;
+$logo-width: 						175px;
+
+// Tab colors
+$tool-tab-text-color:			 		#24292e !default;
+$tool-tab-background-color:              		#F8F8F8 !default;
+$tool-tab-active-text-color:             		#FFF !default;
+$tool-tab-active-highlight-color:        		#24292e !default;
+$tool-tab-active-background-color:			#24292e !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color:                                            #0064cd !default;
+$link-active-color:                                     #4e5192 !default;
+$link-hover-color:                                      $primary-color !default;
+
+// Button colors 
+$button-text-color:	 		 		#24292e !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+$button-background-secondary-color: 	 		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+$button-color-border-color: 		 		#660034 !default;
+$button-color-background-color: 	 		#660034 !default;
+$button-color-background-secondary-color:		#82124B !default;
+// Primary Button Color
+$button-primary-background-color:        		#660034!default;
+$button-primary-text-color: 		 		#FFF !default;
+$button-primary-hover-text-color:                       #660034 !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     #660034 !default;
+
+// Link , Edit, Help Buttons
+$button-secondary-background-color:            		#EEE !default;
+$button-secondary-text-color:            		#000 !default;
+$button-secondary-icon-color:            		#000 !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#424B54 !default;
+$sites-nav-menu-item-color:              		#FFF !default;
+$sites-nav-menu-item-icon-color:         		#FFF !default;
+$sites-nav-menu-item-border-color:         		transparent !default;
+//Selected
+//Selected
+$sites-nav-menu-item-selected-background:		$primary-color !default;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+$sites-nav-menu-item-selected-hover-background: 	#FFF !default;
+$sites-nav-menu-item-selected-hover-color:      	$primary-color !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	$primary-color !default;
+$sites-nav-menu-item-selected-border-color: 		$primary-color !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:			#EBEBEB !default;
+$tool-menu-item-text-color:                             $text-color !default;
+$tool-menu-item-icon-color:				$text-color !default;
+
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               	#FFFFFF !default;
+$tool-menu-item-hover-background-color:         	$primary-color !default;
+$tool-menu-item-hover-border-left:              	4px solid $primary-color !default;
+// selected
+$tool-menu-item-selected-background-color:            	#FFF !important;
+$tool-menu-item-selected-text-color:            	$primary-color !default;
+$tool-menu-item-selected-icon-color:            	$primary-color !default;
+$tool-menu-item-selected-border-left:           	4px solid $primary-color !default;
+// submenu
+$tool-sub-menu-hover-color:				#FFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:	$primary-color !important;
+$tool-menu-item-selected-hover-border-left:             4px solid $primary-color !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      $primary-color !default;
+$tool-menu-collapse-active-text-color:                  #FFF !default;
+$tool-sub-menu-hover-color:				#FFF; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.navIntraTool li span.current a {
+    background: #A30042;
+    color: #FFF;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}
+
+/* Tool Menu Support Info */
+#toolMenu ul li:last-child:after {
+    content: "24/7 Sakai Support";
+    font-size: .9em;
+    padding: 12px 12px 0;
+    display: block;
+    color: $primary-color;
+    font-weight: bold;
+    background-color:#c9c9c9;
+}
+#toolMenu ul:after {
+    font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif, FontAwesome;
+    content: "\f095  1-877-722-6131";
+    color: $text-color;
+    padding: 0 12px 12px;
+    display: block;
+    border-bottom: 1px solid #b4b4b4;
+    background-color:#c9c9c9;
+}
+/* CSC Login button */
+.is-minimized a[href].Mrphs-loginUser__message{
+    background-color: #660033;
+    border:1px solid #470024;
+    border-radius: 3px;
+    color: #E0E0E0;
+    padding:5px 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 1.1em;
+}
+
+.is-minimized a[href].Mrphs-loginUser__message:hover {
+    background-color: #82124B;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.is-minimized a[href].Mrphs-loginUser__message:before {
+    font-family: FontAwesome;
+    content:'\f090';
+    margin-right:8px;
+    font-size: 1.1em;
+}
