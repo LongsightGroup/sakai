@@ -21,10 +21,40 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 
+import lombok.extern.slf4j.Slf4j;
+
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
+
+@Slf4j
 public class EppnSamlFilter implements SAMLUserDetailsService {
+    private MemoryService memoryService;
+    private Cache cache;
+
+    /**
+     * Initialize the servlet.
+     * 
+     * @param config
+     *        The servlet config.
+     * @throws ServletException
+     */
+    public void init() {
+        log.debug("init()");
+        memoryService = (MemoryService) ComponentManager.get(MemoryService.class);
+    }
+
         @Override
         public Object loadUserBySAML(SAMLCredential cred) throws UsernameNotFoundException {
+                // get the cache
+                if (memoryService == null) memoryService = (MemoryService) ComponentManager.get(MemoryService.class);
+                if (cache == null) cache = memoryService.getCache("edu.duke.dukeRole");
+
                 // https://www.incommon.org/federation/attributesummary.html
-                return cred.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.6");
+                String eid = cred.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.6");
+                String dukeRole = cred.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.5.1.1");
+                cache.put(eid, dukeRole);
+
+                return eid;
         }
 }

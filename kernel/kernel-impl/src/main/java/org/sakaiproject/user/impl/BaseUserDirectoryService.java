@@ -56,6 +56,7 @@ import org.sakaiproject.id.api.IdManager;
 import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.api.SessionBindingEvent;
 import org.sakaiproject.tool.api.SessionBindingListener;
 import org.sakaiproject.tool.api.SessionManager;
@@ -127,6 +128,9 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 
 	/** A cache of users' id/eid map */
 	protected Cache<String, String> m_userCache = null;
+
+	/** A custom Duke cache for role from SAML */
+	protected Cache<String, String> m_dukeCache = null;
 
 	/** Optional service to provide site-specific aliases for a user's display ID and display name. */
 	protected ContextualUserDisplayService m_contextualUserDisplayService = null;
@@ -587,6 +591,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
             // caching for users
             m_userCache = memoryService().getCache("org.sakaiproject.user.api.UserDirectoryService");
             m_callCache = memoryService().getCache("org.sakaiproject.user.api.UserDirectoryService.callCache");
+            m_dukeCache = memoryService().getCache("edu.duke.dukeRole");
             if (!m_callCache.isDistributed()) {
                 // KNL_1229 use an Observer for cache cleanup when the cache is not distributed
                 log.info("Creating user callCache observer for event based cache expiration (for local caches)");
@@ -867,12 +872,20 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 		eid = cleanEid(eid);
 		if (eid == null) throw new UserNotDefinedException("null");
 
+    // Duke customization
+    String dukeRole = m_dukeCache.get(eid);
+    if (StringUtils.contains(dukeRole, "faculty")) dukeRole = "faculty";
+    if (StringUtils.contains(dukeRole, "staff")) dukeRole = "staff";
+    if (StringUtils.contains(dukeRole, "student")) dukeRole = "student";
+		log.debug("dukeRole for user: {} -- {}", eid, dukeRole);
+
 		String id = m_storage.checkMapForId(eid);
 		if (id != null)
 		{
 			user = getCachedUser(userReference(id));
 			if (user != null)
 			{
+				if (StringUtils.isNotBlank(dukeRole)) user.setType(dukeRole);
 				return user;
 			}
 			user = m_storage.getById(id);
@@ -882,6 +895,7 @@ public abstract class BaseUserDirectoryService implements UserDirectoryService, 
 			user = getProvidedUserByEid(id, eid);
 			if (user == null) throw new UserNotDefinedException(eid);
 		}
+		if (StringUtils.isNotBlank(dukeRole)) user.setType(dukeRole);
 		putCachedUser(userReference(user.getId()), user);
 
 		return user;
