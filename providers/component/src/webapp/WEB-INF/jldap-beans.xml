@@ -12,7 +12,7 @@
 		
 		<!-- Required. Host name or address of your LDAP server -->
 		<property name="ldapHost">
-			<value>ldap.university.edu</value>
+			<value>10.10.1.90</value>
 		</property>
 
 		<!-- Optional. LDAP connection port. Typically defaults to 
@@ -64,14 +64,14 @@
 
 		<!-- Optional. Indicate if connection allocation should
 			implicitly bind as ${ldapUser}. Defaults to false -->
-		<!-- property name="autoBind">
-			<value>false</value>
-		</property -->
+		<property name="autoBind">
+			<value>true</value>
+		</property>
 
 		<!-- Optional, but usually specified. Base DN for directory searches. -->
-		<!--  property name="basePath">
-			<value>attr=value,attr=value,attr=value</value>
-		</property -->
+		<property name="basePath">
+			<value>ou=CMCC,dc=cmccad,dc=local</value>
+		</property>
 
 		<!-- Optional. Indicate if connections should follow
 			referrals. Defaults to  
@@ -181,8 +181,7 @@
 			</map>
 		</property -->
 		
-		<!-- Optional. If you don't provide an eidValidator the system
-		defaults to allowing searches on any EID, including empty
+		<!-- Optional. Defaults to allowing searches on any EID, including empty
 		and null Strings. -->
 		<property name="eidValidator">
 			<bean class="edu.amc.sakai.user.RegexpBlacklistEidValidator">
@@ -199,7 +198,6 @@
 				</property>
 			</bean>
 		</property>
-		<property name="searchAliases"><value>false</value></property>
 		
 	</bean>
 			
@@ -215,18 +213,21 @@
 		names expected by the application. Values are physical LDAP
 		attribute names. If not specified or empty, defaults to
 		AttributeMappingConstants.DEFAULT_ATTR_MAPPINGS. -->
-		<!-- property name="attributeMappings">
+		<property name="attributeMappings">
 			<map>
-				<entry key="aid"><value>krb5PrincipalName</value></entry>
-				<entry key="login"><value>cn</value></entry>         
+				<entry key="login"><value>sAMAccountName</value></entry>         
 				<entry key="firstName"><value>givenName</value></entry> 
-				<entry key="preferredFirstName"><value>preferredName</value></entry>
 				<entry key="lastName"><value>sn</value></entry> 
-				<entry key="email"><value>email</value></entry>  
+				<entry key="email"><value>mail</value></entry>  
+<!--
 				<entry key="groupMembership"><value>groupMembership</value></entry>   
+				<entry key="preferredFirstName"><value>preferredName</value></entry>
 				<entry key="jpegPhoto"><value>jpegPhoto</value></entry>   
+				<entry key="aid"><value>krb5PrincipalName</value></entry>
+-->
+				<entry key="externalid"><value>cMCCID</value></entry>
 			</map>
-		</property -->
+		</property>
 		
 		<!-- If any of the values need manipulating with message formats they can be set here. -->
 		<!-- property name="valueMappings">
