@@ -21,7 +21,7 @@ $tool-tab-text-color:			 		#24292e !default;
 $tool-tab-background-color:              		#F8F8F8 !default;
 $tool-tab-active-text-color:             		#FFF !default;
 $tool-tab-active-highlight-color:        		#24292e !default;
-$tool-tab-active-background-color:			#24292e !default;
+$tool-tab-active-background-color:			#660034 !default;
 
 // Breadcrumbs
 $breadcrumbs-color:			 		#000 !default;
@@ -105,7 +105,7 @@ $info-background-color:   				#efefef;
 }
 
 .navIntraTool li span.current a {
-    background: #A30042;
+    background: #660034;
     color: #FFF;
 }
 

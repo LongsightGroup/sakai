@@ -51,7 +51,7 @@ $tool-tab-active-highlight-color:                         #9e7e38 !default;
 
 
 $main-content-background: $background-color !important;
-$top-header-background: #FFFFFF !important;
+$top-header-background: #FFFFFF;
 $sites-nav-background: #3c3937 !important;
 
 $breadcrumbs-color:    			 #000000 !important;
@@ -77,8 +77,8 @@ $button-color-border-color: #E5E0D9;
 $button-color-background-color: -webkit-linear-gradient(top, #E8E3DD 0%,#E5E0D9 100%);
 $button-color-background-secondary-color: #E5E0D9;
 // Primary Button Color
-$button-primary-background-color:                       #3c3937 !default;
-$button-primary-text-color:                             #FFF !default;
+$button-primary-background-color:                       #C99700 !default;
+$button-primary-text-color:                             #000 !default;
 $button-primary-hover-text-color:                       #3c3937 !default;
 $button-primary-hover-background-color:                 #FFF !default;
 $button-primary-hover-border-color:                     #3c3937 !default;
