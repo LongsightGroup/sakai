@@ -103,15 +103,15 @@ $header-gradient-c: #f1f1f1;
 $header-gradient-d: #f1f1f1;
 
 $sites-nav-menu-item-background:            #00625c !important;
-$sites-nav-menu-item-color:                 #FFFFFF !important;
-$sites-nav-menu-item-color-hover:           #FFFFFF !default;
+$sites-nav-menu-item-color:                 #FFFFFF;
+$sites-nav-menu-item-color-hover:           #FFFFFF;
 $sites-nav-menu-item-border-top:            none ; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-left:           none;
 $sites-nav-menu-item-selected-background:   #FFF !important;
-$sites-nav-menu-item-selected-color:        #4a762b !important;
-$sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
+$sites-nav-menu-item-selected-color:        #4a762b;
+$sites-nav-menu-item-selected-color-hover:  #FFF;
 $sites-nav-menu-item-selected-border-top:   1px solid #00625c; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-right: 1px solid #00625c;
 $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -125,7 +125,7 @@ $sites-nav-submenu-item-border:             none !default;
 $sites-nav-submenu-item-border-hover:       none !default;
 $sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
 $sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color !important;
 $sites-nav-submenu-item-selected-border:    none !default;
 
 /* Tool Menu */
@@ -185,4 +185,8 @@ $footer-color: $background-color-secondary !default;
 #Mrphs-xlogin .logo {
     background: #ffffff url(../images/kp.svg) no-repeat center center !important;
     height: 90px !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem:not(.dropdown-is-visible)>a:hover, #linkNav ul li.Mrphs-sitesNav__menuitem:not(.dropdown-is-visible)>a:active {
+    background-color: #4a762b !important;
 }

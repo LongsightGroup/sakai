@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "ceath"; // This is used for bootstrap font behaviour.
+$skin-name : "usa"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -136,9 +136,9 @@ $hierarchy-size: 3.5em;
 $measure: 960px !default;
 
 /* Logo location */
-$logo: '../images/usa.png';
-$logo-height: 37px;
-$logo-width: 187px;
+$logo: '../images/usa.svg';
+$logo-height: 50px;
+$logo-width: 128px;
 
 /* Tool icons */
 $skin-with-icons: true !default;
@@ -174,14 +174,20 @@ a.nexprev {
     color: #FFFFFF !important;
 }
 
-.select {
-    color: #FFFFFF !important;
-}
-
 .Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
     color: #000 !important;
 }
 
 .Mrphs-sakai-schedule table.calendar .borderTopLeft a {
     color: #000 !important;
+}
+
+.Mrphs-footer--nav__project--poweredby {
+    visibility: hidden;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu {
+         background: #000a42 !important;
+    }
 }

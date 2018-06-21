@@ -187,5 +187,13 @@ $footer-color: $background-color-secondary !default;
     background-size: contain;
 }
 #Mrphs-xlogin .logo {
-  background-size: contain;
+    background: #062F4B url("../images/gcts.svg") no-repeat center center !important;
+}
+
+#Mrphs-sakai-roster .roster-group-cell {
+    display: inline !important;
+}
+
+a img {
+    max-width: 5em;
 }

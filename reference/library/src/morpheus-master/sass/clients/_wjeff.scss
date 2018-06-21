@@ -1,7 +1,7 @@
 /* Global namespace */
 
 $namespace : "Mrphs-";
-$skin-name : "ceath"; // This is used for bootstrap font behaviour.
+$skin-name : "washjeff"; // This is used for bootstrap font behaviour.
 
 $break-small-end:      	800px;
 $break-medium-end:     	1030px;
@@ -187,4 +187,8 @@ $footer-color: $background-color-secondary !default;
 
 #mastLogin #loginForm label {
     color: #000000 !important;
+}
+
+.Mrphs-sakai-resources .inactive button span {
+    color: #999 !important;
 }

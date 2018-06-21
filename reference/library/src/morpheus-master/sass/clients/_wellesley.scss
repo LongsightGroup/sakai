@@ -62,13 +62,13 @@ $top-header-background: #002776 !important;
 $sites-nav-background: $top-header-background !important;
 
 $breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #FFFFFF !important;
-$breadcrumbs-hover-color:      		 #FFFFFF !important;
+$breadcrumbs-tool-color:       		 #000000 !important;
+$breadcrumbs-hover-color:      		 #000000 !important;
 
 /* Link colors */
 $link-color: #0064cd;
 $link-active-color: #4e5192;
-$link-hover-color: $primary-color !important;
+$link-hover-color: $primary-color;
 $link-background-color: transparent !default;
 $link-active-background-color: transparent !default;
 $link-hover-background-color: transparent !default;
@@ -95,10 +95,10 @@ $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
 /* This is the gradient in the header of the page */
-$header-gradient-a: #002776;
-$header-gradient-b: #002776;
-$header-gradient-c: #FFFFFF;
-$header-gradient-d: #002776;
+$header-gradient-a: #ebebeb;
+$header-gradient-b: #ebebeb;
+$header-gradient-c: #ebebeb;
+$header-gradient-d: #ebebeb;
 
 $sites-nav-menu-item-background:            #002776 !important;
 $sites-nav-menu-item-color:                 #FFFFFF !important;
@@ -165,10 +165,18 @@ $footer-color: $background-color-secondary !default;
     background-color: #CCCCCC !important;
 }
 
-//#mastLogin #loginLinks ul a { 
-//    color: #000000 !important;
-//}
+#mastLogin #loginLinks ul a { 
+    color: #000000 !important;
+}
 
 #linkNav ul li.Mrphs-sitesNav__menuitem>a {
     border-radius: 3px !important;
+}
+
+.Mrphs-topHeader a {
+    color: #fff !important;
+}
+
+.Mrphs-siteHierarchy a { 
+    color: #000 !important;
 }

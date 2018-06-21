@@ -61,7 +61,7 @@ $main-content-background: $background-color !important;
 $top-header-background: #FFFFFF !important;
 $sites-nav-background: $top-header-background !important;
 
-$breadcrumbs-color:    			 $background-color !important;
+$breadcrumbs-color:    			 #FFFFFF !important;
 $breadcrumbs-tool-color:       		 #FFFFFF !important;
 $breadcrumbs-hover-color:      		 #FFFFFF !important;
 
@@ -176,4 +176,16 @@ $footer-color: $background-color-secondary !default;
 
 .Mrphs-topHeader .Mrphs-loginNav {
     color: #000000 !important;
+}
+
+.hierarchyWrap {
+    color: #FFF;
+}
+
+#Mrphs-sakai-roster .roster-group-cell {
+    display: inline !important;
+}
+
+#Mrphs-xlogin .logo {
+    background: #ebebeb url(images/DTechNarrow.png) no-repeat center center !important;
 }

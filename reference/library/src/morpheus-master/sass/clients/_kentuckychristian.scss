@@ -1,157 +1,107 @@
-/* Global namespace */
+$skin-name : "kentuckychristian" !default; // This is used for bootstrap font behaviour.
 
-$namespace : "Mrphs-";
-$skin-name : "kentuckychristian"; // This is used for bootstrap font behaviour.
-
-$break-small-end:      	800px;
-$break-medium-end:     	1030px;
-
-$phone  :       "only screen and (max-width : #{ $break-small-end })";
-$tablet :       "only screen and (max-width : #{ $break-medium-end })";
-$desktop:       "only screen and (min-width : #{ $break-medium-end + 1 })";
-$nonPhone:      "only screen and (min-width : #{ $break-small-end + 1 })";
-
-// For the "More Sites" drawer, just use one column if there's not
-// enough room to show two side-by-side.
-$break-more-sites-single-column: 1200px;
-$more-sites-single-column: "only screen and (max-width : #{ $break-more-sites-single-column })";
-
-/* Typography*/
-
-//Google family Fonts URL
-$font-family-url: "//fonts.googleapis.com/css?family=Noto Sans:400,700" !default;
-
-//Typography variables
-$font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif !default;
-$default-font-size: 14px !default;
-$default-font-weight: 400 !default;    										// 400 or 700 as you wish
-$header-font-family: $font-family;
-$header-font-weight: 700 !default;     										// 400 or 700 as you wish
-
-/* Color palette */
-$background-color: #FFFFFF;
-
-$primary-color:                          #424242;
-$text-color:                             #000000;
-
-$portal-background-color: $background-color;
-
-$tool-background-color:		 $background-color;
-$tool-menu-background-color:   			 #ebebeb;
-$tool-menu-color:      			 #666666;
-$tool-tab-background-color:    			 #ebebeb;
-$tool-border-color:    			 #424242;
-$tool-tab-active-background-color:     			 $background-color !default;
-$tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #FFFFFF !important;
-$tool-menu-hover-background-color: #666666 !important;
-$tool-menu-current-background-color: #FFFFFF !important;
-$tool-menu-current-color: #ed1c2b !important;
-$tool-menu-current-border-color: $primary-color !important;
-$tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
-$tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
-$tool-sub-menu-hover-background-color: $primary-color !default;
-$tool-sub-menu-hover-color: $tool-menu-color !default;
-$tool-sub-menu-current-color: $primary-color !default;
-$tool-sub-menu-current-background-color: $background-color !default;
-$tool-sub-menu-current-hover-color: $tool-menu-color !important;
-$tool-sub-menu-current-hover-background-color: $background-color !default;
-
-$main-content-background: $background-color !important;
-$top-header-background: #424242 !important;
-$sites-nav-background: $top-header-background !important;
-
-$breadcrumbs-color:    			 $background-color !important;
-$breadcrumbs-tool-color:       		 #FFFFFF !important;
-$breadcrumbs-hover-color:      		 #FFFFFF !important;
-
-/* Link colors */
-$link-color: #424242;
-$link-active-color: #424242;
-$link-hover-color: #424242;
-$link-background-color: transparent !default;
-$link-active-background-color: transparent !default;
-$link-hover-background-color: transparent !default;
-
-/* Linknav button colors */
-$button-text-color:    	 #424242;
-$button-border-color: #000000;
-$button-background-color: #FFFFFF;
-$button-background-secondary-color: #ed1c2b;
-/* General button colors */
-$button-color-text-color: #424242;
-$button-color-border-color: #000000;
-$button-color-background-color: #FFFFFF !important;
-$button-color-background-secondary-color: #ed1c2b;
-/* ///////////// */
-
-$ok-color:                  #DFF0D8 !default;
-$ok-background-color:        lighten($ok-color, 45%) !default;
-$warn-background-color:     #FCF8E3 !default;
-$warn-color:                darken($warn-background-color, 35%) !default;
-$error-background-color:    #F2DEDE !default;
-$error-color:               darken($error-background-color, 30%) !default;
-
-/* This is the gradient in the header of the page */
-$header-gradient-a: #ed1c2b;
-$header-gradient-b: #ed1c2b;
-$header-gradient-c: #FFFFFF;
-$header-gradient-d: #FFFFFF;
-
-$sites-nav-menu-item-background:            #ebebeb !important;
-$sites-nav-menu-item-color:                 #424242 !important;
-$sites-nav-menu-item-color-hover:           #ed1c2b !default;
-$sites-nav-menu-item-border-top:            1px solid transparent !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-right:          none !default;
-$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-left:           none !default;
-$sites-nav-menu-item-selected-background:   #ebebeb !important;
-$sites-nav-menu-item-selected-color:        #424242 !important;
-$sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
-$sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-right: none !default;
-$sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-selected-border-left:  none !default;
-$sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
-$sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
-$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
-$sites-nav-submenu-item-color:              $sites-nav-menu-item-color;
-$sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !default;
-$sites-nav-submenu-item-border:             none !default;
-$sites-nav-submenu-item-border-hover:       none !default;
-$sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
-$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background;
-$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
-$sites-nav-submenu-item-selected-border:    none !default;
-
-/* Tool Menu */
-$tool-menu-width: 7.5em !default;
-
-/* Navigation Hierarchy */
-$hierarchy-size: 3.5em;
-
-/* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
-$measure: 960px !default;
-
-$topNav-text-color:                         #FFFFFF; /* used for links and text in the topNav */
+// Main Colors
+$primary-color:    			 		  	#424242 !default;
+$body-background-color: 		 			#FFFFFF !default;
+$background-color-secondary: 		 			#424242 !default;
+$text-color:				 		    	#000000 !default;
+$topNav-text-color:					    	#FFFFFF !default;
+$sites-nav-background: 						#;
+$skin-with-icons: 						false !important;
 
 /* Logo location */
-$logo: '../images/kentuckychristian.jpg';
-$logo-height: 50px;
-$logo-width: 125px;
+$logo: 								'../images/kentuckychristian.jpg';
+$logo-height: 							50x;
+$logo-width: 							125px;
 
-/* Tool icons */
-$skin-with-icons: false !important;
-$icon-size: 20px !default;
+// Tab colors
+$tool-tab-text-color:			 			#666666 !default;
+$tool-tab-background-color:              			#ebebeb !default;
+$tool-tab-active-text-color:             			#424242 !default;
+$tool-tab-active-highlight-color:        			$primary-color !default;
+$tool-tab-active-background-color:				$body-background-color !default;
 
-/* Footer */
-$footer-background: transparent !default;
-$footer-color: $background-color-secondary !default;
+// Breadcrumbs
+$breadcrumbs-color:			 			#FFFFFF !default;
+$breadcrumbs-tool-color:		 			#FFFFFF !default;
+$breadcrumbs-hover-color:		 			#FFFFFF !default;
 
-$info-color:                $primary-color  !default;
-$info-background-color:     $background-color !important;
+// Links
+$link-color: 				 			#424242 !default;
+$link-active-color: 			 			#424242 !default;
+$link-hover-color: 			 			#424242 !default;
 
-$tool-nav-link-color: #ed1c2b;
+// Button colors
+$button-text-color:	 		 			#424242 !default;
+$button-border-color: 			 			#000000 !default;
+$button-background-color: 		 			#FFFFFF !default;
+$button-background-secondary-color: 	 			#ed1c2b !default;
+
+$button-color-text-color: 		 			#424242 !default;
+$button-color-border-color: 		 			#000000 !default;
+$button-color-background-color: 	 			#FFFFFF !default;
+$button-color-background-secondary-color:			#ed1c2b !default;
+// Primary Button Color
+$button-primary-background-color:        			#FFFFFF !default;
+$button-primary-text-color: 		 			#424242 !default;
+$button-primary-hover-text-color:                   		$button-color-text-color;
+$button-primary-hover-background-color:             		$button-color-background-color !default;
+$button-primary-hover-border-color:                 		$primary-color;
+
+// Link , Edit, Help Buttons
+$button-secondary-background-color:            			#ebebeb !default;
+$button-secondary-text-color:            			#ed1c2b !default;
+$button-secondary-icon-color:            			#ed1c2b !default;
+
+
+// Sites Navigation
+// Non Selected
+$sites-nav-menu-item-background:         			#ebebeb !default;
+$sites-nav-menu-item-color:              			#424242 !default;
+$sites-nav-menu-item-icon-color:         			#424242 !default;
+//Selected
+$sites-nav-menu-item-selected-background:			#ebebeb !default;
+$sites-nav-menu-item-selected-color:				#424242 !default;
+$sites-nav-menu-item-selected-hover-background: 		#424242 !default;
+$sites-nav-menu-item-selected-hover-color:      		#ebebeb !default;
+$sites-nav-menu-item-selected-hover-icon-color: 		#ebebeb !default;
+$sites-nav-menu-item-selected-border-color: 			#ebebeb !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-background-color:		 			#ebebeb !default;
+$tool-menu-color: 			 			#666666 !default;
+$tool-border-color:			 			#424242 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               		#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               		#FFFFFF !default;
+$tool-menu-item-hover-background-color:         		#666666 !default;
+$tool-menu-item-hover-border-left:              		4px solid #FFFFFF !default;
+// selected
+$tool-menu-item-selected-text-color:            		#ed1c2b !default;
+$tool-menu-item-selected-icon-color:            		#ed1c2b !default;
+$tool-menu-item-selected-border-left:           		4px solid #ed1c2b !default;
+$tool-menu-item-selected-background-color:          		#FFFFFF !default;
+
+// submenu
+$tool-sub-menu-hover-color:					#FFFFFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      		#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      		#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:		#ed1c2b !default;
+$tool-menu-item-selected-hover-border-left:         		4px solid #FFFFFF !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:  		#ebebeb !default;
+$tool-menu-collapse-active-text-color:             		#666666 !default;
+$tool-sub-menu-hover-color:					#666666;
+
+// info message colors
+$info-background-color:   					$body-background-color;
+$info-color:                					$primary-color  !default;
+
+$error-background-color:    					#F2DEDE !default;
+$ok-color:                  					#DFF0D8 !default;
+$warn-background-color:     					#FCF8E3 !default;
 
 .img_site_toolmenu {
     display: none !important;
@@ -162,23 +112,14 @@ $tool-nav-link-color: #ed1c2b;
     color: #ed1c2b !important;
 }
 
-.Mrphs-toolTitleNav a.Mrphs-toolTitleNav__link {
-  color: #666666;
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
 }
 
-//.navIntraTool li span a {
-//  color: #ed1c2b !important;
-//}
-
-.instruction {
-    border-color: #424242 !important;
-    background-color: #FFFFFF !important;
+#mastLogin ul {
+    margin-bottom: 5px !important;
 }
 
-.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
-   border-color: #424242 !important;
-}
-
-.Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a, .Mrphs-siteHierarchy {
-    color: #FFFFFF !important;
+.Mrphs-topHeader .Mrphs-loginNav #roleSwitch {
+    margin-right: 0em !important;
 }
