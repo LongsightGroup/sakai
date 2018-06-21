@@ -47,13 +47,6 @@
          border-color: light grey;
        }
        
-       #delivPageWrapper
-       {
-            height:1800px;
-            width: 100%
-            float: left;
-       }
-       
        #delivAssessmentWrapper
        {
             width: 96%;
@@ -82,28 +75,6 @@
       	 </h:panelGrid>
       </div>
       
-		<div id="timer-expired-warning" style="display:none;">
-			<h3><h:outputText value="#{deliveryMessages.time_expired1}" /></h3>
-      		<p><h:outputText value="#{deliveryMessages.time_expired3}" /></p>
-      		<div id="squaresWaveG">
-				<div id="squaresWaveG_1" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_2" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_3" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_4" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_5" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_6" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_7" class="squaresWaveG">
-				</div>
-				<div id="squaresWaveG_8" class="squaresWaveG">
-				</div>
-			</div>
-		</div>
 		
 		<div id="time-30-warning" style="display:none;text-align:center">
 		<h:outputFormat value="#{deliveryMessages.time_30_warning}" escape="false" rendered="#{delivery.useDueDate}">
@@ -130,7 +101,7 @@
 		</div>
  
 <div class="portletBody Mrphs-sakai-samigo">
- <h:outputText value="<div style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
+<div>
 
 <!-- content... -->
 <h:form id="takeAssessmentForm" enctype="multipart/form-data"
@@ -329,7 +300,7 @@ document.links[newindex].onclick();
 </h:panelGroup>
 
 <div id="delivPageWrapper">
-  <div id="delivAssessmentWrapper">
+<h:outputText value="<div id='delivAssessmentWrapper' style='#{delivery.settings.divBgcolor};#{delivery.settings.divBackground}'>" escape="false"/>
 
     <!-- IF A SECURE DELIVERY MODULE HAS BEEN SELECTED, INJECT ITS HTML FRAGMENT (IF ANY) HERE -->
     <h:outputText  value="#{delivery.secureDeliveryHTMLFragment}" escape="false"  />

@@ -178,7 +178,7 @@ public interface AssessmentGradingFacadeQueriesAPI
 
   public void saveItemGrading(ItemGradingData item);
 
-  public void saveOrUpdateAssessmentGrading(AssessmentGradingData assessment);
+  public boolean saveOrUpdateAssessmentGrading(AssessmentGradingData assessment);
 
     //public void setIsLate(AssessmentGradingData assessment);
 
@@ -259,7 +259,11 @@ public interface AssessmentGradingFacadeQueriesAPI
   
   public List getSiteNeedResubmitList(String siteId);
   
-  public void autoSubmitAssessments();
+  /**
+   * Checks for assessment attempts that should be autosubmitted
+   * @return number of attempts/submissions that could not be processed due to error
+   */
+  public int autoSubmitAssessments();
   
   public ItemGradingAttachment createItemGradingtAttachment(ItemGradingData itemGrading, String resourceId, String filename, String protocol);
   

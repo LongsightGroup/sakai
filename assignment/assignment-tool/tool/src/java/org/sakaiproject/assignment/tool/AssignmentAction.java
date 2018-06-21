@@ -4913,6 +4913,7 @@ public class AssignmentAction extends PagedResourceActionII
 		add2ndToolbarFields(data, context);
 
 		String template = (String) getContext(data).get("template");
+		context.put("currentTime", TimeService.newTime());
 		return template + TEMPLATE_INSTRUCTOR_VIEW_STUDENTS_ASSIGNMENT;
 
 	} // build_instructor_view_students_assignment_context
@@ -5862,7 +5863,7 @@ public class AssignmentAction extends PagedResourceActionII
 		readGradeForm(data, state, "save");
 		if (state.getAttribute(STATE_MESSAGE) == null)
 		{
-			grade_submission_option(data, "save");
+			grade_submission_option(data, "retract");
 		}
 
 	} // doSave_grade_submission
@@ -6045,21 +6046,11 @@ public class AssignmentAction extends PagedResourceActionII
 					sEdit.setGradeReleased(true);
 				}
 			}
-			else if (grade == null)
-			{
-				sEdit.setGrade("");
-				sEdit.setGraded(false);
-				if(gradeChanged){
-					sEdit.setGradedBy(null);
-				}
-				sEdit.setGradeReleased(false);
-			}
 			else
 			{
-				sEdit.setGrade(grade);
-
-				if (grade.length() != 0)
+				if (StringUtils.isNotBlank(grade))
 				{
+					sEdit.setGrade(grade);
 					sEdit.setGraded(true);
 					if(gradeChanged){
 						sEdit.setGradedBy(UserDirectoryService.getCurrentUser() == null ? null : UserDirectoryService.getCurrentUser().getId());
@@ -6067,6 +6058,7 @@ public class AssignmentAction extends PagedResourceActionII
 				}
 				else
 				{
+					sEdit.setGrade("");
 					sEdit.setGraded(false);
 					if(gradeChanged){
 						sEdit.setGradedBy(null);
@@ -6105,13 +6097,15 @@ public class AssignmentAction extends PagedResourceActionII
 				sEdit.setTimeReturned(TimeService.newTime());
 				sEdit.setHonorPledgeFlag(Boolean.FALSE.booleanValue());
 			}
-			else if ("save".equals(gradeOption))
+			else if ("retract".equals(gradeOption))
 			{
 				sEdit.setGradeReleased(false);
 				sEdit.setReturned(false);
 				sEdit.setTimeReturned(null);
 			}
-
+			else if ("save".equals(gradeOption)) {
+				//Currently nothing special for AssignmentConstants.SUBMISSION_OPTION_SAVE case
+			}
 			ResourcePropertiesEdit pEdit = sEdit.getPropertiesEdit();
 			if (state.getAttribute(AssignmentSubmission.ALLOW_RESUBMIT_NUMBER) != null)
 			{
@@ -8801,7 +8795,7 @@ public class AssignmentAction extends PagedResourceActionII
 	private boolean change_from_non_point(SessionState state, String assignmentId, String assignmentContentId, AssignmentContentEdit ac) 
 	{
 		// whether this is an editing which changes non point_grade type to point grade type?
-		if (StringUtils.trimToNull(assignmentId) != null && StringUtils.trimToNull(assignmentContentId) != null)
+		if (StringUtils.isNotEmpty(assignmentId) && StringUtils.isNotEmpty(assignmentContentId) && ac != null)
 		{
 			// editing
 			if (ac.getTypeOfGrade() != Assignment.SCORE_GRADE_TYPE
@@ -11099,7 +11093,7 @@ public class AssignmentAction extends PagedResourceActionII
 		if (_s != null)
 		{
 			String status = _s.getStatus();
-			if ("Not Started".equals(status))
+			if ("Not Started".equals(status) || (rb.getString("gen.notsta").equals(status)))
 			{
 				addAlert(state, rb.getString("stuviewsubm.theclodat"));
 			}

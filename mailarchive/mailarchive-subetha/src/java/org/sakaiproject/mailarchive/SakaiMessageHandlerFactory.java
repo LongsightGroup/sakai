@@ -167,14 +167,15 @@ public class SakaiMessageHandlerFactory implements MessageHandlerFactory {
 
             @Override
             public void from(String from) throws RejectException {
-                this.from = from;
+                SplitEmailAddress address = SplitEmailAddress.parse(from);
+                this.from = address.getLocal() + "@" + address.getDomain();
             }
 
             @Override
             public void recipient(String to) throws RejectException {
                 SplitEmailAddress address = SplitEmailAddress.parse(to);
 
-                if (serverConfigurationService.getServerName().equals(address.getDomain())) {
+                if (serverConfigurationService.getServerName().equalsIgnoreCase(address.getDomain())) {
                     // || serverConfigurationService.getServerNameAliases().contains(address.getDomain())) {
                     Recipient recipient = new Recipient();
                     recipient.address = address;

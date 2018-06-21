@@ -2894,7 +2894,7 @@ public class SiteAction extends PagedResourceActionII {
 					{
 						contentToolModel[k] = ltiToolId + "_" + contentToolModel[k];
 					}
-					Map<String, Object> ltiTool = m_ltiService.getTool(Long.valueOf(ltiToolId));
+					Map<String, Object> ltiTool = m_ltiService.getTool(Long.valueOf(ltiToolId), site.getId());
 					String formInput=m_ltiService.formInput(ltiTool, contentToolModel);
 					toolMap.put("formInput", formInput);
 					currentLtiTools.put(ltiToolId, toolMap);
@@ -3944,7 +3944,7 @@ public class SiteAction extends PagedResourceActionII {
 							ToolConfiguration toolConfig = SiteService.findTool(pstr);
 							if (toolConfig != null && toolConfig.getSiteId().equals(siteId)) {
 								Map<String, Object> m = new HashMap<>();
-								Map<String, Object> ltiToolValues = m_ltiService.getTool(Long.valueOf(ltiToolId));
+								Map<String, Object> ltiToolValues = m_ltiService.getTool(Long.valueOf(ltiToolId), siteId);
 								if (ltiToolValues != null) {
 									m.put("toolTitle", ltiToolValues.get(LTIService.LTI_TITLE));
 									m.put("pageTitle", ltiToolValues.get(LTIService.LTI_PAGETITLE));
@@ -13818,7 +13818,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			}
 		}
 
-		if (ServerConfigurationService.getBoolean("site-manage.importoption.siteinfo", false)){
+		if (ServerConfigurationService.getBoolean("site-manage.importoption.siteinfo", true)){
 			rv.add(SITE_INFO_TOOL_ID);
 		}
 		
@@ -13872,7 +13872,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 			toolIdList.add(NEWS_TOOL_ID);
 		if (displayLessons && !toolIdList.contains(LESSONS_TOOL_ID))
 			toolIdList.add(LESSONS_TOOL_ID);
-		if (ServerConfigurationService.getBoolean("site-manage.importoption.siteinfo", false)){
+		if (ServerConfigurationService.getBoolean("site-manage.importoption.siteinfo", true)){
 			toolIdList.add(SITE_INFO_TOOL_ID);
 		}
 		

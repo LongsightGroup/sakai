@@ -10,30 +10,27 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
 import org.apache.wicket.markup.html.link.DownloadLink;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.util.time.Duration;
 import org.sakaiproject.gradebookng.business.GbCategoryType;
-import org.sakaiproject.gradebookng.business.GradebookNgBusinessService;
 import org.sakaiproject.gradebookng.business.model.GbCourseGrade;
 import org.sakaiproject.gradebookng.business.model.GbGradeInfo;
 import org.sakaiproject.gradebookng.business.model.GbStudentGradeInfo;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
+import org.sakaiproject.gradebookng.tool.panels.BasePanel;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CourseGrade;
+import org.sakaiproject.util.FormattedText;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
-public class ExportPanel extends Panel {
+public class ExportPanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
 
-	@SpringBean(name = "org.sakaiproject.gradebookng.business.GradebookNgBusinessService")
-	private GradebookNgBusinessService businessService;
-
 	private static final String CUSTOM_EXPORT_COLUMN_PREFIX = "# ";
+	private static final char CSV_SEMICOLON_SEPARATOR = ';';
 
 	enum ExportFormat {
 		CSV
@@ -175,7 +172,8 @@ public class ExportPanel extends Panel {
 		try {
 			tempFile = File.createTempFile("gradebookTemplate", ".csv");
 			final FileWriter fw = new FileWriter(tempFile);
-			final CSVWriter csvWriter = new CSVWriter(fw);
+			//CSV separator is comma unless the comma is the decimal separator, then is ;
+			final CSVWriter csvWriter = new CSVWriter(fw, ".".equals(FormattedText.getDecimalSeparator()) ? CSVWriter.DEFAULT_SEPARATOR : CSV_SEMICOLON_SEPARATOR);
 
 			// Create csv header
 			final List<String> header = new ArrayList<String>();
@@ -245,7 +243,8 @@ public class ExportPanel extends Panel {
 						final GbGradeInfo gradeInfo = studentGradeInfo.getGrades().get(assignment.getId());
 						if (gradeInfo != null) {
 							if (!isCustomExport || this.includeGradeItemScores) {
-								line.add(StringUtils.removeEnd(gradeInfo.getGrade(), ".0"));
+								String grade = FormatHelper.formatGradeForDisplay(gradeInfo.getGrade());
+								line.add(StringUtils.removeEnd(grade, FormattedText.getDecimalSeparator()+"0"));
 							}
 							if (!isCustomExport || this.includeGradeItemComments) {
 								line.add(gradeInfo.getGradeComment());
@@ -266,16 +265,16 @@ public class ExportPanel extends Panel {
 				final CourseGrade courseGrade = gbCourseGrade.getCourseGrade();
 
 				if (isCustomExport && this.includePoints) {
-					line.add(FormatHelper.formatDoubleToDecimal(courseGrade.getPointsEarned()));
+					line.add(FormatHelper.formatGradeForDisplay(FormatHelper.formatDoubleToDecimal(courseGrade.getPointsEarned())));
 				}
 				if (isCustomExport && this.includeCalculatedGrade) {
-					line.add(courseGrade.getCalculatedGrade());
+					line.add(FormatHelper.formatGradeForDisplay(courseGrade.getCalculatedGrade()));
 				}
 				if (isCustomExport && this.includeCourseGrade) {
 					line.add(courseGrade.getMappedGrade());
 				}
 				if (isCustomExport && this.includeGradeOverride) {
-					line.add(courseGrade.getEnteredGrade());
+					line.add(FormatHelper.formatGradeForDisplay(courseGrade.getEnteredGrade()));
 				}
 				if (isCustomExport && this.includeLastLogDate) {
 					if (courseGrade.getDateRecorded() == null) {

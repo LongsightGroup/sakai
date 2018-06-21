@@ -487,7 +487,7 @@ public class DeliveryBean
 
 	    try {
 	      TimeUtil tu = new TimeUtil();
-	      beginTimeString = tu.getDisplayDateTime(dayDisplayFormat, beginTime);
+	      beginTimeString = tu.getDisplayDateTime(dayDisplayFormat, beginTime, true);
 	    }
 	    catch (Exception ex) {
 	      // we will leave it as an empty string
@@ -1098,7 +1098,7 @@ public class DeliveryBean
 
     try {
       TimeUtil tu = new TimeUtil();
-      dateString = tu.getDisplayDateTime(displayFormat, dueDate);
+      dateString = tu.getDisplayDateTime(displayFormat, dueDate, true);
     }
     catch (Exception ex) {
       // we will leave it as an empty string
@@ -1116,7 +1116,7 @@ public class DeliveryBean
 
     try {
       TimeUtil tu = new TimeUtil();
-      dateString = tu.getDisplayDateTime(dayDisplayFormat, dueDate);
+      dateString = tu.getDisplayDateTime(dayDisplayFormat, dueDate, true);
     }
     catch (Exception ex) {
       // we will leave it as an empty string
@@ -1142,7 +1142,7 @@ public class DeliveryBean
 
 	    try {
 	      TimeUtil tu = new TimeUtil();
-	      adjustedTimedAssesmentDueDateString = tu.getDisplayDateTime(dayDisplayFormat, adjustedTimedAssesmentDueDate);
+	      adjustedTimedAssesmentDueDateString = tu.getDisplayDateTime(dayDisplayFormat, adjustedTimedAssesmentDueDate, true);
 	    }
 	    catch (Exception ex) {
 	      // we will leave it as an empty string
@@ -1169,7 +1169,7 @@ public class DeliveryBean
 
     try {
       TimeUtil tu = new TimeUtil();
-      dateString = tu.getDisplayDateTime(dayDisplayFormat, retractDate);
+      dateString = tu.getDisplayDateTime(dayDisplayFormat, retractDate, true);
     }
     catch (Exception ex) {
       // we will leave it as an empty string
@@ -1329,7 +1329,7 @@ public class DeliveryBean
 
     try {
       TimeUtil tu = new TimeUtil();
-      dateString = tu.getDisplayDateTime(displayFormat, submissionDate);
+      dateString = tu.getDisplayDateTime(displayFormat, submissionDate, true);
     }
     catch (Exception ex) {
       // we will leave it as an empty string
@@ -2517,7 +2517,6 @@ public class DeliveryBean
                         GradingService gradingService){
     // 1. create a media record
     File media = new File(mediaLocation);
-    byte[] mediaByte = getMediaStream(mediaLocation);
     String mimeType = MimeTypesLocator.getInstance().getContentType(media);
     boolean SAVETODB = getSaveToDb();
     log.debug("**** SAVETODB=" + SAVETODB);
@@ -2541,6 +2540,7 @@ public class DeliveryBean
     
     if (SAVETODB)
     { // put the byte[] in
+      byte[] mediaByte = getMediaStream(mediaLocation);
       mediaData = new MediaData(itemGradingData, mediaByte,
                                 Long.valueOf(mediaByte.length + ""),
                                 mimeType, "description", null,
@@ -2551,7 +2551,7 @@ public class DeliveryBean
     else
     { // put the location in
       mediaData = new MediaData(itemGradingData, null,
-    		  					Long.valueOf(mediaByte.length + ""),
+    		  					Long.valueOf(media.length() + ""),
                                 mimeType, "description", mediaLocation,
                                 updatedFilename, false, false, 1,
                                 agent, new Date(),
@@ -2692,7 +2692,7 @@ public class DeliveryBean
 
     try {
       TimeUtil tu = new TimeUtil();
-      dateString = tu.getDisplayDateTime(displayFormat, feedbackDate);
+      dateString = tu.getDisplayDateTime(displayFormat, feedbackDate, true);
     }
     catch (Exception ex) {
       // we will leave it as an empty string
@@ -3599,7 +3599,7 @@ public class DeliveryBean
 
 		    try {
 		      TimeUtil tu = new TimeUtil();
-		      deadlineString = tu.getDisplayDateTime(dayDisplayFormat, deadline);
+		      deadlineString = tu.getDisplayDateTime(dayDisplayFormat, deadline, true);
 		    }
 		    catch (Exception ex) {
 		      // we will leave it as an empty string
