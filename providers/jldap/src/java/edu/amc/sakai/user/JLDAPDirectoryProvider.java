@@ -430,12 +430,12 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 			}
 
                          if (StringUtils.isNumeric(userLogin)) {
-                                M_log.debug("eid is numberic: " + userLogin);
+                                log.debug("eid is numberic: " + userLogin);
                                 String filter = "cMCCID=" + ldapAttributeMapper.escapeSearchFilterTerm(userLogin);
-                                M_log.debug("filter: " + filter);
+                                log.debug("filter: " + filter);
                                 LdapUserData numUser = (LdapUserData)searchDirectoryForSingleEntry(filter, conn, null, null, null);
                                 if(numUser != null){
-                                        M_log.debug("eid: " + numUser.getEid());
+                                        log.debug("eid: " + numUser.getEid());
                                         //CMCC Change user EID from numberic to cmcc ID
                                         edit.setEid(numUser.getEid());
                                 }
@@ -599,12 +599,12 @@ public class JLDAPDirectoryProvider implements UserDirectoryProvider, LdapConnec
 		try {
 			
                          if (StringUtils.isNumeric(edit.getEid())) {
-                                M_log.debug("getUser(): eid is numberic: " + edit.getEid());
+                                log.debug("getUser(): eid is numberic: " + edit.getEid());
                                 String filter = "cMCCID=" + ldapAttributeMapper.escapeSearchFilterTerm(edit.getEid());
-                                M_log.debug("getUser(): filter: " + filter);
+                                log.debug("getUser(): filter: " + filter);
                                 LdapUserData numUser = (LdapUserData)searchDirectoryForSingleEntry(filter, null, null, null, null);
                                 if(numUser != null){
-                                        M_log.debug("getUser(): eid: " + numUser.getEid());
+                                        log.debug("getUser(): eid: " + numUser.getEid());
                                         //CMCC Change user EID from numberic to cmcc ID
                                         edit.setEid(numUser.getEid());
                                 }
