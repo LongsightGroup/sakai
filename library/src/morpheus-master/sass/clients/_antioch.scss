@@ -1,8 +1,9 @@
 $skin-name : "antioch" !default; // This is used for bootstrap font behaviour.
 
 /* Logo location */
-$logo: '../images/antioch.png' !default;
-$logo-height: 50px !default;
+$logo: '../images/antioch.svg' !default;
+$banner-height: 56px !default;
+$logo-height: 44px !default;
 $logo-width: 166px !default;
 
 /* Tool tabs */
@@ -13,8 +14,8 @@ $tool-tab-active-highlight-color:                         #201c3e !default;
 $button-primary-background-color:                         #201c3e !default;
 
 /* Favorites */ 
-$sites-nav-menu-item-selected-background:   #15597e !default;
-$sites-nav-menu-item-selected-hover-background:   #15597e !default;
+$sites-nav-menu-item-selected-background:   #003c69 !default;
+$sites-nav-menu-item-selected-hover-background:   #003c69 !default;
 
 /* Tool Menu */
 $tool-menu-item-selected-text-color:                       #201c3e !default;

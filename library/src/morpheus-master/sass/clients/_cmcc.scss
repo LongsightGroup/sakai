@@ -1,0 +1,110 @@
+$skin-name : "cmcc" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#53284F !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#649825 !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#ececec !default;
+$banner-height:						95px !default;
+
+/* Logo location */
+$logo: 							'../images/cmcc.svg';
+$logo-height: 						95px;
+$logo-width: 						203px;
+
+// Tab colors
+$tool-tab-text-color:			 		#000 !default;
+$tool-tab-background-color:              		#ececec !default;
+$tool-tab-active-text-color:             		#000 !default;
+$tool-tab-active-highlight-color:        		#d47a19 !default;
+$tool-tab-active-background-color:			#ececec !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color:                                            #0064cd !default;
+$link-active-color:                                     #4e5192 !default;
+$link-hover-color:                                      $primary-color;
+
+// Button colors 
+$button-text-color:	 		 		#444 !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+$button-background-secondary-color: 	 		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+$button-color-border-color: 		 		#CCCCCC !default;
+$button-color-background-color: 	 		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+$button-color-background-secondary-color:		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+// Primary Button Color
+$button-primary-background-color:        		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default
+$button-primary-text-color: 		 		#444 !default;
+$button-primary-hover-text-color:                       #000 !default;
+$button-primary-hover-background-color:                 -webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+
+// Link , Edit, Help Buttons
+$button-secondary-text-color:            		#000 !default;
+$button-secondary-icon-color:            		#000 !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		-webkit-linear-gradient(top, #f3f3f3 0%,#e7e7e7 100%) !important;
+$sites-nav-menu-item-color:              		#000 !default;
+$sites-nav-menu-item-icon-color:         		#000 !default;
+$sites-nav-menu-item-border-color:         		1px solid #000 !default;
+//Selected
+//Selected
+$sites-nav-menu-item-selected-background:		#53284F !important;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+$sites-nav-menu-item-selected-hover-background: 	#efefef !default;
+$sites-nav-menu-item-selected-hover-color:      	#FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#FFF !default;
+$sites-nav-menu-item-selected-border-color: 		none !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:			#ececec !default;
+$tool-menu-item-text-color:                             #444 !default;
+$tool-menu-item-icon-color:				#444 !default;
+
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFF !default;
+$tool-menu-item-hover-icon-color:               	#FFF !default;
+$tool-menu-item-hover-background-color:         	#865B82 !default;
+$tool-menu-item-hover-border-left:              	4px solid #865B82 !default;
+// selected
+$tool-menu-item-selected-background-color:            	#53284F !important;
+$tool-menu-item-selected-text-color:            	#FFF !default;
+$tool-menu-item-selected-icon-color:            	#FFF !default;
+$tool-menu-item-selected-border-left:           	4px solid #53284F !default;
+// submenu
+$tool-sub-menu-hover-color:				#FFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#000 !default;
+$tool-menu-item-selected-hover-icon-color:      	#000 !default;
+$tool-menu-item-selected-hover-background-color:	#d47b22 !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #d47b22 !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #d47b22 !default;
+$tool-menu-collapse-active-text-color:                  #FFF !default;
+$tool-sub-menu-hover-color:				#FFF; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.navIntraTool li span.current a {
+    background: #ececec;
+    color: #000;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}
