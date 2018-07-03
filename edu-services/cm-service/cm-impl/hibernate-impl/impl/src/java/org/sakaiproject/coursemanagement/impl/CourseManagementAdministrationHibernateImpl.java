@@ -690,7 +690,7 @@ public class CourseManagementAdministrationHibernateImpl extends
                     }
                 } else {
                     if (academicSession.isCurrent()) {
-                        academicSession.setCurrent(false);
+                        // academicSession.setCurrent(false); // Duke customization for DKU #58219
                     }
                 }
             }
