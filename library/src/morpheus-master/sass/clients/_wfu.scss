@@ -96,8 +96,9 @@ $error-color:               darken($error-background-color, 30%) !default;
 $topNav-text-color: #000000;
 
 $sites-nav-menu-item-background:            #3c3937 !important;
-$sites-nav-menu-item-color:                 #FFFFFF !important;
-$sites-nav-menu-item-color-hover:           #FFFFFF !default;
+$sites-nav-menu-item-color:                 #FFFFFF;
+$sites-nav-menu-item-hover-color:	    #FFFFFF !important;
+$sites-nav-menu-item-color-hover:           #FFFFFF !important;
 $sites-nav-menu-item-border-top:            none ; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-border-right:          none;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -177,3 +178,12 @@ $sites-nav-submenu-item-hover-left-border-color: #3c3937 !important;
 #favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
     background-color: $primary-color !important;
 }
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+    color: $link-color !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+} 

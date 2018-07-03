@@ -195,3 +195,8 @@ $info-background-color:   				#efefef;
 #selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
     color: #af0000 !important;
 }
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+    color: #FFF !important;
+}
