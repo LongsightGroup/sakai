@@ -179,7 +179,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 			return this.enrollment.getUser().getSortName();
 		}
 		public String getDisplayId() {
-			return this.enrollment.getUser().getDisplayId();
+			return this.enrollment.getUser().getDisplayId()+"/"+getLocalDisplayId(enrollment.getUser());
 		}
 
 		public Map getScores() {
@@ -1066,7 +1066,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         	final String studentUid = student.getUserUid();
         	final Map studentMap = (Map)gradesMap.get(studentUid);
         	final List<Object> row = new ArrayList<Object>();
-        	row.add(student.getDisplayId());
+        	row.add(getLocalDisplayId(student));
         	row.add(student.getSortName());
         	for (final Object gradableObject : gradableObjects) {
         		Object score = null;
@@ -1148,4 +1148,228 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
 		}
 		return null;
 	}
+
+    private List<List<Object>> getSpreadsheetData2(boolean includeCourseGrade, boolean localizeScores) {
+        // Get the full list of filtered enrollments and scores (not just the current page's worth). 
+        Map enrRecItemIdFunctionMap = getWorkingEnrollmentsForAllItems();
+        List filteredEnrollments = new ArrayList(enrRecItemIdFunctionMap.keySet()); 
+        Collections.sort(filteredEnrollments, ENROLLMENT_NAME_COMPARATOR);
+        Set<String> studentUids = new HashSet<String>();
+
+        Map studentIdItemIdFunctionMap = new HashMap();
+        List availableItems = new ArrayList();
+        for (Iterator iter = filteredEnrollments.iterator(); iter.hasNext(); ) {
+            EnrollmentRecord enrollment = (EnrollmentRecord)iter.next(); 
+            String studentUid = enrollment.getUser().getUserUid(); 
+            studentUids.add(studentUid);
+
+            Map itemIdFunctionMap = (Map)enrRecItemIdFunctionMap.get(enrollment); 
+            studentIdItemIdFunctionMap.put(studentUid, itemIdFunctionMap);
+            // get the actual items to determine the gradable objects
+            if (!itemIdFunctionMap.isEmpty()) {
+                availableItems.addAll(itemIdFunctionMap.keySet());
+            }
+         }
+
+         Map filteredGradesMap = new HashMap();
+         List gradeRecords = getGradebookManager().getAllAssignmentGradeRecordsConverted(getGradebookId(), studentUids);
+
+         if (!isUserAbleToGradeAll() && isUserHasGraderPermissions()) { 
+             getGradebookManager().addToGradeRecordMap(filteredGradesMap, gradeRecords, studentIdItemIdFunctionMap);
+         } else {
+             getGradebookManager().addToGradeRecordMap(filteredGradesMap, gradeRecords);
+         }
+         
+         Category selCategoryView = getSelectedCategory();
+
+         List gradableObjects = new ArrayList();
+         List allAssignments = new ArrayList();
+         List categoriesFilter = new ArrayList();
+         if (getCategoriesEnabled()) {
+             List categoryList = getGradebookManager().getCategoriesWithStats(getGradebookId(), getPreferencesBean().getAssignmentSortColumn(), getPreferencesBean().isAssignmentSortAscending(), getPreferencesBean().getCategorySortColumn(), getPreferencesBean().isCategorySortAscending());
+
+             // filter out the CourseGrade from the Category list to prevent errors
+             for (Iterator catIter = categoryList.iterator(); catIter.hasNext();) {
+                 Object catOrCourseGrade = catIter.next();
+                 if (catOrCourseGrade instanceof Category) {
+                     categoriesFilter.add((Category)catOrCourseGrade);
+                 }
+             }
+
+             // then, we need to check for special grader permissions that may limit which categories may be viewed
+             if (!isUserAbleToGradeAll() && isUserHasGraderPermissions()) {
+                 categoryList = getGradebookPermissionService().getCategoriesForUser(getGradebookId(), getUserUid(), categoriesFilter);
+             }
+
+             if (categoryList != null && !categoryList.isEmpty()) {
+                 Iterator catIter = categoryList.iterator();
+                 while (catIter.hasNext()) {
+                     Object myCat = catIter.next();
+                     
+                     if (myCat instanceof Category) {
+                         List assignmentList = ((Category)myCat).getAssignmentList();
+                         if (assignmentList != null && !assignmentList.isEmpty()) {
+                             Iterator assignIter = assignmentList.iterator();
+                             while (assignIter.hasNext()) {
+                                 GradebookAssignment assign = (GradebookAssignment) assignIter.next();
+                                 allAssignments.add(assign);
+                             }
+                         }
+                     }
+                 }
+             }
+
+             if (!isUserAbleToGradeAll() && (isUserHasGraderPermissions() && !getGradebookPermissionService().getPermissionForUserForAllAssignment(getGradebookId(), getUserUid()))) {
+                 // is not authorized to view the "Unassigned" Category
+             } else {
+                 List unassignedList = getGradebookManager().getAssignmentsWithNoCategory(getGradebookId(), getPreferencesBean().getAssignmentSortColumn(), getPreferencesBean().isAssignmentSortAscending());
+                 if (unassignedList != null && !unassignedList.isEmpty()) {
+                     Iterator unassignedIter = unassignedList.iterator();
+                     while (unassignedIter.hasNext()) {
+                         GradebookAssignment assignWithNoCat = (GradebookAssignment) unassignedIter.next();
+                         allAssignments.add(assignWithNoCat);
+                     }
+                 }
+             }
+         }
+         else {
+             allAssignments = getGradebookManager().getAssignments(getGradebookId());
+         }
+ 
+         if (!allAssignments.isEmpty()) {
+             for (Iterator assignIter = allAssignments.iterator(); assignIter.hasNext();) {
+                 GradebookAssignment assign = (GradebookAssignment) assignIter.next();
+                 if (availableItems.contains(assign.getId()) && (selCategoryView == null || (assign.getCategory() != null && (assign.getCategory()).getId().equals(selCategoryView.getId())))) {
+                     gradableObjects.add(assign);
+                 }
+             }
+         }
+
+         // don't include the course grade column if the user doesn't have grade all perm
+         // or if the view is filtered by category
+         if (!isUserAbleToGradeAll() || selCategoryView != null) {
+             includeCourseGrade = false;
+         }
+
+         if (includeCourseGrade) {
+             CourseGrade courseGrade = getGradebookManager().getCourseGrade(getGradebookId());
+             List courseGradeRecords = getGradebookManager().getPointsEarnedCourseGradeRecords(courseGrade, studentUids, gradableObjects, filteredGradesMap);
+             getGradebookManager().addToGradeRecordMap(filteredGradesMap, courseGradeRecords);
+             gradableObjects.add(courseGrade);
+         }
+
+         return getSpreadsheetData2(filteredEnrollments, filteredGradesMap, gradableObjects, includeCourseGrade);
+
+     }
+
+    private List<List<Object>> getSpreadsheetData2(List enrollments, Map gradesMap, List gradableObjects, boolean includeCourseGrade) {
+
+        List<List<Object>> spreadsheetData = new ArrayList<List<Object>>();
+        
+        NumberFormat nf = NumberFormat.getInstance(new ResourceLoader().getLocale());
+        // Build column headers and points possible rows.
+        List<Object> headerRow = new ArrayList<Object>();
+        List<Object> pointsPossibleRow = new ArrayList<Object>();
+
+        headerRow.add(getLocalizedString("export_student_id"));
+        headerRow.add(getLocalizedString("export_student_name"));
+
+        for (Object gradableObject : gradableObjects)
+        {
+            String colName = null;
+            Double ptsPossible = 0.0;
+
+            if (gradableObject instanceof GradebookAssignment)
+            {
+                ptsPossible = new Double(((GradebookAssignment) gradableObject).getPointsPossible());
+                colName = ((GradebookAssignment)gradableObject).getName();
+            }
+            else if (gradableObject instanceof CourseGrade && includeCourseGrade) 
+            {
+                colName = getLocalizedString("roster_course_grade_column_name");
+            }
+ 
+            headerRow.add(colName);
+        }
+        spreadsheetData.add(headerRow);
+
+        // Build student score rows.
+        for (Object enrollment : enrollments)
+        {
+            User student = ((EnrollmentRecord)enrollment).getUser();
+            String studentUid = student.getUserUid();
+            Map studentMap = (Map)gradesMap.get(studentUid);
+            List<Object> row = new ArrayList<Object>();
+            row.add(student.getDisplayId());
+            row.add(student.getSortName());
+            for (Object gradableObject : gradableObjects)
+            {
+                Object score = null;
+                String letterScore = null;
+                if (studentMap != null)
+                {
+                    Long gradableObjectId = ((GradableObject)gradableObject).getId();
+                    AbstractGradeRecord gradeRecord = (AbstractGradeRecord)studentMap.get(gradableObjectId);
+
+                    if (gradeRecord != null)
+                    {
+                        if (gradeRecord.isCourseGradeRecord())
+                        {
+                            if (includeCourseGrade)
+                            {
+                                score = gradeRecord.getGradeAsPercentage();
+                            }
+                        }
+                        else
+                        {
+                            if (getGradeEntryByPoints())
+                            {
+                                score = gradeRecord.getPointsEarned();
+                            }
+                            else if (getGradeEntryByPercent())
+                            {
+                                score = ((AssignmentGradeRecord)gradeRecord).getPercentEarned();
+                            }
+                            else if (getGradeEntryByLetter())
+                            {
+                                score = ((AssignmentGradeRecord)gradeRecord).getLetterEarned();
+                            }
+                        }
+                    }
+                }
+                if (score != null && score instanceof Double)
+                {
+                    score = new Double(FacesUtil.getRoundDown(((Double)score).doubleValue(), 2));
+                    score = nf.format(score);
+                }
+
+                row.add(score);
+            }
+            spreadsheetData.add(row);
+        }
+        return spreadsheetData;
+    }
+
+    private String getLocalDisplayId(User user) {
+
+        String userid = user.getUserUid();
+        org.sakaiproject.user.api.UserDirectoryService ds = (org.sakaiproject.user.api.UserDirectoryService) org.sakaiproject.component.cover.ComponentManager.get(org.sakaiproject.user.api.UserDirectoryService.class.getName());
+        try 
+        {
+            org.sakaiproject.user.api.User u = ds.getUser(userid);
+            if (u.getProperties().getProperty("ST_NUM") != null)
+            {
+                return u.getProperties().getProperty("ST_NUM");
+            }
+            else 
+            {
+                return "X7"+user.getDisplayId();
+            }
+        }
+        catch (Exception e)
+        {
+            return "X7"+user.getDisplayId();
+        }
+    }
+
 }
