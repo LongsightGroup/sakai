@@ -5,6 +5,14 @@
 
 	#if (!$!site)
 		<h3>$tlang.getString("nscourse.creating")</h3>
+
+<!-- Custom BROCK 52684 -->
+<div style="background:#eeeeee;border:3px dotted black;padding:10px;border-color: #cc0000;margin:10px">
+  <h3>Request a site without student enrollment</h3>
+  <p>It's possible that you haven't been formally assigned a section. Instructor of record information is drawn from the <a href="https://brocku.ca/registrar/toolkit/registration/" target="_blank">most current timetables</a> offered by the Scheduling department of Brock University's Registrar's Office. If you've just been assigned a course, it's possible that this update has not yet taken effect. If you would like to confirm your course assignment, we suggest that you contact the administrative support within your department.</p>
+  <p>If the course you are looking for was not automatically presented to you when you arrived on this page, you may wish to request it immediately using the options in the section below. Note that course sites that are requested in this way will not contain your course enrollment until you've been formally assigned as the instructor of record and have taken <a href="https://kumu.brocku.ca/sakai/How_do_I_add_a_class_roster" target="_blank">additional steps within your site to manually add your Roster</a>.</p>
+</div>
+
 	#else
 		<h3>$tlang.getString("nscourse.edit") <span class="highlight">$!siteTitle</span></h3>
 	#end
@@ -175,7 +183,8 @@
 						   $tlang.getString("man.authoriz")
 						</label>
 						<div class="col-sm-6">
-							<input type="text" name="uniqname"  id="uniqname"   size="40" value="$!value_uniqname" />
+  						<input type="text" id="uniqname" size="40" value="lmsapprove@brocku.ca" disabled />
+  						<input type="hidden" name="uniqname" value="lmsapprove" />
 						</div>
 					</div>
 					<p class="labelindnt">
