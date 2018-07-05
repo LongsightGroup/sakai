@@ -177,7 +177,8 @@
 						   $tlang.getString("man.authoriz")
 						</label>
 						<div class="col-sm-6">
-							<input type="text" name="uniqname"  id="uniqname"   size="40" value="$!value_uniqname"  aria-describedby="uniquenameins"/>
+ 						<input type="text" id="uniqname" size="40" value="lmsapprove@brocku.ca" aria-describedby="uniquenameins" disabled />
+ 						<input type="hidden" name="uniqname" value="lmsapprove" />
 						</div>
 					</div>
 					<p class="labelindnt">
