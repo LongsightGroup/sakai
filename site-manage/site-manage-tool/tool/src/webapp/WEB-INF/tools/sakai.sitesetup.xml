@@ -19,11 +19,11 @@
 		<!-- default site type -->
 		<configuration name="defaultSiteType" value="project" />
 		<!-- types of sites that can either be public or private -->
-		<configuration name="publicChangeableSiteTypes" value="project" />
+		<configuration name="publicChangeableSiteTypes" value="" />
 		<!-- types of sites that are always public -->
-		<configuration name="publicSiteTypes" value="course" />
+		<configuration name="publicSiteTypes" value="" />
 		<!-- types of sites that are always private -->
-		<configuration name="privateSiteTypes" value="" />
+		<configuration name="privateSiteTypes" value="course,project" />
 
 		<configuration name="site_mode" value="sitesetup" type="final" />
 
