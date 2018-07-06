@@ -1,0 +1,2 @@
+BROCK-50 just customizations to copyright notices and fairuse.url
+ -- not sure why fairuse.url not being picked up from properties
