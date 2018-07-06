@@ -8,6 +8,7 @@
 
     <!-- Sample configuration for SAML with ADFS IdP -->
     <!-- import resource="xlogin-context.saml.adfs-prod.xml" / -->
+    <import resource="${saml.env}.xml" />
 
 </beans>
 
