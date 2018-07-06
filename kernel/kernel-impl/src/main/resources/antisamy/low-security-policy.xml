@@ -3387,12 +3387,9 @@
             </category-list>
             <literal-list>
                 <literal value="static"/>
-                <!-- possible to perform phishing attacks with the following -->
-                <!--
                 <literal value="relative"/>
                 <literal value="absolute"/>
                 <literal value="fixed"/>
-                 -->
                 <literal value="inherit"/>
             </literal-list>
         </property>
