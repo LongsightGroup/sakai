@@ -14,7 +14,7 @@
 .#{$namespace}sakai-siteinfo, .#{$namespace}sakai-sitesetup {
   .toggledContent {
     margin: 0;
-    border: 2px solid #cef;
+    border: 2px solid #e0e0e0;
     border-top: none;
     padding: .5em;
   }
@@ -458,8 +458,8 @@
     }
   }
   h4.toggleAnchor {
-    border: 1px solid #cef;
-    background: #cef !important;
+    border: 1px solid #e0e0e0;
+    background: #e0e0e0 !important;
     padding: 5px !important;
     cursor: pointer;
     outline: none;
