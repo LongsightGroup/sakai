@@ -27,5 +27,17 @@ $tool-menu-item-selected-hover-border-left:                4px solid #201c3e !de
 $tool-menu-collapse-active-background-color:               #201c3e !default;
 $tool-menu-collapse-active-hover-background-color:         #201c3e !default;
 
+/* Navigation Hierarchy */
+
+$banner-height: 56px !default;
+
 /* Color palette */
 $background-color-secondary: #003c69 !default;
+
+/* Miscellaneous modifications */
+
+.bs-callout-warn, .Mrphs-sakai-forums .topicBlocLone, .bs-callout-alert, .messageWarning, .messageConfirmation {
+    background-color: #FFF !important;
+    border-color: #9c9c9c !important;
+    border-left-color: #5c5c5c !important;
+}

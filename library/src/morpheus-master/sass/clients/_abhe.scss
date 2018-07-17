@@ -8,6 +8,7 @@ $text-color:				 		    	#4E4D4E !default;
 $topNav-text-color:					    	#000000 !default;
 $sites-nav-background: 						#0B6B2A;
 $skin-with-icons: 						false !important;
+$all-sites-tab-active-background-color:				$body-background-color;
 
 /* Logo location */
 $logo: 								'../images/abhe.jpg';
@@ -47,6 +48,10 @@ $button-primary-text-color: 		 			#FFFFFF !default;
 $button-primary-hover-text-color:                   		$button-color-text-color;
 $button-primary-hover-background-color:             		$button-color-background-color !default;
 $button-primary-hover-border-color:                 		$primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                                   $button-primary-text-color;
+$button-secondary-text-color:                                   $button-primary-text-color;
+$button-secondary-background-color:                             $button-primary-background-color;
 
 // Link , Edit, Help Buttons
 $button-secondary-background-color:            			#FFFFFF !default;
@@ -69,7 +74,8 @@ $sites-nav-menu-item-selected-border-color: 			#5B440E !default;
 
 // TOOL MENU COLORS
 // non-selected
-$tool-menu-background-color:		 			#FFFFFF !default;
+$tool-menu-item-background-color:                          	#FAFAFA;
+$tool-menu-background-color:		 			$tool-menu-item-background-color;
 $tool-menu-color: 			 			#0B6B2A !default;
 $tool-border-color:			 			#5B440E !default;
 // non-selected hover
@@ -99,9 +105,9 @@ $tool-sub-menu-hover-color:					#0B6B2A;
 $info-background-color:   					$body-background-color;
 $info-color:                					$primary-color  !default;
 
-$error-background-color:                                        #F2DEDE !default;
-$ok-color:                                                      #DFF0D8 !default;
-$warn-background-color:                                         #FCF8E3 !default;
+$error-background-color:    					# !default;
+$ok-color:                  					# !default;
+$warn-background-color:     					# !default;
 
 .img_site_toolmenu {
     display: none !important;
@@ -122,4 +128,33 @@ $warn-background-color:                                         #FCF8E3 !default
 
 .Mrphs-topHeader .Mrphs-loginNav #roleSwitch {
     margin-right: 0em !important;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}
+
+#selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
+    background: $tool-tab-active-background-color !important;
+}
+
+.userNav__subnav .Mrphs-userData, #mastLogin #loginLinks ul .Mrphs-userData {
+    background-color: $tool-tab-active-background-color !important;
+}
+
+#mastLogin #loginLinks ul {
+    background-color: $tool-menu-item-background-color !important;
+}
+
+.navIntraTool li span.current a {
+    background-color: $tool-tab-active-background-color !important;
+    color:  $tool-tab-active-text-color !important;
+}
+
+.Mrphs-multipleTools .Mrphs-toolTitleNav .Mrphs-toolTitleNav__title {
+    color: $tool-tab-text-color !important;
+}
+
+#Mrphs-sakai-roster .roster-table .roster-member:nth-child(odd) {
+    background: #ececec !important;
 }
