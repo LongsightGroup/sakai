@@ -2519,6 +2519,12 @@ public class AssignmentAction extends PagedResourceActionII {
             context.put("value_GradePoints", assignmentService.getGradeDisplay(maxGrade, a.getTypeOfGrade(), a.getScaleFactor() != null ? a.getScaleFactor() : assignmentService.getScaleFactor()));
             context.put("value_CheckAnonymousGrading", assignmentService.assignmentUsesAnonymousGrading(a));
         }
+        else {
+        	if (!StringUtils.isBlank(maxGrade)){
+        		context.put("value_GradePoints", assignmentService.getGradeDisplay(maxGrade, SCORE_GRADE_TYPE, assignmentService.getScaleFactor()));
+        	}    	
+        	context.put("value_CheckAnonymousGrading", state.getAttribute(NEW_ASSIGNMENT_CHECK_ANONYMOUS_GRADING)); 
+        }      
         context.put("value_Description", state.getAttribute(NEW_ASSIGNMENT_DESCRIPTION));
 
         //Peer Assessment
@@ -14372,7 +14378,7 @@ public class AssignmentAction extends PagedResourceActionII {
                     // Determine if a scoring component (like a rubric) has been associated with this gradebook item
                     ScoringComponent component = scoringService.getScoringComponent(
                             scoringAgent.getAgentId(), gradebookUid, gbItemId);
-                    boolean scoringComponentEnabled = component != null;
+                    boolean scoringComponentEnabled = component != null && !assignment.getIsGroup();
 
                     context.put("scoringComponentEnabled", scoringComponentEnabled);
 
