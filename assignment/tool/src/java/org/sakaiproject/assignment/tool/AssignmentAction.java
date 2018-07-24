@@ -38,6 +38,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -138,6 +139,7 @@ public class AssignmentAction extends PagedResourceActionII {
     // or 2 - On Due Date
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO = "report_gen_speed";
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY = "0";
+    private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY_AND_DUE = "1";
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE = "2";
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN = "s_paper_check";
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET = "internet_check";
@@ -151,6 +153,10 @@ public class AssignmentAction extends PagedResourceActionII {
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_SMALL_MATCHES = "exclude_smallmatches";
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_TYPE = "exclude_type";
     private static final String NEW_ASSIGNMENT_REVIEW_SERVICE_EXCLUDE_VALUE = "exclude_value";
+    private static final String SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT = "review_service_eula_agreement";
+    private static final String SUBMISSION_REVIEW_CHECK_SERVICE_EULA_AGREEMENT = "review_check_service_eula_agreement";
+    private static final String SUBMISSION_REVIEW_EULA_AGREEMENT_LINK = "review_service_eula_agreement_link";
+    
     /**
      * Peer Review Attachments
      **/
@@ -1116,6 +1122,9 @@ public class AssignmentAction extends PagedResourceActionII {
             String reviewServiceNonElectronic1 = rb.getFormattedMessage("review.switch.ne.1", reviewServiceName);
             String reviewServiceNonElectronic2 = rb.getFormattedMessage("review.switch.ne.2", reviewServiceName);
             context.put("reviewServiceName", reviewServiceName);
+            context.put("reviewServiceProviderId", contentReviewService.getProviderId());
+            context.put("turnitinProviderId", ContentReviewConstants.TURNITIN_PROVIDER_ID);
+            context.put("turnitinOCProviderId", ContentReviewConstants.TURNITINOC_PROVIDER_ID);
             context.put("reviewServiceTitle", reviewServiceTitle);
             context.put("reviewServiceUse", reviewServiceUse);
             context.put("reviewIndicator", rb.getFormattedMessage("review.contentReviewIndicator", new Object[]{reviewServiceName}));
@@ -1416,9 +1425,11 @@ public class AssignmentAction extends PagedResourceActionII {
 
             if (assignment.getContentReview()) {
                 Map<String, String> properties = assignment.getProperties();
-                context.put("plagiarismNote", rb.getFormattedMessage("gen.yoursubwill", contentReviewService.getServiceName()));
+                state.setAttribute("plagiarismNote", rb.getFormattedMessage("gen.yoursubwill", contentReviewService.getServiceName()));
+                context.put("plagiarismNote", state.getAttribute("plagiarismNote"));
                 if (!contentReviewService.allowAllContent() && assignmentSubmissionTypeTakesAttachments(assignment)) {
-                    context.put("plagiarismFileTypes", rb.getFormattedMessage("gen.onlythefoll", getContentReviewAcceptedFileTypesMessage()));
+                		state.setAttribute("plagiarismFileTypes", rb.getFormattedMessage("gen.onlythefoll", getContentReviewAcceptedFileTypesMessage())); 
+                    context.put("plagiarismFileTypes", state.getAttribute("plagiarismFileTypes"));
 
                     // SAK-31649 commenting this out to remove file picker filters, as the results vary depending on OS and browser.
                     // If in the future browser support for the 'accept' attribute on a file picker becomes more robust and
@@ -1427,10 +1438,28 @@ public class AssignmentAction extends PagedResourceActionII {
                 }
                 try {
                     if (Boolean.valueOf(properties.get(NEW_ASSIGNMENT_REVIEW_SERVICE_STUDENT_PREVIEW))) {
-                        context.put("plagiarismStudentPreview", rb.getString("gen.subStudentPreview"));
+                    		state.setAttribute("plagiarismStudentPreview", rb.getString("gen.subStudentPreview"));
+                    		context.put("plagiarismStudentPreview", state.getAttribute("plagiarismStudentPreview"));
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage(), e);
+                }
+                //Check if content review service requires a EULA
+                String eulaServiceLink = contentReviewService.getEndUserLicenseAgreementLink(user.getId());
+                if(StringUtils.isNotEmpty(eulaServiceLink)) {
+	                	Instant providerEulaTimestamp = contentReviewService.getEndUserLicenseAgreementTimestamp();
+	                	Instant userEulaTimestamp = contentReviewService.getUserEULATimestamp(user.getId());
+	                	String providerEulaVersion = contentReviewService.getEndUserLicenseAgreementVersion();
+	                	String userEulaVersion = contentReviewService.getUserEULAVersion(user.getId());
+	                	if((providerEulaTimestamp != null && (userEulaTimestamp == null || userEulaTimestamp.isBefore(providerEulaTimestamp)))
+	                			|| (providerEulaVersion != null && (userEulaVersion == null || !userEulaVersion.equals(providerEulaVersion)))) {
+	                		//user has either not accepted the required EULA or there is a new EULA that needs to be re-accepted
+	                		context.put("plagiarismEULALink", eulaServiceLink);
+	                		state.setAttribute("plagiarismEULALink", eulaServiceLink);
+	                		context.put("name_plagiarism_eula_agreement", SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT);
+	                		context.put("value_plagiarism_eula_agreement", state.getAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT) != null ? state.getAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT) : "false");
+	                		context.put("name_check_plagiarism_eula_agreement", SUBMISSION_REVIEW_CHECK_SERVICE_EULA_AGREEMENT);
+	                	}
                 }
             }
             if (assignment.getTypeOfSubmission() == Assignment.SubmissionType.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION) {
@@ -1558,6 +1587,8 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("value_submission_text", state.getAttribute(VIEW_SUBMISSION_TEXT));
         context.put("name_submission_honor_pledge_yes", VIEW_SUBMISSION_HONOR_PLEDGE_YES);
         context.put("value_submission_honor_pledge_yes", state.getAttribute(VIEW_SUBMISSION_HONOR_PLEDGE_YES));
+        context.put("name_plagiarism_eula_agreement", SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT);
+        context.put("value_plagiarism_eula_agreement", state.getAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT));
         context.put("honor_pledge_text", serverConfigurationService.getString("assignment.honor.pledge", rb.getString("gen.honple2")));
         context.put("attachments", stripInvisibleAttachments(state.getAttribute(ATTACHMENTS)));
         context.put("new_attachments", newAttachments);
@@ -1852,15 +1883,10 @@ public class AssignmentAction extends PagedResourceActionII {
                 context.put("email_confirmation", serverConfigurationService.getBoolean("assignment.submission.confirmation.email", true));
 
                 if (currentAssignment.getIsGroup()) {
-                    Map<String, User> users = s.getSubmitters().stream().map(u -> {
-                        try {
-                            return userDirectoryService.getUser(u.getSubmitter());
-                        } catch (UserNotDefinedException e) {
-                            log.warn("User not found, {}", u.getSubmitter());
-                            return null;
-                        }
-                    }).filter(Objects::nonNull).collect(Collectors.toMap(User::getId, Function.identity()));
-                    String submitterNames = users.values().stream().map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
+					final Map<String, User> users = getSubmitters(s,
+							"build_student_view_submission_confirmation_context")
+									.collect(Collectors.toMap(User::getId, Function.identity()));
+                    final String submitterNames = users.values().stream().map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
                     context.put("submitterNames", formattedText.escapeHtml(submitterNames));
                 }
             }
@@ -1990,6 +2016,15 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("text", state.getAttribute(PREVIEW_SUBMISSION_TEXT));
         context.put("honor_pledge_yes", state.getAttribute(PREVIEW_SUBMISSION_HONOR_PLEDGE_YES));
         context.put("honor_pledge_text", serverConfigurationService.getString("assignment.honor.pledge", rb.getString("gen.honple2")));
+        if(assignment.getContentReview()) {
+	        	context.put("plagiarismStudentPreview", state.getAttribute("plagiarismStudentPreview"));
+	        	context.put("plagiarismFileTypes", state.getAttribute("plagiarismFileTypes"));
+	        	context.put("plagiarismNote", state.getAttribute("plagiarismNote"));
+	        	context.put("name_plagiarism_eula_agreement", SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT);
+	        	context.put("value_plagiarism_eula_agreement", state.getAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT));
+	        	context.put("plagiarismEULALink", state.getAttribute("eulaServiceLink"));
+	        	context.put("name_check_plagiarism_eula_agreement", SUBMISSION_REVIEW_CHECK_SERVICE_EULA_AGREEMENT);
+        }
         context.put("attachments", stripInvisibleAttachments(state.getAttribute(PREVIEW_SUBMISSION_ATTACHMENTS)));
         context.put("contentTypeImageService", contentTypeImageService);
 
@@ -2192,6 +2227,12 @@ public class AssignmentAction extends PagedResourceActionII {
         if (asgnAdvisor != null) {
             securityService.popAdvisor(asgnAdvisor);
         }
+        
+        final Map<String, User> users = getSubmitters(submission, "build_instructor_grade_submission_context")
+				.collect(Collectors.toMap(User::getId, Function.identity()));
+        
+        final String submitterNames = users.values().stream().map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
+        context.put("submitterNames", formattedText.escapeHtml(submitterNames));
 
         String template = (String) getContext(data).get("template");
         return template + TEMPLATE_STUDENT_VIEW_GRADE;
@@ -2424,6 +2465,7 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION", NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_INSITUTION);
         context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO", NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO);
         context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY", NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY);
+        context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY_AND_DUE", NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY_AND_DUE);
         context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE", NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE);
         context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN", NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_TURNITIN);
         context.put("name_NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET", NEW_ASSIGNMENT_REVIEW_SERVICE_CHECK_INTERNET);
@@ -2558,7 +2600,7 @@ public class AssignmentAction extends PagedResourceActionII {
         context.put("show_NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT", subOptions);
 
         List<String> reportGenOptions = getReportGenOptions();
-        String reportRadio = serverConfigurationService.getString("turnitin.report_gen_speed.setting.value", null) == null ? NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY : serverConfigurationService.getString("turnitin.report_gen_speed.setting.value");
+        String reportRadio = serverConfigurationService.getString("turnitin.report_gen_speed.setting.value", null) == null ? reportGenOptions.get(0) : serverConfigurationService.getString("turnitin.report_gen_speed.setting.value");
         if (state.getAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO) != null && reportGenOptions.contains(state.getAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO)))
             reportRadio = state.getAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO).toString();
         context.put("value_NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO", reportRadio);
@@ -3161,17 +3203,11 @@ public class AssignmentAction extends PagedResourceActionII {
             context.put("submission", s);
             context.put("submissionReference", submissionRef);
 
-            Map<String, User> users = s.getSubmitters().stream().map(u -> {
-                try {
-                    return userDirectoryService.getUser(u.getSubmitter());
-                } catch (UserNotDefinedException e) {
-                    log.warn("User not found, {}", u.getSubmitter());
-                    return null;
-                }
-            }).filter(Objects::nonNull).collect(Collectors.toMap(User::getId, Function.identity()));
+            final Map<String, User> users = getSubmitters(s, "build_instructor_grade_submission_context")
+					.collect(Collectors.toMap(User::getId, Function.identity()));
             context.put("users", users);
 
-            String submitterNames = users.values().stream().map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
+            final String submitterNames = users.values().stream().map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
             context.put("submitterNames", formattedText.escapeHtml(submitterNames));
             context.put("submissionStatus", assignmentService.getSubmissionStatus(s.getId()));
 
@@ -3856,15 +3892,8 @@ public class AssignmentAction extends PagedResourceActionII {
             assignment.getAttachments().forEach(r -> assignmentAttachmentReferences.put(r, entityManager.newReference(r)));
             context.put("assignmentAttachmentReferences", assignmentAttachmentReferences);
 
-            String submitterNames = submission.getSubmitters().stream().map(u -> {
-                try {
-                    User user = userDirectoryService.getUser(u.getSubmitter());
-                    return user.getDisplayName() + " (" + user.getDisplayId() + ")";
-                } catch (UserNotDefinedException e) {
-                    log.warn("Could not find user = {}, who is a submitter on submission = {}, {}", u, submission.getId(), e.getMessage());
-                }
-                return "";
-            }).collect(Collectors.joining(", "));
+            final String submitterNames = getSubmitters(submission, "build_instructor_preview_grade_submission_context")
+					.map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
             context.put("submitterNames", formattedText.escapeHtml(submitterNames));
 
             setScoringAgentProperties(context, assignment, submission, false);
@@ -4377,16 +4406,9 @@ public class AssignmentAction extends PagedResourceActionII {
             submissionId = s.getId();
             context.put("submission", s);
             context.put("submissionReference", submissionReference);
-
-            String submitterNames = s.getSubmitters().stream().map(u -> {
-                try {
-                    User user = userDirectoryService.getUser(u.getSubmitter());
-                    return user.getDisplayName() + " (" + user.getDisplayName() + ")";
-                } catch (UserNotDefinedException e) {
-                    log.warn("Could not find user = {}, who is a submitter on a submission (build_student_review_edit_context) , {}", u, e.getMessage());
-                }
-                return "";
-            }).collect(Collectors.joining(", "));
+            
+            final String submitterNames = getSubmitters(s, "build_student_review_edit_context")
+					.map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
             context.put("submitterNames", formattedText.escapeHtml(submitterNames));
 
             Map<String, String> p = s.getProperties();
@@ -4707,6 +4729,7 @@ public class AssignmentAction extends PagedResourceActionII {
         }
 
         context.put("studentAssignmentsTable", showStudentAssignments);
+        context.put("currentTime", Instant.now());
 
         add2ndToolbarFields(data, context);
 
@@ -4942,13 +4965,13 @@ public class AssignmentAction extends PagedResourceActionII {
                                         Long associateGradebookAssignmentId = gradebookService.getAssignment(gradebookUid, associateGradebookAssignment).getId();
                                         // the associated assignment is internal one, update records one by one
                                         for (Map.Entry<String, String> entry : sm.entrySet()) {
-                                            String submitterId = (String) entry.getKey();
-                                            String grade = StringUtils.trimToNull(displayGrade(state, (String) sm.get(submitterId), a.getScaleFactor()));
-                                            if (grade != null) {
-                                                gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignmentId, submitterId, grade, "");
-                                                String comment = StringUtils.isNotEmpty(cm.get(submitterId)) ? cm.get(submitterId) : "";
-                                                gradebookService.setAssignmentScoreComment(gradebookUid, associateGradebookAssignmentId, submitterId, comment);
-                                            }
+                                        	String submitterId = (String) entry.getKey();
+                                        	String grade = StringUtils.trimToNull(displayGrade(state, (String) sm.get(submitterId), a.getScaleFactor()));
+                                        	if (grade != null && gradebookService.isUserAbleToGradeItemForStudent(gradebookUid, associateGradebookAssignmentId, submitterId)) {
+                                        		gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignmentId, submitterId, grade, "");
+                                        		String comment = StringUtils.isNotEmpty(cm.get(submitterId)) ? cm.get(submitterId) : "";
+                                        		gradebookService.setAssignmentScoreComment(gradebookUid, associateGradebookAssignmentId, submitterId, comment);
+                                        	}
                                         }
                                     }
                                 } else if (isExternalAssignmentDefined) {
@@ -4975,12 +4998,15 @@ public class AssignmentAction extends PagedResourceActionII {
                                             gradebookExternalAssessmentService.updateExternalAssessmentComment(gradebookUid, associateGradebookAssignment, submitter.getSubmitter(),
                                                     (commentString != null && aSubmission.getGradeReleased()) ? commentString : "");
                                         } else if (gradebookService.isAssignmentDefined(gradebookUid, associateGradebookAssignment)) {
-                                            Long associateGradebookAssignmentId = gradebookService.getAssignment(gradebookUid, associateGradebookAssignment).getId();
-                                            // the associated assignment is internal one, update records
-                                            gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignmentId, submitter.getSubmitter(),
-                                                    (gradeStringToUse != null && aSubmission.getGradeReleased()) ? gradeStringToUse : "", "");
-                                            gradebookService.setAssignmentScoreComment(gradebookUid, associateGradebookAssignmentId, submitter.getSubmitter(),
-                                                    (commentString != null && aSubmission.getGradeReleased()) ? commentString : "");
+                                        	// the associated assignment is internal one, update records
+                                        	final Long associateGradebookAssignmentId = gradebookService.getAssignment(gradebookUid, associateGradebookAssignment).getId();
+                                        	final String submitterId = submitter.getSubmitter();
+                                        	if (gradebookService.isUserAbleToGradeItemForStudent(gradebookUid, associateGradebookAssignmentId, submitterId)) {
+                                        		gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignmentId, submitterId,
+                                        				(gradeStringToUse != null && aSubmission.getGradeReleased()) ? gradeStringToUse : "", "");
+                                        		gradebookService.setAssignmentScoreComment(gradebookUid, associateGradebookAssignmentId, submitterId,
+                                        				(commentString != null && aSubmission.getGradeReleased()) ? commentString : "");
+                                        	}
                                         }
                                     } else {
                                         gradebookExternalAssessmentService.updateExternalAssessmentScore(gradebookUid, assignmentRef, submitter.getSubmitter(),
@@ -5001,20 +5027,17 @@ public class AssignmentAction extends PagedResourceActionII {
                             while (submissions.hasNext()) {
                                 AssignmentSubmission aSubmission = (AssignmentSubmission) submissions.next();
                                 if (StringUtils.isNotBlank(aSubmission.getGrade())) {
-                                    User[] submitters = aSubmission.getSubmitters().stream().map(u -> {
-                                        try {
-                                            return userDirectoryService.getUser(u.getSubmitter());
-                                        } catch (UserNotDefinedException e) {
-                                            log.warn("User not found, {}", u.getSubmitter());
-                                            return null;
-                                        }
-                                    }).filter(Objects::nonNull).toArray(User[]::new);
-                                    for (int i = 0; submitters != null && i < submitters.length; i++) {
+                                	 final List<User> submitters = getSubmitters(aSubmission, "integrateGradebook").collect(Collectors.toList());
+                                     for (User submitter :submitters) {
                                         if (isExternalAssociateAssignmentDefined) {
                                             // if the old associated assignment is an external maintained one
-                                            gradebookExternalAssessmentService.updateExternalAssessmentScore(gradebookUid, associateGradebookAssignment, submitters[i].getId(), null);
+                                        	gradebookExternalAssessmentService.updateExternalAssessmentScore(gradebookUid, associateGradebookAssignment, submitter.getId(), null);
                                         } else if (isAssignmentDefined) {
-                                            gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignment, submitters[i].getId(), "0", assignmentToolTitle);
+                                        	final String submitterId = submitter.getId();
+                                        	final Long associateGradebookAssignmentId = gradebookService.getAssignment(gradebookUid, associateGradebookAssignment).getId();
+                                        	if (gradebookService.isUserAbleToGradeItemForStudent(gradebookUid, associateGradebookAssignmentId, submitterId)) {
+                                        		gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignment, submitter.getId(), "0", assignmentToolTitle);
+                                        	}
                                         }
                                     }
                                 }
@@ -5023,22 +5046,18 @@ public class AssignmentAction extends PagedResourceActionII {
                             // remove only one submission grade
                             AssignmentSubmission aSubmission = getSubmission(submissionRef, "integrateGradebook", state);
                             if (aSubmission != null) {
-                                User[] submitters = aSubmission.getSubmitters().stream().map(u -> {
-                                    try {
-                                        return userDirectoryService.getUser(u.getSubmitter());
-                                    } catch (UserNotDefinedException e) {
-                                        log.warn("User not found, {}", u.getSubmitter());
-                                        return null;
-                                    }
-                                }).filter(Objects::nonNull).toArray(User[]::new);
-                                for (int i = 0; submitters != null && i < submitters.length; i++) {
-
+                            	final List<User> submitters = getSubmitters(aSubmission, "integrateGradebook").collect(Collectors.toList());
+                            	for (User submitter :submitters) {
                                     if (isExternalAssociateAssignmentDefined) {
                                         // external assignment
-                                        gradebookExternalAssessmentService.updateExternalAssessmentScore(gradebookUid, assignmentRef, submitters[i].getId(), null);
+                                    	gradebookExternalAssessmentService.updateExternalAssessmentScore(gradebookUid, assignmentRef, submitter.getId(), null);
                                     } else if (isAssignmentDefined) {
-                                        // gb assignment
-                                        gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignment, submitters[i].getId(), "0", "");
+                                    	// gb assignment
+                                    	final String submitterId = submitter.getId();
+                                    	final Long associateGradebookAssignmentId = gradebookService.getAssignment(gradebookUid, associateGradebookAssignment).getId();
+                                    	if (gradebookService.isUserAbleToGradeItemForStudent(gradebookUid, associateGradebookAssignmentId, submitterId)) {
+                                    		gradebookService.setAssignmentScoreString(gradebookUid, associateGradebookAssignment, submitter.getId(), "0", "");
+                                    	}
                                     }
                                 }
                             }
@@ -5048,6 +5067,12 @@ public class AssignmentAction extends PagedResourceActionII {
             }
         }
     } // integrateGradebook
+    
+	private Stream<User> getSubmitters(final AssignmentSubmission aSubmission, final String method) {
+		return userDirectoryService
+				.getUsers(aSubmission.getSubmitters().stream().map(s -> s.getSubmitter()).collect(Collectors.toList()))
+				.stream().filter(Objects::nonNull);
+	}
 
     /**
      * Go to the instructor view
@@ -5258,6 +5283,13 @@ public class AssignmentAction extends PagedResourceActionII {
         }
         state.setAttribute(PREVIEW_SUBMISSION_HONOR_PLEDGE_YES, honor_pledge_yes);
         state.setAttribute(VIEW_SUBMISSION_HONOR_PLEDGE_YES, honor_pledge_yes);
+        
+        // assign the EULA attribute
+        String eulaAgreementYes = params.getString(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT);
+        if(StringUtils.isEmpty(eulaAgreementYes)) {
+        		eulaAgreementYes = "false";
+        }
+        state.setAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT, eulaAgreementYes);
 
         // get attachment input and generate alert message according to assignment submission type
         checkSubmissionTextAttachmentInput(data, state, a, text);
@@ -5549,7 +5581,17 @@ public class AssignmentAction extends PagedResourceActionII {
         if (state.getAttribute(PEER_ASSESSMENT_ASSESSOR_ID) != null) {
             String peerAssessor = (String) state.getAttribute(PEER_ASSESSMENT_ASSESSOR_ID);
             ParameterParser params = data.getParameters();
-            String submissionId = params.getString("submissionId");
+            String submissionRef = params.getString("submissionId");
+            String submissionId = null;
+            if(submissionRef != null){
+            	submissionRef = submissionRef.endsWith("/") ? StringUtils.chop(submissionRef) : submissionRef;
+                int i = submissionRef.lastIndexOf(Entity.SEPARATOR);
+                if (i == -1){
+                    submissionId = submissionRef;
+                }else{
+                    submissionId = submissionRef.substring(i + 1);
+                }
+            }
             if (submissionId != null) {
                 //call the DB to make sure this user can edit this assessment, otherwise it wouldn't exist
                 PeerAssessmentItem item = assignmentPeerAssessmentService.getPeerAssessmentItem(submissionId, peerAssessor);
@@ -5897,6 +5939,11 @@ public class AssignmentAction extends PagedResourceActionII {
             if (honorPledgeYes == null) {
                 honorPledgeYes = "false";
             }
+            
+            String eulaAgreementYes = params.getString(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT);
+            if(StringUtils.isEmpty(eulaAgreementYes)) {
+            		eulaAgreementYes = "false";
+            }
 
             User u = (User) state.getAttribute(STATE_USER);
             User submitter = null;
@@ -5963,6 +6010,13 @@ public class AssignmentAction extends PagedResourceActionII {
                     }
                     state.setAttribute(VIEW_SUBMISSION_HONOR_PLEDGE_YES, honorPledgeYes);
                 }
+                
+                if (StringUtils.isNotEmpty(params.getString(SUBMISSION_REVIEW_CHECK_SERVICE_EULA_AGREEMENT))) {
+                    if (!Boolean.valueOf(eulaAgreementYes)) {
+                        addAlert(state, rb.getFormattedMessage("youarenot21", contentReviewService.getServiceName()));
+                    }
+                    state.setAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT, eulaAgreementYes);
+                }
 
                 // SAK-26322
                 List nonInlineAttachments = getNonInlineAttachments(state, a);
@@ -5981,6 +6035,10 @@ public class AssignmentAction extends PagedResourceActionII {
             }
             if ((state.getAttribute(STATE_MESSAGE) == null) && (a != null)) {
                 AssignmentSubmission submission;
+                if (contentReviewService != null && Boolean.valueOf(eulaAgreementYes)) {
+                		//update EULA agreement timestamp
+                		contentReviewService.updateUserEULATimestamp(sessionManager.getCurrentSessionUserId());
+                }
 
                 if (a.getIsGroup()) {
                     String g = StringUtils.isNotBlank(original_group_id) ? original_group_id : group_id;
@@ -6669,7 +6727,7 @@ public class AssignmentAction extends PagedResourceActionII {
         state.setAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_SUBMIT_RADIO, r);
         //set originality report options
         r = params.getString(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO);
-        if (r == null || !NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE.equals(r))
+        if (r == null || (!NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE.equals(r) && !NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY_AND_DUE.equals(r)))
             r = NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY;
         state.setAttribute(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_RADIO, r);
         //set check repository options:
@@ -6928,29 +6986,27 @@ public class AssignmentAction extends PagedResourceActionII {
             // the grade point
             String gradePoints = params.getString(NEW_ASSIGNMENT_GRADE_POINTS);
             state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, gradePoints);
-            if (gradePoints != null) {
-                if (gradeType == SCORE_GRADE_TYPE) {
-                    if ((gradePoints.length() == 0)) {
-                        // in case of point grade assignment, user must specify maximum grade point
-                        addAlert(state, rb.getString("plespethe3"));
-                    } else {
-                        Integer scaleFactor = assignmentService.getScaleFactor();
-                        try {
-                            if (StringUtils.isNotEmpty(assignmentRef)) {
-                                Assignment assignment = assignmentService.getAssignment(assignmentId);
-                                if (assignment != null) {
-                                    scaleFactor = assignment.getScaleFactor();
-                                }
+            if (gradePoints != null && gradeType == SCORE_GRADE_TYPE) {
+                if (gradePoints.length() == 0) {
+                    // in case of point grade assignment, user must specify maximum grade point
+                    addAlert(state, rb.getString("plespethe3"));
+                } else {
+                    Integer scaleFactor = assignmentService.getScaleFactor();
+                    try {
+                        if (StringUtils.isNotEmpty(assignmentRef)) {
+                            Assignment assignment = assignmentService.getAssignment(assignmentId);
+                            if (assignment != null && assignment.getScaleFactor() != null) {
+                                scaleFactor = assignment.getScaleFactor();
                             }
-                        } catch (IdUnusedException | PermissionException e) {
-                            log.error(e.getMessage());
                         }
-
-                        validPointGrade(state, gradePoints, scaleFactor);
-                        // when scale is points, grade must be integer and less than maximum value
-                        gradePoints = scalePointGrade(state, gradePoints, scaleFactor);
-                        state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, gradePoints);
+                    } catch (IdUnusedException | PermissionException e) {
+                        log.error(e.getMessage());
                     }
+
+                    validPointGrade(state, gradePoints, scaleFactor);
+                    // when scale is points, grade must be integer and less than maximum value
+                    gradePoints = scalePointGrade(state, gradePoints, scaleFactor);
+                    state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, gradePoints);
                 }
             }
         }
@@ -7587,7 +7643,6 @@ public class AssignmentAction extends PagedResourceActionII {
                     //Numberformatexception
                 }
             }
-
 
             // the attachments
             List attachments = (List) state.getAttribute(NEW_ASSIGNMENT_ATTACHMENT);
@@ -9184,8 +9239,8 @@ public class AssignmentAction extends PagedResourceActionII {
         if (propertyValues != null && propertyValues.length > 0) {
             for (int i = 0; i < propertyValues.length; i++) {
                 String propertyVal = propertyValues[i];
-                if (propertyVal.equals(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE) ||
-                        propertyVal.equals(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY)) {
+                if (propertyVal.equals(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY) || propertyVal.equals(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY_AND_DUE) ||
+                        propertyVal.equals(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE)) {
                     reportGenSettings.add(propertyVal);
                 }
             }
@@ -9193,9 +9248,9 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // if there are still no valid settings in the list at this point, use the default
         if (reportGenSettings.isEmpty()) {
-            // add all three
+            // add only the defaults used in original Turnitin integration
+        		reportGenSettings.add(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY);                                    
             reportGenSettings.add(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_DUE);
-            reportGenSettings.add(NEW_ASSIGNMENT_REVIEW_SERVICE_REPORT_IMMEDIATELY);
         }
 
         return reportGenSettings;
@@ -9915,7 +9970,7 @@ public class AssignmentAction extends PagedResourceActionII {
         // whether the user can access the Submission object
         if (s != null) {
             String status = assignmentService.getSubmissionStatus(s.getId());
-            if ("Not Started".equals(status)) {
+            if ("Not Started".equals(status) || (rb.getString("gen.notsta").equals(status))) {
                 addAlert(state, rb.getString("stuviewsubm.theclodat"));
             }
 
@@ -10319,6 +10374,11 @@ public class AssignmentAction extends PagedResourceActionII {
         state.setAttribute(VIEW_SUBMISSION_TEXT, text);
         if (params.getString(VIEW_SUBMISSION_HONOR_PLEDGE_YES) != null) {
             state.setAttribute(VIEW_SUBMISSION_HONOR_PLEDGE_YES, "true");
+        }
+        if(params.getString(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT) != null) {
+        		state.setAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT, "true");
+        }else {
+        		state.removeAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT);
         }
 
         String assignmentRef = (String) state.getAttribute(VIEW_SUBMISSION_ASSIGNMENT_REFERENCE);
