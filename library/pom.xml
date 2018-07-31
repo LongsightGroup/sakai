@@ -254,7 +254,7 @@
 			<properties>
 				<sakai.skin.source>morpheus-master</sakai.skin.source>
 				<sakai.skin.target>morpheus-default</sakai.skin.target>
-				<sakai.skin.customization.file>src/${sakai.skin.source}/sass/examples/_customization_example_empty.scss</sakai.skin.customization.file>
+				<sakai.skin.customization.file>src/morpheus-master/sass/_cmcc.scss</sakai.skin.customization.file>
 				<sakai.skin.outputSyle>compressed</sakai.skin.outputSyle>
 			</properties>
 			<build>
