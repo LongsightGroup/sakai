@@ -153,7 +153,6 @@
                                 </constructor-arg>
                             </bean>
 
-                <!-- Example of classpath metadata with Extended Metadata -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
@@ -175,6 +174,26 @@
                     <property name="metadataTrustCheck" value="false"/>
                 </bean>
 
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                    <constructor-arg>
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
+                            <constructor-arg>
+                                <value type="java.lang.String">https://login.microsoftonline.com/c4c66dc5-8cad-4eb3-859b-896a7304a50a/federationmetadata/2007-06/federationmetadata.xml?appid=dff6811c-ae94-4c97-8a73-df3305ce451d</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="int">45000</value>
+                    </constructor-arg>
+                    <constructor-arg>
+                                <value type="java.lang.String">sakai/saml/idp-brevard.xml</value>
+                            </constructor-arg>
+                            <property name="parserPool" ref="parserPool"/>
+                        </bean>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
+                    </constructor-arg>
+                    <property name="metadataTrustCheck" value="false"/>
+                </bean>
 
                 <!-- Example of file system metadata without Extended Metadata -->
                 <!--
@@ -254,7 +273,7 @@
 
     <!-- SAML 2.0 WebSSO Assertion Consumer -->
     <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl">
-        <property name="maxAuthenticationAge" value="86400" />
+        <property name="maxAuthenticationAge" value="2592000" />
     </bean>
 
     <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
