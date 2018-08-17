@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<registration>
+
+	<tool
+			id="usahome.registered"
+			title="USAonline Home"
+			description="USAonline Home">
+
+		<configuration name="source" value="https://ecampus.southalabama.edu/x/IJYSBp" />
+		<configuration name="height" value="1200px" />
+
+		<configuration name="reset.button" value="false" type="final" />
+
+		<category name="course" />
+
+		<!-- Allow this to be set -->
+		<configuration name="functions.require" />
+
+		<!-- Allow multiple instances of this tool within one site -->
+		<configuration name="allowMultipleInstances" value="false" />
+
+	</tool>
+
+</registration>
