@@ -9730,6 +9730,10 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 											ResourcePropertiesEdit rp = site.getPropertiesEdit();
 											rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
 											rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+			                                             			//remove the origin site's externalSiteId from the new site if it exists
+                        			                     			if(rp.get("externalSiteId") != null){
+                                              			     				rp.removeProperty("externalSiteId");
+                                            			     			}
 										} else {
 											log.warn("termId=" + termId + " not found");
 										}
