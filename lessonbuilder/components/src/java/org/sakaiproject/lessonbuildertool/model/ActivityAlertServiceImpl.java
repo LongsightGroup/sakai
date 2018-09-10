@@ -1,6 +1,7 @@
 package org.sakaiproject.lessonbuildertool.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -15,13 +17,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.app.scheduler.DelayedInvocation;
 import org.sakaiproject.api.app.scheduler.ScheduledInvocationManager;
+import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.email.cover.EmailService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.lessonbuildertool.ActivityAlert;
 import org.sakaiproject.lessonbuildertool.SimplePage;
-import org.sakaiproject.lessonbuildertool.SimplePageItem;
-import org.sakaiproject.lessonbuildertool.SimplePageLogEntry;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 import org.sakaiproject.time.api.Time;
@@ -197,17 +198,23 @@ public class ActivityAlertServiceImpl implements ActivityAlertService {
 									EmailService.sendToUsers(alertNonStudentUsers, getHeaders(defaultAlertSubject), formatMessage(defaultAlertSubject, alertMessage));
 								}
 
-								//Get list of maintainers
-								Set<User> maintainerUsers = new HashSet<User>();
-								for(String userId : alertSite.getUsersHasRole(alertSite.getMaintainRole())){
-									User user = null;
-									try {
-										user = UserDirectoryService.getUser(userId);
-										if(StringUtils.isNotBlank(user.getEmail())){
-											maintainerUsers.add(user);
-										}
-									} catch (UserNotDefinedException e) {
-										log.error(e.getMessage(), e);
+								// Get roles to send inactivity report to
+								// lessons.inactivity.notify.roles should contain roles matching SAKAI_REALM_ROLE.ROLE_NAME
+								String[] rolesToNotify = ServerConfigurationService.getStrings("lessons.inactivity.notify.roles");
+								if (rolesToNotify == null || rolesToNotify.length == 0) {
+									rolesToNotify = new String[] { alertSite.getMaintainRole() };
+								}
+								List<String> listRolesToNotify = Arrays.asList(rolesToNotify);
+								Set<String> userIdsToNotify = alertSite.getRoles().stream()
+										.filter(r -> listRolesToNotify.contains(r.getId()))
+										.flatMap(r -> alertSite.getUsersHasRole(r.getId()).stream())
+										.collect(Collectors.toSet());
+								List<User> notifyUsers = UserDirectoryService.getUsers(userIdsToNotify);
+								Set<User> maintainerUsers = new HashSet<>();
+								for (User user: notifyUsers) {
+									if (StringUtils.isNotBlank(user.getEmail())) {
+										maintainerUsers.add(user);
+									} else {
 										failedEmailUsers.add(user);
 									}
 								}
