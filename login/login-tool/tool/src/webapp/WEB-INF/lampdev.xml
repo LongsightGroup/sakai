@@ -89,6 +89,7 @@
 
     <!-- IDP Discovery Service -->
     <bean id="samlIDPDiscovery" class="org.springframework.security.saml.SAMLDiscovery">
+      <property name="idpSelectionPath" value="/disco/idpSelection"/>
     </bean>
 
     <!-- Filter automatically generates default SP metadata -->
@@ -148,7 +149,8 @@
                                        <property name="requireArtifactResolveSigned" value="false"/>
                                        <property name="requireLogoutRequestSigned" value="false"/>
                                        <property name="requireLogoutResponseSigned" value="false"/>
-                                       <property name="idpDiscoveryEnabled" value="false"/>
+                                       <property name="idpDiscoveryEnabled" value="true"/>
+                                       <property name="idpDiscoveryURL" value="https://lampdev.longsight.com/sakai-login-tool/container/saml/discovery" />
                                     </bean>
                                 </constructor-arg>
                             </bean>
@@ -195,6 +197,28 @@
                     <property name="metadataTrustCheck" value="false"/>
                 </bean>
 
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                    <constructor-arg>
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
+                            <constructor-arg>
+                                <value type="java.lang.String">https://login.microsoftonline.com/1736942c-00b7-40e8-8faa-539d6a168a9e/federationmetadata/2007-06/federationmetadata.xml</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="int">45000</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="java.lang.String">sakai/saml/idp-tnwesleyan.xml</value>
+                                </constructor-arg>
+                                <property name="parserPool" ref="parserPool"/>
+                        </bean>
+                    </constructor-arg>
+                    <constructor-arg>
+                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
+                    </constructor-arg>
+                    <property name="metadataTrustCheck" value="false"/>
+                </bean>
+
+
                 <!-- Example of file system metadata without Extended Metadata -->
                 <!--
                 <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
@@ -209,7 +233,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://adfs.johnsonu.edu/adfs/services/trust"/>
+        <!-- property name="defaultIDP" value="http://adfs.johnsonu.edu/adfs/services/trust"/-->
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
