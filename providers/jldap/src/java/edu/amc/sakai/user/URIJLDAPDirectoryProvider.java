@@ -232,7 +232,7 @@ public class URIJLDAPDirectoryProvider extends JLDAPDirectoryProvider implements
      * Builds a filter of the form &lt;login-attr&gt;=&lt;<code>oprid</code>&gt;
      */
     public String getFindUserByOpridFilter(String oprid) {
-        String opridAttr = 
+        String opridAttr =
             AttributeMappingConstants.URIOPRID_ATTR_MAPPING_KEY;
         return opridAttr + "=" + ldapAttributeMapper.escapeSearchFilterTerm(oprid);
     }
