@@ -97,13 +97,13 @@
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
                 <property name="entityId" value="https://lamp-dev.saml.longsight.com/samlauth" />
-                <!-- <property name="includeDiscoveryExtension" value="true"/> -->
-                <!-- <property name="extendedMetadata">
+                <property name="includeDiscoveryExtension" value="true"/>
+                <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
                         <property name="idpDiscoveryEnabled" value="true"/>
                         <property name="signMetadata" value="false"/>
                     </bean>
-                </property> -->
+                </property>
             </bean>
         </constructor-arg>
     </bean>
@@ -201,7 +201,7 @@
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <value type="java.lang.String">https://login.microsoftonline.com/1736942c-00b7-40e8-8faa-539d6a168a9e/federationmetadata/2007-06/federationmetadata.xml</value>
+                                <value type="java.lang.String">https://login.microsoftonline.com/1736942c-00b7-40e8-8faa-539d6a168a9e/federationmetadata/2007-06/federationmetadata.xml?appid=eef31062-181f-427c-aa1f-9872f05ce2e9</value>
                             </constructor-arg>
                             <constructor-arg>
                                 <value type="int">45000</value>
