@@ -158,3 +158,15 @@ $warn-background-color:     					#FCF8E3 !default;
 #Mrphs-sakai-roster .roster-table .roster-member:nth-child(odd) {
     background: #ececec !important;
 }
+
+.Mrphs-sakai-schedule table.calendar .borderTopLeft a {
+    color: #FFFFFF !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .event a {
+    color: #FFFFFF !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .bgActivity a {
+    color: #FFFFFF !important;
+}

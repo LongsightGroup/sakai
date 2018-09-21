@@ -633,7 +633,7 @@ body {
 
 					.lessons-goto-top-page {
 						.Mrphs-toolsNav__menuitem--title {
-							color: $tool-menu-item-text-color;
+							color: $tool-menu-item-selected-text-color;
 						}
 						&:hover {
 							.Mrphs-toolsNav__menuitem--title {
@@ -696,7 +696,7 @@ body {
 					background-color: $tool-menu-item-selected-background-color !important;
 
 					&:hover {
-						background-color: $tool-menu-item-selected-hover-background-color !important;
+						background-color: $tool-menu-item-hover-background-color !important;
 					}
 
 					.#{$namespace}toolsNav__menuitem--icon {

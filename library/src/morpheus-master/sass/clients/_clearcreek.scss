@@ -158,3 +158,12 @@ $warn-background-color:     					#FCF8E3 !default;
 #Mrphs-sakai-roster .roster-table .roster-member:nth-child(odd) {
     background: #ececec !important;
 }
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #0e4220 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #03c !important;
+    }
+}

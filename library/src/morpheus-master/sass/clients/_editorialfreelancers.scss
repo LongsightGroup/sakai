@@ -5,7 +5,7 @@ $primary-color:    			 		  	#BD231F !default;
 $body-background-color: 		 			#CCCCCC !default;
 $background-color-secondary: 		 			#FFFFFF !default;
 $text-color:				 		    	#000000 !default;
-$topNav-text-color:					    	#FFFFFF !default;
+$topNav-text-color:					    	#7A7B7A !default;
 $sites-nav-background: 						#FFFFFF;
 $skin-with-icons: 						false !important;
 $all-sites-tab-active-background-color:				$body-background-color;
@@ -13,7 +13,7 @@ $all-sites-tab-active-background-color:				$body-background-color;
 /* Logo location */
 $logo: 								'../images/editorialfreelancers.jpg';
 $logo-height: 							50x;
-$logo-width: 							151px;
+$logo-width: 							128px;
 
 // Tab colors
 $tool-tab-text-color:			 			#000000 !default;
@@ -62,15 +62,21 @@ $button-secondary-icon-color:            			#CCCCCC !default;
 // Sites Navigation
 // Non Selected
 $sites-nav-menu-item-background:         			#FFFFFF !default;
-$sites-nav-menu-item-color:              			#E6E6E6 !default;
-$sites-nav-menu-item-icon-color:         			#E6E6E6 !default;
+$sites-nav-menu-item-color:              			#7A7B7A !default;
+$sites-nav-menu-item-icon-color:         			#7A7B7A !default;
+
+$sites-nav-menu-item-hover-background:         			#FFFFFF !default;
+$sites-nav-menu-item-hover-color:              			#7A7B7A !default;
+$sites-nav-menu-item-hover-icon-color:         			#7A7B7A !default;
 //Selected
 $sites-nav-menu-item-selected-background:			#BD231F !default;
 $sites-nav-menu-item-selected-color:				#FFFFFF !default;
-$sites-nav-menu-item-selected-hover-background: 		#FFFFFF !default;
-$sites-nav-menu-item-selected-hover-color:      		#BD231F !default;
-$sites-nav-menu-item-selected-hover-icon-color: 		#BD231F !default;
+$sites-nav-menu-item-selected-icon-color:			#FFFFFF !default;
 $sites-nav-menu-item-selected-border-color: 			#BD231F !default;
+
+$sites-nav-menu-item-selected-hover-background:			#BD231F !default;
+$sites-nav-menu-item-selected-hover-color:			#FFFFFF !default;
+$sites-nav-menu-item-selected-hovericon-color:			#FFFFFF !default;
 
 // TOOL MENU COLORS
 // non-selected

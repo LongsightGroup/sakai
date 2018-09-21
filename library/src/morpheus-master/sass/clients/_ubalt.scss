@@ -7,7 +7,6 @@ $background-color-secondary: 		 		#0181b2 !default;
 $text-color:				 		#000000 !default;
 $topNav-text-color:					#FFF !default;
 $sites-nav-background: 					#0181b2;
-$tool-border-color:                                     #0181b2 !default;
 
 /* Logo location */
 $logo: 							'../images/ubalt.png';
@@ -72,7 +71,7 @@ $tool-border-color:			 		#CCC !default;
 // non-selected hover
 $tool-menu-item-hover-text-color:               	#FFFFFF !default;
 $tool-menu-item-hover-icon-color:               	#FFFFFF !default;
-$tool-menu-item-hover-background-color:         	-webkit-linear-gradient(top, #005F86 0%, #007DB6 100%);
+$tool-menu-item-hover-background-color:         	#0181b2 !default;
 $tool-menu-item-hover-border-left:              	4px solid #0181b2 !default;
 // selected
 $tool-menu-item-selected-background-color:            	#0181b2 !default;

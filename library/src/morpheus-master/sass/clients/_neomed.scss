@@ -70,7 +70,7 @@ $tool-border-color:			 		#004478 !default;
 // non-selected hover
 $tool-menu-item-hover-text-color:               	#FFFFFF !default;
 $tool-menu-item-hover-icon-color:               	#FFFFFF !default;
-$tool-menu-item-hover-background-color:         	-webkit-linear-gradient(top, #004478 0%,#005ca3 100%);
+$tool-menu-item-hover-background-color:         	#004981 !default;
 $tool-menu-item-hover-border-left:              	4px solid #b0c7db !default;
 // selected
 $tool-menu-item-selected-text-color:            	#004478 !default;
@@ -113,6 +113,18 @@ ul.favoriteSiteList>li, #selectQuickLink>li {
 
 .Mrphs-sakai-resources a.nil.fa-folder::after {
     margin: 0.45em 0 0 -3.4em !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .event a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderTopLeft a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .bgActivity a {
+    color: #000 !important;
 }
 
 @media only screen and (max-width: 800px) {

@@ -57,7 +57,7 @@ $button-secondary-icon-color:            		#35434c !default;
 
 // Sites Navigation 
 // Non Selected
-$sites-nav-menu-item-background:         		#35434c !default;
+$sites-nav-menu-item-background:         		#526472 !default;
 $sites-nav-menu-item-color:              		#ffcc66 !default;
 $sites-nav-menu-item-icon-color:         		#ffcc66 !default;
 $sites-nav-menu-item-border-color:         		transparent !default;
@@ -71,7 +71,6 @@ $sites-nav-menu-item-selected-hover-icon-color: 	#ffcc66 !default;
 $sites-nav-menu-item-selected-border-color: 		transparent !default;
 
 // TOOL MENU COLORS
-// non-selected
 $tool-menu-item-background-color:			#526472 !default;
 $tool-menu-item-text-color:                             #ffcc66 !default;
 $tool-menu-item-icon-color:				#ffcc66 !default;
@@ -116,4 +115,8 @@ $info-background-color:   				#efefef;
 
 #toolMenu ul li, #subSites ul li, .floatingToolMenu ul li {
     border-bottom: 0px solid transparent !important;
+}
+
+aside.logo {
+    background-size: 407px 74px !important;
 }

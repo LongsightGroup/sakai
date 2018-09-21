@@ -11,6 +11,7 @@ $tool-border-color:			 		transparent !default;
 $tool-menu-background-color:		 		#f3f3f3 !default;
 $banner-height: 					89px;
 $all-sites-tab-active-background-color:			#FFF;
+$calendar-event-text-color:				#000 !important;
 
 /* Logo location */
 /* Logo location */
@@ -58,13 +59,15 @@ $button-secondary-icon-color:            		#af0000 !default;
 // Sites Navigation 
 // Non Selected
 $sites-nav-menu-item-background:         		#8091a4 !default;
-$sites-nav-menu-item-color:              		#FFFFFF !default;
+$sites-nav-menu-item-color:              		#FFFFFF !important;
 $sites-nav-menu-item-icon-color:         		#FFFFFF !default;
 $sites-nav-menu-item-border-color:         		#8091a4 !default;
+$sites-nav-menu-item-hover-background:         		#8091a4 !default;
+
 //Selected
 //Selected
-$sites-nav-menu-item-selected-background:		#FFF !default;
-$sites-nav-menu-item-selected-color:			#af0000 !default;
+$sites-nav-menu-item-selected-background:		#FFF !important;
+$sites-nav-menu-item-selected-color:			#af0000 !important;
 $sites-nav-menu-item-selected-hover-background: 	#FFF !default;
 $sites-nav-menu-item-selected-hover-color:      	#000 !default;
 $sites-nav-menu-item-selected-hover-icon-color: 	#000 !default;
@@ -100,6 +103,12 @@ $tool-sub-menu-hover-color:				#fff;
 
 // info message colors
 $info-background-color:   				#efefef;
+
+/* Swapped 'View As' view */
+$swapped-view-enabled: true !default;
+$swapped-view-primary:           #ff8080 !important;
+$swapped-view-text-color:        #414141 !default;
+$swapped-view-sites-nav-background: $swapped-view-primary !default;
 
 .Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
     color: #000 !important;
@@ -156,6 +165,9 @@ $info-background-color:   				#efefef;
     .Mrphs-topHeader {
         top:30px !important;
     }
+    .Mrphs-topHeader.moving {
+        top: -4.2em !important;
+    }
 }
 #iguide-float {
     position:fixed;
@@ -190,6 +202,30 @@ $info-background-color:   				#efefef;
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
         color: #2a94c0 !important;
     }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools {
+        background: #af0201 !important;
+    }
+    .Mrphs-skipNav__menu li a {
+        height: 48px !important;
+	line-height: 48px !important;
+    }
+    .Mrphs-siteHierarchy {
+        height: 48px !important;
+        line-height: 48px !important;
+    }
+    .Mrphs-skipNav__menu li {
+	min-height: 48px !important;
+    }
+    .Mrphs-mainHeader.is-fixed .Mrphs-topHeader {
+	padding-top: 0px !important;
+    }
+}
+
+@media only screen and (max-width: 415px) {
+    .Mrphs-siteHierarchy {
+        overflow: hidden;
+        max-width: 205px;
+    }
 }
 
 #selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
@@ -199,4 +235,8 @@ $info-background-color:   				#efefef;
 #favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
     background-color: $primary-color !important;
     color: #FFF !important;
+}
+
+.Mrphs-portalWrapper.swapped-view .Mrphs-siteHierarchy {
+    background: #000 !important;
 }

@@ -27,13 +27,14 @@ $sites-nav-menu-item-selected-hover-color: #4c4c4c;
 $sites-nav-menu-item-selected-hover-icon-color: #4c4c4c;
 $sites-nav-menu-item-selected-hover-border-color: #00205c;
 
+$tool-menu-item-selected-background-color: #FFF !important;
 $tool-menu-item-selected-text-color: #00205c;
 $tool-menu-item-selected-icon-color: #00205c;
 $tool-menu-item-selected-border-left: 4px solid #00205c;
 $tool-tab-active-highlight-color: #00205c;
 $tool-menu-background-color: #f3f3f3;
 $tool-menu-item-background-color: #f3f3f3;
-$tool-menu-item-hover-background-color: #dddddd;
+$tool-menu-item-hover-background-color: #dddddd !important;
 $tool-border-color: transparent;
 $tool-tab-hover-text-color: #333333;
 $tool-tab-hover-highlight-color: #716f6f;
@@ -50,7 +51,7 @@ nav#toolMenu ul li {
   border: 0;
 
   a[title='Site Info - For showing worksite information and site participants'] {
-    background-color: #ee7624;
+    background-color: #ee7624 !important;
     color: #fff;
   }
 
@@ -70,7 +71,7 @@ nav#toolMenu ul li {
 
     a[title='Site Info - For showing worksite information and site participants'],
     a[title='Site Info'] {
-      background-color: #ee7624;
+      background-color: #ee7624 !important;
       color: #fff;
 
       .Mrphs-toolsNav__menuitem--title {
@@ -90,6 +91,12 @@ div.Mrphs-portalWrapper .instruction {
 @media only screen and (max-width: 800px) {
   ul.Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
     color: #00205b;
+  }
+  span.Mrphs-hierarchy--siteName-label {
+    color: #FFF !important;
+  }
+  .Mrphs-siteHierarchy a {
+    color: #FFF !important;
   }
   div.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
     width: 100px;
@@ -150,10 +157,6 @@ div.colblue {
   background-color: #edf3f8 !important;
 }
 
-.ui-accordion .ui-accordion-header {
-    background-color: #5b8ab5 !important;
-}
-
 .editable-empty, .editable-empty:hover, .editable-empty:focus {
     color: #FFF !important;
 }
@@ -164,4 +167,17 @@ div.colblue {
 
   .Mrphs-mainHeader.is-fixed .Mrphs-headerLogo {
     position: inherit !important;
+}
+
+.Mrphs-container.Mrphs-sakai-delegatedaccess form table tr:nth-child(3) {
+    display: none;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
+    background-color: #f3f3f3 !important;
+}
+
+nav#toolMenu ul li a[title='Site Info - For showing worksite information and site participants']:hover {
+    background-color: #ee7624 !important;
+    color: #FFF !important;
 }

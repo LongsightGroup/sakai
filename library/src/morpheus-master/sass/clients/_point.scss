@@ -144,3 +144,11 @@ a.button {
 #favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
     background-color: #00407A !important;
 }
+
+.ui-datepicker .ui-datepicker-buttonpane button {
+    color: #000 !important;
+}
+
+#Mrphs-sakai-roster .roster-table .roster-member:nth-child(odd) {
+    background: #ededed !important;
+}

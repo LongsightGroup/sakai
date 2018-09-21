@@ -14,3 +14,16 @@ $sites-nav-menu-item-selected-color:                    #FFF !default;
 #mastLogin #loginForm label {
     color: #002147;
 }
+
+.Mrphs-sakai-schedule table.calendar .event {
+    background-color: #E9F6FF !important;
+}
+
+.Mrphs-siteStatus.is-unpublished {
+    background-color: #EBBC00 !important;
+    color: #FFFFFF !important;
+}
+
+.calDayWithActivity {
+    background-color: #FFFFC2 !important;
+}

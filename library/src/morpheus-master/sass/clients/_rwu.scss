@@ -71,19 +71,19 @@ $sites-nav-menu-item-selected-border-color: 		#00355f !default;
 
 // TOOL MENU COLORS
 // non-selected
-$tool-menu-item-background-color:			#d3d3d3 !default;
+$tool-menu-item-background-color:			#FAFAFA !default;
 $tool-menu-item-color:					#444 !default;
 $tool-menu-item-icon-color:				#444 !default;
 
 // non-selected hover
 $tool-menu-item-hover-text-color:               	#FFFFFF !default;
 $tool-menu-item-hover-icon-color:               	#FFFFFF !default;
-$tool-menu-item-hover-background-color:         	linear-gradient(to bottom, #7d7e7d 0%, #0e0e0e 100%);
+$tool-menu-item-hover-background-color:         	#00355f !default;
 $tool-menu-item-hover-border-left:              	4px solid #000 !default;
 // selected
 $tool-menu-item-selected-text-color:            	#00355f !default;
 $tool-menu-item-selected-icon-color:            	#00355f !default;
-$tool-menu-item-selected-border-left:           	4px solid #FFF !default;
+$tool-menu-item-selected-border-left:           	4px solid #00355f !default;
 // submenu
 $tool-sub-menu-hover-color:				#00355f !default;
 // selected hover

@@ -6,14 +6,14 @@
 				background: $swapped-view-primary;
 			}
 			.#{$namespace}siteHierarchy{
-				background: $background-color-secondary;
-				color: $background-color;
+				background: $swapped-view-primary;
+				color: $swapped-view-text-color;;
 				a {
 					color: $background-color;
 				}
 			}
-			.#{$namespace}mainHeader.is-maximized .siteNavWrap{
-				background: $swapped-view-sites-nav-background;
+			.#{$namespace}mainHeader.headerLogo{
+				background: $swapped-view-sites-nav-background !important;
 			}
 		}
 	}

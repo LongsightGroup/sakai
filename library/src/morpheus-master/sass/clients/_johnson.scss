@@ -65,7 +65,7 @@ $sites-nav-menu-item-background:         			#d7dadd !default;
 $sites-nav-menu-item-color:              			#0a2240 !default;
 $sites-nav-menu-item-icon-color:         			#0a2240 !default;
 //Selected
-$sites-nav-menu-item-selected-background:			#0a2240 !default;
+$sites-nav-menu-item-selected-background:			#0a2240 !important;
 $sites-nav-menu-item-selected-color:				#ffffff !default;
 $sites-nav-menu-item-selected-hover-background: 		#ffffff !default;
 $sites-nav-menu-item-selected-hover-color:      		#0a2240 !default;
@@ -84,10 +84,10 @@ $tool-menu-item-hover-icon-color:               		#ffffff !default;
 $tool-menu-item-hover-background-color:         		#e37022 !default;
 $tool-menu-item-hover-border-left:              		4px solid #ffffff !default;
 // selected
-$tool-menu-item-selected-text-color:            		#ffffff !default;
-$tool-menu-item-selected-icon-color:            		#ffffff !default;
-$tool-menu-item-selected-border-left:           		4px solid #ffffff !default;
-$tool-menu-item-selected-background-color:          		#0a2240 !default;
+$tool-menu-item-selected-text-color:            		#0a2240 !default;
+$tool-menu-item-selected-icon-color:            		#0a2240 !default;
+$tool-menu-item-selected-border-left:           		4px solid #0a2240 !default;
+$tool-menu-item-selected-background-color:          		#FFF !default;
 
 // submenu
 $tool-sub-menu-hover-color:					#ffffff !default;
