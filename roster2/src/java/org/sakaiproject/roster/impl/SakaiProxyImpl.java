@@ -40,6 +40,8 @@ import java.util.stream.Collectors;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
 
 import org.sakaiproject.api.privacy.PrivacyManager;
@@ -108,6 +110,9 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 	private ToolManager toolManager;
 	private UserDirectoryService userDirectoryService;
     private RosterMemberComparator memberComparator;
+
+    private static final String SAK_PROP_SHOW_PERMS_TO_MAINTAINERS = "roster.showPermsToMaintainers";
+    private static final boolean SAK_PROP_SHOW_PERMS_TO_MAINTAINERS_DEFAULT = true;
 	
 	public void init() {
 		
@@ -161,8 +166,9 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public boolean isSuperUser() {
-		return securityService.isSuperUser();
+	public boolean showPermsToMaintainers() {
+		boolean showToMaintainers = serverConfigurationService.getBoolean(SAK_PROP_SHOW_PERMS_TO_MAINTAINERS, SAK_PROP_SHOW_PERMS_TO_MAINTAINERS_DEFAULT);
+		return (showToMaintainers && isSiteMaintainer(getCurrentSiteId())) || securityService.isSuperUser();
 	}
 	
 	public Site getSite(String siteId) {
@@ -1145,7 +1151,7 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 	/**
 	 * {@inheritDoc}
 	 */
-    public Map<String, String> getSearchIndex(String siteId) {
+    public Map<String, String> getSearchIndex(String siteId, String userId, String groupId, String roleId, String enrollmentSetId, String enrollmentStatus) {
 
         try {
             // Try and load the sorted memberships from the cache
@@ -1156,14 +1162,12 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
             }
 
             Map<String, String> index
-                = (Map<String, String>) cache.get(siteId);
+                = (Map<String, String>) cache.get(siteId+groupId);
 
-            if (index == null) {
-                index = new HashMap<String, String>();
-                for (User user : getSiteUsers(siteId)) {
-                    index.put(user.getDisplayName(), user.getId());
-                }
-                cache.put(siteId, index);
+            if (MapUtils.isEmpty(index)) {
+                final List<RosterMember> membership = getMembership(userId, siteId, groupId, roleId, enrollmentSetId, enrollmentStatus);
+                index = membership.stream().collect(Collectors.toMap(RosterMember::getUserId, RosterMember::getDisplayName));
+                cache.put(siteId+groupId, index);
             }
 		
 		    return index;
@@ -1190,6 +1194,11 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
                     || SiteService.SECURE_UPDATE_GROUP_MEMBERSHIP.equals(eventName)) {
                 log.debug("Site membership or groups updated. Clearing caches ...");
                 String siteId = event.getContext();
+
+                if (siteId == null) {
+                    log.debug("siteId was null, skipping");
+                    return;
+                }
 
                 Cache enrollmentsCache = getCache(ENROLLMENTS_CACHE);
                 enrollmentsCache.remove(siteId);

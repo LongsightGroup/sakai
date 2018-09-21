@@ -49,7 +49,7 @@
     </h3>
 
     #if ($alertMessage)
-        <div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div>
+        <div class="alertMessage"><strong>$tlang.getString("gen.alert")</strong> $alertMessage</div>
     #end
 
     #set($submitTime=false)
@@ -117,11 +117,7 @@
                     <td class="highlight">
                         <strong>
                             #if ($!assignment.TypeOfGrade.ordinal() != 1)
-                                #if ($!override)
-                                    $!service.getGradeDisplay($override, $!assignment.TypeOfGrade, $!assignment.ScaleFactor)
-                                #else
-                                    $!service.getGradeDisplay($!submission.Grade, $!assignment.TypeOfGrade, $!assignment.ScaleFactor)
-                                #end
+                                $!grade
                             #else
                                 $tlang.getString("gen.nograd")
                             #end

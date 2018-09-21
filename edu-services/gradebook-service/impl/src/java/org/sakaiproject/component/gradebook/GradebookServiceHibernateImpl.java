@@ -2495,7 +2495,8 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		}
 
 	  	// avoid scientific notation on large scores by using a formatter
-	  	final DecimalFormat df = new DecimalFormat();
+	  	final NumberFormat numberFormat = NumberFormat.getInstance(new ResourceLoader().getLocale());
+	  	final DecimalFormat df = (DecimalFormat) numberFormat;
 	  	df.setGroupingUsed(false);
 
 	  	return df.format(assignmentScore);
@@ -2527,24 +2528,27 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 	@Override
 	public String getAssignmentScoreStringByNameOrId(final String gradebookUid, final String assignmentName, final String studentUid)
 			throws GradebookNotFoundException, AssessmentNotFoundException {
-		// TODO Auto-generated method stub
-		String assignment = null;
+		String score = null;
 		try {
-			assignment = getAssignmentScoreString(gradebookUid, assignmentName, studentUid);
+			score = getAssignmentScoreString(gradebookUid, assignmentName, studentUid);
 		}
 		catch (final AssessmentNotFoundException e) {
 			//Don't fail on this exception
 			log.debug("Assessment not found by name", e);
 		}
+		catch (GradebookSecurityException gse) {
+			log.warn("User {} does not have permission to retrieve score for assignment {}", studentUid, assignmentName, gse);
+			return null;
+		}
 
-		if (assignment == null) {
+		if (score == null) {
 			//Try to get the assignment by id
 			if (NumberUtils.isCreatable(assignmentName)) {
 				final Long assignmentId = NumberUtils.toLong(assignmentName, -1L);
-				return getAssignmentScoreString(gradebookUid, assignmentId, studentUid);
+				score = getAssignmentScoreString(gradebookUid, assignmentId, studentUid);
 			}
 		}
-		return null;
+		return score;
 	}
 
   	@Override

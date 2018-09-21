@@ -250,12 +250,15 @@ public interface SakaiProxy {
 	//public String getSakaiSkin();
 
 	/**
-	 * Returns whether or not the current user is a super user.
+	 * Returns whether or not the current user can access the 'Permissions' tab.
+	 * Takes into account sakai.property 'roster.showPermsToMaintainers' (default true).
+	 * If property is true and user is site maintainer, they can access the tab.
+	 * If property is false, only admins can access the tab.
 	 * 
-	 * @return <code>true</code> if the current user is a super user, else
-	 *         returns <code>false</code>.
+	 * @return <code>true</code> if property is true and user is site maintainer or if user is admin,
+	 * returns <code>false</code> if property is false and user is not site maintainer or user is not admin.
 	 */
-	public boolean isSuperUser();
+	public boolean showPermsToMaintainers();
 	
 	/**
 	 * Checks if the user has site.upd in the given site
@@ -265,7 +268,7 @@ public interface SakaiProxy {
 	/**
 	 * Attempts to retrieve the search index for the specified site.
 	 */
-    public Map<String, String> getSearchIndex(String siteId);
+    public Map<String, String> getSearchIndex(String siteId, String userId, String groupId, String roleId, String enrollmentSetId, String enrollmentStatus);
 
     public Map<String, SitePresenceTotal> getPresenceTotalsForSite(String siteId);
 

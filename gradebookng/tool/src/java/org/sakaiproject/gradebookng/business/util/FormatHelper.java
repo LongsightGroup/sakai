@@ -50,7 +50,12 @@ public class FormatHelper {
 	 * @return double to decimal places
 	 */
 	public static String formatDoubleToDecimal(final Double score) {
-		return formatDoubleToDecimal(score, 2);
+		if (score == null) {
+                        return "";
+		}
+		else {
+                        return formatDoubleToDecimal(score, 2);
+		}
 	}
 
 	/**
@@ -257,6 +262,16 @@ public class FormatHelper {
 		final String dateTimeFormatString = MessageHelper.getString("format.datetime");
 		final SimpleDateFormat df = new SimpleDateFormat(dateTimeFormatString);
 		return df.format(date);
+	}
+
+	/**
+	 * Strips out line breaks
+	 *
+	 * @param s String to abbreviate
+	 * @return string without line breaks
+	 */
+	public static String stripLineBreaks(final String s) {
+		return s.replaceAll("\\r\\n|\\r|\\n", "");
 	}
 
 	/**

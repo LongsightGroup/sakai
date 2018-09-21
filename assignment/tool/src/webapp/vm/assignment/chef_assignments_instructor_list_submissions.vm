@@ -59,7 +59,7 @@ function printView(url) {
 		</h1>
 	</div>
 
-	#if ($alertMessage)<div class="alertMessage">$tlang.getString("gen.alert") $alertMessage</div><div class="clear"></div>#end
+	#if ($alertMessage)<div class="alertMessage"><strong>$tlang.getString("gen.alert")</strong> $alertMessage</div><div class="clear"></div>#end
 	## reminder of submission download url
 	#if ($download_url_reminder) 
 		<div class="messageInformation">
@@ -703,7 +703,11 @@ function printView(url) {
 							#end
 							#if ($withGrade)
 								<td headers="grade">
-									$!service.getGradeDisplay($submission.Grade, $assignment.TypeOfGrade, $assignment.ScaleFactor)
+									#if ($assignment.IsGroup)
+										$!service.getGradeDisplay($submission.Grade, $assignment.TypeOfGrade, $assignment.ScaleFactor)
+									#else
+										$!service.getGradeForSubmitter($submission, $userSubmission.User.Id)
+									#end
 								</td>
 							#end	
 							#if ($allowReviewService && $assignment.ContentReview)
