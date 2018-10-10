@@ -41,3 +41,13 @@ $background-color-secondary: #003c69 !default;
     border-color: #9c9c9c !important;
     border-left-color: #5c5c5c !important;
 }
+
+/* Change to Forums drop down text color */
+
+.Mrphs-sakai-forums .topicBlocLone h1, .Mrphs-sakai-forums .topicBlocLone h2, .Mrphs-sakai-forums .topicBlocLone h3, .Mrphs-sakai-forums .topicBlocLone h4, .Mrphs-sakai-forums .topicBlocLone h5, .Mrphs-sakai-forums .topicBlocLone h6 {
+    color: #000000 !important;
+}
+
+.Mrphs-sakai-forums .topicBlocLone {
+    color: #000000 !important;
+}

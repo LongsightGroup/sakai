@@ -240,3 +240,10 @@ $swapped-view-sites-nav-background: $swapped-view-primary !default;
 .Mrphs-portalWrapper.swapped-view .Mrphs-siteHierarchy {
     background: #000 !important;
 }
+table#prefs_pvt_form\:pvtmsgs th {
+    min-width: 32px;
+}
+
+#mastLogin .has-avatar .Mrphs-userNav__submenuitem--username {
+    display: inherit !important;
+}

@@ -187,3 +187,20 @@ body #toolMenu li.has-lessons-sub-pages ul.lessons-sub-page-menu li.is-current a
 .ui-datepicker .ui-datepicker-buttonpane button {
      color: #4a2c24 !important;
 }
+
+
+.Mrphs-sakai-schedule table.calendar .event a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderTopLeft a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .bgActivity a {
+    color: #000 !important;
+}
+
+a.markAsReadIcon {
+    background: #4b2b23 url(../images/silk/email.png) 5px 5px no-repeat !important;
+}
