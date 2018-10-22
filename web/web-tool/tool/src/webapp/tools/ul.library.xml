@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<registration>
+
+       <tool
+                       id="ul.library"
+                       title="UL Library"
+                       description="University of Limerick Library Site">
+
+               <configuration name="source" value="http://www2.ul.ie/web/WWW/Services/Library" />
+               <configuration name="height" value="800px" />
+	       <configuration name="sakai:menuClass" value="fa-globe"/>
+               <configuration name="reset.button" value="false" type="final" />
+
+              <category name="course" />
+
+               <!-- Allow this to be set -->
+               <configuration name="functions.require" />
+
+               <!-- Allow multiple instances of this tool within one site -->
+               <configuration name="allowMultipleInstances" value="false" />
+
+       </tool>
+
+</registration>
