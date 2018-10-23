@@ -165,7 +165,7 @@
 <!--	Uncomment and configure to use the Kerberos Provider.
 
                  Make sure to remove any other UserDirectoryProviders as there can only be one user provider active at any time.
-
+-->
 	<bean id="org.sakaiproject.user.api.UserDirectoryProvider"
 			class="org.sakaiproject.component.kerberos.user.KerberosUserDirectoryProvider"
 			init-method="init"
@@ -174,7 +174,6 @@
 		<property name="requireLocalAccount"><value>true</value></property>
 		<property name="knownUserMsg"><value>Integrity check on decrypted field failed</value></property>
 	</bean>
--->
 
 <!-- Uncomment and configure to use the Federating UserDirectoryProvider.
 
