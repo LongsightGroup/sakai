@@ -22,7 +22,7 @@
 		<h3>$tlang.getString("se.search")</h3>
 		<p class="instruction">$tlang.getString("se.complete")</p>
 	
-		<form action="#toolForm("$action")" method="post">		
+                <form action="#toolForm("$action")" method="post" id="siteSearch">
 		<fieldset style="margin-top:0"><legend>
 		<h4>$tlang.getString("se.type")</h4>
         </legend>
@@ -32,7 +32,7 @@
 				#set($siteTypeCount=$siteTypeCount + 1)
 					#if ($type == $termSearchSiteType)
 						<input type="hidden" name="ClassSiteFromSystem" value="true" />
-						<div class="checkbox indnt1">
+                                                <div class="checkbox indnt1 $type">
 							<input  type="radio" name="siteType" class="siteTypeTerm" id="siteType$siteTypeCount" value="$type" />
 							<label for="siteType$siteTypeCount"  style="text-transform: capitalize">$type</label>
 						</div>
@@ -48,7 +48,7 @@
 							</select>
 						</div>	
 					#else
-						<div class="checkbox indnt1">
+                                                <div class="checkbox indnt1 $type">
 							<input type="radio" name="siteType" id="siteType$siteTypeCount" value="$type" />
 							<label for="siteType$siteTypeCount"  style="text-transform: capitalize">$type</label>
 						</div>
@@ -56,7 +56,7 @@
 				#end
 			#end
 		
-			<div class="checkbox indnt1">
+                        <div class="checkbox indnt1 $type">
 				<input type="radio" name="siteType" id="siteTypeAny" value="Any" checked="checked" />
 				<label for="siteTypeAny">$tlang.getString("se.any")</label>
 			</div>

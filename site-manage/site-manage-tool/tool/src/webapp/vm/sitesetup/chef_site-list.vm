@@ -47,9 +47,11 @@
 					<div class="col-sm-5">
 						<select id="view" name="view" size="1">
 							#foreach($view in $viewKeys)
+                       #if ($views.get($view) != "portfolio")
 								<option value ="$view"
 								#if($view == $viewSelected) selected="selected" #end
 								> $views.get($view) </option>
+                       #end
 							#end
 						</select>
 					</div>

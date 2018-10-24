@@ -1,0 +1,2 @@
+LS-35 Various text changes and customizations to site creation, Sam hand-edited for 2.9.x
+ * BIQ-970839 more text edits

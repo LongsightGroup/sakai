@@ -1749,6 +1749,18 @@ public class SiteAction extends PagedResourceActionII {
 			
 			// template site
 			setTemplateListForContext(context, state);
+
+            // Longsight get the user role
+            try {
+                User user = UserDirectoryService.getCurrentUser();
+                if (user != null) {
+                    context.put("userType", user.getType());
+                }
+            } catch (Exception e) {
+                if (Log.isWarnEnabled()) {
+                    M_log.warn("buildContextForTemplate chef_site-type.vm " + e);
+                }
+            }
 			
 			return (String) getContext(data).get("template") + TEMPLATE[1];
 	case 4:
@@ -12965,7 +12977,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 
 		public boolean published = false;
 
-		public boolean include = true; // include the site in the Sites index;
+                public boolean include = false; // include the site in the Sites index;
 
 		// default is true.
 
