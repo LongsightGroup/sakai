@@ -1,0 +1,2 @@
+Custom tool descriptions for the News tool
+Rename Lessons to Lesson Builder
