@@ -158,7 +158,7 @@
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <value type="java.lang.String">https://shib.bu.edu/idp/shibboleth</value>
+                                <value type="java.lang.String">https://shib-test.bu.edu/idp/shibboleth</value>
                             </constructor-arg>
                             <constructor-arg>
                                 <value type="int">60000</value>
@@ -177,7 +177,7 @@
             </list>
         </constructor-arg>
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="https://shib.bu.edu/idp/shibboleth"/>
+        <property name="defaultIDP" value="https://shib-test.bu.edu/idp/shibboleth"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
