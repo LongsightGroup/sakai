@@ -162,6 +162,8 @@ public class SearchBeanImpl implements SearchBean
 
 	private int nTerms = 100;
 
+	private int nSites = 1000;
+
 	private List<SearchTerm> finalTermList;
 
 	private int topTerms = 10;
@@ -445,7 +447,9 @@ public class SearchBeanImpl implements SearchBean
 			}
 		}
 		if (scope != null && scope.equals(Scope.MINE)) {
-			l.addAll(Arrays.asList(getAllUsersSites()));
+			List<String> allUserSites = Arrays.asList(getAllUsersSites());
+			List<String> trimmedUserSites = allUserSites.subList(0, Math.min(nSites, allUserSites.size()));
+			l.addAll(trimmedUserSites);
 		}
 		
 		 return l;
