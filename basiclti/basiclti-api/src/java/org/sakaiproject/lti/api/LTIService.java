@@ -155,6 +155,13 @@ public interface LTIService {
 	 * @return
 	 */
 	public Object insertToolSiteLink(String id, String title, String siteId);
+
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public Map<String, Object> getTool(Long key);
 	
 	/**
 	 * 
