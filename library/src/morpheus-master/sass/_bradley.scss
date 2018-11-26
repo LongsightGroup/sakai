@@ -13,19 +13,19 @@ $tool-menu-color:      			 #444444;
 $tool-tab-background-color:    			 #ededed;
 $tool-border-color:    			 #cccccc;
 $tool-tab-active-background-color:     			 $background-color !default;
-$tool-tab-active-border-color: 	 $background-color !important;
-$tool-menu-hover-color:  #FFFFFF !important;
-$tool-menu-hover-background-color: #a40000 !important;
-$tool-menu-current-background-color: #FFFFFF !important;
-$tool-menu-current-color: #a40000 !important;
-$tool-menu-current-border-color: $primary-color !important;
+$tool-tab-active-border-color: 	 $background-color;
+$tool-menu-hover-color:  #FFFFFF;
+$tool-menu-hover-background-color: #a40000;
+$tool-menu-current-background-color: #FFFFFF;
+$tool-menu-current-color: #a40000;
+$tool-menu-current-border-color: $primary-color ;
 $tool-sub-menu-border-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-background-color: lighten( $text-color, 5% ) !default;
 $tool-sub-menu-hover-background-color: $primary-color !default;
 $tool-sub-menu-hover-color: $tool-menu-color !default;
 $tool-sub-menu-current-color: $primary-color !default;
 $tool-sub-menu-current-background-color: $background-color !default;
-$tool-sub-menu-current-hover-color: $tool-menu-color !important;
+$tool-sub-menu-current-hover-color: $tool-menu-color ;
 $tool-sub-menu-current-hover-background-color: $background-color !default;
 
 
@@ -48,13 +48,13 @@ $tool-tab-active-text-color:                              #a40000 !default;
 $tool-tab-active-background-color:                        #FFFFFF !default;
 $tool-tab-active-highlight-color:                         #a40000 !default;
 
-$main-content-background: $background-color !important;
-$top-header-background: #a40000 !important;
+$main-content-background: $background-color ;
+$top-header-background: #a40000 ;
 $sites-nav-background: $top-header-background;
 
-$breadcrumbs-color:    			 #a40000 !important;
-$breadcrumbs-tool-color:       		 #a40000 !important;
-$breadcrumbs-hover-color:      		 #a40000 !important;
+$breadcrumbs-color:    			 #a40000 ;
+$breadcrumbs-tool-color:       		 #a40000 ;
+$breadcrumbs-hover-color:      		 #a40000 ;
 
 /* Link colors */
 $link-color: #2a94c0;
@@ -92,14 +92,14 @@ $warn-color:                darken($warn-background-color, 35%) !default;
 $error-background-color:    #f2dede !default;
 $error-color:               darken($error-background-color, 30%) !default;
 
-$sites-nav-menu-item-background:            #FFFFFF !important;
+$sites-nav-menu-item-background:            #FFFFFF ;
 $sites-nav-menu-item-color:                 #042644;
 $sites-nav-menu-item-color-hover:           #a40000;
-$sites-nav-menu-item-border-top:            1px solid #E5E5E5 !important; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-right:          1px solid #E5E5E5 !important;
+$sites-nav-menu-item-border-top:            1px solid #E5E5E5 ; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          1px solid #E5E5E5 ;
 $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
-$sites-nav-menu-item-border-left:           1px solid #E5E5E5 !important;
-$sites-nav-menu-item-selected-background:   #a40000 !important;
+$sites-nav-menu-item-border-left:           1px solid #E5E5E5 ;
+$sites-nav-menu-item-selected-background:   #a40000 ;
 $sites-nav-menu-item-selected-color:        #FFFFFF;
 $sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
 $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
@@ -107,8 +107,8 @@ $sites-nav-menu-item-selected-border-right: none !default;
 $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
 $sites-nav-menu-item-selected-border-left:  none !default;
 $sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
-$sites-nav-submenu-item-background:         $sites-nav-menu-item-background !important;
-$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background !important;
+$sites-nav-submenu-item-background:         $sites-nav-menu-item-background ;
+$sites-nav-submenu-item-background-hover:   $sites-nav-menu-item-background ;
 $sites-nav-submenu-item-color:              $sites-nav-menu-item-color;
 $sites-nav-submenu-item-color-hover:        $sites-nav-submenu-item-color !default;
 $sites-nav-submenu-item-border:             none !default;
@@ -129,37 +129,3 @@ $logo-width: 156px;
 $banner-height: 63px;
 
 $topNav-text-color:                         #FFFFFF;
-
-.Mrphs-mainHeader .Mrphs-headerLogo {
-   border-bottom: 1px solid #fff;
-}
-
-.Mrphs-topHeader a:hover {
-   color: #000 !important;
-}
-
-#Mrphs-xlogin .logo {
-    background: #a40000 url("images/bradley.svg") no-repeat center center !important;
-}
-
-@media only screen and (max-width: 800px) {
-    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-        color: #FFF !important;
-    }
-}
-
-.genTitle {
-    visibility: hidden !important;
-}
-
-.Mrphs-sakai-lessonbuildertool .navIntraTool {
-    padding: 16px 0 0 0 !important;
-}
-
-.Mrphs-sakai-resources .inactive button span:hover {
-    color: #000 !important;
-}
-
-  .Mrphs-mainHeader.is-fixed .Mrphs-headerLogo {
-    position: inherit !important;
-}
