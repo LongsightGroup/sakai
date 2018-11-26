@@ -277,7 +277,7 @@
 			<properties>
 				<sakai.skin.source>morpheus-master</sakai.skin.source>
 				<sakai.skin.target>bradley</sakai.skin.target>
-				<sakai.skin.customization.file>src/${sakai.skin.source}/sass/bradley.scss</sakai.skin.customization.file>
+				<sakai.skin.customization.file>src/${sakai.skin.source}/sass/_bradley.scss</sakai.skin.customization.file>
 				<sakai.skin.outputSyle>compressed</sakai.skin.outputSyle>
 			</properties>
 			<build>
