@@ -7,7 +7,7 @@
 			title="Additional Academic Course Policies"
 			description="Additional Academic Course Policies">
 
-		<configuration name="source" value="https://www.southalabama.edu/departments/academicaffairs/resources/policies/sylsupplementadtlacadcrspolicies080516.pdf" />
+		<configuration name="source" value="https://www.southalabama.edu/departments/academicaffairs/resources/policies/additionalacademiccoursepolicies.pdf" />
 		<configuration name="height" value="800px" />
 
 		<configuration name="reset.button" value="false" type="final" />
