@@ -1,0 +1,118 @@
+$skin-name : "newbrunswick" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		  	#153978 !default;
+$body-background-color: 		 			#CCCCCC !default;
+$background-color-secondary: 		 			#FFF !default;
+$text-color:				 		    	#000000 !default;
+$topNav-text-color:					    	#4279bd !default;
+$sites-nav-background: 						#4279bd;
+$skin-with-icons: 						false !important;
+$all-sites-tab-active-background-color:				$body-background-color;
+$sites-nav-submenu-item-background:				#FAFAFA;
+$banner-height:							60px;
+
+/* Logo location */
+$logo: 								'../images/newbrunswick.png';
+$logo-height: 							54px;
+$logo-width: 							237px;
+
+// Tab colors
+$tool-tab-text-color:			 			#000000 !default;
+$tool-tab-background-color:              			#FFFFFF !default;
+$tool-tab-active-text-color:             			#000000 !default;
+$tool-tab-active-highlight-color:        			$primary-color !default;
+$tool-tab-active-background-color:				$body-background-color !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 			#000 !default;
+$breadcrumbs-tool-color:		 			#000 !default;
+$breadcrumbs-hover-color:		 			#000 !default;
+
+// Links
+$link-color: 				 			#000000 !default;
+$link-active-color: 			 			#000000 !default;
+$link-hover-color: 			 			#000000 !default;
+
+// Button colors
+$button-text-color:	 		 			#000000 !default;
+$button-border-color: 			 			#3C76B6 !default;
+$button-background-color: 		 			#ababab !default;
+$button-background-secondary-color: 	 			#3C76B6 !default;
+
+$button-color-text-color: 		 			#BEB9B9 !default;
+$button-color-border-color: 		 			#FFFFFF !default;
+$button-color-background-color: 	 			#2a94c0 !default;
+$button-color-background-secondary-color:			#3C76B6 !default;
+// Primary Button Color
+$button-primary-background-color:        			#2a94c0 !default;
+$button-primary-text-color: 		 			#BEB9B9 !default;
+$button-primary-hover-text-color:                   		$button-color-text-color;
+$button-primary-hover-background-color:             		$button-color-background-color !default;
+$button-primary-hover-border-color:                 		$primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                                   $button-primary-text-color;
+$button-secondary-text-color:                                   $button-primary-text-color;
+$button-secondary-background-color:                             $button-primary-background-color;
+
+// Link , Edit, Help Buttons
+$button-secondary-background-color:            			#FFFFFF !default;
+$button-secondary-text-color:            			#000000 !default;
+$button-secondary-icon-color:            			#000000 !default;
+
+
+// Sites Navigation
+// Non Selected
+$sites-nav-menu-item-background:         			#153978 !default;
+$sites-nav-menu-item-color:              			#E6E6E6 !default;
+$sites-nav-menu-item-icon-color:         			#E6E6E6 !default;
+
+$sites-nav-menu-item-hover-background:         			#153978 !default;
+$sites-nav-menu-item-hover-color:              			#E6E6E6 !default;
+$sites-nav-menu-item-hover-icon-color:         			#E6E6E6 !default;
+//Selected
+$sites-nav-menu-item-selected-background:			#4279bd !default;
+$sites-nav-menu-item-selected-color:				#FFFFFF !default;
+$sites-nav-menu-item-selected-icon-color:			#FFFFFF !default;
+$sites-nav-menu-item-selected-border-color: 			#FFF !default;
+
+$sites-nav-menu-item-selected-hover-background:			#4279bd !default;
+$sites-nav-menu-item-selected-hover-color:			#FFFFFF !default;
+$sites-nav-menu-item-selected-hover-icon-color:			#FFFFFF !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:                          	#FAFAFA;
+$tool-menu-background-color:		 			$tool-menu-item-background-color;
+$tool-menu-color: 			 			#000000 !default;
+$tool-border-color:			 			#FFFFFF !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               		#CCCCCC !default;
+$tool-menu-item-hover-icon-color:               		#CCCCCC !default;
+$tool-menu-item-hover-background-color:         		#153978 !default;
+$tool-menu-item-hover-border-left:              		4px solid #CCCCCC !default;
+// selected
+$tool-menu-item-selected-text-color:            		#153978 !default;
+$tool-menu-item-selected-icon-color:            		#153978 !default;
+$tool-menu-item-selected-border-left:           		4px solid #153978 !default;
+$tool-menu-item-selected-background-color:          		#FFF !default;
+
+// submenu
+$tool-sub-menu-hover-color:					#CCCCCC !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      		#CCC !default;
+$tool-menu-item-selected-hover-icon-color:      		#CCC !default;
+$tool-menu-item-selected-hover-background-color:		#153978 !default;
+$tool-menu-item-selected-hover-border-left:         		4px solid #CCC !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:  		#FFFFFF !default;
+$tool-menu-collapse-active-text-color:             		#000000 !default;
+$tool-sub-menu-hover-color:					#000000;
+
+// info message colors
+$info-background-color:   					$body-background-color;
+$info-color:                					$primary-color  !default;
+
+$error-background-color:    					#F2DEDE !default;
+$ok-color:                  					#DFF0D8 !default;
+$warn-background-color:     					#FCF8E3 !default;
