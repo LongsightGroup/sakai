@@ -1,0 +1,2 @@
+Custom tool name for Melete. 
+  * svn merge -c104546 https://source.sakaiproject.org/svn/msub/longsight.com/custom_builds/60/config/config-2.8.x_custom
