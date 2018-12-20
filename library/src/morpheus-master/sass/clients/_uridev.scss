@@ -27,3 +27,7 @@ $sites-nav-menu-item-selected-color:                    #FFF !default;
 .calDayWithActivity {
     background-color: #FFFFC2 !important;
 }
+
+.dropzone .dz-preview .dz-progress {
+    visibility: hidden;
+}

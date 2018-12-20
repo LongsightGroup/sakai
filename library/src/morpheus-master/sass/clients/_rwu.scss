@@ -59,7 +59,7 @@ $button-secondary-icon-color:            		#000 !default;
 $sites-nav-menu-item-background:         		#00355f !default;
 $sites-nav-menu-item-color:              		#FFFFFF !default;
 $sites-nav-menu-item-icon-color:         		#FFFFFF !default;
-$sites-nav-menu-item-border-color:         		#00355f !default;
+$sites-nav-menu-item-border-color:         		#FFF !default;
 //Selected
 //Selected
 $sites-nav-menu-item-selected-background:		#FFFFFF !default;
@@ -125,4 +125,8 @@ $info-background-color:   				#efefef;
     .Mrphs-siteHierarchy a {
         color: #FFF !important;
     }
+}
+
+.nav.nav-tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .nav.nav-tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .nav.nav-tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a, .sakai_tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .sakai_tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .sakai_tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a {
+    color: #FFF !important;
 }

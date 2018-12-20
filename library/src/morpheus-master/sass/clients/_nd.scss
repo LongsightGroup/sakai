@@ -405,3 +405,10 @@ span.Mrphs-login-Message:hover {
     color: #C99700;
 }
 
+.Mrphs-container.Mrphs-sakai-delegatedaccess form table tr:nth-child(3) {
+    display: none;
+}
+
+#customExportModal > div > div > div.modal-body > div:nth-child(3) > div:nth-child(1) > div:nth-child(2) > label {
+    display: none;
+}

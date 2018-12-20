@@ -64,13 +64,19 @@ $button-secondary-icon-color:            			#FFFFFF !default;
 $sites-nav-menu-item-background:         			#FFFFFF !default;
 $sites-nav-menu-item-color:              			#000000 !default;
 $sites-nav-menu-item-icon-color:         			#000000 !default;
+
+$sites-nav-menu-item-hover-background:         			#FFFFFF !default;
+$sites-nav-menu-item-hover-color:              			#000000 !default;
+$sites-nav-menu-item-hover-icon-color:         			#000000 !default;
 //Selected
 $sites-nav-menu-item-selected-background:			#E1E1E1 !default;
 $sites-nav-menu-item-selected-color:				#000000 !default;
-$sites-nav-menu-item-selected-hover-background: 		#E1E1E1 !default;
-$sites-nav-menu-item-selected-hover-color:      		#000 !default;
-$sites-nav-menu-item-selected-hover-icon-color: 		#000 !default;
-$sites-nav-menu-item-selected-border-color: 		#E1E1E1 !default;
+$sites-nav-menu-item-selected-icon-color:			#000000 !default;
+$sites-nav-menu-item-selected-border-color: 			#E1E1E1 !default;
+
+$sites-nav-menu-item-selected-hover-background:			#E1E1E1 !default;
+$sites-nav-menu-item-selected-hover-color:			#000000 !default;
+$sites-nav-menu-item-selected-hovericon-color:			#000000 !default;
 
 // TOOL MENU COLORS
 // non-selected
@@ -84,17 +90,17 @@ $tool-menu-item-hover-icon-color:               		#FFFFFF !default;
 $tool-menu-item-hover-background-color:         		#003c78 !default;
 $tool-menu-item-hover-border-left:              		4px solid #FFFFFF !default;
 // selected
-$tool-menu-item-selected-text-color:            		#003c78 !default;
-$tool-menu-item-selected-icon-color:            		#003c78 !default;
-$tool-menu-item-selected-border-left:           		4px solid #003c78 !default;
-$tool-menu-item-selected-background-color:          		#FFF !default;
+$tool-menu-item-selected-text-color:            		#FFFFFF !default;
+$tool-menu-item-selected-icon-color:            		#FFFFFF !default;
+$tool-menu-item-selected-border-left:           		4px solid #FFFFFF !default;
+$tool-menu-item-selected-background-color:          		#003c78 !default;
 
 // submenu
 $tool-sub-menu-hover-color:					#FFFFFF !default;
 // selected hover
-$tool-menu-item-selected-hover-text-color:      		#FFF !default;
-$tool-menu-item-selected-hover-icon-color:      		#FFF !default;
-$tool-menu-item-selected-hover-background-color:		#003c78 !default;
+$tool-menu-item-selected-hover-text-color:      		#003c78 !default;
+$tool-menu-item-selected-hover-icon-color:      		#003c78 !default;
+$tool-menu-item-selected-hover-background-color:		#FFFFFF !default;
 $tool-menu-item-selected-hover-border-left:         		4px solid #003c78 !default;
 // collapsed menu
 $tool-menu-collapse-active-hover-background-color:  		#576729 !default;
@@ -157,8 +163,4 @@ $warn-background-color:     					#FCF8E3 !default;
 
 #Mrphs-sakai-roster .roster-table .roster-member:nth-child(odd) {
     background: #ececec !important;
-}
-
-.userNav__subnav li a, #mastLogin #loginLinks ul li a {
-    color: #003c78 !important;
 }
