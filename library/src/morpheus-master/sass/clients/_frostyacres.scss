@@ -9,6 +9,7 @@ $topNav-text-color:					    	#073642 !default;
 $sites-nav-background: 						#C62A1F;
 $skin-with-icons: 						false !important;
 $all-sites-tab-active-background-color:				$body-background-color;
+$sites-nav-submenu-item-background:				#FAFAFA;
 
 /* Logo location */
 $logo: 								'../images/frostyacres.jpg';
@@ -16,7 +17,7 @@ $logo-height: 							50px;
 $logo-width: 							159px;
 
 // Tab colors
-$tool-tab-text-color:			 			#FDF6E3 !default;
+$tool-tab-text-color:			 			#000 !default;
 $tool-tab-background-color:              			#EEE8D5 !default;
 $tool-tab-active-text-color:             			#268BD2 !default;
 $tool-tab-active-highlight-color:        			$primary-color !default;
@@ -114,3 +115,53 @@ $info-color:                					$primary-color  !default;
 $error-background-color:    					#F2DEDE !default;
 $ok-color:                  					#DFF0D8 !default;
 $warn-background-color:     					#FCF8E3 !default;
+
+.img_site_toolmenu {
+    display: none !important;
+}
+
+.select {
+    background-color: #FFFFFF !important;
+    color: #C62A1F !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+#mastLogin ul {
+    margin-bottom: 5px !important;
+}
+
+.Mrphs-topHeader .Mrphs-loginNav #roleSwitch {
+    margin-right: 0em !important;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}
+
+#selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
+    background: $tool-tab-active-background-color !important;
+}
+
+.userNav__subnav .Mrphs-userData, #mastLogin #loginLinks ul .Mrphs-userData {
+    background-color: $tool-tab-active-background-color !important;
+}
+
+#mastLogin #loginLinks ul {
+    background-color: $tool-menu-item-background-color !important;
+}
+
+.navIntraTool li span.current a {
+    background-color: $tool-tab-active-background-color !important;
+    color:  $tool-tab-active-text-color !important;
+}
+
+.Mrphs-multipleTools .Mrphs-toolTitleNav .Mrphs-toolTitleNav__title {
+    color: $tool-tab-text-color !important;
+}
+
+#Mrphs-sakai-roster .roster-table .roster-member:nth-child(odd) {
+    background: #ececec !important;
+}
