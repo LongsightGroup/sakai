@@ -466,8 +466,8 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 							// create category
 							Long categoryId = null;
 							try {
-								categoryId = createCategory(gradebook.getId(), c.getName(), a.getWeight(), 0, 0, 0,
-										a.isCategoryExtraCredit());
+								categoryId = createCategory(gradebook.getId(), c.getName(), c.getWeight(), c.getDropLowest(),
+										c.getDropHighest(), c.getKeepHighest(), c.isExtraCredit(), c.getCategoryOrder());
 							} catch (final ConflictingCategoryNameException e) {
 								// category already exists. Could be from a merge.
 								log.info("Category: {} already exists in target site. Skipping creation.", c.getName());
@@ -487,10 +487,8 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 						// create the assignment for the current category
 						try {
 							Long newId = createAssignmentForCategory(gradebook.getId(), categoriesCreated.get(c.getName()), a.getName(), a.getPoints(),
-									a.getDueDate(), true, false, a.isExtraCredit());
-							if(rubricsService.getRubricAssociation(RubricsConstants.RBCS_TOOL_GRADEBOOKNG, a.getId().toString(), fromContext) != null){
-								transversalMap.put("gb/"+a.getId(),"gb/"+newId);
-							}
+									a.getDueDate(), !a.isCounted(), a.isReleased(), a.isExtraCredit(), a.getCategorizedSortOrder());
+							transversalMap.put("gb/"+a.getId(),"gb/"+newId);
 						} catch (final ConflictingAssignmentNameException e) {
 							// assignment already exists. Could be from a merge.
 							log.info("GradebookAssignment: {} already exists in target site. Skipping creation.", a.getName());
@@ -509,7 +507,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			categories.forEach(c -> {
 				try {
 					createCategory(gradebook.getId(), c.getName(), c.getWeight(), c.getDropLowest(), c.getDropHighest(), c.getKeepHighest(),
-							c.isExtraCredit());
+							c.isExtraCredit(), c.getCategoryOrder());
 				} catch (final ConflictingCategoryNameException e) {
 					// category already exists. Could be from a merge.
 					log.info("Category: {} already exists in target site. Skipping creation.", c.getName());
@@ -521,10 +519,8 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		assignments.removeIf(a -> assignmentsCreated.contains(a.getName()));
 		assignments.forEach(a -> {
 			try {
-				Long newId = createAssignment(gradebook.getId(), a.getName(), a.getPoints(), a.getDueDate(), true, false, a.isExtraCredit());
-				if(rubricsService.getRubricAssociation(RubricsConstants.RBCS_TOOL_GRADEBOOKNG, a.getId().toString(), fromContext) != null){
-					transversalMap.put("gb/"+a.getId(),"gb/"+newId);
-				}
+				Long newId = createAssignment(gradebook.getId(), a.getName(), a.getPoints(), a.getDueDate(), !a.isCounted(), a.isReleased(), a.isExtraCredit(), a.getSortOrder());
+				transversalMap.put("gb/"+a.getId(),"gb/"+newId);
 			} catch (final ConflictingAssignmentNameException e) {
 				// assignment already exists. Could be from a merge.
 				log.info("GradebookAssignment: {} already exists in target site. Skipping creation.", a.getName());
@@ -605,11 +601,11 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		if (assignmentDefinition.getCategoryId() != null) {
 			return createAssignmentForCategory(gradebook.getId(), assignmentDefinition.getCategoryId(), assignmentDefinition.getName(),
 					points, assignmentDefinition.getDueDate(), !assignmentDefinition.isCounted(), assignmentDefinition.isReleased(),
-					assignmentDefinition.isExtraCredit());
+					assignmentDefinition.isExtraCredit(), assignmentDefinition.getCategorizedSortOrder());
 		}
 
 		return createAssignment(gradebook.getId(), assignmentDefinition.getName(), points, assignmentDefinition.getDueDate(),
-				!assignmentDefinition.isCounted(), assignmentDefinition.isReleased(), assignmentDefinition.isExtraCredit());
+				!assignmentDefinition.isCounted(), assignmentDefinition.isReleased(), assignmentDefinition.isExtraCredit(), assignmentDefinition.getSortOrder());
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -2954,7 +2950,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 	@Override
 	public Optional<CategoryScoreData> calculateCategoryScore(final Object gradebook, final String studentUuid,
 			final CategoryDefinition category, final List<org.sakaiproject.service.gradebook.shared.Assignment> categoryAssignments,
-			final Map<Long, String> gradeMap) {
+			final Map<Long, String> gradeMap, final boolean includeNonReleasedItems) {
 
 		final Gradebook gb = (Gradebook) gradebook;
 
@@ -3008,11 +3004,11 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			}
 		}
 
-		return calculateCategoryScore(studentUuid, category.getId(), gradeRecords);
+		return calculateCategoryScore(studentUuid, category.getId(), gradeRecords, includeNonReleasedItems);
 	}
 
 	@Override
-	public Optional<CategoryScoreData> calculateCategoryScore(final Long gradebookId, final String studentUuid, final Long categoryId) {
+	public Optional<CategoryScoreData> calculateCategoryScore(final Long gradebookId, final String studentUuid, final Long categoryId, final boolean includeNonReleasedItems) {
 
 		// get all grade records for the student
 		@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -3027,7 +3023,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		// apply the settings
 		final List<AssignmentGradeRecord> gradeRecords = gradeRecMap.get(studentUuid);
 
-		return calculateCategoryScore(studentUuid, categoryId, gradeRecords);
+		return calculateCategoryScore(studentUuid, categoryId, gradeRecords, includeNonReleasedItems);
 	}
 
 	/**
@@ -3039,7 +3035,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 	 * @return
 	 */
 	private Optional<CategoryScoreData> calculateCategoryScore(final String studentUuid, final Long categoryId,
-			final List<AssignmentGradeRecord> gradeRecords) {
+			final List<AssignmentGradeRecord> gradeRecords, final boolean includeNonReleasedItems) {
 
 		// validate
 		if (gradeRecords == null) {
@@ -3075,7 +3071,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		// Rule 2. the assignment must have points to be assigned
 		// Rule 3. there is a non blank grade for the student
 		// Rule 4. the assignment is included in course grade calculations
-		// Rule 5. the assignment is released to the student (safety check against condition 3)
+		// Rule 5. the assignment is released to the student (instructor gets to see category grade regardless of release status; student does not)
 		// Rule 6. the grade is not dropped from the calc
 		// Rule 7. extra credit items have their grade value counted only. Their total points possible does not apply to the calculations
 		log.debug("categoryId: {}", categoryId);
@@ -3094,7 +3090,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			final boolean excluded = BooleanUtils.toBoolean(gradeRecord.isExcludedFromGrade());
 			// remove if the assignment/graderecord doesn't meet the criteria for the calculation (rule 2-6)
 			if (excluded || assignment.getPointsPossible() == null || gradeRecord.getPointsEarned() == null || !assignment.isCounted()
-					|| !assignment.isReleased() || gradeRecord.getDroppedFromGrade()) {
+					|| (!assignment.isReleased() && !includeNonReleasedItems) || gradeRecord.getDroppedFromGrade()) {
 				return true;
 			}
 
@@ -3455,7 +3451,6 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 
 			courseGradeRecord = new CourseGradeRecord(courseGrade, studentUuid);
 			courseGradeRecord.setGraderId(getUserUid());
-			courseGradeRecord.setDateRecorded(new Date());
 
 		} else {
 			// if passed in grade override is same as existing grade override, nothing to do
@@ -3466,6 +3461,8 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 
 		// set the grade override
 		courseGradeRecord.setEnteredGrade(grade);
+		// record the last grade override date
+		courseGradeRecord.setDateRecorded(new Date());
 
 		// create a grading event
 		final GradingEvent gradingEvent = new GradingEvent();

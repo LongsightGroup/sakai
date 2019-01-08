@@ -1,11 +1,9 @@
-<link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html"/>
+<link rel="import" href="/library/webjars/iron-a11y-keys/iron-a11y-keys.html"/>
 <link rel="import" href="sakai-rubric-criterion.html">
 
 <dom-module id="sakai-rubric">
   <template>
-
-    <style include="sakai-rubrics-styles"></style>
-    <style include="polymer-bootstrap"></style>
+    <style include="granite-bootstrap"></style>
 
     <div class="rubric-title" on-tap="toggleRubric">
       <iron-a11y-keys id="a11y" target="[[getNode('.rubric-name')]]" keys="space" on-keys-pressed="toggleRubric"></iron-a11y-keys>
@@ -23,9 +21,9 @@
         </template>
       </div>
 
-      <div><site-title site-id="[[rubric.metadata.ownerId]]"></site-title></div>
-      <div><creator-name creator-id="[[rubric.metadata.creatorId]]"></creator-name></div>
-      <div><modified-date modified="[[rubric.metadata.modified]]"></modified-date></div>
+      <div class="hidden-xs"><site-title site-id="[[rubric.metadata.ownerId]]"></site-title></div>
+      <div class="hidden-xs"><creator-name creator-id="[[rubric.metadata.creatorId]]"></creator-name></div>
+      <div class="hidden-xs"><modified-date modified="[[rubric.metadata.modified]]"></modified-date></div>
 
       <div class="actions">
         <div class="action-container">
@@ -117,7 +115,6 @@
         }
       },
       handleRubricUpdate: function(request) {
-          console.log(request.detail.response);
           this.rubric = request.detail.response;
           this.notifyShareChange();
           this.handleShareLink();
