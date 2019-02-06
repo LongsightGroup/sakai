@@ -118,6 +118,8 @@ import org.sakaiproject.importer.api.SakaiArchive;
 import org.sakaiproject.importer.api.ResetOnCloseInputStream;
 import org.sakaiproject.javax.PagingPosition;
 import org.sakaiproject.lti.api.LTIService;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.scoringservice.api.ScoringAgent;
 import org.sakaiproject.scoringservice.api.ScoringService;
 import org.sakaiproject.site.api.Group;
@@ -233,6 +235,9 @@ public class SiteAction extends PagedResourceActionII {
 	private static ShortenedUrlService shortenedUrlService = (ShortenedUrlService) ComponentManager.get(ShortenedUrlService.class);
 	
 	private PreferencesService preferencesService = (PreferencesService)ComponentManager.get(PreferencesService.class);
+
+	private MemoryService memoryService = (MemoryService) ComponentManager.get(MemoryService.class);
+	private Cache m_userSiteCache = memoryService.newCache("org.sakaiproject.site.api.SiteService.userSiteCache");
 
 	private static DeveloperHelperService devHelperService = (DeveloperHelperService) ComponentManager.get(DeveloperHelperService.class);
 
@@ -817,7 +822,7 @@ public class SiteAction extends PagedResourceActionII {
 	private String m_filePath;
 	private String moreInfoPath;
 	private String libraryPath;
-	
+
 	private static final String STATE_HARD_DELETE = "hardDelete";
 	
 	private static final String STATE_CREATE_FROM_ARCHIVE = "createFromArchive";
@@ -7544,7 +7549,7 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 		String term_name = "";
 		if (state.getAttribute(STATE_TERM_SELECTED) != null) {
 			term_name = ((AcademicSession) state
-					.getAttribute(STATE_TERM_SELECTED)).getEid();
+					.getAttribute(STATE_TERM_SELECTED)).getTitle();
 		}
 		// get the request email from configuration
 		String requestEmail = getSetupRequestEmailAddress();
@@ -9011,6 +9016,12 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 						}
 				}
 				authzGroupService.save(realmEdit);
+
+				// SAK-41181
+				usersDeleted.stream().map(ud -> ud.substring(4)).collect(Collectors.toList()).forEach(ud -> {
+					log.debug("Removing user uuid {} from the user site cache", ud);
+					m_userSiteCache.remove(ud);
+				});
 				
 				// do the audit logging - Doing this in one bulk call to the database will cause the actual audit stamp to be off by maybe 1 second at the most
 				// but seems to be a better solution than call this multiple time for every update
@@ -9807,6 +9818,9 @@ private Map<String,List> getTools(SessionState state, String type, Site site) {
 											ResourcePropertiesEdit rp = site.getPropertiesEdit();
 											rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
 											rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+
+											// Need to set STATE_TERM_SELECTED so it shows in the notification email
+											state.setAttribute(STATE_TERM_SELECTED, term);
 										} else {
 											log.warn("termId=" + termId + " not found");
 										}

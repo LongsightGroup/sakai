@@ -47,6 +47,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -3356,8 +3357,15 @@ public class AssignmentAction extends PagedResourceActionII {
         // SAK-17606
         context.put("value_CheckAnonymousGrading", assignmentService.assignmentUsesAnonymousGrading(assignment.get()));
 
-        // format to show one decimal place in grade
-        context.put("value_grade", assignmentService.getGradeDisplay((String) state.getAttribute(GRADE_SUBMISSION_GRADE), gradeType, assignment.isPresent() ? assignment.get().getScaleFactor() : null));
+        // SAK-40938 If we're in grading review mode and the grade entered is bigger than the max, we
+        // should show the grade as entered, not a scaled and formatted version. In other words, the value in
+        // the text input should match the value in the alert message.
+        if (BooleanUtils.isTrue((Boolean) state.getAttribute(GRADE_GREATER_THAN_MAX_ALERT))) {
+            context.put("value_grade", (String) state.getAttribute(GRADE_SUBMISSION_GRADE));
+        } else {
+            // format to show one decimal place in grade
+            context.put("value_grade", assignmentService.getGradeDisplay((String) state.getAttribute(GRADE_SUBMISSION_GRADE), gradeType, assignment.isPresent() ? assignment.get().getScaleFactor() : null));
+        }
 
         context.put("assignment_expand_flag", state.getAttribute(GRADE_SUBMISSION_ASSIGNMENT_EXPAND_FLAG));
 
@@ -7004,20 +7012,22 @@ public class AssignmentAction extends PagedResourceActionII {
                 && params.getString(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE)
                 .equalsIgnoreCase(Boolean.TRUE.toString())) {
             state.setAttribute(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE, Boolean.TRUE.toString());
+            if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION) != null) {
+                if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION)
+                        .equalsIgnoreCase(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_NONE)) {
+                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_NONE);
+                } else if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION)
+                        .equalsIgnoreCase(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_LOW)) {
+                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_LOW);
+                } else if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION)
+                        .equalsIgnoreCase(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_HIGH)) {
+                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_HIGH);
+                }
+            }
         } else {
             state.setAttribute(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE, Boolean.FALSE.toString());
-        }
-
-        if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION) != null) {
-            if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION)
-                    .equalsIgnoreCase(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_NONE)) {
+            if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION) != null) {
                 state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_NONE);
-            } else if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION)
-                    .equalsIgnoreCase(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_LOW)) {
-                state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_LOW);
-            } else if (params.getString(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION)
-                    .equalsIgnoreCase(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_HIGH)) {
-                state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_HIGH);
             }
         }
 
@@ -7037,6 +7047,7 @@ public class AssignmentAction extends PagedResourceActionII {
         // only when choose to associate with assignment in Gradebook
         String associateAssignment = params.getString(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
 
+        Double droppedCategoryPoints = -1D;
         if (grading != null) {
             if (grading.equals(GRADEBOOK_INTEGRATION_ASSOCIATE)) {
                 state.setAttribute(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, associateAssignment);
@@ -7053,6 +7064,33 @@ public class AssignmentAction extends PagedResourceActionII {
                 // if chosen as "associate", have to choose one assignment from Gradebook
                 if (grading.equals(GRADEBOOK_INTEGRATION_ASSOCIATE) && StringUtils.trimToNull(associateAssignment) == null) {
                     addAlert(state, rb.getString("grading.associate.alert"));
+                } else {
+                    Long thisCatRef = -1L;
+                    String gradebookUid = toolManager.getCurrentPlacement().getContext();
+                    List<CategoryDefinition> categoryDefinitions = gradebookService.getCategoryDefinitions(gradebookUid);
+                    if (catInt != -1) {
+                      thisCatRef = catInt;
+                    } else if (assignmentRef.isEmpty()) {
+                      thisCatRef = catInt;
+                    } else {
+                        for (CategoryDefinition thisCategoryDefinition : categoryDefinitions) {
+                            if (thisCategoryDefinition.isAssignmentInThisCategory(assignmentRef)) {
+                                thisCatRef = thisCategoryDefinition.getId();
+                            }
+                        }
+                    }
+                    if (thisCatRef != -1) {
+                        for(CategoryDefinition thisCategoryDefinition : categoryDefinitions) {
+                            if (Objects.equals(thisCategoryDefinition.getId(), thisCatRef)) {
+                                if (thisCategoryDefinition.getDropKeepEnabled()) {
+                                    Double thisCategoryPoints = thisCategoryDefinition.getPointsForCategory();
+                                    if (thisCategoryPoints != null) {
+                                        droppedCategoryPoints = thisCategoryPoints;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // check if chosen a previously associated object
@@ -7061,12 +7099,15 @@ public class AssignmentAction extends PagedResourceActionII {
                 String associatedAssignmentTitles = "";
                 // check assignments from the site
                 for (Assignment a : assignments) {
+                    if (assignmentId.equals(a.getId())) {
+                        continue;
+                    }
                     String gradebookItem = a.getProperties().get(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
-                    if(associateAssignment.equals(gradebookItem)){
+                    if (gradebookItem != null && StringUtils.equals(associateAssignment, gradebookItem)) {
                         associatedAssignmentTitles += a.getTitle();
                     }
                 }
-                if (StringUtils.isNotBlank(associatedAssignmentTitles) && !title.equals(associatedAssignmentTitles) && state.getAttribute(NEW_ASSIGNMENT_PREVIOUSLY_ASSOCIATED) == null) {
+                if (StringUtils.isNotBlank(associatedAssignmentTitles) && state.getAttribute(NEW_ASSIGNMENT_PREVIOUSLY_ASSOCIATED) == null) {
                     state.setAttribute(NEW_ASSIGNMENT_PREVIOUSLY_ASSOCIATED, Boolean.TRUE);
                 } else {
                     // clean the attribute after user confirm
@@ -7196,6 +7237,13 @@ public class AssignmentAction extends PagedResourceActionII {
                     // when scale is points, grade must be integer and less than maximum value
                     gradePoints = scalePointGrade(state, gradePoints, scaleFactor);
                     state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, gradePoints);
+                    if (droppedCategoryPoints != -1) {
+                        int factor = assignmentService.getScaleFactor();
+                        Double enteredPoints = new Double(displayGrade(state, gradePoints, factor));
+                        if (!enteredPoints.equals(droppedCategoryPoints)) {
+                          addAlert(state, rb.getFormattedMessage("pleasee6", new Object[] {droppedCategoryPoints.toString()}));
+                        }
+                    }
                 }
             }
         }
@@ -7882,6 +7930,10 @@ public class AssignmentAction extends PagedResourceActionII {
                 editAssignmentProperties(a, checkAddDueTime, checkAutoAnnounce, addtoGradebook, associateGradebookAssignment, allowResubmitNumber, aProperties, post, resubmitCloseTime, checkAnonymousGrading);
 
                 //TODO: ADD_DUE_DATE
+                if (state.getAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION) != null) {
+                    aProperties.put(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, (String) state.getAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION));
+                }
+
                 // the notification option
                 if (state.getAttribute(AssignmentConstants.ASSIGNMENT_INSTRUCTOR_NOTIFICATIONS_VALUE) != null) {
                     aProperties.put(AssignmentConstants.ASSIGNMENT_INSTRUCTOR_NOTIFICATIONS_VALUE, (String) state.getAttribute(AssignmentConstants.ASSIGNMENT_INSTRUCTOR_NOTIFICATIONS_VALUE));
@@ -9334,14 +9386,10 @@ public class AssignmentAction extends PagedResourceActionII {
 
                 state.setAttribute(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE, properties.get(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE));
 
-                String defaultNotification = serverConfigurationService.getString("announcement.default.notification", "n");
-                if (defaultNotification.equalsIgnoreCase("r")) {
-                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_HIGH);
-                } else if (defaultNotification.equalsIgnoreCase("o")) {
-                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_LOW);
-                } else {
-                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_NONE);
+                if (properties.get(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION) != null) {
+                    state.setAttribute(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION, properties.get(AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION));
                 }
+
                 if(properties.get(NEW_ASSIGNMENT_REMINDER_EMAIL) != null){
                     state.setAttribute(NEW_ASSIGNMENT_REMINDER_EMAIL, Boolean.valueOf(properties.get(NEW_ASSIGNMENT_REMINDER_EMAIL).toString()));
                 }
@@ -10011,7 +10059,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
                 // populate grade overrides if they exist
                 for (AssignmentSubmissionSubmitter submitter : s.getSubmitters()) {
-                    String gradeOverride = assignmentService.getGradeForSubmitter(s, submitter.getSubmitter());
+                    String gradeOverride = assignmentService.getGradeDisplay(assignmentService.getGradeForSubmitter(s, submitter.getSubmitter()), a.getTypeOfGrade(), a.getScaleFactor());
                     if (!StringUtils.equals(grade, gradeOverride)) {
                         if (a.getIsGroup()) {
                             state.setAttribute(GRADE_SUBMISSION_GRADE + "_" + submitter.getSubmitter(), gradeOverride);
@@ -10708,7 +10756,7 @@ public class AssignmentAction extends PagedResourceActionII {
                                 } else {
                                     int factor = a.getScaleFactor();
                                     int dec = (int) Math.log10(factor);
-                                    g= validPointGrade(state, g, factor);
+                                    validPointGrade(state, g, factor);
                                     if (state.getAttribute(STATE_MESSAGE) == null) {
 	                                    NumberFormat nbFormat = formattedText.getNumberFormat(dec, dec, false);
 	                                    DecimalFormat dcformat = (DecimalFormat) nbFormat;
@@ -12388,10 +12436,10 @@ public class AssignmentAction extends PagedResourceActionII {
     } // add2ndToolbarFields
 
     /**
-     * valid grade for point based type
-     * returns a double value in a string from the localized input
+     * Tests the format of the supplied grade and sets alert messages in the
+     * state as required.
      */
-    private String validPointGrade(SessionState state, String grade, int factor) {
+    private void validPointGrade(SessionState state, final String grade, int factor) {
         if (grade != null && !"".equals(grade)) {
             if (grade.startsWith("-")) {
                 // check for negative sign
@@ -12407,7 +12455,7 @@ public class AssignmentAction extends PagedResourceActionII {
                         || (".".equals(decSeparator) && grade.contains(","))
                         || grade.contains(" ")) {
                     addAlert(state, rb.getString("plesuse1"));
-                    return grade;
+                    return;
                 }
 
                 // parse grade from localized number format
@@ -12467,8 +12515,6 @@ public class AssignmentAction extends PagedResourceActionII {
                 }
             }
         }
-        return grade;
-
     }
 
     /**
@@ -12519,7 +12565,8 @@ public class AssignmentAction extends PagedResourceActionII {
     }
 
     private String displayGrade(SessionState state, String grade, Integer factor) {
-        if (state.getAttribute(STATE_MESSAGE) == null) {
+        String currentStateMessage = (String) state.getAttribute(STATE_MESSAGE);
+        if (currentStateMessage == null || currentStateMessage.startsWith(rb.getString("pleasee6"))) {
             if (StringUtils.isNotBlank(grade)) {
                 grade = assignmentService.getGradeDisplay(grade, Assignment.GradeType.SCORE_GRADE_TYPE, factor);
             } else {
@@ -12536,7 +12583,7 @@ public class AssignmentAction extends PagedResourceActionII {
         String decSeparator = formattedText.getDecimalSeparator();
         int dec = (int) Math.log10(factor);
 
-        point = validPointGrade(state, point, factor);
+        validPointGrade(state, point, factor);
 
         if (point != null && (point.length() >= 1)) {
             // when there is decimal points inside the grade, scale the number by "factor"
@@ -13485,8 +13532,9 @@ public class AssignmentAction extends PagedResourceActionII {
                                     userEid = userEid.substring(0, userEid.indexOf("/"));
                                 }
                                 // SAK-17606 - get the eid part
-                                if ((userEid.contains("(")) && !userEid.contains(anonTitle)) {
-                                    userEid = userEid.substring(userEid.indexOf("(") + 1, userEid.indexOf(")"));
+                                if (userEid.contains("(") && userEid.endsWith(")") && !userEid.contains(anonTitle)) {
+                                    //The user will be at the end, grab this last set of parenthesis
+                                    userEid = userEid.substring(userEid.lastIndexOf("(") + 1, userEid.lastIndexOf(")"));
                                 }
                                 if (userEid.contains(anonTitle)) { // anonymous grading so we have to figure out the eid
                                     //get eid out of this slick table we made earlier

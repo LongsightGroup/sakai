@@ -17,6 +17,7 @@
 package org.sakaiproject.component.gradebook;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -49,7 +50,6 @@ import org.hibernate.criterion.Restrictions;
 import org.sakaiproject.authz.cover.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.hibernate.HibernateCriterionUtils;
-import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.section.api.coursemanagement.CourseSection;
 import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
@@ -467,7 +467,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 							Long categoryId = null;
 							try {
 								categoryId = createCategory(gradebook.getId(), c.getName(), c.getWeight(), c.getDropLowest(),
-										c.getDropHighest(), c.getKeepHighest(), c.isExtraCredit(), c.getCategoryOrder());
+										c.getDropHighest(), c.getKeepHighest(), c.getExtraCredit(), c.getCategoryOrder());
 							} catch (final ConflictingCategoryNameException e) {
 								// category already exists. Could be from a merge.
 								log.info("Category: {} already exists in target site. Skipping creation.", c.getName());
@@ -507,7 +507,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			categories.forEach(c -> {
 				try {
 					createCategory(gradebook.getId(), c.getName(), c.getWeight(), c.getDropLowest(), c.getDropHighest(), c.getKeepHighest(),
-							c.isExtraCredit(), c.getCategoryOrder());
+							c.getExtraCredit(), c.getCategoryOrder());
 				} catch (final ConflictingCategoryNameException e) {
 					// category already exists. Could be from a merge.
 					log.info("Category: {} already exists in target site. Skipping creation.", c.getName());
@@ -2335,7 +2335,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			return null;
 		}
 
-		if (score == null) {
+		if (score == null && !isAssignmentDefined(gradebookUid, assignmentName)) {
 			// Try to get the assignment by id
 			if (NumberUtils.isCreatable(assignmentName)) {
 				final Long assignmentId = NumberUtils.toLong(assignmentName, -1L);
@@ -2503,6 +2503,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			categoryDef.setDropHighest(category.getDropHighest());
 			categoryDef.setKeepHighest(category.getKeepHighest());
 			categoryDef.setAssignmentList(getAssignments(category.getGradebook().getUid(), category.getName()));
+			categoryDef.setDropKeepEnabled(category.isDropScores());
 			categoryDef.setExtraCredit(category.isExtraCredit());
 			categoryDef.setCategoryOrder(category.getCategoryOrder());
 		}
@@ -3198,9 +3199,16 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 
 					// calculated grade
 					// may be null if no grade entries to calculate
-					final Double calculatedGrade = gr.getAutoCalculatedGrade();
+					Double calculatedGrade = gr.getAutoCalculatedGrade();
 					if (calculatedGrade != null) {
 						cg.setCalculatedGrade(calculatedGrade.toString());
+
+						// SAK-33997 Adjust the rounding of the calculated grade so we get the appropriate
+						// grade mapping
+						BigDecimal bd = new BigDecimal(calculatedGrade)
+								.setScale(10, RoundingMode.HALF_UP)
+								.setScale(2, RoundingMode.HALF_UP);
+						calculatedGrade = bd.doubleValue();
 					}
 
 					// mapped grade
@@ -3344,7 +3352,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 				existing.setDropLowest(newDef.getDropLowest());
 				existing.setDropHighest(newDef.getDropHighest());
 				existing.setKeepHighest(newDef.getKeepHighest());
-				existing.setExtraCredit(newDef.isExtraCredit());
+				existing.setExtraCredit(newDef.getExtraCredit());
 				existing.setCategoryOrder(categoryIndex);
 				updateCategory(existing);
 
@@ -3366,7 +3374,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		for (final Entry<CategoryDefinition, Integer> entry : newCategories.entrySet()) {
 			final CategoryDefinition newCat = entry.getKey();
 			this.createCategory(gradebook.getId(), newCat.getName(), newCat.getWeight(), newCat.getDropLowest(),
-					newCat.getDropHighest(), newCat.getKeepHighest(), newCat.isExtraCredit(), entry.getValue());
+					newCat.getDropHighest(), newCat.getKeepHighest(), newCat.getExtraCredit(), entry.getValue());
 		}
 
 		// if weighted categories, all uncategorised assignments are to be removed from course grade calcs
