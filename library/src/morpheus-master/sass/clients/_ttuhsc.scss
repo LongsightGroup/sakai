@@ -1,0 +1,106 @@
+$skin-name : "ttuhscdev" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		  	#cc0000 !default;
+$body-background-color: 		 			#FFFFFF !default;
+$background-color-secondary: 		 			#333 !default;
+$text-color:				 		    	#000000 !default;
+$topNav-text-color:					    	#FFF !default;
+$sites-nav-background: 						#99281e;
+$sites-nav-submenu-item-background:				#FAFAFA;
+
+/* Logo location */
+$logo: 								'../images/ttuhsc.png';
+$logo-height: 							43px;
+$logo-width: 							299px;
+
+// Tab colors
+$tool-tab-text-color:			 			#300 !default;
+$tool-tab-background-color:              			#f8f2e4 !default;
+$tool-tab-active-text-color:             			#300 !default;
+$tool-tab-active-highlight-color:        			#f8f2e4 !default;
+$tool-tab-active-background-color:				#fff !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 			#300 !default;
+$breadcrumbs-tool-color:		 			#300 !default;
+$breadcrumbs-hover-color:		 			#300 !default;
+
+// Links
+$link-color: 				 			#300 !default;
+$link-active-color: 			 			#99281E !default;
+$link-hover-color: 			 			#99281E !default;
+
+// Button colors
+$button-text-color:	 		 			#333 !default;
+$button-border-color: 			 			#EEE !default;
+$button-background-color: 		 			#EEE !default;
+$button-background-secondary-color: 	 			#EEE !default;
+
+$button-color-text-color: 		 			#333 !default;
+$button-color-border-color: 		 			#EEE !default;
+$button-color-background-color: 	 			#EEE !default;
+$button-color-background-secondary-color:			#EEE !default;
+// Primary Button Color
+$button-primary-background-color:        			#f8f2e4 !default;
+$button-primary-text-color: 		 			#121212 !default;
+$button-primary-hover-text-color:                   		$button-color-text-color;
+$button-primary-hover-background-color:             		$button-color-background-color !default;
+$button-primary-hover-border-color:                 		$primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                                   $button-primary-text-color;
+$button-secondary-text-color:                                   $button-primary-text-color;
+$button-secondary-background-color:                             $button-primary-background-color;
+
+// Link , Edit, Help Buttons
+$button-secondary-background-color:            			#ded9ce !default;
+$button-secondary-text-color:            			#666 !default;
+$button-secondary-icon-color:            			#666 !default;
+
+
+// Sites Navigation
+// Non Selected
+$sites-nav-menu-item-background:         			#555 !default;
+$sites-nav-menu-item-color:              			#FFF !default;
+$sites-nav-menu-item-icon-color:         			#FFF !default;
+
+$sites-nav-menu-item-hover-background:         			#555 !default;
+$sites-nav-menu-item-hover-color:              			#FFF !default;
+$sites-nav-menu-item-hover-icon-color:         			#FFF !default;
+//Selected
+$sites-nav-menu-item-selected-background:			#99281E !default;
+$sites-nav-menu-item-selected-color:				#FFFFFF !default;
+$sites-nav-menu-item-selected-icon-color:			#FFFFFF !default;
+$sites-nav-menu-item-selected-border-color: 			#99281E !default;
+
+$sites-nav-menu-item-selected-hover-background:			#99281E !default;
+$sites-nav-menu-item-selected-hover-color:			#FFFFFF !default;
+$sites-nav-menu-item-selected-hovericon-color:			#FFFFFF !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:                          	#FAFAFA;
+$tool-menu-background-color:		 			$tool-menu-item-background-color;
+$tool-menu-color: 			 			#424242 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               		#FFF !default;
+$tool-menu-item-hover-icon-color:               		#FFFFFF !default;
+$tool-menu-item-hover-background-color:         		#99281E !default;
+$tool-menu-item-hover-border-left:              		4px solid #99281E !default;
+// selected
+$tool-menu-item-selected-text-color:            		#99281E !default;
+$tool-menu-item-selected-icon-color:            		#99281E !default;
+$tool-menu-item-selected-border-left:           		4px solid #444 !default;
+$tool-menu-item-selected-background-color:          		#FFF !default;
+
+// submenu
+$tool-sub-menu-hover-color:					#FFFFFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      		#FFF !default;
+$tool-menu-item-selected-hover-icon-color:      		#FFF !default;
+$tool-menu-item-selected-hover-background-color:		#99281E !default;
+$tool-menu-item-selected-hover-border-left:         		4px solid #444 !default;
+
+// info message colors
+$info-background-color:   					#f5e6c7;
+$info-color:                					#300  !default;
