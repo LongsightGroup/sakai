@@ -126,6 +126,15 @@ public abstract class LoginServiceComponent implements LoginService {
 			else
 				throw new LoginException(Login.EXCEPTION_INVALID);
 		}
+		catch (Exception ldapex)
+		{
+				if (ldapex.getMessage() != null && ldapex.getMessage().contains("Exceed password retry")) {
+					throw new LoginException(Login.EXCEPTION_LOCKED);
+				}
+				else {
+					throw new LoginException(Login.EXCEPTION_DISABLED);
+				}
+		}
 		
 	}
 	

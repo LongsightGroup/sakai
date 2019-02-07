@@ -32,4 +32,5 @@ public interface Login {
 	
 	public static final String EXCEPTION_DISABLED = "disabled";
 	
+	public static final String EXCEPTION_LOCKED = "locked";
 }

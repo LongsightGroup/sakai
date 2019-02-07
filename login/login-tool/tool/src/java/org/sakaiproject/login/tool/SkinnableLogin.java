@@ -363,6 +363,9 @@ public class SkinnableLogin extends HttpServlet implements Login {
 					rcontext.put(ATTR_MSG, rb.getString("log.invalid.credentials"));
 					showAdvice = true;
 					logFailedAttempt(credentials);
+				} else if (message.equals(EXCEPTION_LOCKED)) {
+					rcontext.put(ATTR_MSG, rb.getString("log.locked.user"));
+					logFailedAttempt(credentials);
 				} else if (message.equals(EXCEPTION_DISABLED)) {
 					rcontext.put(ATTR_MSG, rb.getString("log.disabled.user"));
 					logFailedAttempt(credentials);
