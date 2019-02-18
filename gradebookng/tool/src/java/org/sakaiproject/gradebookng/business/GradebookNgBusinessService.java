@@ -17,6 +17,7 @@ package org.sakaiproject.gradebookng.business;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,6 +34,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +44,7 @@ import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityAdvisor.SecurityAdvice;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.section.api.coursemanagement.CourseSection;
 import org.sakaiproject.section.api.facade.Role;
@@ -65,6 +68,8 @@ import org.sakaiproject.gradebookng.business.util.GbStopWatch;
 import org.sakaiproject.gradebookng.tool.model.GradebookUiSettings;
 import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.rubrics.logic.RubricsService;
+import org.sakaiproject.section.api.SectionManager;
+import org.sakaiproject.section.api.coursemanagement.EnrollmentRecord;
 import org.sakaiproject.service.gradebook.shared.AssessmentNotFoundException;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CategoryDefinition;
@@ -86,7 +91,6 @@ import org.sakaiproject.service.gradebook.shared.SortType;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.gradebook.Gradebook;
 import org.sakaiproject.tool.gradebook.GradingEvent;
@@ -120,6 +124,9 @@ public class GradebookNgBusinessService {
 	@Setter
 	private UserDirectoryService userDirectoryService;
 
+	@Setter @Getter
+	private ServerConfigurationService serverConfigService;
+
 	@Setter
 	private ToolManager toolManager;
 
@@ -134,6 +141,9 @@ public class GradebookNgBusinessService {
 
 	@Setter
 	private GradebookExternalAssessmentService gradebookExternalAssessmentService;
+
+	@Setter
+	private SectionManager sectionManager;
 
 	@Setter
 	private SecurityService securityService;
@@ -746,8 +756,8 @@ public class GradebookNgBusinessService {
 
 		// if comment longer than MAX_COMMENT_LENGTH chars, error.
 		// SAK-33836 - MAX_COMMENT_LENGTH controlled by sakai.property 'gradebookng.maxCommentLength'; defaults to 20,000
-		if (CommentValidator.isCommentInvalid(comment)) {
-			log.error("Comment too long. Maximum {} characters.", CommentValidator.MAX_COMMENT_LENGTH);
+		if (CommentValidator.isCommentInvalid(comment, serverConfigService)) {
+			log.error("Comment too long. Maximum {} characters.", CommentValidator.getMaxCommentLength(serverConfigService));
 			return GradeSaveResponse.ERROR;
 		}
 
@@ -1026,6 +1036,19 @@ public class GradebookNgBusinessService {
 	 */
 	public List<GbUser> getGbUsersForUiSettings(List<String> userUuids, GradebookUiSettings settings, Site site) {
 
+		Map<String, List<String>> userSections = new HashMap<>();
+		for (CourseSection cs : sectionManager.getSections(site.getId())) {
+			for (EnrollmentRecord er : sectionManager.getSectionEnrollments(cs.getUuid())) {
+				String userId = er.getUser().getUserUid();
+				List<String> sections = userSections.get(userId);
+				if (sections == null) {
+					userSections.put(userId, new ArrayList<>(Arrays.asList(cs.getTitle())));
+				} else {
+				    sections.add(cs.getTitle());
+				}
+			}
+		}
+
 		List<User> users = getUsers(userUuids);
 		List<GbUser> gbUsers = new ArrayList<>(users.size());
 		if (settings.getStudentSortOrder() != null) {
@@ -1045,8 +1068,9 @@ public class GradebookNgBusinessService {
 				Collections.sort(users, comp);
 			}
 		}
+
 		for (User u : users) {
-			gbUsers.add(new GbUser(u, getStudentNumber(u, site)));
+			gbUsers.add(new GbUser(u, getStudentNumber(u, site)).setSections(userSections.get(u.getId())));
 		}
 
 		return gbUsers;
@@ -1571,6 +1595,7 @@ public class GradebookNgBusinessService {
 		if (role == GbRole.TA) {
 			final Gradebook gradebook = this.getGradebook(siteId);
 			final User user = getCurrentUser();
+			boolean canGradeAll = false;
 
 			// need list of all groups as REFERENCES (not ids)
 			final List<String> allGroupIds = new ArrayList<>();
@@ -1591,17 +1616,21 @@ public class GradebookNgBusinessService {
 					for(PermissionDefinition permDef : realmsPerms){
 						if(permDef.getGroupReference()!=null){
 							viewableGroupIds.add(permDef.getGroupReference());
+						} else {
+							canGradeAll = true;
 						}
 					}
 				}
 			}
 
-			// remove the ones that the user can't view
-			final Iterator<GbGroup> iter = rval.iterator();
-			while (iter.hasNext()) {
-				final GbGroup group = iter.next();
-				if (!viewableGroupIds.contains(group.getReference())) {
-					iter.remove();
+			if (!canGradeAll) {
+				// remove the ones that the user can't view
+				final Iterator<GbGroup> iter = rval.iterator();
+				while (iter.hasNext()) {
+					final GbGroup group = iter.next();
+					if (!viewableGroupIds.contains(group.getReference())) {
+						iter.remove();
+					}
 				}
 			}
 
@@ -2084,8 +2113,13 @@ public class GradebookNgBusinessService {
 
 				// TODO if this is slow doing it one by one, might be able to
 				// batch it
+
+				// The service needs it otherwise it will assume 'null'
+				// so pull it back from the service and poke it in there!
+				final String comment = getAssignmentGradeComment(Long.valueOf(assignmentId), studentUuid);
+
 				this.gradebookService.saveGradeAndCommentForStudent(gradebook.getUid(), assignmentId, studentUuid,
-						FormatHelper.formatGradeForDisplay(String.valueOf(grade)), null);
+						FormatHelper.formatGradeForDisplay(String.valueOf(grade)), comment);
 			}
 
 			EventHelper.postUpdateUngradedEvent(gradebook, assignmentId, String.valueOf(grade), getUserRoleOrNone());
@@ -2463,6 +2497,17 @@ public class GradebookNgBusinessService {
 	}
 
 	/**
+	 * Remove all permissions for the user. Note: These are currently only defined/used for users with the Teaching Assistant role.
+	 *
+	 * @param userUuid
+	 */
+	public void clearPermissionsForUser(final String userUuid) {
+		final String siteId = getCurrentSiteId();
+		final Gradebook gradebook = getGradebook(siteId);
+		this.gradebookPermissionService.clearPermissionsForUser(gradebook.getUid(), userUuid);
+	}
+
+	/**
 	 * Check if the course grade is visible to the user
 	 *
 	 * For TA's, the students are already filtered by permission so the TA won't see those they don't have access to anyway However if there
@@ -2548,6 +2593,15 @@ public class GradebookNgBusinessService {
 		}
 
 		return getCandidateDetailProvider().getInstitutionalNumericId(u, site).orElse("");
+	}
+
+	/**
+	 * Are there any sections in the current site?
+	 */
+	public boolean isSectionsVisible() {
+
+		final Optional<Site> site = getCurrentSite();
+		return site.isPresent() && !sectionManager.getSections(site.get().getId()).isEmpty();
 	}
 
 	/**

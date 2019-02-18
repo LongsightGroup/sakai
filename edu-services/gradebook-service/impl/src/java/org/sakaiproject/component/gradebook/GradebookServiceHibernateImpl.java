@@ -48,7 +48,7 @@ import org.hibernate.Session;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.criterion.Restrictions;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.hibernate.HibernateCriterionUtils;
 import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.section.api.coursemanagement.CourseSection;
@@ -106,6 +106,9 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 	private Authz authz;
 	private GradebookPermissionService gradebookPermissionService;
 	protected SiteService siteService;
+
+	@Setter
+	protected ServerConfigurationService serverConfigService;
 
 	@Getter @Setter
 	private RubricsService rubricsService;
@@ -2335,11 +2338,15 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 			return null;
 		}
 
-		if (score == null && !isAssignmentDefined(gradebookUid, assignmentName)) {
+		if (score == null) {
 			// Try to get the assignment by id
 			if (NumberUtils.isCreatable(assignmentName)) {
 				final Long assignmentId = NumberUtils.toLong(assignmentName, -1L);
-				score = getAssignmentScoreString(gradebookUid, assignmentId, studentUid);
+				try {
+					score = getAssignmentScoreString(gradebookUid, assignmentId, studentUid);
+				} catch (AssessmentNotFoundException anfe) {
+					log.debug("Assessment could not be found for gradebook id {} and assignment id {} and student id {}", gradebookUid, assignmentName, studentUid);
+				}
 			}
 		}
 		return score;
@@ -3274,8 +3281,7 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		});
 
 		// set grade type, but only if sakai.property is true OR user is admin
-		final boolean gradeTypeAvailForNonAdmins = ServerConfigurationService.getBoolean("gradebook.settings.gradeEntry.showToNonAdmins",
-				true);
+		final boolean gradeTypeAvailForNonAdmins = serverConfigService.getBoolean("gradebook.settings.gradeEntry.showToNonAdmins", true);
 		if (gradeTypeAvailForNonAdmins || SecurityService.isSuperUser()) {
 			gradebook.setGrade_type(gbInfo.getGradeType());
 		}
