@@ -3,7 +3,7 @@
 <registration>
          <tool id="bradley.news" title="Bradley News" description="Bradley News">
                  <configuration name="popup" value="false" type="final" />
-                 <configuration name="sakai:menuClass" value="fa-globe"/>
+                 <configuration name="sakai:menuClass" value="fa-list"/>
                  <configuration name="source" value="https://bradleydev.longsight.com/access/content/public/Dev%20HTML%20Files/MOTD.html" type="final" />
 
                   <category name="myworkspace" />
