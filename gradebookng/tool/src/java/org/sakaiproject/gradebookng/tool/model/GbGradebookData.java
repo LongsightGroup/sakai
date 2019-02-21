@@ -21,6 +21,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.wicket.model.StringResourceModel;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.gradebookng.business.GbCategoryType;
 import org.sakaiproject.gradebookng.business.GbRole;
 import org.sakaiproject.gradebookng.business.model.GbCourseGrade;
@@ -66,6 +67,7 @@ public class GbGradebookData {
 
 		private String studentNumber;
 		private String hasDroppedScores;
+		private List<String> sections;
 	}
 
 	private interface ColumnDefinition {
@@ -192,6 +194,7 @@ public class GbGradebookData {
 	private String defaultIconCSS;
 	private Map<String, Double> courseGradeMap;
 	private boolean isStudentNumberVisible;
+	private boolean isSectionsVisible;
 
 	private Component parent;
 
@@ -206,6 +209,7 @@ public class GbGradebookData {
 		this.courseGradeMap = gbGradeTableData.getCourseGradeMap();
 
 		this.isStudentNumberVisible = gbGradeTableData.isStudentNumberVisible();
+		this.isSectionsVisible = gbGradeTableData.isSectionsVisible();
 
 		this.studentGradeInfoList = gbGradeTableData.getGrades();
 
@@ -363,6 +367,7 @@ public class GbGradebookData {
 		result.put("showPoints", uiSettings.getShowPoints());
 		result.put("isUserAbleToEditAssessments", isUserAbleToEditAssessments());
 		result.put("isStudentNumberVisible", this.isStudentNumberVisible);
+		result.put("isSectionsVisible", this.isSectionsVisible && ServerConfigurationService.getBoolean("gradebookng.showSections", true));
 
 		return result;
 	};
@@ -459,6 +464,8 @@ public class GbGradebookData {
 				zeroes.append("0");
 			}
 			studentDefinition.setHasConcurrentEdit(zeroes.toString());
+
+			studentDefinition.setSections(student.getSections());
 
 			result.add(studentDefinition);
 		}
