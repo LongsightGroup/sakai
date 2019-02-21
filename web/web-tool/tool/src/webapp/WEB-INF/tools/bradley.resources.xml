@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <registration>
-         <tool id="bradley.resources" title="Technical & Academic Resources" description="Technical & Academic Resources">
+         <tool id="bradley.resources" title="Technical &amp; Academic Resources" description="Technical &amp; Academic Resources">
                  <configuration name="popup" value="false" type="final" />
                  <configuration name="sakai:menuClass" value="fa-globe" />
                  <configuration name="source" value="https://bradleydev.longsight.com/access/content/public/Dev%20HTML%20Files/technicalandacademicsupport.html" type="final" />
@@ -10,6 +10,7 @@
 
           <configuration name="reset.button" value="false" type="final" />
           <configuration name="functions.require" />
+          <configuration name="height" value="4000px" />
           <configuration name="help.button" value="false" />
           <configuration name="hide.options" value="true" />
           <configuration name="allowMultipleInstances" value="false" />
