@@ -288,31 +288,6 @@ public interface GradebookService {
 			throws GradebookNotFoundException;
 
 	/**
-	 * Get an archivable definition of gradebook data suitable for migration between sites. Assignment definitions and the currently
-	 * selected grading scale are included. Student view options and all information related to specific students or instructors (such as
-	 * scores) are not.
-	 *
-	 * @param gradebookUid
-	 * @return a versioned XML string
-	 *
-	 * @deprecated This is used by the old gradebook1 entityproducer and will soon be redundant
-	 */
-	@Deprecated
-	public String getGradebookDefinitionXml(String gradebookUid);
-
-	/**
-	 * Attempt to transfer gradebook data with Category and weight and settings
-	 *
-	 * @param fromGradebookUid
-	 * @param toGradebookUid
-	 * @param fromGradebookXml
-	 *
-	 * @deprecated This is used by the old gradebook1 entityproducer and will soon be redundant
-	 */
-	@Deprecated
-	public void transferGradebookDefinitionXml(String fromGradebookUid, String toGradebookUid, String fromGradebookXml);
-
-	/**
 	 * Transfer the gradebook information and assignments from one gradebook to another
 	 *
 	 * @param gradebookInformation GradebookInformation to copy
@@ -330,23 +305,6 @@ public interface GradebookService {
 	 *
 	 */
 	public GradebookInformation getGradebookInformation(String gradebookUid);
-
-	/**
-	 * Attempt to merge archived gradebook data (notably the assignnments) into a new gradebook.
-	 *
-	 * Assignment definitions whose names match assignments that are already in the targeted gradebook will be skipped.
-	 *
-	 * Imported assignments will not automatically be released to students, even if they were released in the original gradebook.
-	 *
-	 * Externally managed assessments will not be imported, since such imports should be handled by the external assessment engine.
-	 *
-	 * If possible, the targeted gradebook's selected grading scale will be set to match the archived grading scale. If there are any
-	 * mismatches that make this impossible, the existing grading scale will be left alone, but assignment imports will still happen.
-	 *
-	 * @param toGradebookUid
-	 * @param fromGradebookXml
-	 */
-	public void mergeGradebookDefinitionXml(String toGradebookUid, String fromGradebookXml);
 
 	/**
 	 * Removes an assignment from a gradebook. The assignment should not be deleted, but the assignment and all grade records associated
@@ -805,10 +763,11 @@ public interface GradebookService {
 	 * @param gradebookId Id of the gradebook
 	 * @param studentUuid uuid of the student
 	 * @param categoryId id of category
+	 * @param isInstructor will determine whether category score includes non-released items
 	 * @return percentage and dropped items, or empty if no calculations were made
 	 *
 	 */
-	Optional<CategoryScoreData> calculateCategoryScore(Long gradebookId, String studentUuid, Long categoryId);
+	Optional<CategoryScoreData> calculateCategoryScore(Long gradebookId, String studentUuid, Long categoryId, boolean includeNonReleasedItems);
 
 	/**
 	 * Calculate the category score for the given gradebook, category, assignments in the category and grade map. This doesn't do any
@@ -823,7 +782,7 @@ public interface GradebookService {
 	 * @return percentage and dropped items, or empty if no calculations were made
 	 */
 	Optional<CategoryScoreData> calculateCategoryScore(Object gradebook, String studentUuid, CategoryDefinition category,
-			final List<Assignment> categoryAssignments, Map<Long, String> gradeMap);
+			final List<Assignment> categoryAssignments, Map<Long, String> gradeMap, boolean includeNonReleasedItems);
 
 	/**
 	 * Get the course grade for a student

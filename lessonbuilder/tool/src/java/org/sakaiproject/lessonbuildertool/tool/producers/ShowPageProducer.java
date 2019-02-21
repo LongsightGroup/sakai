@@ -724,7 +724,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		if (canEditPage) {
 			// show tool bar, but not if coming from grading pane
 			if(!cameFromGradingPane) {
-				createToolBar(tofill, currentPage, (pageItem.getType() == SimplePageItem.STUDENT_CONTENT));
+				createToolBar(tofill, currentPage);
 			}
 			
 			UIOutput.make(tofill, "title-descrip");
@@ -1844,7 +1844,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 						    if(lengthOk(height)) {
 							    item.decorate(new UIFreeAttributeDecorator("height", height.getOld()));
 						    }
-						    else if(!lengthOk(height) && lengthOk(width)) {
+						    else if(!lengthOk(height) && lengthOk(width) && ("px".equals(width.unit) || "".equals(width.unit))) {
 							    // Youtube seems to use aspect ratio of 16*9 from 2015 on
 							    int youtubeDerivedHeight = (int) Math.ceil(new Double(width.getOld()) * 9 / 16);
 							    item.decorate(new UIFreeAttributeDecorator("height", youtubeDerivedHeight + ""));
@@ -4075,7 +4075,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		//		return ieVersion;
 	}
 
-	private void createToolBar(UIContainer tofill, SimplePage currentPage, boolean isStudent) {
+	private void createToolBar(UIContainer tofill, SimplePage currentPage) {
 		UIBranchContainer toolBar = UIBranchContainer.make(tofill, "tool-bar:");
 		boolean studentPage = simplePageBean.isStudentPage(currentPage);
 

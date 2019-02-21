@@ -41,6 +41,7 @@ import org.sakaiproject.gradebookng.business.model.GbCourseGrade;
 import org.sakaiproject.gradebookng.business.model.GbGradeInfo;
 import org.sakaiproject.gradebookng.business.model.GbGroup;
 import org.sakaiproject.gradebookng.business.model.GbStudentGradeInfo;
+import org.sakaiproject.gradebookng.business.util.EventHelper;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
 import org.sakaiproject.gradebookng.tool.model.GradebookUiSettings;
 import org.sakaiproject.gradebookng.tool.panels.BasePanel;
@@ -279,11 +280,11 @@ public class ExportPanel extends BasePanel {
 				if (!isCustomExport || this.includeStudentId) {
 					header.add(getString("importExport.export.csv.headers.studentId"));
 				}
-				if (isCustomExport && this.includeStudentDisplayId) {
-					header.add(getString("importExport.export.csv.headers.studentDisplayId"));
-				}
 				if (!isCustomExport || this.includeStudentName) {
 					header.add(getString("importExport.export.csv.headers.studentName"));
+				}
+				if (isCustomExport && this.includeStudentDisplayId) {
+					header.add(String.join(" ", IGNORE_COLUMN_PREFIX, getString("importExport.export.csv.headers.studentDisplayId")));
 				}
 				if (isCustomExport && this.includeStudentNumber) {
 					header.add(String.join(" ", IGNORE_COLUMN_PREFIX, getString("importExport.export.csv.headers.studentNumber")));
@@ -351,11 +352,11 @@ public class ExportPanel extends BasePanel {
 					if (!isCustomExport || this.includeStudentId) {
 						line.add(studentGradeInfo.getStudentEid());
 					}
-					if (isCustomExport && this.includeStudentDisplayId) {
-						line.add(studentGradeInfo.getStudentDisplayId());
-					}
 					if (!isCustomExport || this.includeStudentName) {
 						line.add(studentGradeInfo.getStudentLastName() + ", " + studentGradeInfo.getStudentFirstName());
+					}
+					if (isCustomExport && this.includeStudentDisplayId) {
+						line.add(studentGradeInfo.getStudentDisplayId());
 					}
 					if (isCustomExport && this.includeStudentNumber)
 					{
@@ -413,6 +414,8 @@ public class ExportPanel extends BasePanel {
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
+
+		EventHelper.postExportEvent(getGradebook(), isCustomExport);
 
 		return tempFile;
 	}

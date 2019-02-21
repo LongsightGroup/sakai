@@ -217,7 +217,7 @@ public class GradeSummaryTablePanel extends BasePanel {
 						flags.add(page.buildFlagWithPopover("isExtraCredit", getString("label.gradeitem.extracredit"))
 								.add(new AttributeModifier("data-trigger", "focus"))
 								.add(new AttributeModifier("data-container", "#gradeSummaryTable"))
-								.setVisible(assignment.getExtraCredit()));
+								.setVisible(assignment.isExtraCredit()));
 						flags.add(page.buildFlagWithPopover("isNotCounted", getString("label.gradeitem.notcounted"))
 								.add(new AttributeModifier("data-trigger", "focus"))
 								.add(new AttributeModifier("data-container", "#gradeSummaryTable"))
@@ -259,14 +259,10 @@ public class GradeSummaryTablePanel extends BasePanel {
 							});
 							gradeScore.add(new Label("outOf").setVisible(false));
 						} else {
-							gradeScore.add(new Label("grade", FormatHelper.formatGradeForDisplay(rawGrade)));
+							gradeScore.add(
+									new Label("grade", FormatHelper.convertEmptyGradeToDash(FormatHelper.formatGradeForDisplay(rawGrade))));
 							gradeScore.add(new Label("outOf",
-									new StringResourceModel("label.studentsummary.outof", null, new Object[] { assignment.getPoints() })) {
-								@Override
-								public boolean isVisible() {
-									return StringUtils.isNotBlank(rawGrade);
-								}
-							});
+									new StringResourceModel("label.studentsummary.outof", null, assignment.getPoints())));
 						}
 						if (gradeInfo != null && gradeInfo.isDroppedFromCategoryScore()) {
 							gradeScore.add(AttributeAppender.append("class", "gb-summary-grade-score-dropped"));

@@ -169,6 +169,10 @@ $(document).ready(function() {
        $("#gradeMenuTooltip").html().trim().toString()),
     gradeHeaderMenuTooltip: TrimPath.parseTemplate(
        $("#gradeHeaderMenuTooltip").html().trim().toString()),
+    newGradeItemPopoverTitle: TrimPath.parseTemplate(
+       $("#newGradeItemPopoverTitle").html().trim().toString()),
+    newGradeItemPopoverMessage: TrimPath.parseTemplate(
+       $("#newGradeItemPopoverMessage").html().trim().toString()),
   };
 
 });
@@ -250,6 +254,11 @@ GbGradeTable.cellRenderer = function (instance, td, row, col, prop, value, cellP
   var $td = $(td);
   var index = col - GbGradeTable.FIXED_COLUMN_OFFSET;
   var student = instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
+
+  if (!instance.view.settings.columns[col]) {
+    return;
+  }
+
   var column = instance.view.settings.columns[col]._data_;
 
   // key needs to contain all values the cell requires for render
@@ -637,7 +646,12 @@ GbGradeTable.renderTable = function (elementId, tableData) {
   };
 
   GbGradeTable.calculateIdealWidth = function() {
-    return MorpheusViewportHelper.isPhone() ? $("#pageBody").width() - 40 : $("#pageBody").width() - $("#toolMenuWrap").width() - 60;
+    if (GbGradeTable.columns.length > 0) {
+        return MorpheusViewportHelper.isPhone() ? $("#pageBody").width() - 40 : $("#pageBody").width() - $("#toolMenuWrap").width() - 60;
+    }
+
+    var scrollbarWidth = GbGradeTable.students.length > 0 ? 16 : 0;
+    return GbGradeTable.getColumnWidths().reduce(function (acc, cur) { return acc + cur; }, 0) + scrollbarWidth;
   };
 
   GbGradeTable.instance = new Handsontable(document.getElementById(elementId), {
@@ -743,7 +757,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
       // show visual cue that columns are hidden
       // check for last of the fixed columns
       if (col == GbGradeTable.FIXED_COLUMN_OFFSET - 1) { //GbGradeTable.instance.getSettings().fixedColumnsLeft - 1) {
-        if (GbGradeTable.columns[0].hidden &&
+        if (GbGradeTable.columns[0] && GbGradeTable.columns[0].hidden &&
             $th.find(".gb-hidden-column-visual-cue").length == 0) {
           $th.find(".relative").append("<a href='javascript:void(0);' class='gb-hidden-column-visual-cue'></a>");
         }
@@ -829,7 +843,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     cells: function (row, col, prop) {
       var cellProperties = {};
 
-      var column = GbGradeTable.instance.view.settings.columns[col]._data_;
+      var column = GbGradeTable.instance.view.settings.columns[col] ?
+                    GbGradeTable.instance.view.settings.columns[col]._data_ : null;
       var student = GbGradeTable.instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
 
       if (column == null) {
@@ -3023,13 +3038,32 @@ GbGradeTable.addReadyCallback = function(callback) {
 };
 
 
-GbGradeTable.focusColumnForAssignmentId = function(assignmentId) {
-    if (assignmentId) {
-        GbGradeTable.addReadyCallback(function() {
-            var col = GbGradeTable.colForAssignment(assignmentId);
-            GbGradeTable.instance.selectCell(0, col);
-        });
-    }
+GbGradeTable.focusColumnForAssignmentId = function(assignmentId, showPopupForNewItem) {
+  if (assignmentId) {
+      GbGradeTable.addReadyCallback(function() {
+          var col = GbGradeTable.colForAssignment(assignmentId);
+          GbGradeTable.instance.selectCell(0, col);
+          if(showPopupForNewItem === true){
+            
+            var $selectedField = $('.current.highlight .relative');
+          
+            $selectedField.attr('data-toggle','popover');
+            $selectedField.attr('data-placement','top');
+            $selectedField.attr('data-container','body');
+            $selectedField.attr('data-content',GbGradeTable.templates['newGradeItemPopoverMessage'].process());
+            $selectedField.attr('data-title',GbGradeTable.templates['newGradeItemPopoverTitle'].process());
+
+            $('body').on('click', function (e) {
+              if ($(e.target).data('toggle') !== 'popover'
+                  && $(e.target).parents('.popover.in').length === 0) { 
+                  $('[data-toggle="popover"]').popover('hide');
+              }
+            });
+            $selectedField.popover();
+            $selectedField.popover('show');
+          }
+      });
+  }
 };
 
 
@@ -3113,7 +3147,8 @@ GradebookAPI = {};
 GradebookAPI.isAnotherUserEditing = function(siteId, timestamp, onSuccess, onError) {
   var endpointURL = "/direct/gbng/isotheruserediting/" + siteId + ".json";
   var params = {
-    since: timestamp
+    since: timestamp,
+    auto: true // indicate that the request is automatic, not from a user action
   };
   GradebookAPI._GET(endpointURL, params, onSuccess, onError);
 };
