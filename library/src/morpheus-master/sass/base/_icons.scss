@@ -110,6 +110,11 @@
     sakai-scorm-tool : ( extend : fa-book),
     sakai-scorm-singlepackage-tool : ( extend : fa-book),
 
+      //Edtell Customization
+      sakai-gradebook-gwt-rpc : (extend : fa-book ),
+      sakai-synoptic-assignment : (extend : fa-file-text ),
+      sakai-student-report : ( extend : fa-address-book ),
+
     // other icons
     check : ( extend : fa-check ),
     clip : ( extend : fa-paperclip ),

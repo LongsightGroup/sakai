@@ -12,8 +12,8 @@ $tool-border-color:                                     #f5f5f5 !default;
 $tool-menu-background-color:                            #f5f5f5 !default;
 
 /* Logo location */
-$logo: 							'../images/doorsafety.svg';
-$logo-height: 						79px;
+$logo: 							'../images/doorsafety.png';
+$logo-height: 						69px;
 $logo-width: 						184px;
 
 // Tab colors
@@ -122,4 +122,8 @@ $info-background-color:   				#efefef;
 
 #Mrphs-xlogin .logo, #Mrphs-choice .logo {
     height: 93px !important;
+}
+
+.stylized .logo {
+    background: #fff url(/library/skin/images/doorsafety.svg) no-repeat center center !important;
 }

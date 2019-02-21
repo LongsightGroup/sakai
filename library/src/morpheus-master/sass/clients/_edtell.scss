@@ -1,0 +1,49 @@
+$skin-name : "founders";
+$logo-width:      120px;
+$logo-height:     50px;
+$logo:	"../images/edtell.png";
+
+.Mrphs-headerLogo--institution {
+	margin-left: 		-15px;
+}
+
+//Top of page
+// -webkit-radial-gradient(left,260px 200px,white,white,#123abc)
+$top-header-background:	-webkit-linear-gradient(left, white 0%, white 130px, #5d79d1 230px, #123abc 310px, #123abc 100%);
+
+//from lightest to darkest:
+//default = ## = new
+//#5b9dd9 = L3 = #5061ff	(433%r, 167%g, 172%b = 78,102,324(61,80,255))
+//#326b97 = L2 = #4159e4	(238%r, 120%g, 120%b = 43,70,225 #2b46e1 +1monochrome)
+//#176691 = L1 = #1c4dea	(110%r, 115%g, 115%b = 20,67,216 #1443d8 +1monochrome)
+//#265b81 = M1 = #213cc1	(181%r, 102%g, 102%b = 33,59,192)
+//#15597e = D1*= #123abc
+//#124466 = D2 = #0e2581	(86%r, 76%g, 81%b = 15.5,44,152 #102c98 -1monochrome)
+
+$primary-color:											#213cc1;//M1
+$breadcrumbs-tool-color:								#213cc1;//M1
+$breadcrumbs-hover-color:								#213cc1;//M1
+
+$tool-tab-active-text-color:							#123abc;//D1
+$tool-tab-active-highlight-color:						#123abc;//D1
+$sites-nav-menu-item-selected-background:				#123abc;//D1
+$sites-nav-menu-item-selected-hover-background:			#123abc;//D1
+$tool-menu-item-selected-text-color:					#123abc;//D1
+$tool-menu-item-selected-icon-color:					#123abc;//D1
+$tool-menu-item-selected-border-left:		  4px solid #123abc;//D1
+$tool-menu-item-selected-hover-text-color:				#123abc;//D1
+$tool-menu-item-selected-hover-icon-color:				#123abc;//D1
+$tool-menu-item-selected-hover-border-left:	  4px solid #123abc;//D1
+
+$sites-nav-menu-item-selected-border-color:				#4159e4;//L2
+$sites-nav-menu-item-selected-hover-border-color:		#4159e4;//L2
+
+//button has bkgnd D1 border L2 >onhover> bkgnd lighter L1 border darker D2
+//border thing focus-outline-color L3... has its own range of colors for emboss
+$button-primary-background-color:						#123abc;//D1
+$button-color-border-color:								#4159e4;//L2
+
+$button-color-background-color:							#1c4dea;//L1
+$button-primary-hover-border-color:						#0e2581;//D2
+
+$focus-outline-color: 									#5061ff;//L3
