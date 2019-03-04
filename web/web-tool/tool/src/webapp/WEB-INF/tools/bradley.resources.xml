@@ -4,7 +4,7 @@
          <tool id="bradley.resources" title="Technical &amp; Academic Resources" description="Technical &amp; Academic Resources">
                  <configuration name="popup" value="false" type="final" />
                  <configuration name="sakai:menuClass" value="fa-globe" />
-                 <configuration name="source" value="https://bradleydev.longsight.com/access/content/public/Dev%20HTML%20Files/technicalandacademicsupport.html" type="final" />
+                 <configuration name="source" value="https://sakai.bradley.edu/access/content/group/84b0c656-7181-4e9e-9e9b-a143e8d9cccf/Bootstrap/technicalandacademicsupport.html" type="final" />
 
                   <category name="myworkspace" />
 
