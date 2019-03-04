@@ -9,6 +9,7 @@
                   <category name="myworkspace" />
 
           <configuration name="reset.button" value="false" type="final" />
+          <configuration name="height" value="1500px" />
           <configuration name="functions.require" />
           <configuration name="help.button" value="false" />
           <configuration name="hide.options" value="true" />
