@@ -618,7 +618,8 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 			sb.append(eidAttr);
 			sb.append("=");
 			sb.append(criteria);
-			sb.append("*)");
+			// DUKE-86 no wildcard searches
+			sb.append(")");
 			
 			sb.append("(");
 			sb.append(emailAttr);
