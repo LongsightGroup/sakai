@@ -72,7 +72,7 @@
         <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
-                <entry key="wfudevkey" value="changeit"/>
+                <entry key="wfutestkey" value="changeit"/>
             </map>
         </constructor-arg>
         <constructor-arg type="java.lang.String" value="changeit"/>
@@ -96,7 +96,7 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="https://wfu-dev.saml.longsight.com/samlauth"/>
+                <property name="entityId" value="https://wfu-test.saml.longsight.com/samlauth"/>
                 <!-- <property name="includeDiscoveryExtension" value="true"/> -->
                 <!-- <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
@@ -144,8 +144,8 @@
 			               <property name="sslSecurityProfile" value="pkix"/>
 			               <property name="sslHostnameVerification" value="default"/>
 			               <property name="signMetadata" value="false"/>
-			               <property name="signingKey" value="wfudevkey"/>
-			               <property name="encryptionKey" value="wfudevkey"/>
+			               <property name="signingKey" value="wfutestkey"/>
+			               <property name="encryptionKey" value="wfutestkey"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
 			               <property name="requireLogoutRequestSigned" value="false"/>
 			               <property name="requireLogoutResponseSigned" value="false"/>
