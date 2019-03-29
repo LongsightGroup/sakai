@@ -138,9 +138,9 @@
 
 		<!-- Webjars -->
 		<dependency>
-			<groupId>org.webjars</groupId>
+			<groupId>org.webjars.bower</groupId>
 			<artifactId>handsontable</artifactId>
-			<version>6.2.2</version>
+			<version>0.26.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
