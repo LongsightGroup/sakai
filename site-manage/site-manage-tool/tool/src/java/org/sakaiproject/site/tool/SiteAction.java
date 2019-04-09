@@ -758,7 +758,7 @@ public class SiteAction extends PagedResourceActionII {
 	/** the news tool **/
 	private final static String NEWS_TOOL_ID = "sakai.simple.rss";
 	private final static String NEWS_TOOL_CHANNEL_CONFIG = "javax.portlet-feed_url";
-	private final static String NEWS_TOOL_CHANNEL_CONFIG_VALUE = "https://www.sakaiproject.org/feed";
+	private final static String NEWS_TOOL_CHANNEL_CONFIG_VALUE = "https://www.sakailms.org/blog-feed.xml";
 	
    	private final static String LESSONS_TOOL_ID = "sakai.lessonbuildertool";
 
@@ -2116,8 +2116,12 @@ public class SiteAction extends PagedResourceActionII {
 				allowUpdateSite = SiteService.allowUpdateSite(site.getId());
 				isMyWorkspace = isSiteMyWorkspace(site);
 				boolean allowUpdateGroupMembership = SiteService.allowUpdateGroupMembership(site.getId());
+				allowViewRoster = SiteService.allowViewRoster(site.getId());
+
 				context.put("allowUpdate", allowUpdateSite);
 				context.put("additionalAccess", getAdditionRoles(site));
+				context.put("isMyWorkspace", isMyWorkspace);
+				context.put("viewRoster", allowViewRoster);
 
 				// Add the menus to vm
 				MenuBuilder.buildMenuForSiteInfo(portlet, data, state, context, site, rb, siteTypeProvider, SiteInfoActiveTab.SITE_INFO);

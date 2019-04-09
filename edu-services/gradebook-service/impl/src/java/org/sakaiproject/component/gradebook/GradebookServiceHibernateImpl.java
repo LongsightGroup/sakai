@@ -93,9 +93,9 @@ import org.sakaiproject.util.ResourceLoader;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 
-import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * A Hibernate implementation of GradebookService.
@@ -426,6 +426,10 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		rval.setCourseLetterGradeDisplayed(gradebook.isCourseLetterGradeDisplayed());
 		rval.setCoursePointsDisplayed(gradebook.isCoursePointsDisplayed());
 		rval.setCourseAverageDisplayed(gradebook.isCourseAverageDisplayed());
+
+		// add in stats display settings
+		rval.setAssignmentStatsDisplayed(gradebook.isAssignmentStatsDisplayed());
+		rval.setCourseGradeStatsDisplayed(gradebook.isCourseGradeStatsDisplayed());
 
 		return rval;
 	}
@@ -1009,22 +1013,22 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 						if (!excused) {
 							totalPointsEarned += pointsEarned;
 							literalTotalPointsEarned = (new BigDecimal(pointsEarned)).add(literalTotalPointsEarned);
+							assignmentsTaken.add(go.getId());
 						}
-						assignmentsTaken.add(go.getId());
 					} else if (gradebook.getCategory_type() == GradebookService.CATEGORY_TYPE_ONLY_CATEGORY && go != null) {
 						if (!excused) {
 							totalPointsEarned += pointsEarned;
 							literalTotalPointsEarned = (new BigDecimal(pointsEarned)).add(literalTotalPointsEarned);
+							assignmentsTaken.add(go.getId());
 						}
-						assignmentsTaken.add(go.getId());
 					} else if (gradebook.getCategory_type() == GradebookService.CATEGORY_TYPE_WEIGHTED_CATEGORY && go != null
 							&& categories != null) {
 						for (int i = 0; i < categories.size(); i++) {
 							final Category cate = (Category) categories.get(i);
 							if (cate != null && !cate.isRemoved() && go.getCategory() != null
 									&& cate.getId().equals(go.getCategory().getId())) {
-								assignmentsTaken.add(go.getId());
 								if (!excused) {
+									assignmentsTaken.add(go.getId());
 									literalTotalPointsEarned = (new BigDecimal(pointsEarned)).add(literalTotalPointsEarned);
 									if (cateScoreMap.get(cate.getId()) != null) {
 										cateScoreMap.put(cate.getId(), ((Double) cateScoreMap.get(cate.getId())) + pointsEarned);
@@ -3297,6 +3301,10 @@ public class GradebookServiceHibernateImpl extends BaseHibernateManager implemen
 		gradebook.setCourseLetterGradeDisplayed(gbInfo.isCourseLetterGradeDisplayed());
 		gradebook.setCoursePointsDisplayed(gbInfo.isCoursePointsDisplayed());
 		gradebook.setCourseAverageDisplayed(gbInfo.isCourseAverageDisplayed());
+
+		// set stats display settings
+		gradebook.setAssignmentStatsDisplayed(gbInfo.isAssignmentStatsDisplayed());
+		gradebook.setCourseGradeStatsDisplayed(gbInfo.isCourseGradeStatsDisplayed());
 
 		final List<CategoryDefinition> newCategoryDefinitions = gbInfo.getCategories();
 

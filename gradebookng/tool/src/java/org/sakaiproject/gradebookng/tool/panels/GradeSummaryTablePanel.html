@@ -11,8 +11,6 @@
 			<a href="javascript:void(0);" class="gb-summary-collapse-all" wicket:id="collapseCategoriesLink" aria-controls="gradeSummaryTable"><wicket:message key="label.studentsummary.collapseall"></wicket:message></a>
 		</div>
 
-		<div wicket:id="rubricStudentWindow" />
-
 		<table id="gradeSummaryTable" class="table table-bordered table-striped table-hover table-condensed">
 			<caption class="sr-only"><wicket:message key="studentsummary.caption"/></caption>
 			<thead>
@@ -46,6 +44,7 @@
 					<tr wicket:id="assignmentsForCategory" class="gb-summary-grade-row">
 						<th scope="row">
 							<span class="gb-summary-grade-title" wicket:id="title"></span>
+							<span><a href="javascript:void(0);" class="gb-summary-grade-stats" wicket:message="title:studentsummary.gradebookitem.assignmentstats" wicket:id="assignmentStatsLink"></a></span>
 							<span class="gb-summary-grade-flags" wicket:id="flags">
 								<span wicket:id="isExtraCredit" class="gb-flag-extra-credit"></span>
 								<span wicket:id="isNotCounted" class="gb-flag-not-counted"></span>
@@ -57,7 +56,7 @@
 						<td class="gb-summary-grade-score" wicket:id="gradeScore">
 							<span class="gb-summary-grade-score-raw" wicket:id="grade" wicket:message="aria-label:studentsummary.gradebookitem.score"></span>
 							<span class="gb-summary-grade-score-outof" wicket:id="outOf" wicket:message="aria-label:studentsummary.gradebookitem.outof"></span>
-							<span class="gb-summary-grade-score-rubric fa fa-fw fa-table" wicket:id="rubricIcon"></span>
+							<sakai-rubric-student-button wicket:id="sakai-rubric-student-button"></sakai-rubric-student-button>
 						</td>
 						<td wicket:id="weight"><!-- empty --></td>
 						<td class="gb-summary-grade-duedate" wicket:id="dueDate"></td>
@@ -72,6 +71,7 @@
 			</wicket:container>
 		</table>
 	</wicket:enclosure>
+	<div wicket:id="assignmentStatsWindow"></div>
 </wicket:panel>
 
 </body>

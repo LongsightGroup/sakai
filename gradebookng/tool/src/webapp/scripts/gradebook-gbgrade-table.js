@@ -2,6 +2,8 @@ GbGradeTable = {};
 
 GbGradeTable._onReadyCallbacks = [];
 
+var sakaiReminder = new SakaiReminder();
+
 GbGradeTable.unpack = function (s, rowCount, columnCount) {
   if (/^packed:/.test(s)) {
       return GbGradeTable.unpackPackedScores(s, rowCount, columnCount);
@@ -254,10 +256,6 @@ GbGradeTable.cellRenderer = function (instance, td, row, col, prop, value, cellP
   var $td = $(td);
   var index = col - GbGradeTable.FIXED_COLUMN_OFFSET;
   var student = instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
-
-  if (!instance.view.settings.columns[col]) {
-    return;
-  }
 
   var column = instance.view.settings.columns[col]._data_;
 
@@ -873,8 +871,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     cells: function (row, col, prop) {
       var cellProperties = {};
 
-      var column = GbGradeTable.instance.view.settings.columns[col] ?
-                    GbGradeTable.instance.view.settings.columns[col]._data_ : null;
+      var column = GbGradeTable.instance.view.settings.columns[col]._data_;
       var student = GbGradeTable.instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
 
       if (column == null) {
@@ -1607,11 +1604,10 @@ GbGradeTable.redrawTable = function(force) {
 
     GbGradeTable.currentSortColumn = 0;
     GbGradeTable.currentSortDirection = 'desc';
-
-    GbGradeTable.instance.loadData(GbGradeTable.getFilteredData());
     GbGradeTable.instance.updateSettings({
       columns: GbGradeTable.getFilteredColumns()
     });
+    GbGradeTable.instance.loadData(GbGradeTable.getFilteredData());
     GbGradeTable.refreshSummaryLabels();
     GbGradeTable.forceRedraw = false;
   }, 100);
@@ -1667,7 +1663,9 @@ GbGradeTable.applyColumnFilter = function(data) {
     var column = GbGradeTable.columns[i];
     if (column.hidden) {
       for(var row=0; row<data.length; row++) {
-        data[row] = data[row].slice(0,i+GbGradeTable.FIXED_COLUMN_OFFSET).concat(data[row].slice(i+3))
+        data[row] = data[row]
+          .slice(0, i + GbGradeTable.FIXED_COLUMN_OFFSET)
+          .concat(data[row].slice(i + (GbGradeTable.FIXED_COLUMN_OFFSET + 1)));
       }
     }
   } 
@@ -3239,7 +3237,7 @@ GbGradeTable.setupStudentNumberColumn = function() {
           return student.studentNumber || "";
         }),
         editor: false,
-        width: 140,
+        width: studentNumberColumnWidth,
     });
 };
 
@@ -3287,7 +3285,7 @@ GbGradeTable.setupSectionsColumn = function () {
         return student.sections || "";
       }),
       editor: false,
-      width: 140,
+      width: sectionsColumnWidth,
     });
 };
 
@@ -3306,6 +3304,10 @@ GbGradeTable.findIndex = function(array, predicateFunction) {
         }
     }
     return index;
+}
+
+GbGradeTable.saveNewPrediction = function(prediction) {
+    sakaiReminder.new(prediction);
 }
 
 /**************************************************************************************
