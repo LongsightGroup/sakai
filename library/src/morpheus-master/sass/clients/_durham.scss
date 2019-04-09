@@ -1,4 +1,4 @@
-$skin-name : "durham" !default; // This is used for bootstrap font behaviour.
+$skin-name : "durhamdev" !default; // This is used for bootstrap font behaviour.
 
 // Main Colors
 $primary-color:    			 		  	#028546 !default;
@@ -63,3 +63,11 @@ $tool-menu-item-selected-text-color:            		#028546 !default;
 $tool-menu-item-selected-icon-color:            		#028546 !default;
 $tool-menu-item-selected-border-left:           		4px solid #028546 !default;
 $tool-menu-item-selected-background-color:          		#FFF !default;
+
+#Mrphs-userNav__submenuitem--connections {
+    display: none !important;
+}
+
+#toolHolderWW > div > div.col-md-4 > div.portalNeochatToggleArea {
+    display: none !important;
+}

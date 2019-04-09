@@ -105,3 +105,12 @@ $tool-menu-item-selected-hover-border-left:         		4px solid #444 !default;
 // info message colors
 $info-background-color:   					#f5e6c7;
 $info-color:                					#300  !default;
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #300 !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+}

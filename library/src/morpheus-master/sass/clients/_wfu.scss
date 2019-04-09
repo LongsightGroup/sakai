@@ -1,0 +1,177 @@
+$skin-name : "wfu" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo: 'images/wfu.svg';
+$logo-height: 50px;
+$logo-width: 400px;
+
+/* Color palette */
+$background-color: #FFFFFF;
+
+$primary-color:                          #3b3836;
+$text-color:                             #000000;
+
+$portal-background-color: $background-color;
+
+$tool-background-color:		 $background-color;
+$tool-menu-background-color: #e6e1da;
+$tool-menu-color:      			 #444444;
+$tool-tab-background-color:    			 #e6e1da;
+$tool-border-color:    			 #000000;
+$tool-tab-active-background-color:     			 $background-color !default;
+$tool-tab-active-border-color: 	 $background-color;
+$tool-menu-hover-color:  #000000;
+$tool-menu-hover-background-color: linear-gradient(to bottom, #CECABD 0%,#C2BDAD 100%);
+$tool-menu-current-background-color: #C2BDAD;
+$tool-menu-current-color: #9E7E38;
+
+$tool-menu-item-selected-background-color:                 #FFFFFF;
+$tool-menu-item-selected-text-color:                       #9E7E38 !default;
+$tool-menu-item-selected-icon-color:                       #9E7E38 !default;
+$tool-menu-item-background-color:                          #e6e1da !default;
+$tool-menu-item-hover-text-color:                          #000000 !default;
+$tool-menu-item-hover-icon-color:                          #000000 !default;
+$tool-menu-item-hover-background-color:                    linear-gradient(to bottom, #CECABD 0%,#C2BDAD 100%) !default;
+$tool-menu-item-hover-border-left:                         4px solid #3b3836 !default;
+$tool-menu-item-selected-border-left:                      4px solid #3b3836 !default;
+
+$tool-tab-text-color:                                     $tool-menu-color !default;
+$tool-tab-background-color:                               $tool-menu-background-color !default;
+$tool-tab-active-highlight-color:                         #9e7e38 !default;
+
+
+$top-header-background: #FFFFFF;
+$sites-nav-background: #3c3937 !important;
+
+$breadcrumbs-color:    			 #000000;
+$breadcrumbs-tool-color:       		 #000000;
+$breadcrumbs-hover-color:      		 #444444;
+
+/* Link colors */
+$link-color: #544a45;
+$link-active-color:#625750;
+$link-hover-color: $primary-color;
+$link-background-color: transparent !default;
+$link-active-background-color: transparent !default;
+$link-hover-background-color: transparent !default;
+
+/* Linknav button colors */
+$button-text-color:    	 #000000;
+$button-border-color: #E5E0D9;
+$button-background-color: -webkit-linear-gradient(top, #E8E3DD 0%,#E5E0D9 100%);
+$button-background-secondary-color: #E5E0D9;
+/* General button colors */
+$button-color-text-color: #000000;
+$button-color-border-color: #E5E0D9;
+$button-color-background-color: -webkit-linear-gradient(top, #E8E3DD 0%,#E5E0D9 100%);
+$button-color-background-secondary-color: #E5E0D9;
+// Primary Button Color
+$button-primary-background-color:                       #C99700 !default;
+$button-primary-text-color:                             #000 !default;
+$button-primary-hover-text-color:                       #3c3937 !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     #3c3937 !default;
+/* ///////////// */
+
+$info-color:                $primary-color;
+$info-background-color:     lighten($primary-color, 45%) !default;
+$ok-color:                  #3c763d !default;
+$ok-background-color:        lighten($ok-color, 45%) !default;
+$warn-background-color:     #F6ECB7 !default;
+$warn-color:                darken($warn-background-color, 35%) !default;
+$error-background-color:    #f2dede !default;
+$error-color:               darken($error-background-color, 30%) !default;
+
+$topNav-text-color: #000000;
+
+$sites-nav-submenu-item-background:	    #FAFAFA;
+$sites-nav-menu-item-background:            #3c3937;
+$sites-nav-menu-item-color:                 #FFFFFF;
+$sites-nav-menu-item-hover-color:	    #FFFFFF;
+$sites-nav-menu-item-hover-background:	    #3c3937;
+$sites-nav-menu-item-color-hover:           #FFFFFF;
+$sites-nav-menu-item-border-top:            none ; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-right:          none;
+$sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-border-left:           none;
+$sites-nav-menu-item-selected-background:   #9e7e38;
+$sites-nav-menu-item-selected-color:        #FFFFFF;
+$sites-nav-menu-item-selected-color-hover:  $sites-nav-menu-item-selected-color !default;
+$sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-right: none !default;
+$sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default; /* to pre-allocate space for dropdown top border needed for illusion */
+$sites-nav-menu-item-selected-border-left:  none !default;
+$sites-nav-submenu-background:              $sites-nav-menu-item-background !default;
+$sites-nav-submenu-item-color-hover:        #3c3937 !default;
+$sites-nav-submenu-item-border:             none !default;
+$sites-nav-submenu-item-border-hover:       none !default;
+$sites-nav-submenu-selected-background:     $sites-nav-menu-item-selected-background !default;
+$sites-nav-submenu-item-selected-background:$sites-nav-menu-item-selected-background !default;
+$sites-nav-submenu-item-selected-color:     $sites-nav-menu-item-selected-color;
+$sites-nav-submenu-item-selected-border:    none !default;
+
+/* Favorites - tool submenu items hovered */
+$sites-nav-submenu-item-hover-background:   #ECECEC !default;
+$sites-nav-submenu-item-hover-color:        #3c3937;
+$sites-nav-submenu-item-hover-icon-color:   #3c3937;
+$sites-nav-submenu-item-hover-left-border-color: #3c3937;
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: $primary-color !important;
+   background: #9c7d37 !important;
+}
+
+.instruction {
+    border-color: $primary-color !important;
+    background-color: #9c7d37 !important;
+    color: #fff !important;
+}
+
+@media only screen and (max-width: 800px){
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    background: url("../images/wfuSakai.svg") no-repeat center center !important;
+    width: 145px !important;
+    }
+}
+
+.dropzone .dz-preview .dz-progress {
+    opacity: 0 !important;
+}
+
+#authorIndexForm .ui-state-active, #authorIndexForm .ui-widget-content .ui-state-active, #authorIndexForm .ui-widget-header .ui-state-active {
+  background: #9c7d37 !important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active {
+    border: transparent !important;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
+    background-color: #e6e1da !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-resources a.nil.fa-folder::after {
+    margin: 0.45em 0 0 -3.4em !important;
+}
+
+.navIntraTool li span.current a {
+    background: #FFF;
+    color: #000;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+    color: $link-color !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+} 

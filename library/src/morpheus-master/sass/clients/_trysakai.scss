@@ -1,0 +1,91 @@
+$skin-name : "trysakai" !default; // This is used for bootstrap font behaviour.
+
+$background-color-secondary: #444444 !default;
+$primary-color:    			 #00aa9e !default;
+$text-color:				 #000000 !default;
+$body-background-color: #FFFFFF !default;
+$tool-menu-background-color:	#f6f6f6 !default;
+$tool-menu-color: 			 #00aa9e !default;
+$tool-border-color:			 #f2f1f1 !default;
+$tool-tab-background-color:                               #f6f6f6 !default;
+$tool-tab-active-text-color:                              #00aa9e !default;
+$tool-tab-active-highlight-color:                         #00aa9e !default;
+$breadcrumbs-color:			 #000 !default;
+$breadcrumbs-tool-color:		 #000 !default;
+$breadcrumbs-hover-color:		 #000 !default;
+$link-color: #444444 !default;
+$link-active-color: #444444 !default;
+$link-hover-color: #00aa9e !default;
+$button-text-color:	 #FFFFFF !default;
+$button-border-color: #FFFFFF !default;
+$button-background-color: #00aa9e !default;
+$button-background-secondary-color: #00aa9e !default;
+$button-color-border-color: #FFF !default;
+$button-color-background-color: #00aa9e !default;
+$button-color-background-secondary-color: #00aa9e !default;
+$button-primary-background-color:                         #00aa9e !default;
+$button-secondary-text-color:                             #FFF !default;
+$button-secondary-icon-color:                             #FFF !default;
+$header-gradient-a: #00aa9e !default;
+$sites-nav-menu-item-background:            #D3D3D3 !default;
+$sites-nav-menu-item-color:                 #000000 !default;
+$sites-nav-menu-item-icon-color:            #000000 !default;
+$sites-nav-menu-item-selected-background:   #00aa9e !default;
+$sites-nav-menu-item-selected-hover-background:   #00aa9e !default;
+$sites-nav-menu-item-selected-hover-color:        #FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color:   #FFF !default;
+$sites-nav-menu-item-selected-border-color: #FFF !default;
+$tool-menu-item-hover-text-color:                          #00aa9e !default;
+$tool-menu-item-hover-icon-color:                          #00aa9e !default;
+$tool-menu-item-hover-background-color:                    #FFFFFF !default;
+$tool-menu-item-hover-border-left:                         4px solid #00aa9e !default;
+$tool-menu-item-selected-text-color:                       #00aa9e !default;
+$tool-menu-item-selected-icon-color:                       #00aa9e !default;
+$tool-menu-item-selected-border-left:                      4px solid #00aa9e !default;
+$tool-menu-item-selected-hover-text-color:                 #FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:                 #FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:           #00aa9e !default;
+$tool-menu-item-selected-hover-border-left:                4px solid #00aa9e !default;
+$tool-menu-collapse-active-hover-background-color:         #00aa9e !default;
+$tool-menu-collapse-active-text-color:                     #000 !default;
+$tool-sub-menu-hover-color:				   #000; 
+$sites-nav-background: #00aa9e;
+
+/* Logo location */
+$logo: '../images/trysakai.png';
+$logo-height: 32px;
+$logo-width: 184px;
+
+
+$info-background-color:   #efefef;
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    border-color: $primary-color !important;
+}
+
+.select {
+    color: #000 !important;
+    background-color: #EEE !important;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+   border-color: #000 !important;
+   background-color: #EEE !important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #000 !important;
+    background: #00aa9e !important;
+}
+
+.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
+    color: #000 !important;
+}
+
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}

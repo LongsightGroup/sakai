@@ -1,0 +1,130 @@
+$skin-name : "walsh" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		  	#770124 !default;
+$body-background-color: 		 			#FFFFFF !default;
+$background-color-secondary: 		 			#770124 !default;
+$text-color:				 		    	#000 !default;
+$topNav-text-color:					    	#FFF !default;
+$sites-nav-background: 						#FAFAFA;
+$sites-nav-submenu-item-background:				#FAFAFA;
+
+/* Logo location */
+$logo: 								'../images/walsh.svg';
+$logo-height: 							64px;
+$logo-width: 							153px;
+
+// Tab colors
+$tool-tab-active-text-color:             			#000 !default;
+$tool-tab-active-highlight-color:        			#770124 !default;
+$tool-tab-active-background-color:				#FFF !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 			#000 !default;
+$breadcrumbs-tool-color:		 			#000 !default;
+$breadcrumbs-hover-color:		 			#000 !default;
+
+// Links
+$link-color: 				 			#0064cd !default;
+$link-active-color: 			 			#0064cd !default;
+$link-hover-color: 			 			#0064cd !default;
+
+// Primary Button Color
+$button-primary-background-color:        			#0064cd !default;
+$button-primary-text-color: 		 			#FFF !default;
+
+// Non Selected
+$sites-nav-menu-item-background:         			#770124 !default;
+$sites-nav-menu-item-color:              			#FFF !default;
+$sites-nav-menu-item-icon-color:         			#FFF !default;
+
+$sites-nav-menu-item-hover-background:         			#770124 !default;
+$sites-nav-menu-item-hover-color:              			#FFF !default;
+$sites-nav-menu-item-icon-color:         			#FFF !default;
+//Selected
+$sites-nav-menu-item-selected-background:			#f0ca03 !default;
+$sites-nav-menu-item-selected-color:				#000 !default;
+$sites-nav-menu-item-selected-icon-color:			#000 !default;
+
+$sites-nav-menu-item-selected-hover-background:			#f0ca03 !default;
+$sites-nav-menu-item-selected-hover-color:			#000 !default;
+$sites-nav-menu-item-selected-hovericon-color:			#000 !default;
+
+// TOOL MENU COLORS
+// non-selected hover
+$tool-menu-item-hover-text-color:               		#369 !default;
+$tool-menu-item-hover-icon-color:               		#369 !default;
+$tool-menu-item-hover-background-color:         		#eee !default;
+$tool-menu-item-hover-border-left:              		4px solid #770124 !default;
+// selected
+$tool-menu-item-selected-text-color:            		#000 !default;
+$tool-menu-item-selected-icon-color:            		#000 !default;
+$tool-menu-item-selected-border-left:           		4px solid #770124 !default;
+$tool-menu-item-selected-background-color:          		#FFF !default;
+
+/* Tool sub menu */
+$tool-sub-menu-border-color: #e5e5e5 !default;
+$tool-sub-menu-background-color: #FAFAFA !default;
+$tool-sub-menu-hover-background-color: #eee !default;
+$tool-sub-menu-hover-color: #369 !default;
+
+@media only screen and (max-width: 800px) {
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: 120px !important;
+    height: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy .Mrphs-hierarchy--siteName a {
+        color: #000 !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #000 !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+         color: #000 !important;
+    }
+}
+
+.popup-container-header {
+    background: #770124 !important;
+}
+
+.sakai-tutorial.qtip .qtip-titlebar {
+   background: #770124 !important;
+}
+
+.sakai-tutorial.qtip .qtip-content {
+   border: 4px solid #770124 !important;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__category, #subSites ul li .Mrphs-toolsNav__category {
+    background-color: transparent !important;
+    color: #000 !important;
+    font-weight: 700;
+}
+
+.Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box {
+    background-color: #fafafa !important;
+    border-color: #770142 !important;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #fafafa !important;
+    border-color: #770142 !important;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo {
+    background: url(../images/walsh.svg) no-repeat left #770124 !important;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    display: none;
+}
