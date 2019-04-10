@@ -247,7 +247,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<sakai.skin.source>morpheus-default</sakai.skin.source>
+				<sakai.skin.source>morpheus-master</sakai.skin.source>
 				<sakai.skin.target>sgu</sakai.skin.target>
 				<sakai.skin.customization.file>src/${sakai.skin.source}/sass/_sgu.scss</sakai.skin.customization.file>
 				<sakai.skin.outputSyle>compressed</sakai.skin.outputSyle>
