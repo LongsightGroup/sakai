@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>My Courses</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" type="image/png" href="library/skin/gateway_files/images/icons/favicon.ico" />
+
+<link rel="stylesheet" type="text/css" href="library/skin/gateway_files/css/main.css">
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#annc').contents().find('div').css('background-color', 'green');
+});
+</script>
+</head>
+<body>
+<div class="limiter">
+<div class="container-login100">
+<div class="wrap-login100">
+<form class="login100-form" method="post" action="/portal/xlogin" enctype="application/x-www-form-urlencoded" target="_parent">
+<span class="login100-form-title">
+<div style="width: 246px; height: 64px; clear: both; margin: 0 auto;"><img src="/library/skin/gateway_files/images/mycourses-logo.png"></div>
+<br>
+<p>SGU’s COLLABORATIVE <br>
+TEACHING AND LEARNING ENVIRONMENT</p></span><p></p>
+<span class="login100-form-paragraph">Welcome to MyCourses, St. George's University's course management system. MyCourses lets you work in an environment analogous to a typical classroom experience and enables instructors to make many features available to their students including access to course materials, assignment submission facilities and grade reports. MyCourses provides seamless access to your courses, your online community groups and your organizations, enhancing your teaching, learning and collaboration experience. Log into MyCourses to set sail on your journey of learning at SGU! </span>
+<div class="wrap-input100 rs1-wrap-input100 validate-input m-b-20">
+<input name="eid" class="input100" id="eid" type="text" placeholder="User name">
+<span class="focus-input100"></span>
+</div>
+<div class="wrap-input100 rs2-wrap-input100 validate-input m-b-20" data-validate="Type password">
+<input class="input100" name="pw" id="pw" type="password" placeholder="Password">
+</div>
+<div class="container-login100-form-btn">
+<button class="login100-form-btn" type="image" value="submit">
+Log in
+</button>
+</div>
+<div class="w-full text-center p-t-27">
+<p><a id="forgotPass" href="/portal/tool/5bf045ea-0c57-4db2-bf11-c15e07aab15f?panel=Main" accesskey="3" target="_self" class="txt2">
+Forgot password?
+</a> </p>
+<p>
+</p>
+<div class="w-full text-center"><a href="/access/content/group/28df2218-3131-48c2-9262-679d340cd650/Student%20Videos/index.html" accesskey="1" target="_self" class="txt3">
+Sakai Video Tutorials &nbsp;&nbsp;&nbsp;| &nbsp;&nbsp;&nbsp;
+</a>
+<a target="_blank" href="https://sgu.service-now.com/" class="txt3">IT Support Services &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+</a>
+<a accesskey="h" href="javascript:;" onclick="window.open('/portal/help/main','Help','resizable=yes,toolbar=no,scrollbars=yes, width=800,height=600')" onkeypress="window.open('/portal/help/main','Help','resizable=yes,toolbar=no,scrollbars=yes, width=800,height=600')" class="txt3">
+Sakai Help Documentation
+</a>
+</div>
+<span class="announcement-title  p-t-20 p-b-20">Announcements</span>
+<iframe id="annc" src="https://mycourses.sgu.edu/access/content/group/7a7ac639-acc5-4f33-b106-ae0778aabff6/Public%20Announcements/Public%20Announcements" width="99%" height="220">
+  						<p>Your browser does not support iframes.</p>
+							</iframe>
+<div style="width: 246px; height: 44px; clear: both; margin: 0 auto; padding-top: 10px;"><img src="/library/skin/gateway_files/images/SGU-Logo.jpg"></div>
+</div>
+</form>
+<div class="login100-more" style="background-image: url('/library/skin/gateway_files/images/bg-01.jpg');"></div>
+</div>
+</div>
+<script>document.forms[0].elements["eid"].focus();</script>
+</div>
+</body>
+</html>
