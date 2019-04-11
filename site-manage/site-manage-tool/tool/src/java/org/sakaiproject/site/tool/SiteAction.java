@@ -3481,7 +3481,8 @@ public class SiteAction extends PagedResourceActionII {
 			// Add the menus to vm
 			MenuBuilder.buildMenuForSiteInfo(portlet, data, state, context, site, rb, siteTypeProvider, SiteInfoActiveTab.EDIT_CLASS_ROSTERS);
 
-			context.put("allowAddRoster", SecurityService.unlock(SiteService.SECURE_UPDATE_SITE_MEMBERSHIP, site.getReference()));
+			context.put("allowAddRoster", SiteService.allowAddSite(site.getId()));
+			context.put("isInstructorOrTA", isInstructorOrTA(site.getId()));
 			context.put("siteTitle", site.getTitle());
 			coursesIntoContext(state, context, site);
 
@@ -7319,6 +7320,37 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 				cmRequestedSectionString = trimTrailingString(cmRequestedSectionString, "+");
 				
 				sendSiteRequest(state, "new", cmRequestedSections.size(), cmRequestedSections, "cmRequest");
+			} else if(isInstructorOrTA(siteId)) {
+				// get the selected cm section
+				if (state.getAttribute(STATE_CM_SELECTED_SECTIONS) != null )
+				{
+					List<SectionObject> cmSelectedSections = (List) state.getAttribute(STATE_CM_SELECTED_SECTIONS);
+					for (int j = 0; j < cmSelectedSections.size(); j++) {
+						providerCourseList.add(cmSelectedSections.get(j).eid);
+					}
+						
+						//Duke bypassing code to allow instructors and tas adding rosters
+						try {
+							AuthzGroup realmEdit = authzGroupService
+									.getAuthzGroup(realm);
+							String providerRealm = buildExternalRealm(siteId, state,
+									providerCourseList, StringUtils.trimToNull(realmEdit.getProviderGroupId()));
+							realmEdit.setProviderGroupId(providerRealm);
+							authzGroupService.save(realmEdit);
+						} catch (GroupNotDefinedException e) {
+							log.error(this + ".updateCourseSiteSections: IdUnusedException, not found, or not an AuthzGroup object", e);
+							addAlert(state, rb.getString("java.realm"));
+						}
+						catch (AuthzPermissionException e)//add pushadvisor if it fails
+						{
+							log.warn(this + " -Duke bypassing- " + rb.getString("java.notaccess"));
+							addAlert(state, rb.getString("java.notaccess"));
+						}
+
+						sendSiteNotification(state, getStateSite(state), providerCourseList);
+						//Track add changes
+						trackRosterChanges(org.sakaiproject.site.api.SiteService.EVENT_SITE_ROSTER_ADD,providerCourseList);
+				}
 			}
 			else
 			{
@@ -16267,5 +16299,14 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 	private String getDateFormat(Date date) {
 		String f = userTimeService.shortPreciseLocalizedTimestamp(date.toInstant(), userTimeService.getLocalTimeZone(), comparator_locale);
 		return f;
+		}
+
+	private boolean isInstructorOrTA(String siteId){
+		User u = userDirectoryService.getCurrentUser();
+		if(u == null || StringUtils.isBlank(siteId)){
+			return false;
+		} else {
+			return SecurityService.unlock(u, "site.upd",  "/site/" + siteId) || SecurityService.unlock(u, "section.role.ta",  "/site/" + siteId);
+		}
 	}
 }
