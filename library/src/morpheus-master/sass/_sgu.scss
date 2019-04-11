@@ -9,14 +9,14 @@ $topNav-text-color:					#000 !default;
 $sites-nav-background: 					#f3f3f3 !default;
 
 /* Logo location */
-$logo: 							'images/sgu.svg';
+$logo: 							'../images/sgu.svg';
 $logo-height: 						50px;
 $logo-width: 						268px;
 
 // Tab colors
 $tool-tab-text-color:			 		#000;
 $tool-tab-background-color:              		#ebebeb !default;
-$tool-tab-active-text-color:             		#FFF !default;
+$tool-tab-active-text-color:             		#c75b06 !default;
 $tool-tab-active-highlight-color:        		#c75b06 !default;
 $tool-tab-active-background-color:			#FFF !default;
 
@@ -38,6 +38,9 @@ $button-background-secondary-color: 	 		#FFFFFF !default;
 $button-color-border-color: 		 		#CCCCCC !default;
 $button-color-background-color: 	 		#FFFFFF !default;
 $button-color-background-secondary-color:		#FFFFFF !default;
+$button-primary-hover-text-color:			#c75b06;
+$button-primary-hover-border-color:			#c75b06;
+
 
 // Sites Navigation
 // Non Selected
