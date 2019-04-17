@@ -72,10 +72,10 @@
         <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
-                <entry key="ttuhscprodkey" value="changeit"/>
+                <entry key="ttuhsctestkey" value="changeit"/>
             </map>
         </constructor-arg>
-        <constructor-arg type="java.lang.String" value="ttuhscprodkey"/>
+        <constructor-arg type="java.lang.String" value="ttuhsctestkey"/>
     </bean>
 
     <!-- Entry point to initialize authentication, default values taken from properties file -->
@@ -96,7 +96,7 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="https://ttuhsc-prod.saml.longsight.com/samlauth" />
+                <property name="entityId" value="https://ttuhsc-test.saml.longsight.com/samlauth" />
                 <!-- <property name="includeDiscoveryExtension" value="true"/> -->
                 <!-- <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
@@ -144,8 +144,8 @@
 			               <property name="sslSecurityProfile" value="pkix"/>
 			               <property name="sslHostnameVerification" value="default"/>
 			               <property name="signMetadata" value="false"/>
-			               <property name="signingKey" value="ttuhscprodkey"/>
-			               <property name="encryptionKey" value="ttuhscprodkey"/>
+			               <property name="signingKey" value="ttuhsctestkey"/>
+			               <property name="encryptionKey" value="ttuhsctestkey"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
 			               <property name="requireLogoutRequestSigned" value="false"/>
 			               <property name="requireLogoutResponseSigned" value="false"/>
@@ -184,7 +184,7 @@
                   <constructor-arg>
                 <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://msidp.ttuhsc.edu/federationmetadata/2007-06/federationmetadata.xml</value>
+                        <value type="java.lang.String">https://dev.msidp.ttuhsc.edu/federationmetadata/2007-06/federationmetadata.xml</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">60000</value>

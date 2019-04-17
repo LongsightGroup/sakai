@@ -280,7 +280,7 @@
 
     <!-- SAML 2.0 WebSSO Assertion Consumer -->
     <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl">
-        <property name="maxAuthenticationAge" value="28800" />
+        <property name="maxAuthenticationAge" value="86400" />
     </bean>
 
     <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
@@ -337,8 +337,9 @@
         <constructor-arg ref="parserPool"/>
     </bean>
 
-    <!-- Initialization of OpenSAML library-->
-    <bean class="org.springframework.security.saml.SAMLBootstrap"/>
+    <!-- Initialization of OpenSAML library -->
+    <!-- Use SHA256SAMLBootstrap for SHA-256 instead of default SHA-1 -->
+    <bean class="org.sakaiproject.login.springframework.SHA256SAMLBootstrap"/>
 
     <!-- Initialization of the velocity engine -->
     <bean id="velocityEngine" class="org.springframework.security.saml.util.VelocityFactory" factory-method="getEngine"/>
