@@ -154,40 +154,17 @@
 			        </constructor-arg>
 			    </bean>
 
-                <!-- Example of classpath metadata with Extended Metadata -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <bean class="java.util.Timer"/>
+                                <value type="java.lang.String">https://dev.msidp.ttuhsc.edu/federationmetadata/2007-06/FederationMetadata.xml</value>
                             </constructor-arg>
                             <constructor-arg>
-                                <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="sakai/saml/idp.xml"/>
-                                </bean>
-                            </constructor-arg>
-                            <property name="parserPool" ref="parserPool"/>
-                        </bean>
+                                <value type="int">45000</value>
                     </constructor-arg>
                     <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-		               <property name="requireLogoutRequestSigned" value="true"/>
-		               <property name="requireLogoutResponseSigned" value="true"/>
-                        </bean>
-                    </constructor-arg>
-                  <property name="metadataTrustCheck" value="false"/>
-                </bean>
-
-                <!-- Example of HTTP metadata without Extended Metadata -->
-<!--
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                  <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
-                    <constructor-arg>
-                        <value type="java.lang.String">https://dev.msidp.ttuhsc.edu/federationmetadata/2007-06/federationmetadata.xml</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <value type="int">60000</value>
+                                <value type="java.lang.String">sakai/saml/idp.xml</value>
                     </constructor-arg>
                     <property name="parserPool" ref="parserPool"/>
                 </bean>
@@ -197,7 +174,6 @@
                   </constructor-arg>
                   <property name="metadataTrustCheck" value="false"/>
                 </bean>
-   -->
                 
                 <!-- Example of file system metadata without Extended Metadata -->
                 <!--
@@ -337,9 +313,8 @@
         <constructor-arg ref="parserPool"/>
     </bean>
 
-    <!-- Initialization of OpenSAML library -->
-    <!-- Use SHA256SAMLBootstrap for SHA-256 instead of default SHA-1 -->
-    <bean class="org.sakaiproject.login.springframework.SHA256SAMLBootstrap"/>
+    <!-- Initialization of OpenSAML library-->
+    <bean class="org.springframework.security.saml.SAMLBootstrap"/>
 
     <!-- Initialization of the velocity engine -->
     <bean id="velocityEngine" class="org.springframework.security.saml.util.VelocityFactory" factory-method="getEngine"/>
