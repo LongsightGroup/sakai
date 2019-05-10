@@ -71,3 +71,17 @@ $tool-menu-item-selected-background-color:          		#FFF !default;
 #toolHolderWW > div > div.col-md-4 > div.portalNeochatToggleArea {
     display: none !important;
 }
+
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #2E94C0 !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 153px !important;
+        background-size: 153px 50px !important;
+    }
+}

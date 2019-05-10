@@ -1,0 +1,53 @@
+$skin-name : "antioch" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo: '../images/antioch.svg' !default;
+$banner-height: 56px !default;
+$logo-height: 44px !default;
+$logo-width: 166px !default;
+
+/* Tool tabs */
+$tool-tab-active-text-color:                              #201c3e !default;
+$tool-tab-active-highlight-color:                         #201c3e !default;
+
+/* General button colors */
+$button-primary-background-color:                         #201c3e !default;
+
+/* Favorites */ 
+$sites-nav-menu-item-selected-background:   #003c69 !default;
+$sites-nav-menu-item-selected-hover-background:   #003c69 !default;
+
+/* Tool Menu */
+$tool-menu-item-selected-text-color:                       #201c3e !default;
+$tool-menu-item-selected-icon-color:                       #201c3e !default;
+$tool-menu-item-selected-border-left:                      4px solid #201c3e !default;
+$tool-menu-item-selected-hover-text-color:                 #201c3e !default;
+$tool-menu-item-selected-hover-icon-color:                 #201c3e !default;
+$tool-menu-item-selected-hover-border-left:                4px solid #201c3e !default;
+$tool-menu-collapse-active-background-color:               #201c3e !default;
+$tool-menu-collapse-active-hover-background-color:         #201c3e !default;
+
+/* Navigation Hierarchy */
+
+$banner-height: 56px !default;
+
+/* Color palette */
+$background-color-secondary: #003c69 !default;
+
+/* Miscellaneous modifications */
+
+.bs-callout-warn, .Mrphs-sakai-forums .topicBlocLone, .bs-callout-alert, .messageWarning, .messageConfirmation {
+    background-color: #FFF !important;
+    border-color: #9c9c9c !important;
+    border-left-color: #5c5c5c !important;
+}
+
+/* Change to Forums drop down text color */
+
+.Mrphs-sakai-forums .topicBlocLone h1, .Mrphs-sakai-forums .topicBlocLone h2, .Mrphs-sakai-forums .topicBlocLone h3, .Mrphs-sakai-forums .topicBlocLone h4, .Mrphs-sakai-forums .topicBlocLone h5, .Mrphs-sakai-forums .topicBlocLone h6 {
+    color: #000000 !important;
+}
+
+.Mrphs-sakai-forums .topicBlocLone {
+    color: #000000 !important;
+}

@@ -101,6 +101,7 @@
     social-bullhorn : ( extend : fa-users ),
     sakai-irubric : (extend: fa-table),
     sakai-attendance : ( extend : fa-hand-paper-o ),
+<<<<<<< HEAD
     com-sonicfoundry-mediasite-mymediasite : ( extend : fa-users),
     com-sonicfoundry-mediasite-catalog : ( extend : fa-youtube-play),
     sakai-blogwow : ( extend : fa-commenting),
@@ -112,6 +113,12 @@
     sakai-videoconference-connect : ( extend : fa-group),
     sakai-scorm-tool : ( extend : fa-book),
     sakai-scorm-singlepackage-tool : ( extend : fa-book),
+=======
+    sakai-blogwow : ( extend : fa-pencil-square-o ),
+    sakai-clog : ( extend : fa-pencil-square-o ),
+    sakai-scorm-tool : ( extend : fa-file-archive-o ),
+    sakai-scorm-singlepackage-tool : ( extend : fa-file-archive-o ),
+>>>>>>> cee54396206ded26a148b3c06b11a6aba132b18a
 
     // other icons
     check : ( extend : fa-check ),
