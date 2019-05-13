@@ -1,4 +1,4 @@
-$skin-name : "durhamdev" !default; // This is used for bootstrap font behaviour.
+$skin-name : "durham" !default; // This is used for bootstrap font behaviour.
 
 // Main Colors
 $primary-color:    			 		  	#028546 !default;
@@ -83,5 +83,8 @@ $tool-menu-item-selected-background-color:          		#FFF !default;
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
         width: 153px !important;
         background-size: 153px 50px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 153px) !important;
     }
 }
