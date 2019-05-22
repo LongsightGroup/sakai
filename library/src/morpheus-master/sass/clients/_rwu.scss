@@ -60,14 +60,17 @@ $sites-nav-menu-item-background:         		#00355f !default;
 $sites-nav-menu-item-color:              		#FFFFFF !default;
 $sites-nav-menu-item-icon-color:         		#FFFFFF !default;
 $sites-nav-menu-item-border-color:         		#FFF !default;
-//Selected
+$sites-nav-menu-item-hover-background:                  $sites-nav-menu-item-background;
+$sites-nav-menu-item-hover-color:                       $sites-nav-menu-item-color;
+$sites-nav-menu-item-hover-icon-color:                  $sites-nav-menu-item-icon-color;
 //Selected
 $sites-nav-menu-item-selected-background:		#FFFFFF !default;
 $sites-nav-menu-item-selected-color:			#00355f !default;
-$sites-nav-menu-item-selected-hover-background: 	#00355f !default;
-$sites-nav-menu-item-selected-hover-color:      	#FFF !default;
-$sites-nav-menu-item-selected-hover-icon-color: 	#FFF !default;
-$sites-nav-menu-item-selected-border-color: 		#00355f !default;
+$sites-nav-menu-item-selected-icon-color: 		#00355f !default;
+$sites-nav-menu-item-selected-hover-background: 	#FFF !default;
+$sites-nav-menu-item-selected-hover-color:      	#00355f !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#00355f !default;
+$sites-nav-menu-item-selected-border-color: 		#FFF !default;
 
 // TOOL MENU COLORS
 // non-selected
