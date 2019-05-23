@@ -116,3 +116,7 @@ $info-color:                					$primary-color  !default;
 $error-background-color:    					#F2DEDE !default;
 $ok-color:                  					#DFF0D8 !default;
 $warn-background-color:     					#FCF8E3 !default;
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}

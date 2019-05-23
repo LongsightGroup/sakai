@@ -4,3 +4,7 @@ $skin-name : "johnson" !default; // This is used for bootstrap font behaviour.
 $logo: 								'../images/johnson.png';
 $logo-height: 							50px;
 $logo-width: 							149px;
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}
