@@ -480,7 +480,7 @@ public class UsersAction extends PagedResourceActionII
 
 		context.put("incType", Boolean.valueOf(true));
 
-    context.put("superUser", Boolean.valueOf(securityService.isSuperUser()));
+		context.put("superUser", Boolean.valueOf(UserDirectoryService.allowAddUser()));
 
 		String value = (String) state.getAttribute("valueEid");
 		if (value != null) context.put("valueEid", value);
@@ -577,7 +577,7 @@ public class UsersAction extends PagedResourceActionII
 		context.put("user", user);
 		
 		// is super user/admin user?
-		context.put("superUser", Boolean.valueOf(securityService.isSuperUser()));
+		context.put("superUser", Boolean.valueOf(UserDirectoryService.allowAddUser()));
 
 		// include the password fields?
 		context.put("incPw", state.getAttribute("include-password"));
@@ -1622,7 +1622,7 @@ public class UsersAction extends PagedResourceActionII
 			if (!isProvidedType(user.getType())) {
 			
 				// make sure the old password matches, but don't check for super users
-				if (!securityService.isSuperUser()) {
+				if (!UserDirectoryService.allowAddUser()) {
 					if (!user.checkPassword(pwcur)) {
 						addAlert(state, rb.getString("usecre.curpass"));
 						return false;
