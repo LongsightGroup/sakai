@@ -27,6 +27,10 @@
 #rightPanel {
 }
 
+div#footer {
+    visibility: hidden;
+}
+
 #fullWidth {
 }
 
