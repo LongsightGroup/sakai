@@ -151,7 +151,7 @@
                                        <property name="requireLogoutRequestSigned" value="false"/>
                                        <property name="requireLogoutResponseSigned" value="false"/>
                                        <property name="idpDiscoveryEnabled" value="true"/>
-                                       <property name="idpDiscoveryURL" value="https://sakai.lampschool.sorg/sakai-login-tool/container/saml/discovery" />
+                                       <property name="idpDiscoveryURL" value="https://sakai.lampschools.org/sakai-login-tool/container/saml/discovery" />
                                     </bean>
                                 </constructor-arg>
                             </bean>
