@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.Enumeration;
 import java.util.Objects;
 
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -178,6 +179,15 @@ public class SakaiBLTIUtil {
 	public static final String CANVAS_PLACEMENTS_ASSIGNMENTSELECTION = "Canvas.placements.assignmentSelection";
 	public static final String CANVAS_PLACEMENTS_LINKSELECTION = "Canvas.placements.linkSelection";
 	public static final String CANVAS_PLACEMENTS_CONTENTIMPORT = "Canvas.placements.contentImport";
+	
+  private static Object inotadoService = null;
+	
+	private static Object getInotadoService(){
+		if(inotadoService == null){
+			inotadoService = ComponentManager.get("edu.wfu.inotado.api.InotadoService");
+		}
+		return inotadoService;
+	}
 
 	public static boolean rosterEnabled() {
 		String allowRoster = ServerConfigurationService.getString(BASICLTI_ROSTER_ENABLED, BASICLTI_ROSTER_ENABLED_DEFAULT);
@@ -785,6 +795,22 @@ public class SakaiBLTIUtil {
 		String contentlink = toNull(getCorrectProperty(config, "contentlink", placement));
 		if (contentlink != null) {
 			setProperty(props, "ext_resource_link_content", contentlink);
+
+ 		// Send additional parameter section_id
+ 		if (getInotadoService() != null) {
+ 			try {
+ 				Method method;
+ 				method = inotadoService.getClass().getMethod("getSectionId",String.class);
+ 				String section_id = (String) method.invoke(inotadoService,
+ 						props.getProperty(BasicLTIConstants.CONTEXT_ID));
+ 				setProperty(props, "section_id", section_id);
+ 			} catch (Exception e) {
+ 				log.error("Failed to execute method due to error " + e.getMessage(), e);
+ 			}
+ 		} else {
+ 			log.warn("Unable to find the bean: inotadoService.");
+ 		}
+
 		}
 	}
 
