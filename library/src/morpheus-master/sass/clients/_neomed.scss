@@ -1,0 +1,140 @@
+$skin-name : "neomed" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#004478 !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#f1f1f1 !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#000 !default;
+$sites-nav-background: 					#b0c7db;
+$sites-nav-submenu-item-background:			#FAFAFA;
+
+/* Logo location */
+$logo: 							'../images/neomed.svg';
+$logo-height: 						50px;
+$logo-width: 						203px;
+
+// Tab colors
+$tool-tab-text-color:			 		#000;
+$tool-tab-background-color:              		#FFF !default;
+$tool-tab-active-text-color:             		#000 !default;
+$tool-tab-active-highlight-color:        		#b0c7db !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#0064cd !default;
+$link-active-color: 			 		#0064cd !default;
+$link-hover-color: 			 		$primary-color;
+
+// Button colors 
+$button-text-color:	 		 		#444444 !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		#FFFFFF !default;
+$button-background-secondary-color: 	 		#FFFFFF !default;
+$button-color-border-color: 		 		#CCCCCC !default;
+$button-color-background-color: 	 		#FFFFFF !default;
+$button-color-background-secondary-color:		#FFFFFF !default;
+// Primary Button Color
+$button-primary-background-color:        		-webkit-linear-gradient(top, #f6f6f5 0%, #e0e0e0 93%, #e0e0e0 97%, #e9e9e9 100%) !default;
+$button-primary-text-color: 		 		#2683bc !default;
+$button-primary-hover-text-color:                         #000 !default;
+$button-primary-hover-background-color:                   $button-color-background-color !default;
+$button-primary-hover-border-color:                       $primary-color;
+
+// Link , Edit, Help Buttons
+$button-secondary-text-color:            		#000 !default;
+$button-secondary-icon-color:            		#000 !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		-webkit-linear-gradient(top, #004478 0%,#005ca3 100%) !default;
+$sites-nav-menu-item-color:              		#FFFFFF !default;
+$sites-nav-menu-item-icon-color:         		#FFFFFF !default;
+$sites-nav-menu-item-hover-background:                  $sites-nav-menu-item-background;
+$sites-nav-menu-item-hover-color:                       $sites-nav-menu-item-color;
+$sites-nav-menu-item-hover-icon-color:                  $sites-nav-menu-item-icon-color;
+
+//Selected
+$sites-nav-menu-item-selected-background:		#F1F1F1 !default;
+$sites-nav-menu-item-selected-color:			#000000 !default;
+$sites-nav-menu-item-selected-icon-color:		#000000 !default;
+$sites-nav-menu-item-selected-hover-background: 	#F1F1F1 !default;
+$sites-nav-menu-item-selected-hover-color:      	#000 !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#000 !default;
+$sites-nav-menu-item-selected-border-color: 		#FFF !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-background-color:		 		#ebebeb !default;
+$tool-menu-color: 			 		#444444 !default;
+$tool-border-color:			 		#004478 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               	#FFFFFF !default;
+$tool-menu-item-hover-background-color:         	#004981 !default;
+$tool-menu-item-hover-border-left:              	4px solid #b0c7db !default;
+// selected
+$tool-menu-item-selected-text-color:            	#004478 !default;
+$tool-menu-item-selected-icon-color:            	#004478 !default;
+$tool-menu-item-selected-border-left:           	4px solid #004478 !default;
+// submenu
+$tool-sub-menu-hover-color:				#004478 !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:	#004478 !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #b0c7db !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #00aa9e !default;
+$tool-menu-collapse-active-text-color:                  #00aa9e !default;
+$tool-sub-menu-hover-color:				#000; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-topHeader .Mrphs-loginNav {
+    color: #000;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.fav-title {
+    width: 306px !important;
+}
+
+ul.favoriteSiteList>li, #selectQuickLink>li {
+    width: 370px !important;
+}
+
+.Mrphs-siteStatus.is-unpublished {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-resources a.nil.fa-folder::after {
+    margin: 0.45em 0 0 -3.4em !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .event a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .borderTopLeft a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-schedule table.calendar .bgActivity a {
+    color: #000 !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #0064cd !important;
+    }
+}

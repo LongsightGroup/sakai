@@ -1,0 +1,121 @@
+$skin-name : "pocono" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		  	#363537 !default;
+$body-background-color: 		 			#FFFFFF !default;
+$background-color-secondary: 		 			#FAFAFA !default;
+$text-color:				 		    	#000 !default;
+$topNav-text-color:					    	#363537 !default;
+$sites-nav-background: 						#363537;
+$skin-with-icons: 						false !important;
+$all-sites-tab-active-background-color:				$body-background-color;
+$banner-height:							72px;
+
+/* Logo location */
+$logo: 								'../images/pocono.svg';
+$logo-height: 							70px;
+$logo-width: 							200px;
+
+// Tab colors
+$tool-tab-text-color:			 			#343434 !default;
+$tool-tab-background-color:              			#E6E6E6 !default;
+$tool-tab-active-text-color:             			#009639 !default;
+$tool-tab-active-highlight-color:        			$primary-color !default;
+$tool-tab-active-background-color:				$body-background-color !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 			#343434 !default;
+$breadcrumbs-tool-color:		 			#343434 !default;
+$breadcrumbs-hover-color:		 			#343434 !default;
+
+// Links
+$link-color: 				 			#0033cc !default;
+$link-active-color: 			 			#0033cc !default;
+$link-hover-color: 			 			#0033cc !default;
+
+// Button colors
+$button-text-color:	 		 			#FFFFFF !default;
+$button-border-color: 			 			#009639 !default;
+$button-background-color: 		 			#009639 !default;
+$button-background-secondary-color: 	 			#2681B5 !default;
+
+$button-color-text-color: 		 			#FFFFFF !default;
+$button-color-border-color: 		 			#009639 !default;
+$button-color-background-color: 	 			#009639 !default;
+$button-color-background-secondary-color:			#2681B5 !default;
+// Primary Button Color
+$button-primary-background-color:        			#009639 !default;
+$button-primary-text-color: 		 			#FFFFFF !default;
+$button-primary-hover-text-color:                   		$button-color-text-color;
+$button-primary-hover-background-color:             		$button-color-background-color !default;
+$button-primary-hover-border-color:                 		$primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                                   $button-primary-text-color;
+$button-secondary-text-color:                                   $button-primary-text-color;
+$button-secondary-background-color:                             $button-primary-background-color;
+
+// Link , Edit, Help Buttons
+$button-secondary-background-color:            			#E6E6E6 !default;
+$button-secondary-text-color:            			#009639 !default;
+$button-secondary-icon-color:            			#009639 !default;
+
+
+// Sites Navigation
+// Non Selected
+$sites-nav-menu-item-background:         			#363537 !default;
+$sites-nav-menu-item-color:              			#FFFFFF !default;
+$sites-nav-menu-item-icon-color:         			#FFFFFF !default;
+$sites-nav-menu-item-border-color:         			none !default;
+
+$sites-nav-menu-item-hover-background:         			#363537 !default;
+$sites-nav-menu-item-hover-color:              			#FFFFFF !default;
+$sites-nav-menu-item-hover-icon-color:         			#FFFFFF !default;
+//Selected
+$sites-nav-menu-item-selected-background:			#009639 !default;
+$sites-nav-menu-item-selected-color:				#FFF !default;
+$sites-nav-menu-item-selected-icon-color:			#FFF !default;
+$sites-nav-menu-item-selected-border-color: 			#009639 !default;
+
+$sites-nav-menu-item-selected-hover-background:			#009639 !default;
+$sites-nav-menu-item-selected-hover-color:			#FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color:			#FFF !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:                          	#FAFAFA;
+$tool-menu-background-color:		 			$tool-menu-item-background-color;
+$tool-menu-color: 			 			#343434 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               		#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               		#FFFFFF !default;
+$tool-menu-item-hover-background-color:         		#009639 !default;
+$tool-menu-item-hover-border-left:              		4px solid #FFFFFF !default;
+// selected
+$tool-menu-item-selected-text-color:            		#009639 !default;
+$tool-menu-item-selected-icon-color:            		#009639 !default;
+$tool-menu-item-selected-border-left:           		4px solid #009639 !default;
+$tool-menu-item-selected-background-color:          		#FFFFFF !default;
+
+// submenu
+$tool-sub-menu-hover-color:					#FFFFFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      		#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      		#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:		#009639 !default;
+$tool-menu-item-selected-hover-border-left:         		4px solid #FFFFFF !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:  		#E6E6E6 !default;
+$tool-menu-collapse-active-text-color:             		#343434 !default;
+$tool-sub-menu-hover-color:					#343434;
+
+// info message colors
+$info-background-color:   					$body-background-color;
+$info-color:                					$primary-color  !default;
+
+$error-background-color:    					#F2DEDE !default;
+$ok-color:                  					#DFF0D8 !default;
+$warn-background-color:     					#FCF8E3 !default;
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}

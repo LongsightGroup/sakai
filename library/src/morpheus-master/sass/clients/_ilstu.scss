@@ -1,0 +1,275 @@
+$skin-name : "ilstu" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#af0000 !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#af0000 !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#171717 !default;
+$tool-border-color:			 		transparent !default;
+$tool-menu-background-color:		 		#f3f3f3 !default;
+$banner-height: 					89px;
+$sites-nav-submenu-item-background:			#FAFAFA;
+$all-sites-tab-active-background-color:			#FFF;
+$calendar-event-text-color:				#000 !important;
+
+/* Logo location */
+$logo: 							'../images/reggienet.svg';
+$logo-height: 						45px;
+$logo-width: 						194px;
+
+// Tab colors
+$tool-tab-text-color:			 		#666;
+$tool-tab-background-color:              		#ebebeb !default;
+$tool-tab-active-text-color:             		#FFF !default;
+$tool-tab-active-highlight-color:        		#000000 !default;
+$tool-tab-active-background-color:			#af0000 !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#2a94c0 !default;
+$link-active-color: 			 		#2a94c0 !default;
+$link-hover-color: 			 		#2A94E0 !default;
+
+// Button colors 
+$button-text-color:	 		 		#282828 !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		#F3F3F3 !default;
+$button-background-secondary-color: 	 		#FFFFFF !default;
+$button-color-border-color: 		 		#CCCCCC !default;
+$button-color-background-color: 	 		#F3F3F3 !default;
+$button-color-background-secondary-color:		#FFFFFF !default;
+// Primary Button Color
+$button-primary-background-color:        		#f3f3f3!default;
+$button-primary-text-color: 		 		#282828 !default;
+$button-primary-hover-text-color:                       #000000 !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     #f3f3f3 !default;
+
+// Link , Edit, Help Buttons
+$button-secondary-text-color:            		#af0000 !default;
+$button-secondary-icon-color:            		#af0000 !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#587893 !default;
+$sites-nav-menu-item-color:              		#FFFFFF !important;
+$sites-nav-menu-item-icon-color:         		#FFFFFF !default;
+$sites-nav-menu-item-border-color:         		#587893 !default;
+$sites-nav-menu-item-hover-background:         		#587893 !default;
+
+//Selected
+//Selected
+$sites-nav-menu-item-selected-background:		#FFF !important;
+$sites-nav-menu-item-selected-color:			#af0000 !important;
+$sites-nav-menu-item-selected-icon-color:		#af0000 !important;
+$sites-nav-menu-item-selected-hover-background: 	#FFF !default;
+$sites-nav-menu-item-selected-hover-color:      	#000 !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#000 !default;
+$sites-nav-menu-item-selected-border-color: 		#000 !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:			#f3f3f3 !default;
+$tool-menu-item-color:					#373737 !default;
+$tool-menu-item-icon-color:				#373737 !default;
+
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               	#FFFFFF !default;
+$tool-menu-item-hover-background-color:         	#9a0000 !default;
+$tool-menu-item-hover-border-left:              	4px solid #9a0000 !default;
+// selected
+$tool-menu-item-selected-background-color:            	#FFFFFF !default;
+$tool-menu-item-selected-text-color:            	#af0000 !default;
+$tool-menu-item-selected-icon-color:            	#af0000 !default;
+$tool-menu-item-selected-border-left:           	4px solid #af0000 !default;
+// submenu
+$tool-sub-menu-hover-color:				#FFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:	#9a0000 !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #9a0000 !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #af0000 !default;
+$tool-menu-collapse-active-text-color:                  #af0000 !default;
+$tool-sub-menu-hover-color:				#fff; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+/* Swapped 'View As' view */
+$swapped-view-enabled: true !default;
+$swapped-view-primary:           #ff8080;
+$swapped-view-text-color:        #000 !default;
+$swapped-view-sites-nav-background: $swapped-view-primary !default;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.navIntraTool li span.current a {
+    background: #af0000;
+    color: #fff;
+}
+
+#footer {
+  color: #ddd;
+  text-shadow: -1px -1px 0px #333;
+  min-height: 150px;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  clear: both;
+  text-align: center;
+  background: url(images/bg_seal.png) no-repeat scroll center -350px #545454;
+
+  #Mrphs-footer--nav__project--sakai {
+    visibility: hidden;
+  }
+//  ul li {
+//    list-style-type: none;
+//  }
+  a {
+    color: #ddd;
+//    text-decoration: none;
+  }
+
+  /* Remove server time per ISU */
+  .Mrphs-footer--details__server-time {
+    display: none;
+  }
+  #isu_bold{
+    font-weight: bold;
+    padding: 10px;
+  }
+
+  #isu_bold a{
+    font-weight: bold;
+    padding: 10px;
+    text-decoration: underline;
+  }
+}
+
+
+.Mrphs-footer {
+    display: list-item !important;
+}
+
+.Mrphs-footer #Mrphs-footer--details__panel.Mrphs-footer--details__panel-show {
+    background: #545454;
+}
+
+#iguide a {display:block; height:30px;}#iguide span {float:left}#iguide-isu a {width:122px}#iguide-admissions a {width:72px}#iguide-academics a {width:72px}#iguide-events a {width:91px}#iguide-map a {width:81px}#iguide-AtoZ a {width:74px}#iguide-access a {width:28px}.clear {clear:both}a.giveRed-link { margin: auto; padding:0; display: block; width: 200px; height: 70px; background: transparent url(//iguides.illinoisstate.edu/giving/btn_giveRed.png) no-repeat 0px 0px; }a:hover.giveRed-link { background-position: 0px -70px; }a:focus.giveRed-link, a:active.giveRed-link { background-position: 0px -140px; }a.giveGray-link { margin: auto; padding:0; display: block; width: 200px; height: 70px; background: transparent url(//iguides.illinoisstate.edu/giving/btn_giveGray.png) no-repeat 0px 0px; }a:hover.giveGray-link { background-position: 0px -70px; }a:focus.giveGray-link, a:active.giveGray-link { background-position: 0px -140px; }#iguide {background-image: url("//iguides.illinoisstate.edu/iguide/iguide-black.png"); background-repeat:no-repeat; background-color:#000; height:30px; }#iguide a:hover {background-image:url("//iguides.illinoisstate.edu/iguide/hover.png"); background-color:transparent; height:30px} html, body {min-height: 100%;}#iguide-float { height:30px; font-size: 16px;font-family: Helvetica, Arial, sans-serif;padding: 0;margin: 0;background-image: none;z-index: 2000000000;position: absolute;width: 100%;left: 0;top: 0;border: 0;box-shadow: 0 0 5px rgba(0,0,0,.4);}#iguide-float a:visited, #iguide-float a:focus, #iguide-float a:link, #iguide-float a:hover{text-decoration: none;}#iguide-float .iguide-link-container {position: absolute; left: 0;top: 0;}#iguide-float a.iguide-link, #iguide-float a.iguide-isu, #iguide-float a.iguide-isu:hover { padding: 0 7px 0 7px; display:block; float:left; height:30px; line-height:30px;color: #eee;font-size: 12px;font-family: Helvetica, Arial, sans-serif;font-weight: bold;letter-spacing: 0px;}#iguide-float a.iguide-link-active {height: 27px; }#iguide-float div.iguide-application-active {height: 32px; opacity: 1;filter: alpha(opacity=100);}#iguide-float .iguide-link-divider {height: 20px;float: left;width: 6px;margin: 5px -1px 5px -1px;}.iguide-background {color: #303030;position: absolute;left: 0;top: -15px;height: 45px;overflow: hidden;z-index: 0;width: 100%;font: 50px "Times New Roman", serif;font-weight: 100;text-transform: uppercase;letter-spacing: -5px;text-align: left;}.clear {clear:both}.iguide-link span { position: static;}.lowercase {text-transform: lowercase;}.uppercase {text-transform: uppercase;}#iguide-float span {display: inline;}#iguide-announcements, #iguide-email, #iguide-signout, #iguide-feedback { float: right; height: 35px; clear: none;margin: -5px 0 0 0;opacity: 0.65;filter: alpha(opacity=65);}#iguide-my-link {position: absolute;top: 0;right: 0;}#iguide-announcements.iguide-active, #iguide-email.iguide-active, #iguide-signout.iguide-active, #iguide-feedback.iguide-active { display: none;}#iguide-float a img {border: 0 !important;}#iguide-announcements.iguide-hover, #iguide-email.iguide-hover, #iguide-signout.iguide-hover, #iguide-feedback.iguide-hover, #iguide-signin.iguide-hover{ opacity: 1;filter: alpha(opacity=100);background-color: rgba(210, 210, 210, 0.15);}#iguide-signin { position: absolute; top: 0; right: 0;background-position: 6px 4px;width: 109px;height: 30px;background-repeat: no-repeat;}#iguide-email {width: 39px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-announcements {width: 38px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-feedback {width: 41px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-signout {width: 30px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-signin a, #iguide-signout a {display: block;width: 100%;height: 100%;}#iguide-float #iguide-signin a { margin: 0; padding: 0; }#iguide-float #iguide-signin a img { margin: 0; height: 30px;}#iguide-float div a img, #iguide-float div > img { margin-top: 10px;}.hover {cursor:pointer}.iguide-popup-content-frame input[type='button'] {cursor: pointer;}.iguide-popup-content-frame .iguide-ajax-loading {height: 16px;padding-left: 20px;margin: 20px 15px;background-repeat: no-repeat;background-position: left center;background-image: url('//iguides.illinoisstate.edu/iguide/images/loading.gif');color: #c88;}.iguide-small {font-size: 80%;}#iguide-icon-container {float: right;height: 30px;}#iguide-float span#iguide-welcome {color: #eee;opacity: 0.65;filter: alpha(opacity=65);display: block;font-weight: bold;padding: 8px 20px 0 10px;float: right;clear: none;height: 22px;font-size: 12px;font-family: Helvetica, Arial, sans-serif;}.iguide-popup-content-frame #iguide-view-read-announcements {color: #900;float: right;cursor: pointer;}.iguide-popup-content-frame {color: #333;position: absolute;display: none;background-color: #fff;opacity: .95;border: 1px solid #333333;padding: 10px;z-index: 2000002;font-size: 14px;font-family: Helvetica, Arial, sans-serif;}.iguide-popup-content-frame h3 {text-transform: none;padding: 0;color: #454545;font-size: 24px;font-family: Helvetica, Arial, sans-serif;border-bottom: 1px solid #454545;margin: 0 0 25px 0;}.iguide-popup-content-frame .iguide-frame-close {float: right;color: #999;width: 30px;height: 20px;font-weight: bold;text-align: center;font-size: 16px;cursor: pointer;border: 0;}#iguide-announcement-frame #iguide-announcement-container {margin-top: 5px;padding: 5px 8px;font-size: 14px;}#iguide-announcement-frame #iguide-announcement-container .iguide-announcement {background-repeat: no-repeat;background-position: 0 8px;background-image: url('//iguides.illinoisstate.edu/iguide/images/Pushpin.png');padding: 5px 0 15px 30px;min-height: 30px;font-size: 16px;font-family: Helvetica, Arial, sans-serif;}#iguide-announcement-frame #iguide-announcement-container #iguide-hidden-announcements {display: none;font-size: 90%;color: #454545;}#iguide-announcement-frame #iguide-announcement-container #iguide-hidden-announcements .iguide-announcement {font-size: 12px;}#iguide-announcement-frame #iguide-announcement-container #iguide-hidden-announcements a {color: #944;}#iguide-blackout {position: absolute;background-color: rgba(16, 16, 16, .8);width: 960px;display: none;height: 100%;top: 100px;z-index: 2000001;display: none;}.iguide-popup-content-frame .iguide-message {background-color: #f3f3f3;color: #454545;border: 1px solid #dddde3;padding: 4px 8px;font-size: 95%;}.iguide-popup-content-frame .iguide-warning {background-color: #ffffaa;color: #454545;border: 1px solid #dddde3;padding: 4px 8px;font-size: 95%;}#iguide-redbird-mail-frame iframe {margin-top: -48px;}#iguide-feedback-frame .iguide-feedback-container {margin-top: 10px;}#iguide-dropdown {display: none;position: absolute;left: 0;top: 0;border: 1px solid #999;background-color: rgba(255, 255, 255, 0.975);color: #454545;padding: 8px 3px;z-index: 50000;-moz-box-shadow: 0px 0px 10px rgba(255,255,255,0.6), 0px 0px 20px rgba(0,0,0,0.8);-webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.6), 0px 0px 20px rgba(0,0,0,0.8);box-shadow: 0px 0px 10px rgba(255,255,255,0.6), 0px 0px 20px rgba(0,0,0,0.8);}#iguide-dropdown li {list-style-type: none;margin: 0;}#iguide-dropdown li a {text-decoration: none;display: block;padding: 3px 30px 3px 25px;font-size: 12px;font-family: Helvetica, Arial, sans-serif;margin: 0;color: #900;}#iguide-dropdown li.iguide-submenu-heading {color: #aaa;font-size: 14px;font-family: Helvetica, Arial, sans-serif;font-weight: bold;padding: 10px 0 5px 5px;}#iguide-dropdown li.iguide-submenu-separator {display: block;border-bottom: 1px solid #fff;border-top: 1px solid #c3c3c3;height: 0;padding: 0;margin: 3px 0;}#iguide-dropdown li a:hover {background-color: rgba(0,0,0,0.1);}#iguide-personalized-links {display: none;}.iguide-down-arrow {border-color: #fff transparent transparent;border-right: 3px dashed transparent;border-style: solid dashed dashed;border-width: 3px 3px 0;display: inline-block;font-size: 0;height: 0;left: 4px;line-height: 0;padding-top: 1px;position: relative;top: -1px;width: 0;float: none !important;}@media only screen and (max-width: 599px) { nav #iguide-float .iguide-link-divider, nav #iguide-float .iguide-link {display: none; } } #iguide-float {background: #2e2e2e;background: linear-gradient(#585858, #020202);background: -webkit-gradient(linear, left top, left bottom, color-stop(0.00, #585858), color-stop(1.00, #020202)); background: -webkit-linear-gradient(top, #585858, #020202);background: -moz-linear-gradient(top, #585858, #020202); background: -o-linear-gradient(top, #585858, #020202);background: -ms-linear-gradient(top, #585858, #020202);filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff585858', endColorstr='#ff020202');}#iguide-float a:visited, #iguide-float a:focus, #iguide-float a:link {color: #eee;text-shadow: 0px 0px 2px rgba(0,0,0,0.4);}#iguide-float a.iguide-link-active, #iguide-float div.iguide-application-active {color: #fff;border-bottom: 3px solid #c00;background-color: rgb(90, 90, 90);}#iguide-float a.iguide-link:hover, #iguide-float a.iguide-isu:hover, #iguide-announcements.iguide-hover, #iguide-email.iguide-hover, #iguide-signout.iguide-hover, #iguide-feedback.iguide-hover, #iguide-signin.iguide-hover {color: #fff; background-color: rgb(90, 90, 90); }#iguide-float .iguide-link-divider {background-image: url('//iguides.illinoisstate.edu/iguide/images/divider_dark.png');}#iguide-signin { background-image: url('//iguides.illinoisstate.edu/iguide/images/login_redDark.png');}#iguide-email {background-image: url('//iguides.illinoisstate.edu/iguide/images/mail_redDark.png');}#iguide-announcements {background-image: url('//iguides.illinoisstate.edu/iguide/images/announcements_redDark.png');}#iguide-feedback {background-image: url('//iguides.illinoisstate.edu/iguide/images/feedback_redDark.png');}#iguide-signout {background-image: url('//iguides.illinoisstate.edu/iguide/images/logout_redDark.png');}
+
+// Customizations needed so the iguide displays properly in a mobile view
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-topHeader {
+        top:30px !important;
+    }
+    .Mrphs-topHeader.moving {
+        top: -4.2em !important;
+    }
+}
+#iguide-float {
+    position:fixed;
+}
+.Mrphs-skipNav__menu {
+    top: -3px !important;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo {
+    padding-top: 30px !important;
+}
+
+.Mrphs-topHeader .Mrphs-loginNav {
+    height: 62px !important;
+}
+
+.nav.nav-tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .nav.nav-tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .nav.nav-tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a, .sakai_tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .sakai_tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .sakai_tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a {
+    color: #FFF !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-mainHeader .Mrphs-headerLogo {
+        height: 56px !important;
+        padding-top: 0px !important;
+    }
+    #mastLogin .has-avatar .Mrphs-userNav__submenuitem--profilepicture {
+        margin: -92px 4px 0 0 !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #2a94c0 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools {
+        background: #af0201 !important;
+    }
+    .Mrphs-skipNav__menu li a {
+        height: 48px !important;
+	line-height: 48px !important;
+    }
+    .Mrphs-siteHierarchy {
+        height: 48px !important;
+        line-height: 48px !important;
+    }
+    .Mrphs-skipNav__menu li {
+	min-height: 48px !important;
+    }
+    .Mrphs-mainHeader.is-fixed .Mrphs-topHeader {
+	padding-top: 0px !important;
+    }
+}
+
+@media only screen and (max-width: 415px) {
+    .Mrphs-siteHierarchy {
+        overflow: hidden;
+        max-width: 205px;
+    }
+}
+
+#selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
+    color: #af0000 !important;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+    color: #FFF !important;
+}
+
+.Mrphs-portalWrapper.swapped-view .Mrphs-siteHierarchy {
+    background: #000 !important;
+}
+table#prefs_pvt_form\:pvtmsgs th {
+    min-width: 32px;
+}
+
+#mastLogin .has-avatar .Mrphs-userNav__submenuitem--username {
+    display: inherit !important;
+}
+
+.Mrphs-footer #Mrphs-footer--poweredBy, .Mrphs-footer .Mrphs-footer--copyright {
+    text-align: center !important;
+}
+
+.Mrphs-portalWrapper.swapped-view .Mrphs-siteHierarchy {
+    background-color: #FF8080 !important;
+}
+
+.Mrphs-portalWrapper.swapped-view .Mrphs-siteHierarchy a {
+    color: #000 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    margin-top: 27px;
+}

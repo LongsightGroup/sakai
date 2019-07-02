@@ -1,0 +1,115 @@
+$skin-name : "washjeff" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#59504d !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#FFFFFF !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#000 !default;
+$sites-nav-background: 					#59504d;
+$tool-menu-background-color:                            #cec4c4 !default;
+$banner-height:                                         66px;
+
+/* Logo location */
+$logo: 							'../images/wjeff.svg';
+$logo-height: 						66px;
+$logo-width: 						180px;
+
+// Tab colors
+$tool-tab-text-color:			 		#000;
+$tool-tab-background-color:              		#cec4c4 !default;
+$tool-tab-active-text-color:             		#000 !default;
+$tool-tab-active-highlight-color:        		#cec4c4 !default;
+$tool-tab-active-background-color:                      #FFF !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links
+$link-color: 				 		#0064cd !default;
+$link-active-color: 			 		#4e5192 !default;
+$link-hover-color: 			 		$primary-color;
+
+// Button colors
+$button-text-color:	 		 		#444 !default;
+$button-border-color: 			 		#CCC !default;
+$button-background-color: 		 		-webkit-linear-gradient(top, #f7f7f7 0%,#e7e7e7 100%) !default;
+$button-background-secondary-color: 	 		#e7e7e7 !default;
+$button-color-border-color: 		 		#E0E3E5 !default;
+$button-color-background-color: 	 		-webkit-linear-gradient(top, #f6f6f5 0%,#e0e0e0 93%,#e0e0e0 97%,#e9e9e9 100%) !default;
+$button-color-background-secondary-color:		#e0e0e0 !default;
+// Primary Button Color
+$button-primary-background-color:        		#59504d !default;
+$button-primary-text-color: 		 		#FFF !default;
+$button-primary-hover-text-color:                       #59504d !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     $primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                           #FFF !default;
+$button-secondary-text-color:                           #FFF !default;;
+$button-secondary-background-color:                     #59504d !default;;
+
+// Sites Navigation
+// Non Selected
+$sites-nav-menu-item-background:         		-webkit-linear-gradient(top, #c8bdbd 0%,#d1c7c7 100%) !default;
+$sites-nav-menu-item-color:              		#000 !default;
+$sites-nav-menu-item-icon-color:         		#000 !default;
+//Selected
+$sites-nav-menu-item-selected-background:		#59504d !default;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+$sites-nav-menu-item-selected-icon-color:	 	#FFF !default;
+$sites-nav-menu-item-selected-hover-background: 	#59504d !default;
+$sites-nav-menu-item-selected-hover-color:      	#FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#FFF !default;
+$sites-nav-menu-item-selected-border-color: 		#FFF !default;
+
+// TOOL MENU COLORS
+$tool-menu-item-background-color:			#cec4c4 !default;
+$tool-menu-item-text-color:                       	#444 !default;
+$tool-menu-item-icon-color:                       	#444 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFF !default;
+$tool-menu-item-hover-icon-color:               	#FFF !default;
+$tool-menu-item-hover-background-color:         	-webkit-linear-gradient(top, #59504d 0%,#6d625F 100%);
+$tool-menu-item-hover-border-left:              	4px solid #cec4c4 !default;
+// selected
+$tool-menu-item-selected-background-color:            	#625855 !important;
+$tool-menu-item-selected-text-color:            	#FFF !default;
+$tool-menu-item-selected-icon-color:            	#FFF !default;
+$tool-menu-item-selected-border-left:           	4px solid #625855 !default;
+// submenu
+$tool-sub-menu-hover-color:				#625855 !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFF !default;
+$tool-menu-item-selected-hover-background-color:	-webkit-linear-gradient(top, #59504d 0%,#6d625F 100%) !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #cec4c4 !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #cec4c4 !default;
+$tool-menu-collapse-active-text-color:                  #cec4c4 !default;
+$tool-sub-menu-hover-color:				#444;
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.fa-angle-double-left:before {
+    color: #000;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
+    background-color: #cec4c4 !important;
+}
+
+#mastLogin #loginForm label {
+    color: #000;
+}
+
+.Mrphs-multipleTools .Mrphs-toolTitleNav .Mrphs-toolTitleNav__title {
+    color: #000 !important;
+}
