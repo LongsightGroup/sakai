@@ -731,6 +731,10 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         attr("role", "columnheader").
         attr("scope", "col");
 
+      if (col >= GbGradeTable.FIXED_COLUMN_OFFSET) {
+        th.classList.add("gb-item");
+      }
+
       if (GbGradeTable.settings.isGroupedByCategory) {
         th.classList.add('gb-categorized');
       }
@@ -907,7 +911,6 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     $(window).trigger('resize');
   });
 
-
   // append all dropdown menus to body to avoid overflows on table
   var $dropdownMenu;
   var $link;
@@ -927,6 +930,17 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     $dropdownMenu.width($dropdownMenu.outerWidth());
 
     $('body').append($dropdownMenu.detach());
+
+    // SAK-40644 Hide move left for the leftmost, move right for the rightmost.
+    var $header = $link.closest("th.gb-item");
+    if ($header.length) {
+      if (!$header.prev("th.gb-item").length) {
+        $dropdownMenu.find(".gb-move-left").hide();
+      }
+      if (!$header.next("th.gb-item").length) {
+        $dropdownMenu.find(".gb-move-right").hide();
+      }
+    }
 
     var linkOffset = $link.offset();
 
@@ -1413,8 +1427,17 @@ GbGradeTable.editExcuse = function(studentId, assignmentId) {
 
             // update the category average cell
             if (assignment.categoryId) {
-                GbGradeTable.syncCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
+                setTimeout(function () {
+                    GbGradeTable.syncCategoryAverage(studentId, assignment.categoryId, data.categoryScore);
+                }, 0);
             }
+            
+            if (data.courseGrade) {
+                setTimeout(function () {
+                    GbGradeTable.syncCourseGrade(studentId, data.courseGrade);
+                }, 0);
+            }
+            
         } else if (status == "error") {
             GbGradeTable.setCellState('error', row, col);
         } else if (status == "invalid") {
@@ -3048,13 +3071,16 @@ GbGradeTable.syncCategoryAverage = function(studentId, categoryId, categoryScore
     // update dropped status of all items in this category
     var categoryItems = GbGradeTable.itemsInCategory(categoryId);
     var cellsToRedraw = [];
-    categoryItems.forEach(function(col) {
-        var dropped = droppedItems.indexOf(col.assignmentId) > -1;
-        var columnIndex = GbGradeTable.colForAssignment(col.assignmentId);
-        var student = GbGradeTable.modelForStudent(studentId);
-        GbGradeTable.updateHasDroppedScores(student, columnIndex - GbGradeTable.FIXED_COLUMN_OFFSET, dropped);
-        cellsToRedraw.push([tableRow, columnIndex]);
-    });
+    
+    if(typeof droppedItems !== 'undefined' && droppedItems.length > 0){
+        categoryItems.forEach(function(col) {
+	        var dropped = droppedItems.indexOf(col.assignmentId) > -1;
+	        var columnIndex = GbGradeTable.colForAssignment(col.assignmentId);
+	        var student = GbGradeTable.modelForStudent(studentId);
+	        GbGradeTable.updateHasDroppedScores(student, columnIndex - GbGradeTable.FIXED_COLUMN_OFFSET, dropped);
+	        cellsToRedraw.push([tableRow, columnIndex]);
+        });
+    }
 
     GbGradeTable.redrawCells(cellsToRedraw);
 };
