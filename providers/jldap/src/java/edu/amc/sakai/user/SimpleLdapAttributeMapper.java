@@ -213,6 +213,9 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
         
         //enforce use of firstNamePreferred if its set
         userData.setFirstName(usePreferredFirstName(userData));
+
+        //enforce use of lastNamePreferred if its set
+        userData.setLastName(usePreferredLastName(userData));
         
         // calculating a user's "type" potentially involves calculations
         // against the entire LDAPEntry
@@ -333,6 +336,14 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
         				"][value = " + attrValue + "]");
         	}
             userData.setLastName(attrValue);
+        } else if ( logicalAttrName.equals(AttributeMappingConstants.PREFERRED_LAST_NAME_ATTR_MAPPING_KEY) ) {
+        	if ( log.isDebugEnabled() ) {
+            	log.debug("mapLdapAttributeOntoUserData() mapping attribute to User.lastNamePreferred: " +
+            			"[logical attr name = " + logicalAttrName + 
+            			"][physical attr name = " + attribute.getName() + 
+            			"][value = " + attrValue + "]");
+            }
+        	userData.setPreferredLastName(attrValue);
           } else if ( logicalAttrName.equals(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY) && StringUtils.isNotEmpty(attrValue) ) {
         	if ( log.isDebugEnabled() ) {
         		log.debug("mapLdapAttributeOntoUserData() mapping attribute to User.email: " +
@@ -608,6 +619,20 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 				 log.debug("usePreferredFirstName() using firstName.");
 			 }
 			return userData.getFirstName();
+		}
+	}
+
+	protected String usePreferredLastName(LdapUserData userData) {
+		if(StringUtils.isNotBlank(userData.getPreferredLastName())) {
+			 if (log.isDebugEnabled()) {
+				 log.debug("usePreferredLastName() using lastNamePreferred.");
+			 }
+			return userData.getPreferredLastName();
+		} else {
+			 if (log.isDebugEnabled()) {
+				 log.debug("usePreferredLastName() using lastName.");
+			 }
+			return userData.getLastName();
 		}
 	}
 	

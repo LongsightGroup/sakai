@@ -45,6 +45,8 @@ public class LdapUserData
 	
 	private String lastName;
 
+	private String preferredLastName;
+
 	private String email;
 
 	private String type;
@@ -92,6 +94,14 @@ public class LdapUserData
 
 	public void setPreferredFirstName(String preferredFirstName) {
 		this.preferredFirstName = preferredFirstName;
+	}
+
+	public String getPreferredLastName() {
+		return preferredLastName;
+	}
+
+	public void setPreferredLastName(String preferredLastName) {
+		this.preferredLastName = preferredLastName;
 	}
 
 	/**
@@ -182,6 +192,7 @@ public class LdapUserData
 			.append("eid",eid)
 			.append("firstName",firstName)
 			.append("preferredFirstName",preferredFirstName)
+			.append("preferredLastName",preferredLastName)
 			.append("lastName",lastName)
 			.append("email",email)
 			.append("type",type)

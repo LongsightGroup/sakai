@@ -56,6 +56,9 @@ public abstract class AttributeMappingConstants {
 	 * name of a user entry's surname attribute
 	 */
 	public static final String LAST_NAME_ATTR_MAPPING_KEY = "lastName";
+
+  /** Custom LUC **/
+	public static final String PREFERRED_LAST_NAME_ATTR_MAPPING_KEY = "preferredLastName";
 	
 	/** Key into {@link #DEFAULT_ATTR_MAPPINGS} representing the logical
 	 * name of a user entry's email attribute
