@@ -70,6 +70,7 @@ import org.sakaiproject.entity.api.EntityPermissionException;
 import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
 import org.sakaiproject.entity.api.EntityPropertyTypeException;
 import org.sakaiproject.entity.api.EntityTransferrer;
+import org.sakaiproject.entity.api.EntityTransferrerRefMigrator;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -107,7 +108,7 @@ import org.w3c.dom.Element;
  */
 @Slf4j
 public abstract class BaseAnnouncementService extends BaseMessage implements AnnouncementService, ContextObserver,
-		EntityTransferrer
+		EntityTransferrer, EntityTransferrerRefMigrator
 {
 	/** private constants definitions */
 	private final static String SAKAI_ANNOUNCEMENT_TOOL_ID = "sakai.announcements";
@@ -1147,25 +1148,34 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 		return "announcement";
 	}
 
-	protected String getSummaryFromHeader(Message item, MessageHeader header) {
-
-		String newText;
-		if (header instanceof AnnouncementMessageHeader) {
-			AnnouncementMessageHeader hdr = (AnnouncementMessageHeader) header;
-			newText = hdr.getSubject();
-		} else {
-			newText = item.getBody();
-			if (newText.length() > 50) newText = newText.substring(1, 49);
-		}
-		newText = newText + ", " + header.getFrom().getDisplayName() + ", " + header.getDate().toStringLocalFull();
-		return newText;
-	}
+        /**********************************************************************************************************************************************************************************************************************************************************
+         * getSummaryFromHeader implementation
+         *********************************************************************************************************************************************************************************************************************************************************/
+         protected String getSummaryFromHeader(Message item, MessageHeader header)
+         {
+            String newText;
+	    if ( header instanceof AnnouncementMessageHeader) {
+		AnnouncementMessageHeader hdr = (AnnouncementMessageHeader) header;
+		newText = hdr.getSubject();
+	    } else {
+       	      newText = item.getBody();
+              if ( newText.length() > 50 ) newText = newText.substring(1,49);
+            }
+            newText = newText + ", " + header.getFrom().getDisplayName() + ", " + header.getDate().toStringLocalFull();
+            return newText;
+        }
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> resourceIds, List<String> options) {
+	public void transferCopyEntities(String fromContext, String toContext, List resourceIds)
+	{
+		transferCopyEntitiesRefMigrator(fromContext, toContext, resourceIds);
+	}
 
+	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List resourceIds)
+	{
+	//	Map<String, String> transversalMap = new HashMap<String, String>();
 		// get the channel associated with this site
 		String oChannelRef = channelReference(fromContext, SiteService.MAIN_CONTAINER);
 		AnnouncementChannel oChannel = null;
@@ -1926,8 +1936,14 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 		}
 	}
 
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options, boolean cleanup) {
+	public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup)
+	{
+		transferCopyEntitiesRefMigrator(fromContext, toContext, ids, cleanup);
+	}
 
+	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List ids, boolean cleanup)
+	{
+//		Map<String, String> transversalMap = new HashMap<String, String>();
 		try
 		{
 			if(cleanup == true)
@@ -1963,7 +1979,7 @@ public abstract class BaseAnnouncementService extends BaseMessage implements Ann
 		{
 			log.debug("transferCopyEntities: End removing Announcement data");
 		}
-		transferCopyEntities(fromContext, toContext, ids, null);
+		transferCopyEntitiesRefMigrator(fromContext, toContext, ids);
 		return null;
 	} 
 

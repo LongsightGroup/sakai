@@ -1216,13 +1216,15 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 	 * {@inheritDoc} Only the current version of a page is imported, history is
 	 * left behind.
 	 */
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions)
+	public void transferCopyEntities(String fromContext, String toContext,
+			List ids)
 	{
 		log.debug("==================Doing WIki transfer"); //$NON-NLS-1$
 		if (fromContext.equals(toContext))
 		{
-			log.debug("===================Source and Target Context are identical, transfer ignored"); //$NON-NLS-1$
-			return null;
+			log
+					.debug("===================Source and Target Context are identical, transfer ignored"); //$NON-NLS-1$
+			return;
 		}
 		
 		// FIXME this needs to be moved out to a method!
@@ -1319,7 +1321,6 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 			}
 		}
 
-		return null;
 	}
 
 	/**
@@ -1792,7 +1793,7 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 		this.aliasService = aliasService;
 	}
 	
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions, boolean cleanup)
+	public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup)
 	{	
 		try
 		{
@@ -1805,6 +1806,6 @@ public class RWikiObjectServiceImpl implements RWikiObjectService
 		{
 			log.info("Rwiki transferCopyEntities Error" + e);
 		}
-		return transferCopyEntities(fromContext, toContext, ids, transferOptions);
+		transferCopyEntities(fromContext, toContext, ids);
 	}
 }

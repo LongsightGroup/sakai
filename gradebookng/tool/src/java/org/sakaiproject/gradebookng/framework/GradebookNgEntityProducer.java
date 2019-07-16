@@ -136,7 +136,7 @@ public class GradebookNgEntityProducer implements EntityProducer, EntityTransfer
 	 * Handle import via merge
 	 */
 	@Override
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options) {
+	public void transferCopyEntities(final String fromContext, final String toContext, final List<String> ids) {
 
 		final Gradebook gradebook = (Gradebook) this.gradebookService.getGradebook(fromContext);
 
@@ -145,15 +145,13 @@ public class GradebookNgEntityProducer implements EntityProducer, EntityTransfer
 		final List<Assignment> assignments = this.gradebookService.getAssignments(fromContext);
 
 		this.gradebookService.transferGradebook(gradebookInformation, assignments, toContext);
-
-        return null;
 	}
 
 	/**
 	 * Handle import via replace
 	 */
 	@Override
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options, boolean cleanup) {
+	public void transferCopyEntities(final String fromContext, final String toContext, final List<String> ids, final boolean cleanup) {
 
 		if (cleanup == true) {
 
@@ -169,6 +167,8 @@ public class GradebookNgEntityProducer implements EntityProducer, EntityTransfer
 		}
 
 		// now migrate
-		return this.transferCopyEntities(fromContext, toContext, ids, null);
+		this.transferCopyEntities(fromContext, toContext, ids);
+
 	}
+
 }

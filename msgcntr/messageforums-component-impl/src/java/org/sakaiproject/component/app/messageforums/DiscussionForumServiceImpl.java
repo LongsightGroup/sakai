@@ -65,6 +65,7 @@ import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityTransferrer;
+import org.sakaiproject.entity.api.EntityTransferrerRefMigrator;
 import org.sakaiproject.entity.api.HttpAccess;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
@@ -79,7 +80,7 @@ import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.cover.LinkMigrationHelper;
 
 @Slf4j
-public class DiscussionForumServiceImpl implements DiscussionForumService, EntityTransferrer
+public class DiscussionForumServiceImpl  implements DiscussionForumService, EntityTransferrer, EntityTransferrerRefMigrator
 {
 	private static final String MESSAGEFORUM = "messageforum";
 	private static final String DISCUSSION_FORUM = "discussion_forum";
@@ -420,7 +421,12 @@ public class DiscussionForumServiceImpl implements DiscussionForumService, Entit
 		return toolIds;
 	}
 
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> resourceIds, List<String> options)
+	public void transferCopyEntities(String fromContext, String toContext, List resourceIds)
+	{
+		transferCopyEntitiesRefMigrator(fromContext, toContext, resourceIds);
+	}
+
+	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List resourceIds)
 	{
 		Map<String, String> transversalMap = new HashMap<>();
 		
@@ -1270,7 +1276,12 @@ public class DiscussionForumServiceImpl implements DiscussionForumService, Entit
 		return permissionManager;
 	}
 	
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> options, boolean cleanup)
+	public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup)
+	{
+		transferCopyEntitiesRefMigrator(fromContext, toContext, ids, cleanup);
+	}
+
+	public Map<String, String> transferCopyEntitiesRefMigrator(String fromContext, String toContext, List ids, boolean cleanup)
 	{	
 		Map<String, String> transversalMap = new HashMap<>();
 		try
@@ -1296,7 +1307,7 @@ public class DiscussionForumServiceImpl implements DiscussionForumService, Entit
 					log.debug ("Remove Forums from Site Import failed" + e);
 				}
 			}
-			transversalMap.putAll(transferCopyEntities(fromContext, toContext, ids, null));
+			transversalMap.putAll(transferCopyEntitiesRefMigrator(fromContext, toContext, ids));
 		}
 		catch(Exception e)
 		{

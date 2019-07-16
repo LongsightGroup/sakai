@@ -396,7 +396,7 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 		return toolIds;
 	}
 
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions)
+	public void transferCopyEntities(String fromContext, String toContext, List<String> ids)
 	{
 		log.debug("web content transferCopyEntities");
 		try
@@ -484,7 +484,6 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 			log.warn("transferCopyEntities(): exception in handling webcontent data: ", any);
 		}
 
-		return null;
 	}
 
 	public String trimToNull(String value)
@@ -501,7 +500,7 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 		return null;
 	}
 
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions, boolean cleanup) {
+	public void transferCopyEntities(String fromContext, String toContext, List<String> ids, boolean cleanup) {
 		try {
 			if (cleanup) {
 				Vector<String> removePageIds = new Vector<>();
@@ -537,12 +536,11 @@ public class WebServiceImpl implements WebService, EntityTransferrer
 					}
 				}
 			}
-			return transferCopyEntities(fromContext, toContext, ids, transferOptions);
+			transferCopyEntities(fromContext, toContext, ids);
 		}
 		catch (Exception e) {
 			log.info("WebContent transferCopyEntities Error" + e);
 		}
-
-		return null;
 	}
+
 }

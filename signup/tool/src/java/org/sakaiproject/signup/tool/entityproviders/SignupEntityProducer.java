@@ -185,7 +185,7 @@ public class SignupEntityProducer implements MeetingTypes, EntityProducer, Entit
 	
 	@Override
 	//this method is for merge data
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions) {
+	public void transferCopyEntities(String fromContext, String toContext, List ids) {
 		
 		String currentUserId = getSakaiFacade().getCurrentUserId();
 		List<SignupMeeting> allMeetings = getSignupMeetingService().getAllSignupMeetings(fromContext, currentUserId);
@@ -247,8 +247,6 @@ public class SignupEntityProducer implements MeetingTypes, EntityProducer, Entit
 				log.warn("permission issue:" + e.getMessage());
 			}
 		} //if end
-
-		return null;
 	}
 
 	@Override
@@ -258,7 +256,7 @@ public class SignupEntityProducer implements MeetingTypes, EntityProducer, Entit
 
 	@Override
 	//this method is for replace data
-	public Map<String, String> transferCopyEntities(String fromContext, String toContext, List<String> ids, List<String> transferOptions, boolean cleanup) {
+	public void transferCopyEntities(String fromContext, String toContext, List ids, boolean cleanup) {
 		// TODO Auto-generated method stub
 		String currentUserId = getSakaiFacade().getCurrentUserId();
 		List<SignupMeeting> oldMeetings = getSignupMeetingService().getAllSignupMeetings(toContext, currentUserId);
@@ -269,7 +267,7 @@ public class SignupEntityProducer implements MeetingTypes, EntityProducer, Entit
 		} catch (Exception e1) {
 			log.warn("remove oldmeeting error:" + e1.getMessage());
 		}
-		return transferCopyEntities(fromContext, toContext, ids, transferOptions);
+		transferCopyEntities(fromContext, toContext, ids);
 	}
 
 	@Override
