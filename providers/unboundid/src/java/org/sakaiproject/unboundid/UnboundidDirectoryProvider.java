@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.security.GeneralSecurityException;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,11 @@ import org.sakaiproject.user.api.UserFactory;
 import org.sakaiproject.user.api.UsersShareEmailUDP;
 
 import com.unboundid.ldap.sdk.BindResult;
+import com.unboundid.ldap.sdk.BindRequest;
 import com.unboundid.ldap.sdk.DereferencePolicy;
+import com.unboundid.ldap.sdk.EXTERNALBindRequest;
+import com.unboundid.ldap.sdk.ExtendedResult;
+import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPConnectionOptions;
 import com.unboundid.ldap.sdk.LDAPConnectionPool;
 import com.unboundid.ldap.sdk.LDAPSearchException;
@@ -59,10 +64,13 @@ import com.unboundid.ldap.sdk.SearchScope;
 import com.unboundid.ldap.sdk.ServerSet;
 import com.unboundid.ldap.sdk.SimpleBindRequest;
 import com.unboundid.ldap.sdk.SingleServerSet;
-import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection;
+import com.unboundid.ldap.sdk.StartTLSPostConnectProcessor;
+import com.unboundid.ldap.sdk.extensions.StartTLSExtendedRequest;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPEntry;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPException;
 import com.unboundid.util.ssl.SSLUtil;
+import com.unboundid.util.ssl.KeyStoreKeyManager;
+import com.unboundid.util.ssl.TrustAllTrustManager;
 
 /**
  * <p>
@@ -277,11 +285,18 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 
 		if (isSecureConnection()) {
 			try {
-				// If testing locally only, could use `new TrustAllTrustManager()` as contructor parameter to SSLUtil
-				SSLUtil sslUtil = new SSLUtil();
-				SSLSocketFactory sslSocketFactory = sslUtil.createSSLSocketFactory();
-
-				serverSet = new SingleServerSet(ldapHost[0], ldapPort[0], sslSocketFactory, connectOptions);
+				SSLUtil sslUtil = new SSLUtil(new KeyStoreKeyManager("sakai/ldapKeystore.jks", new String("changeit").toCharArray()), new TrustAllTrustManager());
+				SSLContext sslContext = sslUtil.createSSLContext();
+				LDAPConnection connection = new LDAPConnection(connectOptions, ldapHost[0], ldapPort[0]);
+				ExtendedResult startTLSResult = connection.processExtendedOperation( new StartTLSExtendedRequest(sslContext) );
+				BindRequest bindRequest = new EXTERNALBindRequest("");
+				BindResult bindResult = connection.bind(bindRequest);
+				StartTLSPostConnectProcessor startTLSProcessor = new StartTLSPostConnectProcessor(sslContext);
+				log.info("Creating LDAP connection pool of size " + poolMaxConns);
+				LDAPConnectionPool connectionPool = new LDAPConnectionPool(connection, 1, poolMaxConns, startTLSProcessor);
+				connectionPool.setRetryFailedOperationsDueToInvalidConnections(retryFailedOperationsDueToInvalidConnections);
+			} catch (com.unboundid.ldap.sdk.LDAPException e) {
+				log.error("Could not init LDAP pool", e);
 			} catch (GeneralSecurityException ex) {
 				log.error("Error while initializing LDAP SSLSocketFactory");
 				throw new RuntimeException(ex);
@@ -290,15 +305,6 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			serverSet = new SingleServerSet(ldapHost[0], ldapPort[0], connectOptions);
 		}
 
-		SimpleBindRequest bindRequest = new SimpleBindRequest(ldapUser, ldapPassword);
-		try {
-			log.info("Creating LDAP connection pool of size " + poolMaxConns);
-			connectionPool = new LDAPConnectionPool(serverSet, bindRequest, poolMaxConns);
-			connectionPool.setRetryFailedOperationsDueToInvalidConnections(retryFailedOperationsDueToInvalidConnections);
-		} catch (com.unboundid.ldap.sdk.LDAPException e) {
-			log.error("Could not init LDAP pool", e);
-		}
-		   
 		initLdapAttributeMapper();
 	}
 
@@ -1401,13 +1407,13 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 	 */
 	public void setSearchScope(int searchScope) throws IllegalArgumentException {
 		switch ( searchScope ) {
-			case LDAPConnection.SCOPE_BASE :
+			case 0 :
 				this.searchScope = SearchScope.BASE;
 				return;
-			case LDAPConnection.SCOPE_ONE :
+			case 1 :
 				this.searchScope = SearchScope.ONE;
 				return;
-			case LDAPConnection.SCOPE_SUB :
+			case 2 :
 				this.searchScope = SearchScope.SUB;
 				return;
 			default :
