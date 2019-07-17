@@ -130,6 +130,7 @@ public class SiteStatsPersistenceConfig {
             config.setPassword(serverConfigurationService.getString("sitestats.externalDb.password", serverConfigurationService.getString("password@org.sakaiproject.sitestats.externalDbDataSource", "")));
             config.setJdbcUrl(serverConfigurationService.getString("sitestats.externalDb.jdbcUrl", serverConfigurationService.getString("url@org.sakaiproject.sitestats.externalDbDataSource", "jdbc:hsqldb:mem:sitestats_db")));
             config.setDriverClassName(serverConfigurationService.getString("sitestats.externalDb.driverClassName", serverConfigurationService.getString("driverClassName@org.sakaiproject.sitestats.externalDbDataSource", "org.hsqldb.jdbcDriver")));
+            config.setConnectionTestQuery(serverConfigurationService.getString("sitestats.externalDb.connectionTestQuery", "SELECT 1"));
             config.setPoolName(serverConfigurationService.getString("sitestats.externalDb.poolName", "externalDBCP"));
             config.setMaximumPoolSize(serverConfigurationService.getInt("sitestats.externalDb.maxPoolSize", 5));
             externalDataSource = new HikariDataSource(config);
