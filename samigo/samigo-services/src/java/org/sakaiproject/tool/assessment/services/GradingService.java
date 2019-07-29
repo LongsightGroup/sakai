@@ -989,6 +989,7 @@ public class GradingService
                                totalItems, fibEmiAnswersMap, emiScoresMap, publishedAnswerHash, regrade, calcQuestionAnswerSequence);
         }
         catch (FinFormatException e) {
+        	log.warn("Fin Format Exception while processing response. ", e);
         	autoScore = 0d;
         	if (invalidFINMap != null) {
         		if (invalidFINMap.containsKey(itemId)) {
@@ -1190,7 +1191,7 @@ public class GradingService
       //entry.getValue()[1] = min score
       //entry.getValue()[2] = how many question answers to divide minScore across
       for(Entry<Long, Double[]> entry : minScoreCheck.entrySet()){
-    	  if(entry.getValue()[0] < entry.getValue()[1]){
+    	  if(entry.getValue()[0] <= entry.getValue()[1]){
     		  //reset all scores to 0 since the user didn't get all correct answers
     		  iter = itemGradingSet.iterator();
     		  while(iter.hasNext()){
@@ -1939,6 +1940,11 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 		  String studentAnswerText = null;
 		  if (data.getAnswerText() != null) {
 			  studentAnswerText = data.getAnswerText().replaceAll("\\s+", "").replace(',','.');    // in Spain, comma is used as a decimal point
+			  //The UI syntax expects a format with curly braces for complex numbers, remove them for the Commons Math library.
+			  if(StringUtils.contains(studentAnswerText, "{") && StringUtils.contains(studentAnswerText, "}")){
+				  studentAnswerText = StringUtils.replace(studentAnswerText, "{", "");
+				  studentAnswerText = StringUtils.replace(studentAnswerText, "}", "");
+			  }
 		  }
 
 		  if (range) {
@@ -1971,6 +1977,11 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
 
 			  if (answer != null){ 	 
 		             answer = answer.replaceAll("\\s+", "").replace(',','.');  // in Spain, comma is used as a decimal point 	 
+		             //The UI syntax expects a format with curly braces, remove them for the Commons Math library.
+		             if(StringUtils.contains(answer, "{") && StringUtils.contains(answer, "}")){
+		                 answer = StringUtils.replace(answer, "{", "");
+		                 answer = StringUtils.replace(answer, "}", "");
+		             }
 			  }	 
 		 
 			  try {
@@ -2069,7 +2080,7 @@ Here are the definition and 12 cases I came up with (lydia, 01/2006):
    */
   public Map validate(String value) {
 	  Map map = new HashMap();
-	  if (value == null || value.trim().equals("")) {
+	  if (StringUtils.isEmpty(value)) {
 		  return map;
 	  }
 	  String trimmedValue = value.trim();
