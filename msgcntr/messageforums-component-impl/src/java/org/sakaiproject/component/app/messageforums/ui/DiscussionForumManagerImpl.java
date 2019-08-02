@@ -1224,8 +1224,7 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
 
   public void saveTopic(DiscussionTopic topic, boolean draft, boolean logEvent, String currentUser)
   {
-    log.debug("saveTopic(DiscussionTopic " + topic + ", boolean " + draft
-            + ")");
+    log.debug("Save topic {}, as a draft ({})", topic, draft);
 
     boolean saveForum = topic.getId() == null;
     
@@ -2409,9 +2408,8 @@ public class DiscussionForumManagerImpl extends HibernateDaoSupport implements
 
 	public List getDiscussionForumsWithTopicsMembershipNoAttachments(String contextId)
 	{
-    log.debug("getDiscussionForumsWithTopicsMembershipNoAttachments()");
-    return forumManager.getForumByTypeAndContextWithTopicsMembership(typeManager
-        .getDiscussionForumType(), contextId);
+        log.debug("getDiscussionForumsWithTopicsMembershipNoAttachments()");
+        return forumManager.getForumByTypeAndContextWithTopicsMembership(typeManager.getDiscussionForumType(), contextId);
 	}
 	
 	public List getPendingMsgsInTopic(Long topicId)
