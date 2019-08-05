@@ -23,16 +23,18 @@ package org.sakaiproject.portal.render.iframe;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.portal.api.Portal;
 import org.sakaiproject.portal.api.PortalService;
 import org.sakaiproject.portal.api.StoredState;
@@ -55,7 +57,8 @@ public class IFrameToolRenderService implements ToolRenderService
 {
 	private final static String INVALID_PARAM_CHARS = ".*[\"'<>].*";
 
-	private PortalService portalService;
+	@Setter private PortalService portalService;
+	@Setter private ServerConfigurationService serverConfigurationService;
 
 	// private static ResourceLoader rb = new ResourceLoader("sitenav");
 
@@ -72,8 +75,7 @@ public class IFrameToolRenderService implements ToolRenderService
 	{
 
 		final String titleString = Web.escapeHtml(configuration.getTitle());
-		String toolUrl = ServerConfigurationService.getToolUrl() + "/"
-				+ Web.escapeUrl(configuration.getId());
+		String toolUrl = serverConfigurationService.getToolUrl() + "/" + Web.escapeUrl(configuration.getId());
 		StoredState ss = portalService.getStoredState();
 		log.debug("Restoring Iframe [" + ss + "]");
 
@@ -114,6 +116,7 @@ public class IFrameToolRenderService implements ToolRenderService
 				.append("\n").append("	marginwidth=\"0\"").append("\n").append(
 						"	marginheight=\"0\"").append("\n").append("	scrolling=\"auto\"")
 				.append(" allowfullscreen=\"allowfullscreen\"")
+				.append(" allow=\"").append(String.join(";", Optional.ofNullable(serverConfigurationService.getStrings("browser.feature.allow")).orElseGet(() -> new String[]{}))).append("\"")
 				.append("\n").append("	src=\"").append(toolUrl);
 
 				boolean isFirstParam = (toolUrl.indexOf('?') >=0 ? false : true);
@@ -182,22 +185,4 @@ public class IFrameToolRenderService implements ToolRenderService
 	public void reset( ToolConfiguration configuration)
 	{
 	}
-
-	/**
-	 * @return the portalService
-	 */
-	public PortalService getPortalService()
-	{
-		return portalService;
-	}
-
-	/**
-	 * @param portalService
-	 *        the portalService to set
-	 */
-	public void setPortalService(PortalService portalService)
-	{
-		this.portalService = portalService;
-	}
-
 }

@@ -24,6 +24,8 @@
 
 package org.sakaiproject.lessonbuildertool.tool.producers;
 
+import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 
 import uk.org.ponder.localeutil.LocaleGetter;
@@ -33,8 +35,9 @@ import uk.org.ponder.rsf.components.decorators.UIFreeAttributeDecorator;
 import uk.org.ponder.rsf.view.ComponentChecker;
 import uk.org.ponder.rsf.view.ViewComponentProducer;
 import uk.org.ponder.rsf.viewstate.ViewParameters;
-import uk.org.ponder.rsf.viewstate.ViewParamsReporter;                                                                                    
+import uk.org.ponder.rsf.viewstate.ViewParamsReporter;
 
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.lessonbuildertool.tool.beans.SimplePageBean;
 import org.sakaiproject.lessonbuildertool.tool.view.GeneralViewParameters;
 
@@ -80,6 +83,9 @@ public class IFrameWindowProducer implements ViewComponentProducer, ViewParamsRe
 			iframe.decorate(new UIFreeAttributeDecorator("src", ((GeneralViewParameters) params).getSource()));
 			iframe.decorate(new UIFreeAttributeDecorator("name", ((GeneralViewParameters) params).getId()));
 			iframe.decorate(new UIFreeAttributeDecorator("id", ((GeneralViewParameters) params).getId()));
+			iframe.decorate(new UIFreeAttributeDecorator("allow", String.join(";",
+					Optional.ofNullable(ServerConfigurationService.getStrings("browser.feature.allow"))
+							.orElseGet(() -> new String[]{}))));
 		}
 	}
 
