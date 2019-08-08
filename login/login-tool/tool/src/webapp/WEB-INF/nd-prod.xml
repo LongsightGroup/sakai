@@ -71,10 +71,10 @@
         <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
-                <entry key="ndtestkey" value="changeit"/>
+                <entry key="ndprodkey" value="changeit"/>
             </map>
         </constructor-arg>
-        <constructor-arg type="java.lang.String" value="ndtestkey"/>
+        <constructor-arg type="java.lang.String" value="ndprodkey"/>
     </bean>
 
     <!-- Entry point to initialize authentication, default values taken from properties file -->
@@ -95,7 +95,7 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="https://nd-test.saml.longsight.com/samlauth"/>
+                <property name="entityId" value="https://nd-prod.saml.longsight.com/samlauth"/>
                 <!-- <property name="includeDiscoveryExtension" value="true"/> -->
                 <!-- <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
@@ -143,8 +143,8 @@
 			               <property name="sslSecurityProfile" value="pkix"/>
 			               <property name="sslHostnameVerification" value="default"/>
 			               <property name="signMetadata" value="false"/>
-			               <property name="signingKey" value="ndtestkey"/>
-			               <property name="encryptionKey" value="ndtestkey"/>
+			               <property name="signingKey" value="ndprodkey"/>
+			               <property name="encryptionKey" value="ndprodkey"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
 			               <property name="requireLogoutRequestSigned" value="false"/>
 			               <property name="requireLogoutResponseSigned" value="false"/>
@@ -158,7 +158,7 @@
                   <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://okta.nd.edu/app/exk11dcjp8Vx9FEF1357/sso/saml/metadata</value>
+                        <value type="java.lang.String">https://okta.nd.edu/app/exk12eadtr7DVBmCI357/sso/saml/metadata</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">45000</value>
@@ -190,7 +190,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://www.okta.com/exk11dcjp8Vx9FEF1357"/>
+        <property name="defaultIDP" value="http://www.okta.com/exk12eadtr7DVBmCI357"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
