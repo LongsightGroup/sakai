@@ -1,3 +1,4 @@
+$skin-name: 'pepp-orig';
 $background-color-secondary: #5b8ab5;
 $logo: 'images/pepperdine-logo.svg';
 $logo-height: 42px;
@@ -68,7 +69,7 @@ nav#toolMenu ul li {
       }
     }
 
-    a[title='Site Info - For showing worksite information and site participants'],
+    a[title='Site Info - For displaying and managing information and settings about the site'],
     a[title='Site Info'] {
       background-color: #ee7624 !important;
       color: #fff;
@@ -172,11 +173,26 @@ div.colblue {
     display: none;
 }
 
-#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, .floatingToolMenu ul li .Mrphs-toolsNav__menuitem--link {
-    background-color: #f3f3f3 !important;
-}
-
-nav#toolMenu ul li a[title='Site Info - For showing worksite information and site participants']:hover {
+nav#toolMenu ul li a[title='Site Info - For displaying and managing information and settings about the site']:hover {
     background-color: #ee7624 !important;
     color: #FFF !important;
+}
+
+nav#toolMenu ul li a[title='Site Info - For displaying and managing information and settings about the site'] {
+    background-color: #ee7624 !important;
+    color: #FFF !important;
+}
+
+#addContentDiv a[title='Add Learning App'] {
+   display: none;
+}
+
+#addContentDiv a[title='Add item from external service that supports the IMS LTI standard. Ask your campus support staff to find out what tools are supported by your campus.'] {
+   display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    #mastLogin {
+        width: calc(100% - 100px) !important;
+    }
 }

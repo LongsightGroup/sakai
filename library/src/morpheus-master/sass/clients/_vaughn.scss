@@ -1,0 +1,52 @@
+$skin-name : "vaughn" !default; // This is used for bootstrap font behaviour.
+
+$background-color-secondary: #f7b03c !default;
+$topNav-text-color: #000;
+
+//Breadcrumbs
+$breadcrumbs-color:             #000;
+$breadcrumbs-tool-color:        #000;
+$breadcrumbs-hover-color:       #000;
+
+// Sites Nav
+$sites-nav-menu-item-selected-background:   #A52436 !default;
+$sites-nav-menu-item-selected-color:        #FFFFFF !default;
+$sites-nav-menu-item-selected-icon-color:   #FFFFFF !default;
+$sites-nav-menu-item-selected-border-color:   #A52436 !default;
+
+// Tool Menu
+$tool-menu-item-hover-text-color:                          #FFF !default;
+$tool-menu-item-hover-icon-color:                          #FFF !default;
+$tool-menu-item-hover-background-color:                    #A52436 !default;
+$tool-menu-item-hover-border-left:                         4px solid #A52436 !default;
+
+$tool-menu-item-selected-text-color:                       #A52436 !default;
+$tool-menu-item-selected-icon-color:                       #A52436 !default;
+$tool-menu-item-selected-background-color:                 #FFFFFF !default;
+$tool-menu-item-selected-border-left:                      4px solid #A52436 !default;
+$tool-menu-item-selected-hover-text-color:                 #FFF !default;
+$tool-menu-item-selected-hover-icon-color:                 #FFF !default;
+$tool-menu-item-selected-hover-background-color:           #A52436 !default;
+$tool-menu-item-selected-hover-border-left:                4px solid #A52436 !default;
+
+// Tool Tabs
+$tool-tab-active-highlight-color:                         #A52436 !default;
+$tool-tab-active-text-color:                         #A52436 !default;
+
+// Buttons
+$button-text-color:             #FFF;
+$button-background:             #A52436;
+$button-border-color:           #A52436;
+
+$button-primary-text-color:                 #fff;
+$button-primary-background:                 #A52436;
+$button-primary-border-color:               #A52436;
+
+$button-primary-hover-text-color:           #A52436;
+$button-primary-hover-background:           #176691;
+$button-primary-hover-border-color:         #A52436;
+
+/* Logo location */
+$logo:                                                  '../images/vaughn.png';
+$logo-height:                                           50px;
+$logo-width:                                            266px;

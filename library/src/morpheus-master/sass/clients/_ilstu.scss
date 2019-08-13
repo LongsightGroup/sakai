@@ -273,3 +273,13 @@ table#prefs_pvt_form\:pvtmsgs th {
 .ui-dialog .ui-dialog-titlebar {
     margin-top: 27px;
 }
+
+@media only screen and (min-width: 1031px) {
+    .Mrphs-skipNav__menu a:focus {
+         position: fixed;
+         top: 9px;
+    }
+    #mastLogin .has-avatar .Mrphs-userNav__submenuitem--profilepicture {
+        top: 46px;
+    }
+}

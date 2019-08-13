@@ -1,0 +1,127 @@
+$skin-name : "peppdev" !default; // This is used for bootstrap font behaviour.
+
+$top-header-background:					#00205c;
+$sites-nav-background:					#ffffff;
+
+/* Logo location */
+$logo:                                                  '../images/pepperdine-logo.svg';
+$logo-height:                                           42px;
+$logo-width:                                            200px;
+
+$info-background-color:					#8dcaec;
+
+// Sites Nav Banner
+$sites-nav-menu-item-background:		        #eee !default;
+$sites-nav-menu-item-color:                 		#262626 !default;
+$sites-nav-menu-item-icon-color:			#262626 !default;
+$sites-nav-menu-item-hover-background:			#dcdcdc;
+
+$sites-nav-menu-item-selected-background:   		#0078b0 !default;
+$sites-nav-menu-item-selected-color:        		#FFFFFF !default;
+$sites-nav-menu-item-selected-icon-color:   		#FFFFFF !default;
+
+// Tool Menu Changes
+$tool-menu-background-color:				#FFFFFF !default;
+$tool-menu-item-background-color:			#EDEDED !default;
+$tool-menu-item-hover-background-color:			#DCDCDC !default;
+$tool-menu-item-selected-hover-background-color:	#0089ca !default;
+$tool-menu-item-selected-hover-text-color:	i	#FFF !default;
+$tool-menu-item-selected-hover-icon-color:	i	#FFF !default;
+$tool-menu-item-selected-text-color:                    #FFFFFF !default;
+$tool-menu-item-selected-icon-color:                    #FFFFFF !default;
+$tool-menu-item-selected-background-color:              #0078b0 !default;
+
+// Customizations to round corners on sites-nav itmes
+#linkNav ul li.Mrphs-sitesNav__menuitem>a.link-container {
+    border-radius: 16px 0 0 16px;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__drop, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown {
+    border-radius: 0 16px 16px 0;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__drop.is-clicked, #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown.is-clicked {
+    border-radius: 16px 0 0 16px;
+}
+
+// Tool Menu rounder corners
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link {
+    border-radius: 0 20px 20px 0;
+}
+
+#toolMenu ul li, #subSites ul li {
+    border-bottom: 1px solid #FFF !important;
+}
+
+
+// Customization for always highlighed SiteInfo tool
+
+nav#toolMenu ul li a[title='Site Info'] {
+    background-color: #ee7624 !important;
+    color: #FFF !important;
+}
+
+nav#toolMenu ul li a[title='Site Info - For displaying and managing information and settings about the site']:hover {
+    background-color: #ee7624 !important;
+    color: #FFF !important;
+}
+
+nav#toolMenu ul li a[title='Site Info - For displaying and managing information and settings about the site'] {
+    background-color: #ee7624 !important;
+    color: #FFF !important;
+}
+
+// Customization to disable two items from the lessons drop down menu
+#addContentDiv a[title='Add Learning App'] {
+   display: none;
+}
+
+#addContentDiv a[title='Add item from external service that supports the IMS LTI standard. Ask your campus support staff to find out what tools are supported by your campus.'] {
+   display: none;
+}
+
+// Fixing login placement in mobile view
+@media only screen and (max-width: 800px) {
+    #mastLogin {
+        width: calc(100% - 100px) !important;
+    }
+}
+
+#toolMenu ul li.is-current span.Mrphs-toolsNav__menuitem--title::after { 
+    content: '\25c9';
+    position: absolute;
+    right: 6px;
+    top: 1px;
+    color: #FFF;
+    font-size: 2.1em;
+}
+
+#toolMenuWrap {
+    border-right: none !important;
+}
+
+.column .commentDiv, .column .studentContentTable, .column .questionDiv .contentCol, .column .checklistDiv, .column .forumSummaryHeaderDiv, .column .announcementsHeaderDiv, .column .fc-toolbar {
+    background-color: #8dcaec !important;
+}
+
+@media only screen and (max-width: 800px) {
+  div.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: 100px;
+    background-size: 100px 21px;
+  }
+  #toolMenu ul li.is-current span.Mrphs-toolsNav__menuitem--title::after {
+    top: 5px !important;
+  }
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link {
+    padding: 10px 10px 10px 5px !important;
+}
+
+@media only screen and (min-width: 801px) {
+    body.Mrphs-toolMenu-collapsed #toolMenu ul li .Mrphs-toolsNav__menuitem--link:hover .Mrphs-toolsNav__menuitem--title, body.Mrphs-toolMenu-collapsed #toolMenu ul li .Mrphs-toolsNav__menuitem--link:focus .Mrphs-toolsNav__menuitem--title, body.Mrphs-toolMenu-collapsed #subSites:not(.floating) ul li .Mrphs-toolsNav__menuitem--link:hover .Mrphs-toolsNav__menuitem--title, body.Mrphs-toolMenu-collapsed #subSites:not(.floating) ul li .Mrphs-toolsNav__menuitem--link:focus .Mrphs-toolsNav__menuitem--title {
+        border-radius: 0 20px 20px 0 !important;
+        left:   25px !important;
+        padding: 0 36px 0px 20px !important;
+    }
+}
