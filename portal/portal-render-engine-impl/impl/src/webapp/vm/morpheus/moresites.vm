@@ -68,9 +68,14 @@
                     #macro( displaySite $site )
                         <li class="fav-sites-entry #if (${site.isCurrentSite})is-selected #end #if (${site.isMyWorkspace})my-workspace #end">
                             #if (!${site.isMyWorkspace})
+                                #if ( $site.published == 'false' && $site.siteUpdate == 'false' )
+                                    <div title="${site.fullTitle}" class="fullTitle walshUnpublishedSite">${site.siteTitle}</div>
+                                #else
                                 <button data-site-id="${site.siteId}" class="site-favorite-btn only-icon-btn" title="$rloader.getFormattedMessage("site_fav_toggle", $site.siteTitle)" aria-label="$rloader.getFormattedMessage("site_fav_toggle", $site.siteTitle)"></button>
+                                #end
                             #end
-
+							
+                            #if ( $site.published != 'false' || $site.siteUpdate != 'false' )
                             <div class="fav-title #if (${site.isMyWorkspace}) fav-title-myworkspace #end">
                                 <a href="${site.siteUrl}" title="${site.siteTitle}">
                                     #if (${site.isMyWorkspace})
@@ -85,6 +90,7 @@
                             <button id="${site.siteId}-toolMenus" class="toolMenus only-icon-btn" aria-haspopup="true" aria-label="$rloader.getFormattedMessage("sit_open_menu", $site.siteTitleTrunc)">
                                 <span class="fa fa-chevron-down" aria-hidden="true"></span>
                             </button>
+			    #end
                         </li>
                     #end
 
