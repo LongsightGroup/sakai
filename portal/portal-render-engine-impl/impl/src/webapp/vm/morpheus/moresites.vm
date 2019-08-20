@@ -72,9 +72,14 @@
                     #macro( displaySite $site )
                         <li role="presentation" class="fav-sites-entry #if (${site.isCurrentSite})is-selected #end #if (${site.isMyWorkspace})my-workspace #end">
                             #if (!${site.isMyWorkspace})
-                            	<a class="site-favorite-btn" data-site-id="${site.siteId}" href="javascript:void(0);"></a>
+                                #if ( $site.published == 'false' && $site.siteUpdate == 'false' )
+                                    <div title="${site.fullTitle}" class="fullTitle walshUnpublishedSite">${site.siteTitle}</div>
+                                #else
+                            	    <a class="site-favorite-btn" data-site-id="${site.siteId}" href="javascript:void(0);"></a>
+                                #end
                             #end
 							
+                            #if ( $site.published != 'false' || $site.siteUpdate != 'false' )
                             <div class="fav-title #if (${site.isMyWorkspace}) fav-title-myworkspace #end">
                             	<a href="${site.siteUrl}" title="${site.siteTitle}">
                                     #if (${site.isMyWorkspace})
@@ -89,6 +94,7 @@
                             <a href="#" id="${site.siteId}" class="toolMenus" aria-haspopup="true" aria-label="${site.siteTitleTrunc} - ${rloader.sit_open_menu}">
                                 <span class="fa fa-chevron-down" aria-hidden="true"></span>
                             </a>
+			    #end
                         </li>
                     #end
 

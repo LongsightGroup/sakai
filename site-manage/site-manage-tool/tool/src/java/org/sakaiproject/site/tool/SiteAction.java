@@ -3455,7 +3455,7 @@ public class SiteAction extends PagedResourceActionII {
 			// Add the menus to vm
 			MenuBuilder.buildMenuForSiteInfo(portlet, data, state, context, site, rb, siteTypeProvider, SiteInfoActiveTab.EDIT_CLASS_ROSTERS);
 
-			context.put("allowAddSite", true);
+			context.put("allowAddRoster", true);
 			context.put("siteTitle", site.getTitle());
 			coursesIntoContext(state, context, site);
 
