@@ -659,6 +659,11 @@ public class PortalSiteHelperImpl implements PortalSiteHelper
 		m.put("siteType", s.getType());
 		m.put("siteId", s.getId());
 
+		// LS-138
+		boolean siteUpdate = securityService.unlock("site.upd", s.getReference());
+		m.put("published", s.isPublished());
+		m.put("siteUpdate", String.valueOf(siteUpdate));
+
 		// TODO: This should come from the site neighbourhood.
 		ResourceProperties rp = s.getProperties();
 		String ourParent = rp.getProperty(PROP_PARENT_ID);
