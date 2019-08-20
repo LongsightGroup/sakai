@@ -123,7 +123,8 @@ public class SiteNeighbourhoodServiceImpl implements SiteNeighbourhoodService
 		// collect the Publically Viewable Sites
 		if (!loggedIn)
 		{
-			mySites = getGatewaySites();
+                 	// LS-138
+                 	mySites = siteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.MEMBER, null, null, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null, false);
 			return mySites;
 		}
 
@@ -151,7 +152,10 @@ public class SiteNeighbourhoodServiceImpl implements SiteNeighbourhoodService
 		
 		// collect the user's sites - don't care whether long descriptions are loaded
 		// don't load excluded sites
-		mySites = siteService.getUserSites(false, false, prefExclude);
+		// mySites = siteService.getUserSites(false, false, prefExclude);
+
+		// LS-138
+		mySites = siteService.getSites(org.sakaiproject.site.api.SiteService.SelectionType.MEMBER, null, null, null, null, null, false);
 
 		// Prepare to put sites in the right order
 		Vector<Site> ordered = new Vector<Site>();

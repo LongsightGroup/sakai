@@ -2,15 +2,21 @@
   <li class="fav-sites-entry #if (${site.isCurrentSite})is-selected #end #if (${site.isMyWorkspace})my-workspace #end">
 
     <div class="fav-title #if (${site.isMyWorkspace}) fav-title-myworkspace #end">
-      <a href="${site.siteUrl}" title="${site.siteTitle}">
+      #if ( $site.published != 'false' || $site.siteUpdate != 'false' )
+        <a href="${site.siteUrl}" title="${site.siteTitle}">
+      #end
         #if (${site.isMyWorkspace})
           <span class="bi-house-fill" aria-hidden="true"></span><span class="fullTitle">${rloader.sit_mywor}</span>
+        #elseif ( $site.published == 'false' && $site.siteUpdate == 'false' )
+          <span title="${site.fullTitle}" class="fullTitle walshUnpublishedSite">${site.siteTitle}</span>
         #elseif ( ( ${tabDisplayLabel} == 2 ) && ( ${site.shortDescription} ) )
           <span class="fullTitle">${site.shortDescription}</span>
         #else
           <span class="fullTitle">${site.siteTitleTrunc}</span>
         #end
-      </a>
+      #if ( $site.published != 'false' || $site.siteUpdate != 'false' )
+        </a>
+      #end
     </div>
 
     #if (!${site.isMyWorkspace})
