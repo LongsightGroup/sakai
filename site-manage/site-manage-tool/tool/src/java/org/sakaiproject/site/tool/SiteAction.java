@@ -9929,6 +9929,10 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 													ResourcePropertiesEdit rp = site.getPropertiesEdit();
 													rp.addProperty(Site.PROP_SITE_TERM, term.getTitle());
 													rp.addProperty(Site.PROP_SITE_TERM_EID, term.getEid());
+														//remove the origin site's externalSiteId from the new site if it exists
+                        			                     							if(rp.get("externalSiteId") != null){
+                                              			     								rp.removeProperty("externalSiteId");
+                                            			     							}
 
 													// Need to set STATE_TERM_SELECTED so it shows in the notification email
 													state.setAttribute(STATE_TERM_SELECTED, term);
