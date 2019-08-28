@@ -44,6 +44,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -213,7 +214,7 @@ public class PublishAssessmentListener
       String subject = publishRepublishNotification.getNotificationSubject();
       String notificationMessage = getNotificationMessage(publishRepublishNotification, assessmentSettings.getTitle(), assessmentSettings.getReleaseTo(), assessmentSettings.getStartDateString(), assessmentSettings.getPublishedUrl(),
         assessmentSettings.getDueDateString(), assessmentSettings.getTimedHours(), assessmentSettings.getTimedMinutes(), 
-        assessmentSettings.getUnlimitedSubmissions(), assessmentSettings.getSubmissionsAllowed(), assessmentSettings.getScoringType(), assessmentSettings.getFeedbackDelivery(), assessmentSettings.getFeedbackDateString());
+        assessmentSettings.getUnlimitedSubmissions(), assessmentSettings.getSubmissionsAllowed(), assessmentSettings.getScoringType(), assessmentSettings.getFeedbackDelivery(), assessmentSettings.getFeedbackDateString(), assessmentSettings.getFeedbackEndDateString(), assessmentSettings.getFeedbackScoreThreshold());
        
       if (sendNotification) {
         sendNotification(pub, publishedAssessmentService, subject, notificationMessage, 
@@ -375,7 +376,7 @@ public class PublishAssessmentListener
 	  EmailService.sendMail(from, toIA, subject, message, noReply, noReply, headers);
   }
   
-  public String getNotificationMessage(PublishRepublishNotificationBean publishRepublishNotification, String title, String releaseTo, String startDateString, String publishedURL, String dueDateString, Integer timedHours, Integer timedMinutes, String unlimitedSubmissions, String submissionsAllowed, String scoringType, String feedbackDelivery, String feedbackDateString){
+  public String getNotificationMessage(PublishRepublishNotificationBean publishRepublishNotification, String title, String releaseTo, String startDateString, String publishedURL, String dueDateString, Integer timedHours, Integer timedMinutes, String unlimitedSubmissions, String submissionsAllowed, String scoringType, String feedbackDelivery, String feedbackDateString, String feedbackEndDateString, String feedbackScoreThreshold){
 	  String siteTitle = publishRepublishNotification.getSiteTitle();
 	  if(siteTitle == null || "".equals(siteTitle)){
 		  try {
@@ -484,7 +485,25 @@ public class PublishAssessmentListener
 		  message.append(rl.getString("receive_no_feedback"));
 	  }
 	  else {
-		  message.append(MessageFormat.format(rl.getString("feedback_available_on"), feedbackDateString));
+		if(StringUtils.isNotBlank(feedbackScoreThreshold)){
+			//Score threshold is set
+			if(StringUtils.isNotBlank(feedbackEndDateString)){
+				//Ranged availability
+				message.append(MessageFormat.format(rl.getString("feedback_available_ranges_threshold"), feedbackScoreThreshold, feedbackDateString, feedbackEndDateString));
+			} else{
+				//Not ranged availability
+				message.append(MessageFormat.format(rl.getString("feedback_available_on_threshold"), feedbackScoreThreshold, feedbackDateString));
+			}
+		} else{
+			//Score threshold is not set
+			if(StringUtils.isNotBlank(feedbackEndDateString)){
+				//Ranged availability
+				message.append(MessageFormat.format(rl.getString("feedback_available_ranges"), feedbackDateString, feedbackEndDateString));
+			} else{
+				//Not ranged availability
+				message.append(MessageFormat.format(rl.getString("feedback_available_on"), feedbackDateString));
+			}
+		}
 	  }
 	  message.append(newline);
 	  message.append(newline);
