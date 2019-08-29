@@ -2762,6 +2762,8 @@ public class GradebookNgBusinessService {
 		// "Lesson Builder" is currently hardcoded in SimplePageBean.java (no localization required)
 		} else if (StringUtils.equals(externalAppName, "Lesson Builder")) {
 			iconClass = getLessonBuilderIconClass();
+		} else if (StringUtils.equals(externalAppName, "Attendance")) {
+			iconClass = getAttendanceIconClass();
 		}
 		return iconClass;
 	}
@@ -2777,6 +2779,7 @@ public class GradebookNgBusinessService {
 		mapping.put(this.toolManager.getLocalizedToolProperty("sakai.assignment", "title"), getAssignmentsIconClass());
 		mapping.put(this.toolManager.getLocalizedToolProperty("sakai.samigo", "title"), getSamigoIconClass());
 		mapping.put("Lesson Builder", getLessonBuilderIconClass());
+		mapping.put("Attendance", getAttendanceIconClass());
 
 		return mapping;
 	}
@@ -2795,6 +2798,10 @@ public class GradebookNgBusinessService {
 
 	private String getLessonBuilderIconClass() {
 		return ICON_SAKAI + "sakai-lessonbuildertool";
+	}
+
+	private String getAttendanceIconClass() {
+		return ICON_SAKAI + "sakai-attendance";
 	}
 
 	// Return a CandidateDetailProvider or null if it's not enabled
