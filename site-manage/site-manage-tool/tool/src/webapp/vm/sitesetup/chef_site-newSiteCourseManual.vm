@@ -108,11 +108,10 @@
 					#end
 
 				<div>
-                                        <!-- Ithaca custom BIQ-970839
+                                        <!-- Ithaca custom BIQ-970839 -->
 					#if ($!isFutureTerm)
 						<h4>$tlang.getString("man.siteroster")</h4>
 						<p class="instruction">$tlang.getString("man.notverifyfuture1")$!weeksAhead $tlang.getString("man.notverifyfuture2")</p>
-                                        -->
 					#else
 					  #if ($requireAuthorizer)
 						  <h4>$tlang.getString("man.siteauth")</h4>
