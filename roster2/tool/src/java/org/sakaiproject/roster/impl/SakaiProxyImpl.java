@@ -263,6 +263,16 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	public String getDefaultOverviewMode() {
+
+		return serverConfigurationService
+				.getString("roster.defaultOverviewMode", DEFAULT_OVERVIEW_MODE);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public Boolean getFirstNameLastName() {
 
 		return serverConfigurationService.getBoolean(

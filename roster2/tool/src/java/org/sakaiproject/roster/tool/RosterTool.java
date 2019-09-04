@@ -36,10 +36,7 @@ package org.sakaiproject.roster.tool;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -52,7 +49,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import org.sakaiproject.portal.util.PortalUtils;
 import org.sakaiproject.roster.api.SakaiProxy;
-import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 
 /**
@@ -126,6 +122,7 @@ public class RosterTool extends HttpServlet {
 		request.setAttribute("siteId", sakaiProxy.getCurrentSiteId());
         request.setAttribute("language", language);
 		request.setAttribute("defaultSortColumn", sakaiProxy.getDefaultSortColumn());
+        request.setAttribute("defaultOverviewMode", sakaiProxy.getDefaultOverviewMode());
         request.setAttribute("firstNameLastName", sakaiProxy.getFirstNameLastName());
 		request.setAttribute("hideSingleGroupFilter", sakaiProxy.getHideSingleGroupFilter());
         request.setAttribute("viewUserDisplayId", sakaiProxy.getViewUserDisplayId());
@@ -139,6 +136,6 @@ public class RosterTool extends HttpServlet {
         request.setAttribute("portalCDNQuery", PortalUtils.getCDNQuery());
 
         response.setContentType("text/html");
-        request.getRequestDispatcher("/WEB-INF/bootstrap.jsp").include(request, response);	
+        request.getRequestDispatcher("/WEB-INF/bootstrap.jsp").include(request, response);
 	}
 }
