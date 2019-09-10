@@ -151,7 +151,12 @@ public class UserPage  extends BaseTreePage{
 					if(nodeModel.isSiteNode()){
 						Site site = sakaiProxy.getSiteByRef(nodeModel.getNode().title);
 						if(site != null){
-							getRequestCycle().scheduleRequestHandlerAfterCurrent(new RedirectRequestHandler(site.getUrl()));
+							//Instead of opening the site on the same window losing the context, open it in a new window.
+							target.appendJavaScript(String.format("window.open('%s');", site.getUrl()));
+							/*
+							 * Call this instead appending Javascript if you want to open the siteId in the same window.
+							 * getRequestCycle().scheduleRequestHandlerAfterCurrent(new RedirectRequestHandler(site.getUrl()));
+							 */
 						}
 					}
 				}else{
