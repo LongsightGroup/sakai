@@ -131,7 +131,7 @@
 			                </constructor-arg>
 			                <constructor-arg>
                                 <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="sakai/saml_sp.xml"/>
+                                    <constructor-arg value="sakai/saml/sp.xml"/>
                                 </bean>
 			                </constructor-arg>
 			                <property name="parserPool" ref="parserPool"/>
@@ -159,7 +159,7 @@
                   <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://shib.oit.nd.edu/nd-metadata-2-signed.xml</value>
+                        <value type="java.lang.String">https://okta.nd.edu/app/exk1f6vmdgCsLCFnl357/sso/saml/metadata</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">45000</value>
@@ -191,7 +191,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="https://login.nd.edu/idp/shibboleth"/>
+        <property name="defaultIDP" value="http://www.okta.com/exk1f6vmdgCsLCFnl357"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
@@ -257,11 +257,7 @@
     </bean>
 
     <!-- SAML 2.0 WebSSO Assertion Consumer -->
-    <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl">
-        <!-- Duration in seconds after initial authentication with the IDP that SSO login will be allowed: see
-	     https://docs.spring.io/spring-security-saml/docs/current/reference/html/configuration-advanced.html#time-interval -->
-	<property name="maxAuthenticationAge" value="86400"/>
-    </bean>
+    <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl"/>
 
     <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
     <bean id="hokWebSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl"/>
@@ -317,11 +313,8 @@
         <constructor-arg ref="parserPool"/>
     </bean>
 
-    <!-- Initialization of OpenSAML library -->
+    <!-- Initialization of OpenSAML library-->
     <bean class="org.springframework.security.saml.SAMLBootstrap"/>
-
-    <!-- Use SHA256SAMLBootstrap for SHA-256 instead of default SHA-1 -->
-    <!-- bean class="org.sakaiproject.login.springframework.SHA256SAMLBootstrap"/ -->
 
     <!-- Initialization of the velocity engine -->
     <bean id="velocityEngine" class="org.springframework.security.saml.util.VelocityFactory" factory-method="getEngine"/>
