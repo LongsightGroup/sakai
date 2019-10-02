@@ -805,6 +805,13 @@ function includeWebjarLibrary(library) {
 	} else if (library == 'mathjs') {
 		libraryVersion = "6.0.2";
 		document.write('\x3Cscript src="' + webjars + 'mathjs/' + libraryVersion + '/dist/math.min.js' + ver + '">' + '\x3C/script>');
+	} else if (library == 'handlebars') {
+		libraryVersion = "4.0.6";
+		document.write('\x3Cscript src="' + webjars + 'handlebars/' + libraryVersion + '/handlebars.runtime.min.js' + ver + '">' + '\x3C/script>');
+	} else if (library == 'qtip2') {
+		libraryVersion = "3.0.3";
+		document.write('\x3Cscript src="' + webjars + 'qtip2/' + libraryVersion + '/jquery.qtip.min.js' + ver + '">' + '\x3C/script>');
+		document.write('\x3Clink rel="stylesheet" href="' + webjars + 'qtip2/' + libraryVersion + '/jquery.qtip.min.css' + ver + '"/>');
 	} else {
 		if (library.endsWith(".js")) {
 			document.write('\x3Cscript type="text/javascript" src="' + webjars + library + ver + '">' + '\x3C/script>');
@@ -857,6 +864,14 @@ function modalDialogWidth() {
 	}
 	if ( dWidth < 300 ) dWidth = 300; // Should not happen
 	return Math.round(dWidth);
+}
+//
+// Return the correct height for a modal dialog.
+function modalDialogHeight() {
+	var wHeight = $(window).height();
+	var dHeight = wHeight * 0.8;
+	if ( dHeight < 300 ) dHeight = 300; // Should not happen
+	return Math.round(dHeight);
 }
 
 // Figure out the maximum z-index

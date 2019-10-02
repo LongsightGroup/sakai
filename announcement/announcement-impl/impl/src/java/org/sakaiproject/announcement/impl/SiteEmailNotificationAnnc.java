@@ -21,10 +21,9 @@
 
 package org.sakaiproject.announcement.impl;
 
+import java.time.Instant;
 import java.util.Iterator;
 import java.util.List;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
@@ -35,29 +34,31 @@ import org.sakaiproject.api.app.scheduler.ScheduledInvocationCommand;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.content.api.ContentHostingService;
+import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
-import org.sakaiproject.entity.api.EntityManager;
 import org.sakaiproject.event.api.Event;
+import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.event.api.Notification;
 import org.sakaiproject.event.api.NotificationEdit;
 import org.sakaiproject.event.api.NotificationService;
-import org.sakaiproject.content.api.ContentHostingService;
-import org.sakaiproject.event.api.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.message.api.MessageHeader;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
-import org.sakaiproject.time.api.Time;
-import org.sakaiproject.time.api.TimeService;
+import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.user.api.User;
-import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.EmailNotification;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SiteEmailNotification;
+
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
@@ -75,44 +76,14 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 	private static final String SAK_PROP_EMAIL_TO_MATCHES_FROM = "announcement.notification.email.to.matches.from";
 	private static final boolean SAK_PROP_EMAIL_TO_MATCHES_FROM_DEFAULT = false;
 
-	private EntityManager entityManager;
-	private SecurityService securityService;
-	private NotificationService notificationService;
-	private EventTrackingService eventTrackingService;
-	private SiteService siteService;
-	private TimeService timeService;
-	private UserDirectoryService userDirectoryService;
-	
-	@Setter
-	private ServerConfigurationService serverConfigurationService;
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
-	public void setSecurityService(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-
-	public void setNotificationService(NotificationService notificationService) {
-		this.notificationService = notificationService;
-	}
-
-	public void setEventTrackingService(EventTrackingService eventTrackingService) {
-		this.eventTrackingService = eventTrackingService;
-	}
-
-	public void setTimeService(TimeService timeService) {
-		this.timeService = timeService;
-	}
-
-	public void setUserDirectoryService(UserDirectoryService userDirectoryService) {
-		this.userDirectoryService = userDirectoryService;
-	}
-
-	public void setSiteService(SiteService siteService) {
-		this.siteService = siteService;
-	}
+	@Setter private EntityManager entityManager;
+	@Setter private SecurityService securityService;
+	@Setter private NotificationService notificationService;
+	@Setter private EventTrackingService eventTrackingService;
+	@Setter private SiteService siteService;
+	@Setter private UserDirectoryService userDirectoryService;
+	@Setter private ServerConfigurationService serverConfigurationService;
+	@Setter private UserTimeService userTimeService;
 
 	/**
 	 * Construct.
@@ -152,9 +123,9 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 
 		// Put here since if release date after now, do not notify
 		// since scheduled notification has been set.
-		Time now = timeService.newTime();
+		Instant now = Instant.now();
 		
-		if (now.after(hdr.getDate()))
+		if (now.isAfter(hdr.getInstant()))
 		{
 			super.notify(notification, event);
 		}
@@ -210,7 +181,7 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 			}
 		}
 		buf.append(" ").append(rb.getString("at_date")).append(" ");
-		buf.append(hdr.getDate().toStringLocalFull());
+		buf.append(userTimeService.shortLocalizedTimestamp(hdr.getInstant(), rb.getLocale()));
 		buf.append(newline);
 		buf.append(msg.getBody());
 		buf.append(newline);
@@ -459,10 +430,11 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 	{
 		// get the message
 		final Reference ref = entityManager.newReference(opaqueContext);
+
+		// needed to access the message
+		SecurityAdvisor sa = enableSecurityAdvisorToGetAnnouncement();
+
 		try {
-			// needed to access the message
-			enableSecurityAdvisorToGetAnnouncement();
-			
 			final AnnouncementMessage msg = (AnnouncementMessage) ref.getEntity();
 			if (msg!=null) {
 				final AnnouncementMessageHeader hdr = (AnnouncementMessageHeader) msg.getAnnouncementHeader();
@@ -493,7 +465,7 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 			// message within the super class, can't remove the
 			// SecurityAdvisor until this point
 			// done with access, need to remove from stack
-			disableSecurityAdvisor();
+			disableSecurityAdvisor(sa);
 		}
 	}
 
@@ -501,10 +473,10 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 	 * Establish a security advisor to allow the "embedded" azg work to occur
 	 * with no need for additional security permissions.
 	 */
-	protected void enableSecurityAdvisorToGetAnnouncement() {
+	protected SecurityAdvisor enableSecurityAdvisorToGetAnnouncement() {
 		// put in a security advisor so we can do our podcast work without need
 		// of further permissions
-		securityService.pushAdvisor(new SecurityAdvisor() {
+		SecurityAdvisor sa = new SecurityAdvisor() {
 			public SecurityAdvice isAllowed(String userId, String function,
 					String reference) {
 				if (function.equals(AnnouncementService.SECURE_ANNC_READ) || function.equals(ContentHostingService.AUTH_RESOURCE_READ)) // SAK-23300
@@ -512,14 +484,16 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 				else
 					return SecurityAdvice.PASS;
 			}
-		});
+		};
+		securityService.pushAdvisor(sa);
+		return sa;
 	}
 
 	/**
 	 * remove recent add SecurityAdvisor from stack
 	 */
-	protected void disableSecurityAdvisor() {
-		securityService.popAdvisor();
+	protected void disableSecurityAdvisor(SecurityAdvisor sa) {
+		securityService.popAdvisor(sa);
 	}
 
 
@@ -577,7 +551,7 @@ public class SiteEmailNotificationAnnc extends SiteEmailNotification
 		}
 		
 		buf.append(" ").append(rb.getString("at_date")).append(" ");
-        buf.append(hdr.getDate().toStringLocalFull());
+        buf.append(userTimeService.shortLocalizedTimestamp(hdr.getInstant(), rb.getLocale()));
 		buf.append(newline);
 		buf.append(FormattedText.convertFormattedTextToPlaintext(msg.getBody()));
 		buf.append(newline);
