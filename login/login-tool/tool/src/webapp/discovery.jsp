@@ -23,9 +23,9 @@
         </a>
       </div>
 
-      <div class="row mt-4 p-2">
+      <div class="row mt-4 p-2" style="background-color: black">
         <a href="/sakai-login-tool/container/saml/login?idp=http://adfs.johnsonu.edu/adfs/services/trust">
-          <img src="https://johnsonu.edu/images/Home/JU-System-w-EX.aspx?width=400&height=59&ext=.png" alt="Johnson University" style="height: 60px" />
+          <img src="https://johnsonu.edu/wp-content/themes/ju2019/images/logo-johnson-university-white.png" alt="Johnson University" style="height: 60px" />
         </a>
       </div>
       <div class="row mt-4 p-2" style="background-color: black">
