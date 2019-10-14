@@ -139,7 +139,7 @@
                                             #end
 
                                             #foreach( $site in $tabsSites.tabsMoreTermsRightPane.get($termKey))
-                                                #if (${site.siteType} != #"course" && !${site.isMyWorkspace})
+                                                #if (!${site.isMyWorkspace})
                                                     #displaySite($site)
                                                 #end
                                             #end
