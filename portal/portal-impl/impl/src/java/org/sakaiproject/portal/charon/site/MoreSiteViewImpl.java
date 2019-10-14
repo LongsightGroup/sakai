@@ -34,6 +34,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.exception.IdUnusedException;
@@ -388,7 +389,7 @@ public class MoreSiteViewImpl extends AbstractSiteViewImpl
 			result.sitesInRightPane.put(term, new ArrayList());
 
 			for (Map site : (List<Map>)tabsMoreTerms.get(term)) {
-				if (isCourseType((String)site.get("siteType"))) {
+				if (isCourseType((String)site.get("siteType")) && StringUtils.contains(term, "SEM")) {
 					result.sitesInLeftPane.get(term).add(site);
 				} else {
 					result.sitesInRightPane.get(term).add(site);
