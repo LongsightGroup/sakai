@@ -867,8 +867,9 @@ public class SakaiProxyImpl implements SakaiProxy, Observer {
 
             for (Enrollment enrollment : courseManagementService.getEnrollments(enrollmentSet.getEid())) {
                 RosterMember member = membership.get(enrollment.getUserId());
-                member.setCredits(enrollment.getCredits());
-                String enrollmentStatusId = enrollment.getEnrollmentStatus();
+                if (member == null) continue;
+                if (enrollment.getCredits() != null) member.setCredits(enrollment.getCredits());
+                String enrollmentStatusId = enrollment.getEnrollmentStatus() != null ? enrollment.getEnrollmentStatus() : "enrolled";
                 member.setEnrollmentStatusId(enrollmentStatusId);
                 member.setEnrollmentStatusText(statusCodes.get(enrollmentStatusId));
 
