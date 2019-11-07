@@ -752,11 +752,7 @@
 				#end
 					<div class="checkbox">
 						<label for="$name_AllowStudentView">
-						#if ($!value_AllowStudentView.equals("true"))
-							<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" checked="checked" />
-						#else
-							<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" />
-						#end
+						<input id="$name_AllowStudentView" name="$name_AllowStudentView" type="checkbox" value="true" checked="checked" disabled />
 							$tlang.getString("review.allow")
 						</label>
 					</div>

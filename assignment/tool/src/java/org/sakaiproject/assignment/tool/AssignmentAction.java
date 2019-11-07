@@ -2574,7 +2574,7 @@ public class AssignmentAction extends PagedResourceActionII {
         }
         context.put("turnitin_forceSingleAttachment", serverConfigurationService.getBoolean("turnitin.forceSingleAttachment", false));
         //Rely on the deprecated "turnitin.allowStudentView.default" setting if set, otherwise use "contentreview.allowStudentView.default"
-        boolean defaultAllowStudentView = serverConfigurationService.getBoolean("turnitin.allowStudentView.default", serverConfigurationService.getBoolean("contentreview.allowStudentView.default", Boolean.FALSE));
+        boolean defaultAllowStudentView = true;
         context.put("value_AllowStudentView", state.getAttribute(NEW_ASSIGNMENT_ALLOW_STUDENT_VIEW) == null ? Boolean.toString(defaultAllowStudentView) : state.getAttribute(NEW_ASSIGNMENT_ALLOW_STUDENT_VIEW));
 
         List<String> subOptions = getSubmissionRepositoryOptions();
@@ -7606,7 +7606,7 @@ public class AssignmentAction extends PagedResourceActionII {
             //Review Service
             boolean useReviewService = "true".equalsIgnoreCase((String) state.getAttribute(NEW_ASSIGNMENT_USE_REVIEW_SERVICE));
 
-            boolean allowStudentViewReport = "true".equalsIgnoreCase((String) state.getAttribute(NEW_ASSIGNMENT_ALLOW_STUDENT_VIEW));
+            boolean allowStudentViewReport = true;
 
             // If the assignment switched to non-electronic, we need to use some of the assignment's previous content-review settings.
             // This way, students will maintain access to their originality reports when appropriate.
