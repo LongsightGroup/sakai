@@ -4731,6 +4731,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
  			UIInput.make(form, "add-alert-other-message", "#{simplePageBean.addAlertOtherMessage}").decorate(new UIFreeAttributeDecorator("placeholder", messageLocator.getMessage("simplepage.add-alert-message-default")));
 
  			UICommand.make(form, "add-alert-submit", messageLocator.getMessage("simplepage.save"), "#{simplePageBean.addAlert}");
+ 			UICommand.make(form, "add-alert-remove", messageLocator.getMessage("simplepage.remove"), "#{simplePageBean.removeAlert}");
  			UICommand.make(form, "add-alert-cancel", messageLocator.getMessage("simplepage.cancel"), null);
  		}
  	}
