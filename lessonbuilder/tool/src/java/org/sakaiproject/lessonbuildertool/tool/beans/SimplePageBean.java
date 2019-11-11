@@ -6943,6 +6943,20 @@ public class SimplePageBean {
                 }
         }
 
+        public void removeAlert(){
+                if (!canEditPage())
+                        return;
+                if (!checkCsrf())
+                        return;
+
+                ActivityAlert activityAlert = new ActivityAlertImpl();
+                activityAlert.setSiteId(getCurrentPage().getSiteId());
+                activityAlert.setTool("sakai.lessonbuildertool");
+                activityAlert.setReference("" + getCurrentPageId());
+
+                activityAlertService.clearActivityAlert(activityAlert);
+        }
+
         public void addAlert(){
                 if (!canEditPage())
                         return;
