@@ -127,6 +127,7 @@
     #attachmentFragment($submissionAttachmentReferences.keySet() $submissionAttachmentReferences $!decoratedUrlMap true)
 
 	#if($!submissionConfirmOptions.size() > 0)
+        <div style="outline: 1px solid red; background-color:#f2dede;padding-bottom:5px; padding-left: 5px;">
 		<h4>
 			$tlang.getString("subm.notif")
 		</h4>
@@ -142,6 +143,7 @@
 			#end
 			</ul>
 		#end
+        </div>
 	#end
 
     <form id="addSubmissionForm" name="addSubmissionForm" action="#toolForm("AssignmentAction")" method="post" onsubmit="return true;">
