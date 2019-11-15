@@ -205,14 +205,14 @@ $(document).ready(function() {
 	<ul>
 		<h:outputText escape="false" value="<li><a href=\"#tabs-1\" onclick=\"resizeFrame();\">" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pending}:" rendered="#{authorization.adminCoreAssessment}"/>
-		<h:outputText escape="false" value="<span class=\"samigo-tab-sub\">" rendered="#{authorization.adminCoreAssessment}"/>
+		<h:outputText escape="false" value="<class=\"samigo-tab-sub\">" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText value="&#160;" escape="false" />
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pending_sub}" rendered="#{authorization.adminCoreAssessment}"/>
 		<h:outputText escape="false" value="</span></a></li>" rendered="#{authorization.adminCoreAssessment}"/>
 		
 		<h:outputText escape="false" value="<li><a href=\"#tabs-2\" onclick=\"resizeFrame();\">" rendered="#{authorization.adminPublishedAssessment}"/>
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pub}:" rendered="#{authorization.adminPublishedAssessment}"/>
-		<h:outputText escape="false" value="<span class=\"samigo-tab-sub\">" rendered="#{authorization.adminPublishedAssessment}"/>
+		<h:outputText escape="false" value="<class=\"samigo-tab-sub\">" rendered="#{authorization.adminPublishedAssessment}"/>
 		<h:outputText value="&#160;" escape="false" />
 		<h:outputText escape="false" value="#{authorFrontDoorMessages.assessment_pub_sub}" rendered="#{authorization.adminPublishedAssessment}"/>
 		<h:outputText escape="false" value="</span></a></li>" rendered="#{authorization.adminPublishedAssessment}"/>
