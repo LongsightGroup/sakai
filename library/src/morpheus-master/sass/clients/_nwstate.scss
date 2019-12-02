@@ -1,0 +1,125 @@
+$skin-name : "nwstate" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#033a12 !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#033a12 !default;
+$text-color:				 		#000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#d7e4c7;
+$sites-nav-submenu-item-background:			#FAFAFA;
+
+/* Logo location */
+$logo: 							'../images/nwscc.svg';
+$logo-height: 						50px;
+$logo-width: 						170px;
+
+// Tab colors
+$tool-tab-text-color:			 		#000;
+$tool-tab-background-color:              		#FFF !default;
+$tool-tab-active-text-color:             		#033a12 !default;
+$tool-tab-active-highlight-color:        		#033a12 !default;
+$tool-tab-active-background-color:                      #FAFAFA !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#0064cd !default;
+$link-active-color: 			 		#4e5192 !default;
+$link-hover-color: 			 		$primary-color;
+
+// Button colors 
+$button-text-color:	 		 		#444 !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		#F2F2F2 !default;
+$button-background-secondary-color: 	 		#FFFFFF !default;
+$button-color-border-color: 		 		#CCCCCC !default;
+$button-color-background-color: 	 		#F2F2F2 !default;
+$button-color-background-secondary-color:		#FFFFFF !default;
+// Primary Button Color
+$button-primary-background-color:        		#FAFAFA !default;
+$button-primary-text-color: 		 		#033a12 !default;
+$button-primary-hover-text-color:                       #033a12 !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     $primary-color;
+
+// Link , Edit, Help Buttons
+$button-secondary-text-color:            		#033a12 !default;
+$button-secondary-icon-color:            		#033a12 !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#d7e4c7!default;
+$sites-nav-menu-item-color:              		#000 !default;
+$sites-nav-menu-item-icon-color:         		#000 !default;
+
+$sites-nav-menu-item-hover-background:         		#d7e4c7!default;
+$sites-nav-menu-item-hover-color:              		#000 !default;
+$sites-nav-menu-item-hover-icon-color:         		#000 !default;
+//Selected
+$sites-nav-menu-item-selected-background:		#033a12 !default;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+
+$sites-nav-menu-item-selected-hover-background: 	#033a12 !default;
+$sites-nav-menu-item-selected-hover-color:      	#FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#FFF !default;
+$sites-nav-menu-item-selected-border-color: 		#FFF !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-background-color:		 		#FFF !default;
+$tool-menu-color: 			 		#444444 !default;
+$tool-border-color:			 		#CCC !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#002f05 !default;
+$tool-menu-item-hover-icon-color:               	#002f05 !default;
+$tool-menu-item-hover-background-color:         	#EEE !default;
+$tool-menu-item-hover-border-left:              	4px solid #002f05 !default;
+// selected
+$tool-menu-item-selected-background-color:            	#EEEEEE !default;
+$tool-menu-item-selected-text-color:            	#002f05 !default;
+$tool-menu-item-selected-icon-color:            	#002f05 !default;
+$tool-menu-item-selected-border-left:           	4px solid #002f05 !default;
+// submenu
+$tool-sub-menu-hover-color:				#002f05 !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#002f05 !default;
+$tool-menu-item-selected-hover-icon-color:      	#002f05 !default;
+$tool-menu-item-selected-hover-background-color:	#EEE !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #002f05 !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #002f05 !default;
+$tool-menu-collapse-active-text-color:                  #002f05 !default;
+$tool-sub-menu-hover-color:				#000; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+  #loginLink1 {
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #ededed;
+    color: #000;
+    border-radius: 3px;
+    padding: 8px;
+  }
+  #loginLinksImage #loginLink2 {
+    padding: 0;
+    margin: 10px 0 0 0;
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: right;
+    display: block;
+  }
+  #loginLinksImage #loginLink2:hover {
+    color: #ccc;
+  }
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+    color: #FFF !important;
+}

@@ -1,4 +1,4 @@
-$skin-name : "peppdev" !default; // This is used for bootstrap font behaviour.
+$skin-name : "pepperdine" !default; // This is used for bootstrap font behaviour.
 
 $top-header-background:					#00205c;
 $sites-nav-background:					#ffffff;
@@ -30,6 +30,10 @@ $tool-menu-item-selected-hover-icon-color:	i	#FFF !default;
 $tool-menu-item-selected-text-color:                    #FFFFFF !default;
 $tool-menu-item-selected-icon-color:                    #FFFFFF !default;
 $tool-menu-item-selected-background-color:              #0078b0 !default;
+
+
+/* Tool sub menu */
+$tool-sub-menu-current-background-color: $tool-menu-item-background-color !default;
 
 // Customizations to round corners on sites-nav itmes
 #linkNav ul li.Mrphs-sitesNav__menuitem>a.link-container {
@@ -124,4 +128,25 @@ nav#toolMenu ul li a[title='Site Info - For displaying and managing information 
         left:   25px !important;
         padding: 0 36px 0px 20px !important;
     }
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link.is-invisible:after, #subSites ul li .Mrphs-toolsNav__menuitem--link.is-invisible:after {
+    margin-right: 23px !important;
+    content: '\f070' !important;
+}
+
+#mastLogin .Mrphs-loginUser a:hover {
+    color: #ddd;
+}
+
+#toolMenu li.has-lessons-sub-pages ul.lessons-sub-page-menu li.is-current a {
+    background: #0078b0;
+}
+
+#toolMenu li.has-lessons-sub-pages.has-lessons-sub-pages .lessons-top-level-placeholder .lessons-goto-top-page .Mrphs-toolsNav__menuitem--title {
+    color: #fff !important;
+}
+
+#toolMenu li.has-lessons-sub-pages.is-current.is-parent-of-current .lessons-goto-top-page .Mrphs-toolsNav__menuitem--title {
+    color: #FFF !important;
 }

@@ -1,0 +1,143 @@
+$skin-name : "csc" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo: 							'../images/csc.svg';
+$logo-height: 						50px;
+$logo-width: 						175px;
+
+/* Color palette */
+$background-color-secondary: #24292e !default;
+$primary-color:    			 #660033 !default;
+$primary-color-lighten:    	 #7c1046 !default;
+$secondary-color:  			 #15597e !default;
+$alt-colour: 				 #24292e !default;
+$text-color:				 #24292e !default;
+
+/* Breadcrumb colors */
+$breadcrumbs-tool-color:		 $secondary-color !default;
+$breadcrumbs-hover-color:		 $secondary-color !default;
+
+/* General button colors */
+$button-color-border-color: $primary-color-lighten !default;
+$button-color-background-color: $primary-color !default;
+
+$button-primary-background-color:                         $primary-color !default;
+$button-primary-border-color:                             $button-color-border-color !default;
+
+$button-primary-hover-background-color:                   $button-color-border-color !default;
+$button-primary-hover-border-color:                       $button-color-border-color !default;
+
+/* Link colors */
+$link-color: $secondary-color !default;
+$link-active-color: $secondary-color !default;
+$link-hover-color: $secondary-color !default;
+
+/* ///////////// */
+$info-color:                $secondary-color  !default;
+$info-background-color:     lighten($secondary-color, 45%) !default;
+
+/* topNav Main Menu */
+$header-size: 50px !default;
+$topNav-text-color:                         #fff !default; /* used for links and text in the topNav */
+$topNav-text-alt-color:                     #ccc !default;
+
+/* Favorites */
+/* Favorites - item */
+$sites-nav-menu-item-background:            #FFFFFF !default;
+$sites-nav-menu-item-color:                 #4C4C4C !default;
+$sites-nav-menu-item-icon-color:            #666666 !default;
+$sites-nav-menu-item-border-color:          #E5E5E5 !default;
+$sites-nav-menu-item-border-top:            1px solid $sites-nav-menu-item-border-color !default;
+$sites-nav-menu-item-border-right:          $sites-nav-menu-item-border-top !default;
+$sites-nav-menu-item-border-bottom:         2px solid $sites-nav-menu-item-border-color !default;
+$sites-nav-menu-item-border-left:           $sites-nav-menu-item-border-top !default;
+
+/* Favorites - item hovered */
+$sites-nav-menu-item-hover-background:      #E5E5E5 !default;
+$sites-nav-menu-item-hover-color:           #191919 !default;
+$sites-nav-menu-item-hover-icon-color:      #191919 !default;
+$sites-nav-menu-item-hover-border-color:    #C5C5C5 !default;
+$sites-nav-menu-item-hover-border-top:      1px solid $sites-nav-menu-item-hover-border-color !default;
+$sites-nav-menu-item-hover-border-right:    $sites-nav-menu-item-hover-border-top !default;
+$sites-nav-menu-item-hover-border-bottom:   2px solid $sites-nav-menu-item-hover-border-color !default;
+$sites-nav-menu-item-hover-border-left:     $sites-nav-menu-item-hover-border-top !default;
+
+/* Favorites - item selected */
+$sites-nav-menu-item-selected-background:   #FFF !default;
+$sites-nav-menu-item-selected-color:        $primary-color !default;
+$sites-nav-menu-item-selected-icon-color:   $primary-color !default;
+$sites-nav-menu-item-selected-border-color: #B5B5B5 !default;
+$sites-nav-menu-item-selected-border-top:   3px solid $primary-color !default;
+$sites-nav-menu-item-selected-border-right: 1px solid $sites-nav-menu-item-selected-border-color !default;
+$sites-nav-menu-item-selected-border-bottom:2px solid $sites-nav-menu-item-selected-border-color !default;
+$sites-nav-menu-item-selected-border-left:  $sites-nav-menu-item-selected-border-right !default;
+
+/* Favorites - item selected and hovered */
+$sites-nav-menu-item-selected-hover-background:   $sites-nav-menu-item-selected-background !default;
+$sites-nav-menu-item-selected-hover-color:        $sites-nav-menu-item-selected-color !default;
+$sites-nav-menu-item-selected-hover-icon-color:   $sites-nav-menu-item-selected-icon-color !default;
+$sites-nav-menu-item-selected-border-color: $sites-nav-menu-item-selected-border-color !default;
+$sites-nav-menu-item-selected-hover-border-top:   $sites-nav-menu-item-selected-border-top;
+$sites-nav-menu-item-selected-hover-border-right: $sites-nav-menu-item-selected-border-right !default;
+$sites-nav-menu-item-selected-hover-border-bottom:$sites-nav-menu-item-selected-border-bottom !default;
+$sites-nav-menu-item-selected-hover-border-left:  $sites-nav-menu-item-selected-border-left !default;
+
+/* Tool Menu */
+$tool-menu-item-selected-text-color:                       $primary-color !default;
+$tool-menu-item-selected-icon-color:                       $primary-color !default;
+$tool-menu-item-selected-border-left:                      4px solid $primary-color !default;
+$tool-menu-item-selected-hover-text-color:                 $primary-color !default;
+$tool-menu-item-selected-hover-icon-color:                 $primary-color !default;
+$tool-menu-item-selected-hover-border-left:                4px solid $primary-color !default;
+
+// info message colors
+$info-background-color:   				#efefef;
+
+// Calendar tool colors
+$calendar-event-background-color: #4a8db3;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.navIntraTool li span.current a {
+    background: #660034;
+    color: #FFF;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+}
+
+/* CSC Login button */
+#mastLogin .Mrphs-loginUser {
+    padding: 0 !important;
+}
+
+.is-minimized a[href].Mrphs-loginUser__message{
+    background-color: #660033;
+    border:1px solid #470024;
+    border-radius: 3px;
+    color: #E0E0E0;
+    padding:0px 10px;
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 1.1em;
+}
+
+.is-minimized a[href].Mrphs-loginUser__message:hover {
+    background-color: #82124B;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.is-minimized a[href].Mrphs-loginUser__message:before {
+    font-family: FontAwesome;
+    content:'\f090';
+    margin-right:8px;
+    font-size: 1.1em;
+}
+
+.Mrphs-sakai-schedule table.calendar .event {
+    background-color: #4a8db3 !important;
+}

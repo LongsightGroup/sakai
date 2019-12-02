@@ -1,0 +1,133 @@
+$skin-name : "limerick" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#632042 !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#632042 !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#632042 !default;
+$banner-height:						75px;
+
+/* Logo location */
+$logo: 							'../images/limerickNew.svg';
+$logo-height: 						75px;
+$logo-width: 						310px;
+
+// Tab colors
+$tool-tab-text-color:			 		#414141;
+$tool-tab-background-color:              		#FFFFFF !default;
+$tool-tab-active-text-color:             		#414141 !default;
+$tool-tab-active-highlight-color:        		#632042 !default;
+$tool-tab-active-background-color:                      #FAFAFA !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#596482 !default;
+$link-active-color: 			 		#41A1BF !default;
+$link-hover-color: 			 		$primary-color !default;
+
+// Button colors 
+$button-text-color:	 		 		#000 !default;
+$button-border-color: 			 		#ccc !default;
+$button-background-color: 		 		#e7e7e7 !default;
+$button-background-secondary-color: 	 		#fff !default;
+$button-color-border-color: 		 		#ccc !default;
+$button-color-background-color: 	 		#e7e7e7 !default;
+$button-color-background-secondary-color:		#FFF !default;
+// Primary Button Color
+$button-primary-background-color:        		#632042 !default;
+$button-primary-text-color: 		 		#FFF !default;
+$button-primary-hover-text-color:                       #632042 !default;
+$button-primary-hover-background-color:                 #FAFAFA !default;
+$button-primary-hover-border-color:                     $primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                           #000 !default; 
+$button-secondary-text-color:                           #000 !default;;
+$button-secondary-background-color:                     #FAFAFA !default;;
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#632042 !default; 
+$sites-nav-menu-item-color:              		#FFF !default;
+$sites-nav-menu-item-icon-color:         		#FFF !default;
+$sites-nav-menu-item-border-color:         		none !default;
+$sites-nav-menu-item-hover-background:              	#632042 !default;
+$sites-nav-menu-item-hover-color:              		#FFF !default;
+$sites-nav-menu-item-icon-hover-color:         		#FFF !default;
+//Selected
+$sites-nav-menu-item-selected-background:		#042a74 !default;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+$sites-nav-menu-item-selected-icon-color:	 	#FFF !default;
+$sites-nav-menu-item-selected-border-color:             none !default;
+$sites-nav-menu-item-selected-hover-background: 	#042a74 !default;
+$sites-nav-menu-item-selected-hover-color:      	#FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#FFF !default;
+
+// TOOL MENU COLORS
+$tool-menu-item-background-color:                       #FFF;
+$tool-menu-item-text-color:                       	#000 !default;
+$tool-menu-item-icon-color:                       	#000 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#fff !default;
+$tool-menu-item-hover-icon-color:               	#fff !default;
+$tool-menu-item-hover-background-color:         	#632042 !default;
+$tool-menu-item-hover-border-left:              	4px solid #632042 !default;
+// selected
+$tool-menu-item-selected-background-color:            	#f3f3f3 !default;
+$tool-menu-item-selected-text-color:            	#000 !default;
+$tool-menu-item-selected-icon-color:            	#000 !default;
+$tool-menu-item-selected-border-left:           	4px solid #632042 !default;
+// submenu
+$tool-sub-menu-hover-color:				#000 !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFF !default;
+$tool-menu-item-selected-hover-background-color:	#632042 !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #632042 !default;
+// collapsed menu
+$tool-menu-collapse-background-color:                   $tool-menu-item-background-color !default;
+$tool-menu-collapse-hover-background-color:             #632042 !default;
+$tool-menu-collapse-active-text-color:                  #FFF !default;
+$tool-sub-menu-hover-color:				#000; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-resources a.nil.fa-folder::after {
+    margin: 0.45em 0 0 -3.4em !important;
+}
+
+.navIntraTool li span.current a {
+    background: #FAFAFA;
+    color: #414141;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+    color: #FFF !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #000 !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+         width: 110px !important;
+         background-size: 110px 23px !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+}

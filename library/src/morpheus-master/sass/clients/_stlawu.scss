@@ -8,6 +8,12 @@ $text-color:				 		#000000 !default;
 $topNav-text-color:					#FFF !default;
 $sites-nav-background: 					#FAFAFA !default;
 
+// Defaults But needed for submenu - Dont change 
+$tool-menu-color:                        		#424242 !default;
+$background-color:                       		#FFFFFF !default;
+$tool-menu-background-color:                     	$body-background-color !default;
+// END of Defaults
+
 /* Logo location */
 $logo: 							'../images/stlawu.svg';
 $logo-height: 						50px;
@@ -51,13 +57,14 @@ $button-secondary-background-color:                     #4b2b23 !default;;
 
 // Sites Navigation 
 // Non Selected
-$sites-nav-menu-item-background:         		 -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%) !important;
+$sites-nav-menu-item-background:         		 -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%);
 $sites-nav-menu-item-color:              		#FFF !default;
 $sites-nav-menu-item-icon-color:         		#FFF !default;
 $sites-nav-menu-item-hover-color:              		#FFF !default;
 $sites-nav-menu-item-icon-hover-color:         		#FFF !default;
+$sites-nav-menu-item-hover-background:         		 -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%);
 //Selected
-$sites-nav-menu-item-selected-background:		-webkit-linear-gradient(top, #acacac 0%,#666666 100%) !important;
+$sites-nav-menu-item-selected-background:		-webkit-linear-gradient(top, #acacac 0%,#666666 100%);
 $sites-nav-menu-item-selected-color:			#FFF !default;
 $sites-nav-menu-item-selected-icon-color:	 	#FFF !default;
 $sites-nav-menu-item-selected-hover-background: 	-webkit-linear-gradient(top, #acacac 0%,#666666 100%);
@@ -90,7 +97,16 @@ $tool-menu-item-selected-hover-border-left:             4px solid #4b2b23 !defau
 // collapsed menu
 $tool-menu-collapse-active-hover-background-color:      #4b2b23 !default;
 $tool-menu-collapse-active-text-color:                  #4b2b23 !default;
-$tool-sub-menu-hover-color:				#fff; 
+/* Tool sub menu */
+$tool-sub-menu-border-color: darken( $tool-menu-background-color, 10% ) !default;
+$tool-sub-menu-background-color: darken( $tool-menu-background-color, 10% ) !default;
+$tool-sub-menu-hover-background-color: -webkit-linear-gradient(top, #4b2b23 0%,#6f4034 100%);
+$tool-sub-menu-hover-color: #4b2b23 !default;
+$tool-sub-menu-current-color: $primary-color !default;
+$tool-sub-menu-current-background-color: $background-color !default;
+$tool-sub-menu-current-hover-color: $tool-menu-color !default;
+$tool-sub-menu-current-hover-background-color: $background-color !default;
+
 
 // info message colors
 $info-background-color:   				#efefef;
@@ -108,9 +124,9 @@ $info-background-color:   				#efefef;
     color: #000;
 }
 
-.select {
-    background-color: #fff !important;
-}
+//.select {
+//    background-color: #fff !important;
+//}
 
 #favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
     background-color: $primary-color !important;

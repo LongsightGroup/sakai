@@ -1,0 +1,139 @@
+$skin-name : "uindydev" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#911934 !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#911934 !default;
+$text-color:				 		#000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#911934 !default;
+$banner-height:						108px;
+
+/* Logo location */
+$logo: 							'../images/uindy.svg';
+$logo-height: 						108px;
+$logo-width: 						244px;
+
+// Tab colors
+$tool-tab-text-color:			 		#666;
+$tool-tab-background-color:              		#ebebeb !default;
+$tool-tab-active-text-color:             		#666 !default;
+$tool-tab-active-highlight-color:        		#911934 !default;
+$tool-tab-active-background-color:                      #FFF !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#0064cd !default;
+$link-active-color: 			 		#4e5192 !default;
+$link-hover-color: 			 		$primary-color !default;
+
+// Button colors 
+$button-text-color:	 		 		#444 !default;
+$button-border-color: 			 		#ccc !default;
+$button-background-color: 		 		#e7e7e7 !default;
+$button-background-secondary-color: 	 		#fff !default;
+$button-color-border-color: 		 		#ccc !default;
+$button-color-background-color: 	 		#e7e7e7 !default;
+$button-color-background-secondary-color:		#FFF !default;
+// Primary Button Color
+$button-primary-background-color:        		#e7e7e7 !default;
+$button-primary-text-color: 		 		#911934 !default;
+$button-primary-hover-text-color:                       #FFF!default;
+$button-primary-hover-background-color:                 #911934 !default;
+$button-primary-hover-border-color:                     #911934;
+// Secondary Buttons
+$button-secondary-icon-color:                           #777 !default; 
+$button-secondary-text-color:                           #777 !default;;
+$button-secondary-background-color:                     #e7e7e7 !default;;
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#FFF !default; 
+$sites-nav-menu-item-color:              		#555 !default;
+$sites-nav-menu-item-icon-color:         		#555 !default;
+$sites-nav-menu-item-border-color:         		#ccc !default;
+$sites-nav-menu-item-hover-background:              	#FFF !default;
+$sites-nav-menu-item-hover-color:              		#555 !default;
+$sites-nav-menu-item-icon-hover-color:         		#555 !default;
+//Selected
+$sites-nav-menu-item-selected-background:		#F1AB1C !default;
+$sites-nav-menu-item-selected-color:			#FFF !default;
+$sites-nav-menu-item-selected-icon-color:	 	#FFF !default;
+$sites-nav-menu-item-selected-border-color:             #fff !default;
+$sites-nav-menu-item-selected-hover-background: 	#F1AB1C !default;
+$sites-nav-menu-item-selected-hover-color:      	#FFF !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#FFF !default;
+
+// TOOL MENU COLORS
+$tool-menu-item-background-color:                       #FAFAFA;
+$tool-menu-item-text-color:                       	#444 !default;
+$tool-menu-item-icon-color:                       	#444 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#0d213d !default;
+$tool-menu-item-hover-icon-color:               	#0d213d !default;
+$tool-menu-item-hover-background-color:         	#EEE !default;
+$tool-menu-item-hover-border-left:              	4px solid #0d213d !default;
+// selected
+$tool-menu-item-selected-background-color:            	#F1AB1C !default;
+$tool-menu-item-selected-text-color:            	#0d213d !default;
+$tool-menu-item-selected-icon-color:            	#0d213d !default;
+$tool-menu-item-selected-border-left:           	4px solid #0d213d !default;
+// submenu
+$tool-sub-menu-hover-color:				#000 !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#0d213d !default;
+$tool-menu-item-selected-hover-icon-color:      	#0d213d !default;
+$tool-menu-item-selected-hover-background-color:	#ccc !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #CCC !default;
+// collapsed menu
+$tool-menu-collapse-background-color:                   $tool-menu-item-background-color !default;
+$tool-menu-collapse-hover-background-color:             #d1d1d1 !default;
+$tool-menu-collapse-active-text-color:                  #444 !default;
+$tool-sub-menu-hover-color:				#444; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.Mrphs-sakai-resources a.nil.fa-folder::after {
+    margin: 0.45em 0 0 -3.4em !important;
+}
+
+.navIntraTool li span.current a {
+    background: #FFF;
+    color: #666;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: $primary-color !important;
+    color: #FFF !important;
+}
+
+#mastLogin #loginLinks ul {
+   background-color: #FFF !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #000 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #000 !important;
+    }
+}
+
+.Mrphs-siteStatus.is-unpublished {
+    background-color: #FF00FF !important;
+    color: #FFF !important;
+}
+
+#topnav_container {
+    min-height: 100% !important;
+}
