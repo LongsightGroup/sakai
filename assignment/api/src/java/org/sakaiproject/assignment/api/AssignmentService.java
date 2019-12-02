@@ -23,7 +23,11 @@ package org.sakaiproject.assignment.api;
 
 import java.io.OutputStream;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import org.sakaiproject.assignment.api.model.Assignment;
 import org.sakaiproject.assignment.api.model.AssignmentSubmission;
@@ -38,7 +42,6 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.user.api.User;
-import org.w3c.dom.Element;
 
 /**
  * <p>
@@ -275,17 +278,6 @@ public interface AssignmentService extends EntityProducer {
     public Assignment addAssignment(String context) throws PermissionException;
 
     /**
-     * Add a new assignment to the directory, from a definition in XML. Must commitEdit() to make official, or cancelEdit() when done!
-     *
-     * @param el The XML DOM Element defining the assignment.
-     * @return A locked AssignmentEdit object (reserving the id).
-     * @throws IdInvalidException  if the assignment id is invalid.
-     * @throws IdUsedException     if the assignment id is already used.
-     * @throws PermissionException if the current user does not have permission to add an assignnment.
-     */
-    public Assignment mergeAssignment(Element el) throws IdInvalidException, IdUsedException, PermissionException;
-
-    /**
      * Creates and adds a new Assignment to the service which is a copy of an existing Assignment.
      *
      * @param context The context for the new assignment
@@ -330,17 +322,6 @@ public interface AssignmentService extends EntityProducer {
      * @throws PermissionException if the current User does not have permission to do this.
      */
     public AssignmentSubmission addSubmission(String assignmentId, String submitter) throws PermissionException;
-
-    /**
-     * Add a new AssignmentSubmission to the directory, from a definition in XML. Must commitEdit() to make official, or cancelEdit() when done!
-     *
-     * @param el The XML DOM Element defining the submission.
-     * @return A locked AssignmentSubmission object (reserving the id).
-     * @throws IdInvalidException  if the submission id is invalid.
-     * @throws IdUsedException     if the submission id is already used.
-     * @throws PermissionException if the current user does not have permission to add a submission.
-     */
-    public AssignmentSubmission mergeSubmission(Element el) throws IdInvalidException, IdUsedException, PermissionException;
 
     /**
      * Removes an AssignmentSubmission and all references to it
@@ -548,19 +529,25 @@ public interface AssignmentService extends EntityProducer {
     public String submissionReference(String context, String id, String assignmentId);
 
     /**
-     * Whether a specific user can submit
-     * @param a
-     * @param userId
-     * @return
+     * Whether a specific user can submit to this assignment thereby creating a submission
+     * <p>
+     * Of particular importance is whether <b>userId</b> is <b>blank</b> or <b>not</b>,
+     * a blank userId will perform all security checks against the current user
+     * while a non blank userId will perform all security checks against the specified user.
+     *
+     * @param assignment the Assignment to check for allowing to submit to
+     * @param userId the specified user is checked vs the current user
+     * @return true if the specified user or the current user can submit to the assignment, otherwise false
      */
-    public boolean canSubmit(Assignment a, String userId);
+    public boolean canSubmit(Assignment assignment, String userId);
 
     /**
-     * Whether the current user can submit
-     * @param a
-     * @return
+     * Whether the current user can submit to this assignment thereby creating a submission
+     *
+     * @param assignment the Assignment to check for allowing to submit to
+     * @return true if the current user can submit to the assignment, otherwise false
      */
-    public boolean canSubmit(Assignment a);
+    public boolean canSubmit(Assignment assignment);
 
 
     /**
@@ -734,4 +721,12 @@ public interface AssignmentService extends EntityProducer {
     String getUsersLocalDateTimeString(Instant date);
 
     public List<ContentReviewResult> getContentReviewResults(AssignmentSubmission submission);
+
+    /**
+     * Determines whether it is appropriate to display the content review results for a submission. For instance, this will be false if the submission is a draft or if the user doesn't have permission
+     * Note: this doesn't check if content review is enabled in the site / if the associated assignment has content review enabled; it is assumed that this has been handled by the caller.
+     * @param submission
+     * @return true if content review results for the given submission can be displayed.
+     */
+    public boolean isContentReviewVisibleForSubmission(AssignmentSubmission submission);
 }

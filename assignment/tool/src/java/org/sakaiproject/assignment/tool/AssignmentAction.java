@@ -39,6 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -47,6 +48,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -3521,6 +3523,10 @@ public class AssignmentAction extends PagedResourceActionII {
         // Check if the assignment has a rubric associated or not
         context.put("hasAssociatedRubric", assignment.isPresent() && rubricsService.hasAssociatedRubric(RubricsConstants.RBCS_TOOL_ASSIGNMENT, assignment.get().getId()));
 
+        if (state.getAttribute(RUBRIC_STATE_DETAILS) != null) {
+            context.put(RUBRIC_STATE_DETAILS, state.getAttribute(RUBRIC_STATE_DETAILS));
+        }
+
         String template = (String) getContext(data).get("template");
         return template + TEMPLATE_INSTRUCTOR_GRADE_SUBMISSION;
 
@@ -4865,8 +4871,6 @@ public class AssignmentAction extends PagedResourceActionII {
      * build the instructor view to download/upload information from archive file
      */
     private String build_instructor_download_upload_all(VelocityPortlet portlet, Context context, RunData data, SessionState state) {
-        String view = (String) state.getAttribute(VIEW_SUBMISSION_LIST_OPTION);
-
         context.put("download", MODE_INSTRUCTOR_DOWNLOAD_ALL.equals(state.getAttribute(STATE_MODE)));
         context.put("hasSubmissionText", state.getAttribute(UPLOAD_ALL_HAS_SUBMISSION_TEXT));
         context.put("hasSubmissionAttachment", state.getAttribute(UPLOAD_ALL_HAS_SUBMISSION_ATTACHMENT));
@@ -5317,10 +5321,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
         ParameterParser params = data.getParameters();
         String option = params.getString("option");
-        if ("download".equals(option)) {
-            // go to download all page
-            doPrep_download_all(data);
-        } else if ("upload".equals(option)) {
+        if ("upload".equals(option)) {
             // go to upload all page
             doPrep_upload_all(data);
         } else if ("releaseGrades".equals(option)) {
@@ -5723,6 +5724,7 @@ public class AssignmentAction extends PagedResourceActionII {
      * Action is to save the grade to submission
      */
     public void doSave_grade_submission(RunData data) {
+
         if (!"POST".equals(data.getRequest().getMethod())) {
             return;
         }
@@ -6026,6 +6028,10 @@ public class AssignmentAction extends PagedResourceActionII {
         } else {
             state.removeAttribute(GRADE_SUBMISSION_DONE);
         }
+
+        // Remove any rubrics related state
+        state.getAttributeNames().stream().filter(n -> n.startsWith(RubricsConstants.RBCS_PREFIX)).forEach(state::removeAttribute);
+        state.removeAttribute(RUBRIC_STATE_DETAILS);
 
         // SAK-29314 - update the list being iterated over
         sizeResources(state);
@@ -6397,7 +6403,7 @@ public class AssignmentAction extends PagedResourceActionII {
                 }
 
                 // SAK-26322 - add inline as an attachment for the content review service
-                if (a.getContentReview()) {
+                if (post && a.getContentReview()) {
                     if (!isHtmlEmpty(text)) {
                         prepareInlineForContentReview(text, submission, state, u);
                     }
@@ -6424,13 +6430,12 @@ public class AssignmentAction extends PagedResourceActionII {
         //We will be replacing the inline submission's attachment
         //firstly, disconnect any existing attachments with AssignmentSubmission.PROP_INLINE_SUBMISSION set
         Set<String> attachments = submission.getAttachments();
-        for (String attachment : attachments) {
+        attachments.removeIf(attachment ->
+        {
             Reference reference = entityManager.newReference(attachment);
             ResourceProperties referenceProperties = reference.getProperties();
-            if ("true".equals(referenceProperties.getProperty(AssignmentConstants.PROP_INLINE_SUBMISSION))) {
-                attachments.remove(attachment);
-            }
-        }
+            return "true".equals(referenceProperties.getProperty(AssignmentConstants.PROP_INLINE_SUBMISSION));
+        });
 
         //now prepare the new resource
         //provide lots of info for forensics - filename=InlineSub_assignmentId_userDisplayId_(for_studentDisplayId)_date.html
@@ -6485,9 +6490,6 @@ public class AssignmentAction extends PagedResourceActionII {
         try {
             securityService.pushAdvisor(sa);
             ContentResource attachment = contentHostingService.addAttachmentResource(resourceId, siteId, toolName, contentType, contentStream, inlineProps);
-            // TODO: need to put this file in some kind of list to improve performance with web service impls of content-review service
-            String contentUserId = isOnBehalfOfStudent ? student.getId() : currentUser.getId();
-            contentReviewService.queueContent(contentUserId, siteId, AssignmentReferenceReckoner.reckoner().assignment(submission.getAssignment()).reckon().getReference(), Collections.singletonList(attachment));
 
             try {
                 Reference ref = entityManager.newReference(contentHostingService.getReference(attachment.getId()));
@@ -9881,8 +9883,14 @@ public class AssignmentAction extends PagedResourceActionII {
                     if (a != null) {
                         a.setDeleted(false);
                         assignmentService.updateAssignment(a);
-                    }
 
+                        // restore email reminder only if reminder is set and the due date is after 1 day
+                        if (BooleanUtils.toBoolean(a.getProperties().get(NEW_ASSIGNMENT_REMINDER_EMAIL))
+                                && a.getDueDate() != null
+                                && Instant.now().plus(1, ChronoUnit.DAYS).isBefore(a.getDueDate())) {
+                            assignmentDueReminderService.scheduleDueDateReminder(a.getId());
+                        }
+                    }
                 } catch (IdUnusedException | PermissionException e) {
                     addAlert(state, rb.getFormattedMessage("youarenot_editAssignment", id));
                     log.warn(e.getMessage());
@@ -10894,6 +10902,14 @@ public class AssignmentAction extends PagedResourceActionII {
                 state.setAttribute(GRADE_SUBMISSION_FEEDBACK_COMMENT, feedbackComment);
             }
 
+            // Pour any rubrics parameters into the state
+            Iterable<String> iterable = () -> params.getNames();
+            StreamSupport.stream(iterable.spliterator(), false).filter(n -> n.startsWith(RubricsConstants.RBCS_PREFIX)).forEach(n -> {
+                if (n.endsWith("state-details")) {
+                    state.setAttribute(RUBRIC_STATE_DETAILS, params.get(n));
+                }
+                state.setAttribute(n, params.get(n));
+            });
 
             String feedbackText = processAssignmentFeedbackFromBrowser(state, params.getCleanString(GRADE_SUBMISSION_FEEDBACK_TEXT));
             // feedbackText value changed?
@@ -11057,14 +11073,6 @@ public class AssignmentAction extends PagedResourceActionII {
                     grade = (typeOfGrade == SCORE_GRADE_TYPE) ? scalePointGrade(state, grade, factor) : grade;
                     state.setAttribute(GRADE_SUBMISSION_GRADE, grade);
                 }
-
-                if (state.getAttribute(STATE_MESSAGE) != null) {
-                    String rubricStateDetails = params.getString(RUBRIC_STATE_DETAILS);
-                    state.setAttribute(RUBRIC_STATE_DETAILS, rubricStateDetails);
-                } else {
-                    state.removeAttribute(RUBRIC_STATE_DETAILS);
-                }
-
             }
         } else {
             // generate alert

@@ -50,6 +50,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -81,11 +83,12 @@ import org.sakaiproject.assignment.api.model.AssignmentSubmission;
 import org.sakaiproject.assignment.api.model.AssignmentSubmissionSubmitter;
 import org.sakaiproject.assignment.api.model.AssignmentSupplementItemAttachment;
 import org.sakaiproject.assignment.api.model.AssignmentSupplementItemService;
+import org.sakaiproject.assignment.api.persistence.AssignmentRepository;
+import org.sakaiproject.assignment.api.reminder.AssignmentDueReminderService;
+import org.sakaiproject.assignment.api.taggable.AssignmentActivityProducer;
 import org.sakaiproject.assignment.impl.sort.AnonymousSubmissionComparator;
 import org.sakaiproject.assignment.impl.sort.AssignmentSubmissionComparator;
 import org.sakaiproject.assignment.impl.sort.UserComparator;
-import org.sakaiproject.assignment.api.persistence.AssignmentRepository;
-import org.sakaiproject.assignment.api.taggable.AssignmentActivityProducer;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
 import org.sakaiproject.authz.api.AuthzPermissionException;
@@ -169,6 +172,9 @@ import org.springframework.util.Assert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 
 /**
@@ -178,9 +184,10 @@ import org.xml.sax.InputSource;
 @Transactional(readOnly = true)
 public class AssignmentServiceImpl implements AssignmentService, EntityTransferrer, EntityTransferrerRefMigrator, ApplicationContextAware {
 
-    @Setter private AnnouncementService announcementService;
+	@Setter private AnnouncementService announcementService;
     @Setter private ApplicationContext applicationContext;
     @Setter private AssignmentActivityProducer assignmentActivityProducer;
+    @Setter private AssignmentDueReminderService assignmentDueReminderService;
     @Setter private ObjectFactory<AssignmentEntity> assignmentEntityFactory;
     @Setter private AssignmentRepository assignmentRepository;
     @Setter private AssignmentSupplementItemService assignmentSupplementItemService;
@@ -214,6 +221,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     @Setter private UserTimeService userTimeService;
 
     private boolean allowSubmitByInstructor;
+    private boolean exposeContentReviewErrorsToUI;
 
     public void init() {
         allowSubmitByInstructor = serverConfigurationService.getBoolean("assignments.instructor.submit.for.student", true);
@@ -222,6 +230,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         } else {
             log.info("Instructor submission of assignments is enabled");
         }
+
+        exposeContentReviewErrorsToUI = serverConfigurationService.getBoolean("contentreview.expose.errors.to.ui", true);
 
         // register as an entity producer
         entityManager.registerEntityProducer(this, REFERENCE_ROOT);
@@ -266,8 +276,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
     @Override
     public String archive(String siteId, Document doc, Stack<Element> stack, String archivePath, List<Reference> attachments) {
-        String message = "archiving " + getLabel() + " context " + Entity.SEPARATOR + siteId + Entity.SEPARATOR + SiteService.MAIN_CONTAINER + ".\n";
-        log.debug(message);
+        final StringBuilder results = new StringBuilder();
+        results.append("begin archiving ").append(getLabel()).append(" context ").append(siteId).append(LINE_SEPARATOR);
 
         // start with an element with our very own (service) name
         Element element = doc.createElement(AssignmentService.class.getName());
@@ -275,6 +285,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         stack.push(element);
 
         Collection<Assignment> assignments = getAssignmentsForContext(siteId);
+        int assignmentsArchived = 0;
         for (Assignment assignment : assignments) {
             String xml = assignmentRepository.toXML(assignment);
 
@@ -284,6 +295,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                 Element assignmentElement = assignmentDocument.getDocumentElement();
                 Node assignmentNode = doc.importNode(assignmentElement, true);
                 element.appendChild(assignmentNode);
+                assignmentsArchived++;
             } catch (Exception e) {
                 log.warn("could not append assignment {} to archive, {}", assignment.getId(), e.getMessage());
             }
@@ -291,12 +303,34 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
         stack.pop();
 
-        return message;
+        results.append("completed archiving ").append(getLabel()).append(" context ").append(siteId).append(" count (").append(assignmentsArchived).append(")").append(LINE_SEPARATOR);
+        return results.toString();
     }
 
     @Override
+    @Transactional
     public String merge(String siteId, Element root, String archivePath, String fromSiteId, Map<String, String> attachmentNames, Map<String, String> userIdTrans, Set<String> userListAllowImport) {
-        return null;
+
+        final StringBuilder results = new StringBuilder();
+        results.append("begin merging ").append(getLabel()).append(" context ").append(siteId).append(LINE_SEPARATOR);
+        final NodeList allChildrenNodeList = root.getChildNodes();
+        final Stream<Node> allChildrenNodes = IntStream.range(0, allChildrenNodeList.getLength()).mapToObj(allChildrenNodeList::item);
+        final List<Element> assignmentElements = allChildrenNodes.filter(node -> node.getNodeType() == Node.ELEMENT_NODE).map(element -> (Element) element).collect(Collectors.toList());
+
+        int assignmentsMerged = 0;
+
+        for (Element assignmentElement : assignmentElements) {
+            try {
+                mergeAssignment(siteId, assignmentElement, results);
+                assignmentsMerged++;
+            } catch (Exception e) {
+                final String error = "could not merge assignment with id: " + assignmentElement.getFirstChild().getFirstChild().getNodeValue();
+                log.warn(error, e);
+                results.append(error).append(LINE_SEPARATOR);
+            }
+        }
+        results.append("completed merging ").append(getLabel()).append(" context ").append(siteId).append(" count (").append(assignmentsMerged).append(")").append(LINE_SEPARATOR);
+        return results.toString();
     }
 
     @Override
@@ -532,9 +566,8 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
     @Override
     public boolean allowAllGroups(String context) {
-        String resourceString = AssignmentReferenceReckoner.reckoner().context(context).reckon().getReference();
-        if (permissionCheck(SECURE_ALL_GROUPS, resourceString, null)) return true;
-        return false;
+        String resourceString = siteService.siteReference(context);
+        return permissionCheck(SECURE_ALL_GROUPS, resourceString, null);
     }
 
     @Override
@@ -620,7 +653,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
     @Override
     public boolean allowAddSubmissionCheckGroups(Assignment assignment) {
-        return permissionCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, assignment);
+        return permissionCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, assignment, null);
     }
 
     @Override
@@ -751,14 +784,52 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         return assignment;
     }
 
-    @Override
-    @Transactional
-    public Assignment mergeAssignment(Element el) throws IdInvalidException, IdUsedException, PermissionException {
-        // TODO need to write a test for this
-        // this may also need to handle submission serialization?
-        Assignment assignmentFromXml = assignmentRepository.fromXML(el.toString());
+    private Assignment mergeAssignment(final String siteId, final Element element, final StringBuilder results) throws PermissionException {
 
-        return addAssignment(assignmentFromXml.getContext());
+        if (!allowAddAssignment(siteId)) {
+            throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_ADD_ASSIGNMENT, AssignmentReferenceReckoner.reckoner().context(siteId).reckon().getReference());
+        }
+
+        // Serialize the element to a String
+        DOMImplementationLS dom = (DOMImplementationLS) element.getOwnerDocument().getImplementation();
+        LSSerializer domSerializer = dom.createLSSerializer();
+        domSerializer.getDomConfig().setParameter("xml-declaration", false);
+        final String xml = domSerializer.writeToString(element);
+
+        // Get an assignment object from the xml
+        final Assignment assignmentFromXml = assignmentRepository.fromXML(xml);
+        if (assignmentFromXml != null) {
+            assignmentFromXml.setId(null);
+            assignmentFromXml.setContext(siteId);
+
+            if (serverConfigurationService.getBoolean(SAK_PROP_ASSIGNMENT_IMPORT_SUBMISSIONS, false) && !assignmentFromXml.getIsGroup()) {
+                // here it's imported exactly as it was including all submissions
+                // except for group submissions as group ids will never be the same
+                Set<AssignmentSubmission> submissions = assignmentFromXml.getSubmissions();
+                List<String> submitters = submissions.stream().flatMap(s -> s.getSubmitters().stream()).map(AssignmentSubmissionSubmitter::getSubmitter).collect(Collectors.toList());
+                // only if all submitters can be found do we import submissions
+                if (submitters.containsAll(userDirectoryService.getUsers(submitters))) {
+                    submissions.forEach(s -> s.setId(null));
+                    submissions.forEach(s -> s.getSubmitters().forEach(u -> u.setId(null)));
+                }
+            } else {
+                // here it is importing the assignment only
+                assignmentFromXml.setDraft(true);
+                assignmentFromXml.setAttachments(new HashSet<>());
+                assignmentFromXml.setGroups(new HashSet<>());
+                assignmentFromXml.setTypeOfAccess(SITE);
+                Map<String, String> properties = assignmentFromXml.getProperties().entrySet().stream()
+                        .filter(e -> !PROPERTIES_EXCLUDED_FROM_DUPLICATE_ASSIGNMENTS.contains(e.getKey()))
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                assignmentFromXml.setProperties(properties);
+                assignmentFromXml.setSubmissions(new HashSet<>());
+            }
+            assignmentRepository.newAssignment(assignmentFromXml);
+            String result = "merging assignment " + assignmentFromXml.getId() + " with " + assignmentFromXml.getSubmissions().size() + " submissions.";
+            results.append(result).append(LINE_SEPARATOR);
+            log.debug(result);
+        }
+        return assignmentFromXml;
     }
 
     @Override
@@ -881,6 +952,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_REMOVE_ASSIGNMENT, null);
         }
 
+        assignmentDueReminderService.removeScheduledReminder(assignment.getId());
         assignmentRepository.deleteAssignment(assignment.getId());
 
         eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_REMOVE_ASSIGNMENT, reference, true));
@@ -906,6 +978,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_REMOVE_ASSIGNMENT, null);
         }
 
+        assignmentDueReminderService.removeScheduledReminder(assignment.getId());
         assignmentRepository.softDeleteAssignment(assignment.getId());
 
         // we post the same event as remove assignment
@@ -1008,7 +1081,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             // check permissions - allow the user to add a submission to the assignment
             // if they have the permission asn.submit or asn.grade
             if (a.getTypeOfAccess() == GROUP) {
-                if (!(permissionCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, a) || allowGradeSubmission(assignmentReference))) {
+                if (!(allowAddSubmissionCheckGroups(a) || allowGradeSubmission(assignmentReference))) {
                     throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_ADD_ASSIGNMENT_SUBMISSION, assignmentReference);
                 }
             } else {
@@ -1086,38 +1159,6 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             log.debug("New submission: {} added to assignment: {}", submission.getId(), assignmentId);
             return submission;
         }
-        return null;
-    }
-
-    @Override
-    public AssignmentSubmission mergeSubmission(Element el) throws IdInvalidException, IdUsedException, PermissionException {
-        // TODO this will probably be handled in merge Assignments as submissions are children of assignments
-//        AssignmentSubmission submissionFromXml = new AssignmentSubmission();
-//
-//        // check for a valid submission name
-//        if (!Validator.checkResourceId(submissionFromXml.getId())) throw new IdInvalidException(submissionFromXml.getId());
-//
-//        // check security (throws if not permitted)
-//        unlock(SECURE_ADD_ASSIGNMENT_SUBMISSION, submissionFromXml.getReference());
-//
-//        // reserve a submission with this id from the info store - if it's in use, this will return null
-//        AssignmentSubmissionEdit submission = m_submissionStorage.put(	submissionFromXml.getId(),
-//                submissionFromXml.getAssignmentId(),
-//                submissionFromXml.getSubmitterIdString(),
-//                (submissionFromXml.getTimeSubmitted() != null)?String.valueOf(submissionFromXml.getTimeSubmitted().getTime()):null,
-//                Boolean.valueOf(submissionFromXml.getSubmitted()).toString(),
-//                Boolean.valueOf(submissionFromXml.getGraded()).toString());
-//        if (submission == null)
-//        {
-//            throw new IdUsedException(submissionFromXml.getId());
-//        }
-//
-//        // transfer from the XML read submission object to the SubmissionEdit
-//        ((BaseAssignmentSubmissionEdit) submission).set(submissionFromXml);
-//
-//        ((BaseAssignmentSubmissionEdit) submission).setEvent(AssignmentConstants.EVENT_ADD_ASSIGNMENT_SUBMISSION);
-//
-//        return submission;
         return null;
     }
 
@@ -1309,7 +1350,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     assignments.add(assignment);
                 }
             } else if (assignment.getTypeOfAccess() == GROUP) {
-                if (permissionCheckWithGroups(AssignmentServiceConstants.SECURE_ACCESS_ASSIGNMENT, assignment)) {
+                if (permissionCheckWithGroups(SECURE_ACCESS_ASSIGNMENT, assignment, null)) {
                     assignments.add(assignment);
                 }
             } else if (allowGetAssignment(context)) {
@@ -1806,41 +1847,41 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     }
 
     @Override
-    public boolean canSubmit(Assignment a, String userId) {
-        if (a == null || BooleanUtils.isTrue(a.getDeleted())) return false;
+    public boolean canSubmit(Assignment assignment, String userId) {
+        if (assignment == null || BooleanUtils.isTrue(assignment.getDeleted())) return false;
+
         // submissions are never allowed to non-electronic assignments
-        if (a.getTypeOfSubmission() == Assignment.SubmissionType.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION) {
+        if (assignment.getTypeOfSubmission() == Assignment.SubmissionType.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION) {
             return false;
         }
 
-        // return false only if the user is not allowed to submit and not allowed to add to the assignment
-        if (!allowAddSubmissionCheckGroups(a) && !allowAddAssignment(a.getContext())) return false;
-
-        //If userId is not defined look it up
-        if (userId == null) {
-            userId = sessionManager.getCurrentSessionUserId();
-        }
-
         try {
-            // if user the user can access this assignment
-            checkAssignmentAccessibleForUser(a, userId);
+            // return false only if the user is not allowed to submit and not allowed to add to the assignment
+            if (!permissionCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, assignment, userId) // check asn.submit for user on assignment consulting groups
+                    && !permissionCheck(SECURE_ADD_ASSIGNMENT, siteService.siteReference(assignment.getContext()), userId)) return false; // check asn.new for user in site not consulting groups
 
-            // get user
-            User u = userDirectoryService.getUser(userId);
+            // if user the user can access this assignment
+            checkAssignmentAccessibleForUser(assignment, userId);
 
             Instant currentTime = Instant.now();
 
             // return false if the assignment is draft or is not open yet
-            Instant openTime = a.getOpenDate();
-            if (a.getDraft() || openTime.isAfter(currentTime)) {
+            Instant openTime = assignment.getOpenDate();
+            if (assignment.getDraft() || openTime.isAfter(currentTime)) {
                 return false;
             }
 
             // whether the current time is after the assignment close date inclusive
-            boolean isBeforeAssignmentCloseDate = !currentTime.isAfter(a.getCloseDate());
+            boolean isBeforeAssignmentCloseDate = !currentTime.isAfter(assignment.getCloseDate());
 
-            // get user's submission
-            AssignmentSubmission submission = getSubmission(AssignmentReferenceReckoner.reckoner().assignment(a).reckon().getId(), u);
+            if (StringUtils.isBlank(userId)) {	
+                userId = sessionManager.getCurrentSessionUserId();	
+            }
+
+            AssignmentSubmission submission = null;
+            if (StringUtils.isNotBlank(userId)) {
+                submission = getSubmission(AssignmentReferenceReckoner.reckoner().assignment(assignment).reckon().getId(), userId);
+            }
 
             if (submission != null) {
                 // check for allow resubmission or not first
@@ -1858,7 +1899,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                             resubmitCloseTime = Instant.ofEpochMilli(Long.parseLong(allowResubmitCloseTime));
                         } else {
                             // otherwise, use assignment close time as the resubmission close time
-                            resubmitCloseTime = a.getCloseDate();
+                            resubmitCloseTime = assignment.getCloseDate();
                         }
                         return (allowResubmitNumber > 0 || allowResubmitNumber == -1) && !currentTime.isAfter(resubmitCloseTime);
                     } catch (NumberFormatException e) {
@@ -1876,17 +1917,15 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                 // there is no submission yet so only check if before assignment close date
                 return isBeforeAssignmentCloseDate;
             }
-        } catch (UserNotDefinedException e) {
-            log.warn("The user {} could not be found while checking if they can submit to assignment {}, {}", userId, a.getId(), e.getMessage());
         } catch (PermissionException e) {
-            log.warn("The user {} cannot submit to assignment {}, {}", userId, a.getId(), e.getMessage());
+            log.warn("The user {} cannot submit to assignment {}, {}", userId, assignment.getId(), e.getMessage());
         }
         return false;
     }
 
     @Override
-    public boolean canSubmit(Assignment a) {
-        return canSubmit(a, null);
+    public boolean canSubmit(Assignment assignment) {
+        return canSubmit(assignment, null);
     }
 
     @Override
@@ -2271,12 +2310,16 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                             + AssignmentReferenceReckoner.reckoner().context(context).id(assignmentId).reckon().getReference()
                             + "&panel=Main&sakai_action=doView_assignment";
                 } else if (allowSubmitAssignment) {
+                    String sakaiAction = "doView_submission";
+                    if(a.getHonorPledge()) {
+                        sakaiAction = "doView_assignment_honorPledge";
+                    }
                     return serverConfigurationService.getPortalUrl()
                             + "/directtool/"
                             + fromTool.getId()
                             + "?assignmentId=" + assignmentId + "&assignmentReference="
                             + AssignmentReferenceReckoner.reckoner().context(context).id(assignmentId).reckon().getReference()
-                            + "&panel=Main&sakai_action=doView_submission";
+                            + "&panel=Main&sakai_action=" + sakaiAction;
                 } else {
                     // user can read the assignment, but not submit, so
                     // render the appropriate url
@@ -2520,7 +2563,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             Collection<Group> groups = site.getGroups();
             // if the user has SECURE_ALL_GROUPS in the context (site), select all site groups
             if (securityService.unlock(userId, SECURE_ALL_GROUPS, siteService.siteReference(context))
-                    && permissionCheck(function, siteService.siteReference(context), null)) {
+                    && permissionCheck(function, siteService.siteReference(context), userId)) {
                 rv.addAll(groups);
             } else {
                 // get a list of the group refs, which are authzGroup ids
@@ -2598,31 +2641,54 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         if (!StringUtils.isAnyBlank(resource, permission)) {
             if (StringUtils.isBlank(user)) {
                 access = securityService.unlock(permission, resource);
-                log.debug("checking permission [{}] in context [{}] for current user: {}", permission, resource, access);
             } else {
                 access = securityService.unlock(user, permission, resource);
-                log.debug("checking permission [{}] in context [{}] for user [{}]: {}", permission, resource, user, access);
             }
         }
+        log.debug("checking permission [{}] in context [{}] for user [{}]: {}", permission, resource, user, access);
         return access;
     }
 
-    private boolean permissionCheckWithGroups(String permission, Assignment assignment) {
+    private boolean permissionCheckWithGroups(final String permission, final Assignment assignment, final String user) {
+        if (StringUtils.isBlank(permission) || assignment == null) return false;
+        String siteReference = siteService.siteReference(assignment.getContext());
+
+        boolean access = false;
         if (GROUP == assignment.getTypeOfAccess()) {
-            // check the permission in the groups
+            // assignment access is group
             for (String groupId : assignment.getGroups()) {
-                if (securityService.unlock(permission, groupId)) {
-                    return true;
+                if (StringUtils.isBlank(user)) { // check permission for current user
+                    if (securityService.unlock(permission, groupId)) { // check permission for group
+                        access = true;
+                        break;
+                    }
+                } else { // check permission for the specified user
+                    if (securityService.unlock(user, permission, groupId)) { // check permission for group
+                        access = true;
+                        break;
+                    }
                 }
             }
             // lastly if the user has permission asn.all.groups and has permission for the site
-            if (allowAllGroups(assignment.getContext()) && securityService.unlock(permission, siteService.siteReference(assignment.getContext()))) {
-                return true;
+            if (!access) {
+                if (StringUtils.isBlank(user)) { // check permission for current user
+                    if (securityService.unlock(permission, siteReference) // check permission for user in site
+                            && securityService.unlock(SECURE_ALL_GROUPS, siteReference)) { // check asn.all.groups for user in site
+                        access = true;
+                    }
+                } else { // check permission for the specified user
+                    if (securityService.unlock(user, permission, siteReference) // check permission for user in site
+                            && securityService.unlock(user, SECURE_ALL_GROUPS, siteReference)) { // check asn.all.groups for user in site
+                        access = true;
+                    }
+                }
             }
         } else {
-            return permissionCheck(permission, siteService.siteReference(assignment.getContext()), null);
+            // assignment access is non group or site
+            access = permissionCheck(permission, siteReference, user);
         }
-        return false;
+        log.debug("checking permission with groups [{}] in context [{}] for user [{}]: {}", permission, siteReference, user, access);
+        return access;
     }
 
     // /////////////////////////////////////////////////////////////
@@ -3371,6 +3437,10 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     public void postReviewableSubmissionAttachments(AssignmentSubmission submission) {
         try {
             Optional<AssignmentSubmissionSubmitter> submitter = submission.getSubmitters().stream().filter(AssignmentSubmissionSubmitter::getSubmittee).findFirst();
+            if (!submitter.isPresent() && contentReviewService.allowSubmissionsOnBehalf()) {
+            	//no submittee was found but the CRS allows submissions on behalf, grab the first submitter:
+            	submitter = submission.getSubmitters().stream().findAny();
+            }
             if (submitter.isPresent()) {
                 Assignment assignment = submission.getAssignment();
                 String assignmentRef = AssignmentReferenceReckoner.reckoner().assignment(assignment).reckon().getReference();
@@ -3938,7 +4008,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             reviewResult.setReviewReport(getReviewReport(cr, referenceReckoner.getReference()));
             String iconUrl = getReviewIconCssClass(reviewResult);
             reviewResult.setReviewIconCssClass(iconUrl);
-            reviewResult.setReviewError(getReviewError(reviewResult.getStatus()));
+            reviewResult.setReviewError(getReviewError(reviewResult));
 
             if ("true".equals(reviewResult.isInline())) {
                 reviewResults.add(0, reviewResult);
@@ -3947,6 +4017,31 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             }
         }
         return reviewResults;
+    }
+
+    @Override
+    public boolean isContentReviewVisibleForSubmission(AssignmentSubmission submission)
+    {
+        if (submission == null)
+        {
+            throw new IllegalArgumentException("isContentReviewVisibleForSubmission invoked with submission = null");
+        }
+
+        Assignment assignment = submission.getAssignment();
+        String assignmentReference = AssignmentReferenceReckoner.reckoner().assignment(assignment).reckon().getReference();
+
+        boolean hasInstructorPermission = allowGradeSubmission(assignmentReference);
+        boolean hasStudentPermission = false;
+        // If we have instructor permission, we can short circuit past student checks
+        // Student checks: ensure the assignment is configured to allow students to view reports, and that the user is permitted to get the specified submission
+        if (!hasInstructorPermission && Boolean.valueOf(assignment.getProperties().get("s_view_report")))
+        {
+            String submissionReference = AssignmentReferenceReckoner.reckoner().submission(submission).reckon().getReference();
+            hasStudentPermission = allowGetSubmission(submissionReference);
+        }
+
+        // Content Review results should be visible iff the user has permission and the submission is not a draft
+        return (hasInstructorPermission || hasStudentPermission) && submission.getSubmitted() && submission.getDateSubmitted() != null;
     }
 
     /**
@@ -4007,31 +4102,46 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         }
     }
 
-    private String getReviewError(Long status){
-        if (status == null){
-            log.debug("getReviewReport(ContentResource) called with status == null");
+    private String getReviewError(ContentReviewResult reviewResult){
+        if (reviewResult == null) {
+            log.debug("getReviewReport(ContentReviewResult) called with reviewResult == null");
             return null;
         }
+        if(reviewResult.getStatus() == null) {
+            log.debug("getReviewReport(ContentReviewResult) called with reviewResult.getStatus() == null");
+            return null;
+        }
+        Long status = reviewResult.getStatus();
         //This should use getLocalizedReviewErrorMesage(contentId) to get a i18n message of the error
         String errorMessage = null;
+        boolean exposeError = false;
         if (status.equals(ContentReviewConstants.CONTENT_REVIEW_REPORT_ERROR_NO_RETRY_CODE)){
             errorMessage = resourceLoader.getString("content_review.error.REPORT_ERROR_NO_RETRY_CODE");
         } else if (status.equals(ContentReviewConstants.CONTENT_REVIEW_REPORT_ERROR_RETRY_CODE)) {
             errorMessage = resourceLoader.getString("content_review.error.REPORT_ERROR_RETRY_CODE");
         } else if (status.equals(ContentReviewConstants.CONTENT_REVIEW_SUBMISSION_ERROR_NO_RETRY_CODE)) {
             errorMessage = resourceLoader.getString("content_review.error.SUBMISSION_ERROR_NO_RETRY_CODE");
+            exposeError = true;
         } else if (status.equals(ContentReviewConstants.CONTENT_REVIEW_SUBMISSION_ERROR_RETRY_CODE)) {
             errorMessage = resourceLoader.getString("content_review.error.SUBMISSION_ERROR_RETRY_CODE");
+            exposeError = true;
         } else if (status.equals(ContentReviewConstants.CONTENT_REVIEW_SUBMISSION_ERROR_RETRY_EXCEEDED_CODE)) {
             errorMessage = resourceLoader.getString("content_review.error.SUBMISSION_ERROR_RETRY_EXCEEDED_CODE");
         } else if (status.equals(ContentReviewConstants.CONTENT_REVIEW_SUBMISSION_ERROR_USER_DETAILS_CODE)) {
             errorMessage = resourceLoader.getString("content_review.error.SUBMISSION_ERROR_USER_DETAILS_CODE");
-        } else if (ContentReviewConstants.CONTENT_REVIEW_SUBMITTED_AWAITING_REPORT_CODE.equals(status) || ContentReviewConstants.CONTENT_REVIEW_NOT_SUBMITTED_CODE.equals(status)) {
+        } else if (ContentReviewConstants.CONTENT_REVIEW_SUBMITTED_AWAITING_REPORT_CODE.equals(status)) {
             errorMessage = resourceLoader.getString("content_review.pending.info");
+        } else if (ContentReviewConstants.CONTENT_REVIEW_NOT_SUBMITTED_CODE.equals(status)) {
+            errorMessage = resourceLoader.getFormattedMessage("content_review.notYetSubmitted", new Object[] { contentReviewService.getServiceName() });
         }
 
         if (errorMessage == null) {
             errorMessage = resourceLoader.getString("content_review.error");
+        }
+
+        // Expose the underlying CRS error to the UI
+        if (exposeError && exposeContentReviewErrorsToUI) {
+            errorMessage += " " + resourceLoader.getFormattedMessage("content_review.errorFromSource", contentReviewService.getLocalizedLastError(reviewResult.getContentReviewItem()));
         }
 
         return errorMessage;

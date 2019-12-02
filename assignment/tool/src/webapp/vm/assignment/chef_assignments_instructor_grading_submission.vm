@@ -191,7 +191,7 @@
                         $reviewServiceName&nbsp;$tlang.getString("review.report")
                     </th>
                     <td>
-                        #if (!$submission)
+                        #if (!$submission || !$!service.isContentReviewVisibleForSubmission($!submission))
                             $tlang.getString("review.notavail")
                         #else
                             #set($reviewResults=$!service.getContentReviewResults($!submission))
@@ -490,8 +490,8 @@
                 entity-id="$assignment.Id"
                 evaluated-item-id="$submission.Id"
 
-                #if($rbcs-state-details && "$!rbcs-state-details" != "")
-                state-details="$rbcs-state-details"
+                #if($!rbcs-state-details && "$!rbcs-state-details" != "")
+                state-details='$rbcs-state-details'
                 #end
             ></sakai-rubric-grading>
         </div>
