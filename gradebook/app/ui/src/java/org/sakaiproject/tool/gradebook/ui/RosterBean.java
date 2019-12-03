@@ -1066,7 +1066,7 @@ public class RosterBean extends EnrollmentTableBean implements Serializable, Pag
         	final String studentUid = student.getUserUid();
         	final Map studentMap = (Map)gradesMap.get(studentUid);
         	final List<Object> row = new ArrayList<Object>();
-        	row.add(getLocalDisplayId(student));
+        	row.add(student.getDisplayId());
         	row.add(student.getSortName());
         	for (final Object gradableObject : gradableObjects) {
         		Object score = null;
