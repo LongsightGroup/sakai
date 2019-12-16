@@ -1,0 +1,43 @@
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+
+    <section class="gb-import-export-section">
+        <h2>Submit Grades to Registrar</h2>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Reminder: before submitting, ensure the grade scale in the Settings tab matches the grade scale in the course Syllabus, then click Submit Grades to Registrar.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <form wicket:id="gradeTypeForm">
+                    <fieldset>
+                        <legend>Grade Type</legend>
+                        <div wicket:id="gradeType">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" wicket:id="gradeTypeMidterm" />
+                                    Midterm Grades
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" wicket:id="gradeTypeFinal" />
+                                    Final Grades
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    
+                    <div style="margin-top: 15px;">
+                        <button type="submit" class="button_color" wicket:id="downloadJohnsonGradebook">
+                            Submit Grades to Registrar
+                        </button>
+                        <div id="sgu-submit-progress" class="bg-info" style="padding:0.6em;display:none">Grade submission has been queued for delivery to the registrar.</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</wicket:panel>
