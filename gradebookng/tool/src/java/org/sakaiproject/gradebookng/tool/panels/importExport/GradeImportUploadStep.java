@@ -71,6 +71,7 @@ public class GradeImportUploadStep extends BasePanel {
 	public void onInitialize() {
 		super.onInitialize();
 
+		add(new JohnsonCustomExportPanel("johnson_export"));
 		add(new ExportPanel("export"));
 		add(new UploadForm("form"));
 	}
