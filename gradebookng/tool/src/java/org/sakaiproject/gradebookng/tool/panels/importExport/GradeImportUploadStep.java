@@ -75,6 +75,7 @@ public class GradeImportUploadStep extends BasePanel {
 
 		ExportPanel ep = new ExportPanel("export");
 		add(ep);
+		add(new JohnsonCustomExportPanel("johnson_export"));
 		add(new UploadForm("form"));
 	}
 
