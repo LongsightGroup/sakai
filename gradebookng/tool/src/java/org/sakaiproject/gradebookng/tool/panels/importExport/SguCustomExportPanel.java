@@ -25,12 +25,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.sakaiproject.gradebookng.business.model.GbUser;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
 import org.sakaiproject.gradebookng.tool.component.GbAjaxLink;
 import org.sakaiproject.gradebookng.tool.panels.BasePanel;
 import org.sakaiproject.service.gradebook.shared.CourseGrade;
+import org.sakaiproject.site.api.Site;
 
 public class SguCustomExportPanel extends BasePanel {
 
@@ -56,17 +58,22 @@ public class SguCustomExportPanel extends BasePanel {
 
 	}
 
-	private File buildFile() {
-		File tempFile = new File(buildFileName());
-
+	private void buildFile() {
 		try {
+			final Site site = this.businessService.getCurrentSite().get();
+			final String siteId = site.getId();
+			String externalSiteId = (String) site.getProperties().get("externalSiteId");
+			if (StringUtils.isEmpty(externalSiteId)) {
+				externalSiteId = siteId;
+			}
+
+			File tempFile = new File(buildFileName(externalSiteId));
+
 			//CSV separator is comma unless the comma is the decimal separator, then is ;
-			try (OutputStreamWriter fstream = new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8.name())){
+			try (OutputStreamWriter fstream = new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8.name())) {
 
 				CSVWriter csvWriter = new CSVWriter(fstream, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
-				// get the final grades
-				final String siteId = this.businessService.getCurrentSiteId();
 				final Map<String, CourseGrade> grades = this.businessService.getCourseGrades(siteId);
 				Map<String, GbUser> users = this.businessService.getUserEidMap();
 
@@ -78,7 +85,7 @@ public class SguCustomExportPanel extends BasePanel {
 					final GbUser gbUser = users.get(userEid);
 					final String studentNumber = gbUser.getStudentNumber();
 
-					line.add(siteId);
+					line.add(externalSiteId);
 					line.add(userEid);
 					line.add(studentNumber);
 					line.add(FormatHelper.formatGradeForDisplay(grade.getCalculatedGrade()));
@@ -91,14 +98,10 @@ public class SguCustomExportPanel extends BasePanel {
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
-
-		return tempFile;
 	}
 
-	private String buildFileName() {
+	private String buildFileName(final String gbName) {
 		final String basePath = this.businessService.getServerConfigService().getString("sgu.custom.gradebook.path", "/var/sftp/sgu_files/gradebook_export/");
-		final String gradebookName = this.businessService.getGradebook().getUid();
-
-		return basePath + gradebookName + ".csv";
+		return basePath + gbName + ".csv";
 	}
 }
