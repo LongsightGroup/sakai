@@ -861,15 +861,15 @@
         #end
         <div class="navPanel">
             <div class="act">
-                    <input type="button" accesskey="d" class="active" name="save" value="$tlang.getString('gen.savdragra')"
+                    <input type="button" accesskey="d" name="save" value="$tlang.getString('gen.savdragra')"
                            onclick="SPNR.disableControlsAndSpin( this, null ); ASN.submitForm( 'gradeForm', 'savegrade', '$validator.escapeUrl( $submissionReference )', null ); return false;"
                            title="$tlang.getString("gen.savdratit")"/>
-					<input type="button" accesskey="s" name="return" value="$tlang.getString('gen.retustud')"
+                                        <input type="button" accesskey="s" class="active" name="return" value="$tlang.getString('gen.retustud')"
                            onclick="SPNR.disableControlsAndSpin( this, null ); ASN.submitForm( 'gradeForm', 'returngrade', '$validator.escapeUrl( $submissionReference )', null ); return false;"
                            title="$tlang.getString("gen.retustudtit")"/>
-					<input type="button" accesskey="v" name="preview" value="$tlang.getString('gen.pre')"
+                                        <input type="button" accesskey="v" name="preview" value="$tlang.getString('gen.pre')"
                            onclick="SPNR.disableControlsAndSpin( this, null ); ASN.submitForm( 'gradeForm', 'previewgrade', '$validator.escapeUrl( $submissionReference )', null ); return false;"/>
-					<input type="button" accesskey="x" name="cancel" value="$tlang.getString('cancel_changes')"
+                                        <input type="button" accesskey="x" name="cancel" value="$tlang.getString('cancel_changes')"
                            onclick="SPNR.disableControlsAndSpin( this, null ); ASN.submitForm( 'gradeForm', 'cancelgrade', null, null ); return false;"/>
                     #if ($!prevSubmissionId)
                         <input type="hidden" name="prevSubmissionId" id="prevSubmissionId" value="$!prevSubmissionId"/>
