@@ -72,7 +72,7 @@ public class SguCustomExportPanel extends BasePanel {
 			//CSV separator is comma unless the comma is the decimal separator, then is ;
 			try (OutputStreamWriter fstream = new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8.name())) {
 
-				CSVWriter csvWriter = new CSVWriter(fstream, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
+				CSVWriter csvWriter = new CSVWriter(fstream, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);
 
 				final Map<String, CourseGrade> grades = this.businessService.getCourseGrades(siteId);
 				Map<String, GbUser> users = this.businessService.getUserEidMap();
