@@ -94,6 +94,7 @@ public class SguCustomExportPanel extends BasePanel {
 					csvWriter.writeNext(line.toArray(new String[] {}));
 				}
 				csvWriter.close();
+				tempFile.setReadable(true, false);
 			}
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
