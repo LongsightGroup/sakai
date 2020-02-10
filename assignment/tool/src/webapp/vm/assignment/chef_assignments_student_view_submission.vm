@@ -264,8 +264,7 @@ $(document).ready(function(){
 					</div>
 				</div>
 			#end
-			#set($allowStudentViewReport = $assignment.Properties.get("s_view_report")) 
-			#if($!submitted && $!dateSubmitted && $allowReviewService && $assignment.ContentReview && $!allowStudentViewReport.equals('true'))
+			#if($allowReviewService && $assignment.ContentReview && $!submission && $!service.isContentReviewVisibleForSubmission($!submission))
 				<div class="row">
 					<div class="col-lg-4 col-sm-6 col-xs-12">
 						<div class="itemSummaryHeader">$reviewServiceName&nbsp;$tlang.getString("review.report")</div>
@@ -315,7 +314,7 @@ $(document).ready(function(){
 ##					<div class="col-lg-4 col-sm-6 col-xs-12">
 ##						<div class="itemSummaryValue">
 ##							#foreach ($entry in $submission.getSubmissionLog())
-##								$entry<br>
+##								$validator.escapeHtml($entry)<br>
 ##							#end
 ##						</div>
 ##					</div>
@@ -524,7 +523,6 @@ $(document).ready(function(){
 								#set($gusers = $!service.getSortedGroupUsers($group))
 								#foreach ($user in $gusers)
 									$validator.escapeHtml($user.getDisplayName()) ($validator.escapeHtml($user.getDisplayId()))
-									##$!userDirectoryService.getUser($user).getDisplayName()
 									#if ($velocityCount < $gusers.size()),#end
 								#end
 							</span>	
@@ -547,7 +545,7 @@ $(document).ready(function(){
 			#if (!$submissionType != 4 && !$!deleted.equalsIgnoreCase("true") && $!allowAddAssignment && $!allowSubmitByInstructor && $!student) 
 				<h4>$tlang.getString("submitforstudent")</h4>
 				<p class="instruction">
-					$student.getDisplayName()
+					$validator.escapeHtml($student.getDisplayName())
 					<input type="hidden" name="submit_on_behalf_of" id="submit_on_behalf_of" value="$student.id" />		
 				</p>
 			#end

@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.contentreview.dao.ContentReviewItem;
 import org.sakaiproject.contentreview.exception.ContentReviewProviderException;
@@ -150,6 +150,10 @@ public class ContentReviewFederatedServiceImpl extends BaseContentReviewService 
 	public void checkForReports() {
 		// this is a method that the jobs call and should check for reports for all enabled providers
 		providers.stream().filter(provider -> enabledProviders.stream().anyMatch(ep -> ep.intValue() ==provider.getProviderId().intValue())).forEach(ContentReviewService::checkForReports);
+	}
+
+	public void syncRosters() {
+		providers.stream().filter(provider -> enabledProviders.stream().anyMatch(ep -> ep.intValue() ==provider.getProviderId().intValue())).forEach(ContentReviewService::syncRosters);
 	}
 
 	@Override
@@ -313,4 +317,10 @@ public class ContentReviewFederatedServiceImpl extends BaseContentReviewService 
 	public void webhookEvent(HttpServletRequest request, int providerId, Optional<String> customParam) {
 		providers.stream().filter(crs -> crs.getProviderId().intValue() == providerId).collect(Collectors.toList()).get(0).webhookEvent(request, providerId, customParam);		
 	}
+	
+	@Override
+	public boolean allowSubmissionsOnBehalf() {
+		return getSelectedProvider().allowSubmissionsOnBehalf();
+	}
+
 }

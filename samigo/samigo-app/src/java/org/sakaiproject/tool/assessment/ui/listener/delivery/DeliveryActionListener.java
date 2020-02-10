@@ -179,6 +179,7 @@ public class DeliveryActionListener
       // However, it comes from Begin Assessment button clicks, we need to reset the indexes to 0
       // Otherwise, the first question of the first part will not be displayed 
       if (ae != null && ae.getComponent().getId().startsWith("beginAssessment")) {
+    	  delivery.setSubmissionFiles(new HashMap());
     	  if (!delivery.getNavigation().equals("1")) {
     		  // If it comes from Begin Assessment button clicks (in Random assessment), reset the indexes to 0
     		  log.debug("From Begin Assessment button clicks");
@@ -2449,7 +2450,8 @@ public class DeliveryActionListener
   public void populateImageMapQuestion(ItemDataIfc item, ItemContentsBean bean, Map publishedAnswerHash)
   {	
 	bean.setImageSrc(item.getImageMapSrc());
-	
+	bean.setImageAltText(item.getImageMapAltText());
+
 	Iterator iter = item.getItemTextArraySorted().iterator();
     int j = 1;
     List beans = new ArrayList();

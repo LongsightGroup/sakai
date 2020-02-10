@@ -52,7 +52,9 @@ public class ContentReviewQueueServiceImpl implements ContentReviewQueueService 
 		Objects.requireNonNull(siteId, "siteId cannot be null");
 		Objects.requireNonNull(taskId, "taskId cannot be null");
 		Objects.requireNonNull(content, "content cannot be null");
-				
+		
+		StringBuilder errors = new StringBuilder();
+		String delim = "";
 		for (ContentResource resource : content) {
 			String contentId = resource.getId();
 			
@@ -66,7 +68,9 @@ public class ContentReviewQueueServiceImpl implements ContentReviewQueueService 
 			Optional<ContentReviewItem> existingItem = itemDao.findByProviderAndContentId(providerId, contentId);
 			
 			if (existingItem.isPresent()) {
-				throw new QueueException("Content " + contentId + " is already queued");
+				errors.append(delim).append("Content " + contentId + " is already queued");
+				delim = ", ";
+				continue;
 			}
 			
 			ContentReviewItem item = new ContentReviewItem(contentId, userId, siteId, taskId, new Date(), ContentReviewConstants.CONTENT_REVIEW_NOT_SUBMITTED_CODE, providerId);
@@ -74,6 +78,11 @@ public class ContentReviewQueueServiceImpl implements ContentReviewQueueService 
 			log.debug("Adding content: " + contentId + " from site " + siteId + " and user: " + userId + " for task: " + taskId + " to submission queue");
 			
 			itemDao.create(item);
+		}
+
+		if (errors.length() > 0)
+		{
+			throw new QueueException(errors.toString());
 		}
 	}
 	
@@ -146,7 +155,19 @@ public class ContentReviewQueueServiceImpl implements ContentReviewQueueService 
 		return itemDao.findByProviderGroupedBySiteAndTask(providerId);
 	}
 
-	
+	/* (non-Javadoc)
+	 * @see org.sakaiproject.contentreview.common.service.ContentReviewCommonService#getAllContentReviewItems(java.lang.Integer, java.lang.String, java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public List<String> getContentReviewItemsGroupedBySite(Integer providerId) {
+		Objects.requireNonNull(providerId, "providerId cannot be null");
+
+		log.debug("Returning list of items grouped by site");
+
+		return itemDao.findByProviderGroupedBySite(providerId);
+	}
+
 	/* (non-Javadoc)
 	 * @see org.sakaiproject.contentreview.common.service.ContentReviewCommonService#resetUserDetailsLockedItems(java.lang.Integer, java.lang.String)
 	 */

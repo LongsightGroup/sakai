@@ -90,6 +90,9 @@ import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
 import org.sakaiproject.util.ResourceLoader;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * @author casong
@@ -137,6 +140,12 @@ public class DeliveryBean
   private String confirmation;
   private String outcome;
   private String receiptEmailSetting;
+  @Getter @Setter
+  private Map<String, MediaData> submissionFiles = new HashMap<>();
+  
+  public List<MediaData> getSubmissionFilesList() {
+	return new ArrayList<MediaData>(submissionFiles.values());
+  }
 
   //Settings
   private String questionLayout;
@@ -3470,7 +3479,7 @@ public class DeliveryBean
     String siteId = fromUrl ? publishedAssessment.getOwnerSiteId() : AgentFacade.getCurrentSiteId();
     return PersistenceService.getInstance()
         .getAuthzQueriesFacade()
-        .hasPrivilege("assessment.takeAssessment", siteId);
+        .hasPrivilege(SamigoConstants.AUTHZ_TAKE_ASSESSMENT, siteId);
   }
 
   private boolean isRemoved(){
@@ -3547,8 +3556,11 @@ public class DeliveryBean
 	      return returnUrl;
 	  StringBuilder url = new StringBuilder(ServerConfigurationService.getString("portalPath"));
 	  url.append("/site/");
-	  PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
-	  String currentSiteId = publishedAssessmentService.getPublishedAssessmentSiteId(getAssessmentId());
+	  String currentSiteId = AgentFacade.getCurrentSiteId();
+	  if(currentSiteId == null){
+	      PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
+	      currentSiteId = publishedAssessmentService.getPublishedAssessmentSiteId(getAssessmentId());
+	  }
 	  url.append(currentSiteId);
 	  url.append("/page/");
 	  url.append(getCurrentPageId(currentSiteId));

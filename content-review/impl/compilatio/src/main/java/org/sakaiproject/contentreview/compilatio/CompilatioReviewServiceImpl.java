@@ -19,7 +19,7 @@ package org.sakaiproject.contentreview.compilatio;
 
 import lombok.Setter;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.assignment.api.AssignmentService;
@@ -582,6 +582,11 @@ public class CompilatioReviewServiceImpl extends BaseContentReviewService {
 		}
 
 		log.info("Finished fetching reports from Compilatio : "+success+" success items, "+inprogress+" in progress, "+errors+" errors");
+	}
+
+	@Override
+	public void syncRosters() {
+		// Auto-generated method stub
 	}
 	
 	@Override
