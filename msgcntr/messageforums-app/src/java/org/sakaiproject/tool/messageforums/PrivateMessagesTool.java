@@ -48,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.sakaiproject.api.app.messageforums.Area;
 import org.sakaiproject.api.app.messageforums.Attachment;
@@ -103,9 +104,8 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.DateFormatterUtil;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.api.FormattedText;
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 
 import lombok.Getter;
@@ -208,6 +208,9 @@ public class PrivateMessagesTool
   private UserTimeService userTimeService;
   @Setter
   private ToolManager toolManager;
+  @Setter
+  @ManagedProperty(value="#{Components[\"org.sakaiproject.util.api.FormattedText\"]}")
+  private FormattedText formattedText;
 
 /** Navigation for JSP   */
   public static final String MAIN_PG="main";
@@ -1288,7 +1291,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 	replyText.append(getResourceBundleString("pvt_msg_at"));
 	replyText.append(" " +formattedCreateTime);
 	replyText.append(getResourceBundleString("pvt_msg_comma"));
-    replyText.append(" " + FormattedText.escapeHtml(pm.getAuthor(), false) + " ");
+    replyText.append(" " + formattedText.escapeHtml(pm.getAuthor(), false) + " ");
     replyText.append(getResourceBundleString("pvt_msg_wrote")); 
 	replyText.append("</span>");
     	
@@ -1349,7 +1352,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 	    
 	    // populate replyToBody with the forwarded text
 		forwardedText.append(getResourceBundleString("pvt_msg_fwd_heading") + "<br /><br />" +
-	    	getResourceBundleString("pvt_msg_fwd_authby", new Object[] {FormattedText.escapeHtml(pm.getAuthor(), false), formattedCreateDate}) +  "<br />" +
+	    	getResourceBundleString("pvt_msg_fwd_authby", new Object[] {formattedText.escapeHtml(pm.getAuthor(), false), formattedCreateDate}) +  "<br />" +
 	    	getResourceBundleString("pvt_msg_fwd_to", new Object[] {pm.getRecipientsAsText()}) + "<br />" +
 	    	getResourceBundleString("pvt_msg_fwd_subject", new Object[] {pm.getTitle()}) + "<br />" +
 	    	getResourceBundleString("pvt_msg_fwd_label", new Object[] {getDetailMsg().getLabel()}) + "<br />");
@@ -1446,7 +1449,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 		replyallText.append(getResourceBundleString("pvt_msg_at"));
 		replyallText.append(" " +formattedCreateTime);
 		replyallText.append(getResourceBundleString("pvt_msg_comma"));
-		replyallText.append(" " + FormattedText.escapeHtml(pm.getAuthor(), false) + " ");
+		replyallText.append(" " + formattedText.escapeHtml(pm.getAuthor(), false) + " ");
 		replyallText.append(getResourceBundleString("pvt_msg_wrote")); 
 		replyallText.append("</span>");
 	    	
@@ -1861,7 +1864,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     {
       StringBuilder alertMsg = new StringBuilder();
       aMsg.setTitle(getComposeSubject());
-      aMsg.setBody(FormattedText.processFormattedText(getComposeBody(), alertMsg));
+      aMsg.setBody(formattedText.processFormattedText(getComposeBody(), alertMsg));
       
       aMsg.setAuthor(getAuthorString());
       aMsg.setDraft(Boolean.FALSE);      
@@ -2376,7 +2379,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 
     	StringBuilder alertMsg = new StringBuilder();
     	rrepMsg.setTitle(getReplyToSubject());
-    	rrepMsg.setBody(FormattedText.processFormattedText(getReplyToBody(), alertMsg));
+    	rrepMsg.setBody(formattedText.processFormattedText(getReplyToBody(), alertMsg));
     	rrepMsg.setDraft(Boolean.FALSE);
     	rrepMsg.setDeleted(Boolean.FALSE);
 
@@ -2578,7 +2581,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 
     	rrepMsg.setAuthor(getAuthorString());
     	rrepMsg.setApproved(Boolean.FALSE);
-    	rrepMsg.setBody(FormattedText.processFormattedText(getForwardBody(), alertMsg));
+    	rrepMsg.setBody(formattedText.processFormattedText(getForwardBody(), alertMsg));
 
     	rrepMsg.setLabel(getSelectedLabel());
 
@@ -2794,7 +2797,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 	  replyAllbody=getForwardBody();
 
 
-	  rrepMsg.setBody(FormattedText.processFormattedText(replyAllbody, alertMsg));
+	  rrepMsg.setBody(formattedText.processFormattedText(replyAllbody, alertMsg));
 	  rrepMsg.setLabel(getSelectedLabel());
 	  rrepMsg.setInReplyTo(currentMessage) ;
 
@@ -3500,7 +3503,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     
     String createFolder=getAddFolder() ;   
     StringBuilder alertMsg = new StringBuilder();
-    createFolder = FormattedText.processFormattedText(createFolder, alertMsg);
+    createFolder = formattedText.processFormattedText(createFolder, alertMsg);
     if(StringUtils.isEmpty(createFolder)) {
     	setErrorMessage(getResourceBundleString(ENTER_FOLDER_NAME));
       	return null ;
@@ -4206,7 +4209,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     
     public String getPlacementId() 
     {
-       return Validator.escapeJavascript("Main" + toolManager.getCurrentPlacement().getId());
+       return StringEscapeUtils.escapeEcmaScript("Main" + toolManager.getCurrentPlacement().getId());
     }
 
     public boolean isSearchPvtMsgsEmpty()

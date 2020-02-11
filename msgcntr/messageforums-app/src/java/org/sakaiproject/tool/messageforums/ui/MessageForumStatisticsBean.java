@@ -74,8 +74,8 @@ import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.api.FormattedText;
 
 @Slf4j
 public class MessageForumStatisticsBean {
@@ -470,6 +470,8 @@ public class MessageForumStatisticsBean {
 	
 	/** Needed to determine if user has read permission of topic */
 	private UIPermissionsManager uiPermissionsManager;
+	@ManagedProperty(value="#{Components[\"org.sakaiproject.util.api.FormattedText\"]}")
+	private FormattedText formattedText;
 	
 	public void setMessageManager(MessageForumsMessageManager messageManager){
 		this.messageManager = messageManager;
@@ -2659,7 +2661,7 @@ public class MessageForumStatisticsBean {
 				Map studentIdFunctionMap = gradebookService.getViewableStudentsForItemForCurrentUser(gradebookUid, assignment.getId());
 				List<GradeDefinition> grades = gradebookService.getGradesForStudentsForItem(gradebookUid, assignment.getId(), new ArrayList(studentIdFunctionMap.keySet()));
 				//add grade values to return map
-				String decSeparator = FormattedText.getDecimalSeparator();
+				String decSeparator = formattedText.getDecimalSeparator();
 				for(GradeDefinition gradeDef : grades){
 					String studentUuid = gradeDef.getStudentUid();		  
 					DecoratedGradebookAssignment gradeAssignment = new DecoratedGradebookAssignment();
