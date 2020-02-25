@@ -14,21 +14,22 @@
 
 <!-- messageforums-app/src/webapp/jsp/discussionForum/message-->
 
-<script type="text/javascript">includeLatestJQuery("msgcntr");</script>
-<script type="text/javascript" src="/messageforums-tool/js/json2.js"></script>
-<script type="text/javascript" src="/messageforums-tool/js/fluidframework-min.js"></script>
-<script type="text/javascript" src="/messageforums-tool/js/Scroller.js"></script>
-<script type="text/javascript" src="/messageforums-tool/js/forum.js"></script>
-<script type="text/javascript" src="/messageforums-tool/js/frameAdjust.js"></script>
-<script type="text/javascript" src="/messageforums-tool/js/forum_movethread.js"></script>
+<script>includeLatestJQuery("msgcntr");</script>
+<script src="/messageforums-tool/js/json2.js"></script>
+<script src="/messageforums-tool/js/fluidframework-min.js"></script>
+<script src="/messageforums-tool/js/Scroller.js"></script>
+<script src="/messageforums-tool/js/forum.js"></script>
+<script src="/messageforums-tool/js/frameAdjust.js"></script>
+<script src="/messageforums-tool/js/forum_movethread.js"></script>
 
-<script type="text/javascript" src="/messageforums-tool/js/sak-10625.js"></script>
+<script src="/messageforums-tool/js/sak-10625.js"></script>
+<script type="module" src="/rubrics-service/webcomponents/rubric-association-requirements.js<h:outputText value="#{ForumTool.CDNQuery}" />"></script>
 
 <!--jsp/discussionForum/message/dfAllMessages.jsp-->
 		<link rel="stylesheet" type="text/css" href="../../css/TableSorter.css" />
-		<script type="text/javascript">includeWebjarLibrary('jquery.tablesorter');</script>
-		<script type="text/javascript" src="/messageforums-tool/js/forumTopicThreadsSorter.js"></script>
- 		<script type="text/javascript">
+		<script>includeWebjarLibrary('jquery.tablesorter');</script>
+		<script src="/messageforums-tool/js/forumTopicThreadsSorter.js"></script>
+		<script>
  		jQuery(document).ready(function(){
  			//sort forum threads
  			$('#msgForum\\:messagesInHierDataTable').threadsSorter();
@@ -194,8 +195,8 @@
 					  <sakai-rubric-student-preview-button
 						  token="<h:outputText value="#{ForumTool.rbcsToken}" />"
 						  display="icon"
-						  tool-id="sakai.forums"
-						  entity-id="<h:outputText value="top.#{ForumTool.selectedTopic.topic.id}" />">
+						  tool-id="sakai.gradebookng"
+						  entity-id="<h:outputText value="#{ForumTool.selectedForum.gradeAssign}" />">
 					  </sakai-rubric-student-preview-button>
 					</h:panelGroup>
 					<h:outputText value="#{ForumTool.selectedTopic.topic.title}" styleClass="title"/>

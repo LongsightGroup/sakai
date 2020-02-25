@@ -1855,6 +1855,10 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             return false;
         }
 
+        if (StringUtils.isBlank(userId)) {
+            userId = sessionManager.getCurrentSessionUserId();
+        }
+
         try {
             // return false only if the user is not allowed to submit and not allowed to add to the assignment
             if (!permissionCheckWithGroups(SECURE_ADD_ASSIGNMENT_SUBMISSION, assignment, userId) // check asn.submit for user on assignment consulting groups
@@ -1874,14 +1878,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             // whether the current time is after the assignment close date inclusive
             boolean isBeforeAssignmentCloseDate = !currentTime.isAfter(assignment.getCloseDate());
 
-            if (StringUtils.isBlank(userId)) {	
-                userId = sessionManager.getCurrentSessionUserId();	
-            }
-
-            AssignmentSubmission submission = null;
-            if (StringUtils.isNotBlank(userId)) {
-                submission = getSubmission(AssignmentReferenceReckoner.reckoner().assignment(assignment).reckon().getId(), userId);
-            }
+            AssignmentSubmission submission = getSubmission(AssignmentReferenceReckoner.reckoner().assignment(assignment).reckon().getId(), userId);
 
             if (submission != null) {
                 // check for allow resubmission or not first
@@ -1925,7 +1922,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
     @Override
     public boolean canSubmit(Assignment assignment) {
-        return canSubmit(assignment, null);
+        return canSubmit(assignment, sessionManager.getCurrentSessionUserId());
     }
 
     @Override
@@ -3689,7 +3686,6 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     AssignmentNoteItem oNoteItem = assignmentSupplementItemService.getNoteItem(oAssignmentId);
                     if (oNoteItem != null) {
                         AssignmentNoteItem nNoteItem = assignmentSupplementItemService.newNoteItem();
-                        //assignmentSupplementItemService.saveNoteItem(nNoteItem);
                         nNoteItem.setAssignmentId(nAssignment.getId());
                         nNoteItem.setNote(oNoteItem.getNote());
                         nNoteItem.setShareWith(oNoteItem.getShareWith());
@@ -3918,7 +3914,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                 emailService.sendToUsers(filteredUsers, emailUtil.getHeaders(null, "releasegrade"), emailUtil.getNotificationMessage(submission, "releasegrade"));
             }
         }
-        if (StringUtils.isNotBlank(resubmitNumber) && StringUtils.equals(AssignmentConstants.ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_EACH, assignmentProperties.get(AssignmentConstants.ASSIGNMENT_RELEASEGRADE_NOTIFICATION_VALUE))) {
+        if (StringUtils.isNotBlank(resubmitNumber) && StringUtils.equals(AssignmentConstants.ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_EACH, assignmentProperties.get(AssignmentConstants.ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_VALUE))) {
             // send email to every submitters
             if (!filteredUsers.isEmpty()) {
                 // send the message immidiately

@@ -18,11 +18,10 @@
 		<script src="/messageforums-tool/js/messages.js"></script>
 		<script src="/messageforums-tool/js/forum.js"></script>
 		<script>includeWebjarLibrary('ckeditor')</script>
-		<script type="text/javascript">includeWebjarLibrary('awesomplete')</script>
-		<script type="text/javascript" src="/library/js/sakai-reminder.js"></script>
+		<script>includeWebjarLibrary('awesomplete')</script>
+		<script src="/library/js/sakai-reminder.js"></script>
 		<script src="/webcomponents/assets/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-		<script src="/rubrics-service/webcomponents/sakai-rubrics.js"></script>
-		<script type="module" src="/rubrics-service/webcomponents/sakai-rubric-grading.js"></script>
+		<script type="module" src="/rubrics-service/webcomponents/rubric-association-requirements.js<h:outputText value="#{ForumTool.CDNQuery}" />"></script>
   <h:form id="msgForum">
 <!--jsp\discussionForum\message\dfMsgGrade.jsp-->
 
@@ -77,17 +76,10 @@
 
 		if (userId == null) userId = forumTool.getUserId();
 
-		String rbcsEvaluationId = userId+".";
-		if (forumTool.getSelectedMessage() != null) {
-			rbcsEvaluationId += forumTool.getSelectedMessage().getMessage().getUuid();
-		} else if (forumTool.getSelectedTopic() != null) {
-			rbcsEvaluationId += forumTool.getSelectedTopic().getTopic().getUuid();
-		} else {
-			rbcsEvaluationId += forumTool.getSelectedForum().getForum().getUuid();
-		}
+		String rbcsEvaluationId = entityId + "." + userId;
 		%>
 		
-		<script type="text/javascript" language="javascript">
+		<script>
 		
 			function closeDialogBoxIfExists(){
 				//if isDialogBox, there will be javascript that is ran, otherwise its an empty function
@@ -215,7 +207,7 @@
 	<% if (hasAssociatedRubric) { %>
 		<sakai-rubric-grading
 		    token='<h:outputText value="#{ForumTool.rbcsToken}"/>'
-			tool-id="sakai.forums"
+			tool-id="sakai.gradebookng"
 			entity-id='<%= entityId %>'
 			evaluated-item-id='<%= rbcsEvaluationId %>'
 			<% if (stateDetails != null && !"".equals(stateDetails)) { %>

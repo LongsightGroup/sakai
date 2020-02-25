@@ -1,4 +1,5 @@
 <!--jsp/discussionForum/area/dfAreaInclude.jsp-->
+<script type="module" src="/rubrics-service/webcomponents/rubric-association-requirements.js<h:outputText value="#{ForumTool.CDNQuery}" />"></script>
 <h:panelGrid columns="1" cellpadding="3" rendered="#{empty ForumTool.forums}">
 	<h:panelGroup>
 		<h:outputText styleClass="instruction noForumsMessage"  value="#{msgs.cdfm_forum_noforums} "  />
@@ -6,7 +7,7 @@
 	</h:panelGroup>
 </h:panelGrid>
 <h:outputText styleClass="accessUserCheck" style="display:none" rendered="#{ForumTool.newForum}" value="x"/>
-<script type="text/javascript">
+<script>
 $(document).ready(function() {
 	var topicLen = $('.topicBloc').length;
 	var forumLen = $('.forumHeader').length;
@@ -95,8 +96,8 @@ $(document).ready(function() {
 					<sakai-rubric-student-preview-button
 						display="icon"
 						token="<h:outputText value="#{ForumTool.rbcsToken}" />"
-						tool-id="sakai.forums"
-						entity-id="<h:outputText value="for.#{forum.forum.id}" />">
+						tool-id="sakai.gradebookng"
+						entity-id="<h:outputText value="#{forum.gradeAssign}" />">
 					</sakai-rubric-student-preview-button>
 				</h:panelGroup>
 				<h:commandLink action="#{ForumTool.processActionDisplayForum}" title=" #{forum.forum.title}" rendered="#{ForumTool.showForumLinksInNav}"  styleClass="title">
@@ -237,8 +238,8 @@ $(document).ready(function() {
 								<sakai-rubric-student-preview-button
 									display="icon"
 									token="<h:outputText value="#{ForumTool.rbcsToken}" />"
-									tool-id="sakai.forums"
-									entity-id="<h:outputText value="top.#{topic.topic.id}" />">
+									tool-id="sakai.gradebookng"
+									entity-id="<h:outputText value="#{topic.gradeAssign}" />">
 								</sakai-rubric-student-preview-button>
 							</h:panelGroup>
 							<h:commandLink action="#{ForumTool.processActionDisplayTopic}" id="topic_title" title=" #{topic.topic.title}" styleClass="title">

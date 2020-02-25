@@ -8,14 +8,14 @@
 	   <jsp:setProperty name="msgs" property="baseName" value="messages"/>
 	</jsp:useBean>
 	<sakai:view_container title="Signup Tool">
-			<style type="text/css">
-				@import url("/sakai-signup-tool/css/signupStyle.css");
-			</style>
-<h:outputText value="#{Portal.latestJQuery}" escape="false"/>
-			<script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
-			<script TYPE="text/javascript" LANGUAGE="JavaScript" src="/sakai-signup-tool/js/signupScript.js"></script>			
-			
-		<script TYPE="text/javascript" LANGUAGE="JavaScript">
+		<style type="text/css">
+			@import url("/sakai-signup-tool/css/signupStyle.css");
+		</style>
+		<h:outputText value="#{Portal.latestJQuery}" escape="false"/>
+		<script src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+		<script src="/sakai-signup-tool/js/signupScript.js"></script>
+
+		<script>
 			var prefix="meeting_userDefinedTS_";
 			
 			function initLocalDatePicker(pos){
@@ -177,7 +177,7 @@
 						    		<h:panelGrid columns="1">
 							    		<h:panelGroup styleClass="titleText">
 											<h:inputText id="startTime" value="#{tsWrapper.timeSlot.startTimeString}"/>
-											<h:inputHidden id="hiddenStartTime" value="#{tsWrapper.timeSlot.startTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/></h:inputHidden>
+											<h:inputHidden id="hiddenStartTime" value="#{tsWrapper.timeSlot.startTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="#{UserTimeZone.userTimeZone}" /></h:inputHidden>
 										</h:panelGroup>
 										<h:message for="startTime" errorClass="alertMessageInline"/>
 									</h:panelGrid>
@@ -189,7 +189,7 @@
 									<h:panelGrid columns="1">
 										<h:panelGroup styleClass="titleText">
 											<h:inputText id="endTime" value="#{tsWrapper.timeSlot.endTimeString}"/>
-											<h:inputHidden id="hiddenEndTime" value="#{tsWrapper.timeSlot.endTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/></h:inputHidden>
+											<h:inputHidden id="hiddenEndTime" value="#{tsWrapper.timeSlot.endTime}"><f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" timeZone="#{UserTimeZone.userTimeZone}" /></h:inputHidden>
 										</h:panelGroup>
 										<h:message for="endTime" errorClass="alertMessageInline"/>
 									</h:panelGrid>

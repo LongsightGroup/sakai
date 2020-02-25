@@ -132,8 +132,8 @@ public class ItemModifyListener implements ActionListener
       String nextpage= null;
       ItemBean bean = new ItemBean();
       AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
-      boolean isEditPendingAssessmentFlow = author.getIsEditPendingAssessmentFlow();
-      log.debug("**** isEditPendingAssessmentFlow : " + isEditPendingAssessmentFlow);
+      final boolean isEditPendingAssessmentFlow = author.getIsEditPendingAssessmentFlow();
+      log.debug("**** isEditPendingAssessmentFlow : {}", isEditPendingAssessmentFlow);
       ItemService delegate = null;
       AssessmentService assessdelegate= null;
       if (isEditPendingAssessmentFlow) {
@@ -554,7 +554,6 @@ public class ItemModifyListener implements ActionListener
 		}
 		answerbeanlist.add(answerbean);
          }
-
 			  // set correct choice for single correct
 			  if (Long.valueOf(itemauthorbean.getItemType()).equals(TypeFacade.MULTIPLE_CHOICE)) {
 				  Iterator iter2 = correctlist.iterator();

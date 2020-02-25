@@ -297,8 +297,15 @@ GbGradeTable.replaceContents = function (elt, newContents) {
   return elt;
 };
 
+GbGradeTable.isColumnRendered = function(instance, col) {
+  return (instance.view.settings.columns[col] !== undefined);
+};
+
 // This function is called a *lot*, so avoid doing anything too expensive here.
 GbGradeTable.cellRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+  //If col is not rendered, skip cell renderer
+  if (!GbGradeTable.isColumnRendered(instance, col)) return false;
+
   var $td = $(td);
   var index = col - GbGradeTable.FIXED_COLUMN_OFFSET;
   var student = instance.getDataAtCell(row, GbGradeTable.STUDENT_COLUMN_INDEX);
@@ -539,7 +546,7 @@ GbGradeTable.cellRenderer = function (instance, td, row, col, prop, value, cellP
 };
 
 
-GbGradeTable.headerRenderer = function (col, column) {
+GbGradeTable.headerRenderer = function (col, column, $th) {
   if (col < GbGradeTable.getFixedColumns().length) {
     var colDef = GbGradeTable.getFixedColumns()[col];
     return colDef.headerTemplate.process({col: col, settings: GbGradeTable.settings});
@@ -556,6 +563,7 @@ GbGradeTable.headerRenderer = function (col, column) {
   if (column.type === "assignment") {
     return GbGradeTable.templates.assignmentHeader.process(templateData);
   } else if (column.type === "category") {
+    $th.addClass("gb-item-category");
     return GbGradeTable.templates.categoryScoreHeader.process(templateData);
   } else {
     return "Unknown column type for column: " + col + " (" + column.type+ ")";
@@ -611,6 +619,7 @@ GbGradeTable.mergeColumns = function (data, fixedColumns) {
 }
 
 var nextRequestId = 0;
+
 GbGradeTable.ajaxCallbacks = {}
 
 GbGradeTable.ajaxComplete = function (requestId, status, data) {
@@ -699,6 +708,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     if (GbGradeTable.settings.isPercentageGradeEntry) {
       outOf.innerHTML = "100%";
     } else if (GbGradeTable.settings.isPointsGradeEntry) {
+      //If col is not rendered, skip begin editing cell
+      if (!GbGradeTable.isColumnRendered(GbGradeTable.instance, col)) return false;
       var assignment = GbGradeTable.instance.view.settings.columns[col]._data_;
       var points = assignment.points;
       outOf.innerHTML = "/" + points;
@@ -755,9 +766,11 @@ GbGradeTable.renderTable = function (elementId, tableData) {
       // Calculate the HTML that we need to show
       var html = '';
       if (col < GbGradeTable.FIXED_COLUMN_OFFSET) {
-        html = GbGradeTable.headerRenderer(col);
+        html = GbGradeTable.headerRenderer(col, $th);
       } else {
-        html = GbGradeTable.headerRenderer(col, this.view.settings.columns[col]._data_);
+        //If col is not rendered, skip header renderer
+        if (!GbGradeTable.isColumnRendered(this, col)) return false;
+        html = GbGradeTable.headerRenderer(col, this.view.settings.columns[col]._data_, $th);
       }
 
       // If we haven't got a cached parse of it, do that now
@@ -793,6 +806,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
         handle.classList.add("gb-sorted-"+GbGradeTable.currentSortDirection);
       }
 
+      //If col is not rendered, skip afterGetColHeader
+      if (!GbGradeTable.isColumnRendered(this, col)) return false;
       var columnModel = this.view.settings.columns[col]._data_;
 
       // assignment column
@@ -922,6 +937,9 @@ GbGradeTable.renderTable = function (elementId, tableData) {
 
   GbGradeTable.instance.updateSettings({
     cells: function (row, col, prop) {
+      //If col is not rendered, skip cell updatesettings
+      if (!GbGradeTable.isColumnRendered(GbGradeTable.instance, col)) return false;
+
       var cellProperties = {};
 
       var column = GbGradeTable.instance.view.settings.columns[col]._data_;
@@ -983,10 +1001,11 @@ GbGradeTable.renderTable = function (elementId, tableData) {
     // SAK-40644 Hide move left for the leftmost, move right for the rightmost.
     var $header = $link.closest("th.gb-item");
     if ($header.length) {
-      if (!$header.prev("th.gb-item").length) {
+      if (!$header.prev("th.gb-item").length || $header.prev("th").hasClass("gb-item-category")) {
         $dropdownMenu.find(".gb-move-left").hide();
       }
-      if (!$header.next("th.gb-item").length) {
+
+      if (!$header.next("th.gb-item").length || $header.next("th").hasClass("gb-item-category")) {
         $dropdownMenu.find(".gb-move-right").hide();
       }
     }
@@ -1209,6 +1228,8 @@ GbGradeTable.renderTable = function (elementId, tableData) {
       if ($(this).data('assignmentid')) {
         $togglePanel.find('.gb-item-filter :checkbox[value='+$(this).data('assignmentid')+']').trigger('click');
       } else if ($(this).data('categoryid')) {
+        // Skip if column is already not rendered
+        if (!GbGradeTable.isColumnRendered(GbGradeTable.instance, col)) return false;
         var colIndex = GbGradeTable.colForCategoryScore($(this).data('categoryid'));
         var col = GbGradeTable.instance.view.settings.columns[colIndex]._data_;
         $togglePanel.find('.gb-item-category-score-filter :checkbox[value="'+col.categoryName+'"]').trigger('click');
@@ -1230,63 +1251,6 @@ GbGradeTable.renderTable = function (elementId, tableData) {
   GbGradeTable.setupAccessiblityBits();
   GbGradeTable.refreshSummaryLabels();
   GbGradeTable.setupDragAndDrop();
-
-  // Patch HandsonTable getWorkspaceWidth for improved scroll performance on big tables
-  var origGetWorkspaceWidth = WalkontableViewport.prototype.getWorkspaceWidth;
-
-  (function () {
-    var cachedWidth = undefined;
-    WalkontableViewport.prototype.getWorkspaceWidth = function () {
-      var self = this;
-      if (!cachedWidth) {
-        cachedWidth = origGetWorkspaceWidth.bind(self)();
-      }
-
-      return cachedWidth;
-    }
-  }());
-
-  // Patch HandsonTable adjustColumnWidths for improved scroll performance
-  var origAdjustColumnWidths = WalkontableTableRenderer.prototype.adjustColumnWidths;
-
-  (function () {
-    WalkontableTableRenderer.prototype.adjustColumnWidths = function (columnsToRender) {
-      var sourceInstance = this.wot.cloneSource ? this.wot.cloneSource : this.wot;
-      var mainHolder = sourceInstance.wtTable.holder;
-      if (this.wot.cachedScrollbarCompensation === undefined) {
-        this.wot.cachedScrollbarCompensation = 0;
-        if (mainHolder.offsetHeight < mainHolder.scrollHeight) {
-          // NYU: Hacked this!  was getScrollbarWidth();
-          this.wot.cachedScrollbarCompensation = 0;
-        }
-      }
-
-      var scrollbarCompensation = this.wot.cachedScrollbarCompensation;
-
-      this.wot.wtViewport.columnsRenderCalculator.refreshStretching(this.wot.wtViewport.getViewportWidth() - scrollbarCompensation);
-      var rowHeaderWidthSetting = this.wot.getSetting('rowHeaderWidth');
-      if (rowHeaderWidthSetting != null) {
-        for (var i = 0; i < this.rowHeaderCount; i++) {
-          var oldWidth = this.COLGROUP.childNodes[i].style.width;
-          var newWidth = (isNaN(rowHeaderWidthSetting) ? rowHeaderWidthSetting[i] : rowHeaderWidthSetting) + 'px';
-
-          // NYU: Added these conditionals
-          if (oldWidth != newWidth) {
-            this.COLGROUP.childNodes[i].style.width = (isNaN(rowHeaderWidthSetting) ? rowHeaderWidthSetting[i] : rowHeaderWidthSetting) + 'px';
-          }
-        }
-      }
-      for (var renderedColIndex = 0; renderedColIndex < columnsToRender; renderedColIndex++) {
-        var oldWidth = this.COLGROUP.childNodes[renderedColIndex + this.rowHeaderCount].style.width;
-        var width = this.wtTable.getStretchedColumnWidth(this.columnFilter.renderedToSource(renderedColIndex));
-
-        // NYU: Added these conditionals
-        if (oldWidth != width) {
-          this.COLGROUP.childNodes[renderedColIndex + this.rowHeaderCount].style.width = width + 'px';
-        }
-      }
-    }
-  }());
 
   GbGradeTable.runReadyCallbacks();
 };
@@ -2611,7 +2575,7 @@ GbGradeTable.setupDragAndDrop = function () {
       if (candidateTarget.is(dragTarget) ||
           (candidateTarget.is(dragTarget.prev()) && dropTargetSide == RIGHT_POSITION) ||
           (candidateTarget.is(dragTarget.next()) && dropTargetSide == LEFT_POSITION)) {
-
+          
             /* If our drop target would put us right back where we started,
                don't show the drop indicator. */
             return true;
