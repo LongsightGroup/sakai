@@ -145,13 +145,15 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 		
 		String emailAttr = 
 			attributeMappings.get(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY);
-		MessageFormat valueFormat = valueMappings.get(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY);
-		if (valueFormat == null) {
-			return emailAttr + "=" + escapeSearchFilterTerm(emailAddr);
-		} else {
-			valueFormat = (MessageFormat) valueFormat.clone();
-			return emailAttr + "=" + escapeSearchFilterTerm(valueFormat.format(new Object[]{emailAddr}));
+
+		String eidAttr = attributeMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
+		if (StringUtils.equalsIgnoreCase(eidAttr, "sAMAccountName")) {
+			return "(&(objectClass=user)(" + emailAttr + "=" + escapeSearchFilterTerm(emailAddr) + ")(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))";
 		}
+		else {
+			return "(&(" + emailAttr + "=" + escapeSearchFilterTerm(emailAddr) + ")(!(objectClass=computer)))";
+		}
+		
 	}
 
 	/**
@@ -161,12 +163,11 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 		
 		String eidAttr = 
 			attributeMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
-		MessageFormat valueFormat = valueMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
-		if (valueFormat == null) {
-			return eidAttr + "=" + escapeSearchFilterTerm(eid);
-		} else {
-			valueFormat = (MessageFormat) valueFormat.clone();
-			return eidAttr + "=" + escapeSearchFilterTerm(valueFormat.format(new Object[]{eid}));
+		if (StringUtils.equalsIgnoreCase(eidAttr, "sAMAccountName")) {
+			return "(&(objectClass=user)(" + eidAttr + "=" + escapeSearchFilterTerm(eid) + ")(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2)))";
+		}
+		else {
+			return "(&(" + eidAttr + "=" + escapeSearchFilterTerm(eid) + ")(!(objectClass=computer)))";
 		}
 	}
 
@@ -647,16 +648,25 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 	 * @inheritDoc
 	 */
 	public String getManyUsersInOneSearch(Set<String> criteria) {
+		String eidAttr = attributeMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
+
 		StringBuilder sb = new StringBuilder();
-		sb.append("(|");
+		if (StringUtils.equalsIgnoreCase(eidAttr, "sAMAccountName")) {
+			sb.append("(&(objectClass=user)(!(objectClass=computer))(!(userAccountControl:1.2.840.113556.1.4.803:=2))(|");
+		}
+		else {
+			sb.append("(&(!(objectClass=computer))(|");
+		}
 
 		for ( Iterator<String> eidIterator = criteria.iterator(); eidIterator.hasNext(); ) {
-			sb.append("(");
-			sb.append(getFindUserByEidFilter(eidIterator.next()));
-			sb.append(")");
+			sb.append( "(");
+			sb.append( eidAttr );
+			sb.append( "=" );
+			sb.append( escapeSearchFilterTerm(eidIterator.next()) );
+			sb.append( ")" );
 		}
 		
-		sb.append(")");
+		sb.append("))");
 		
 		if (log.isDebugEnabled()) {
 			log.debug("getManyUsersInOneSearch() completed filter: " + sb.toString());
