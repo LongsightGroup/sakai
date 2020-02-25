@@ -57,7 +57,7 @@
 
     <!-- Logger for SAML messages and events -->
     <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
-    
+
     <!-- Disable signing using cryptographic keys -->
     <!-- Central storage of cryptographic keys -->
     <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
@@ -101,7 +101,7 @@
         </constructor-arg>
     </bean>
 
-	
+
     <!-- The filter is waiting for connections on URL suffixed with filterSuffix and presents SP metadata there -->
     <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
 
@@ -175,7 +175,7 @@
                   <constructor-arg>
                 <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://adfs.providence.edu/FederationMetadata/2007-06/FederationMetadata.xml</value>
+                        <value type="java.lang.String">https://login.microsoftonline.com/29196f36-1d5e-4d26-8945-3be41ba81178/federationmetadata/2007-06/federationmetadata.xml</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">60000</value>
@@ -188,7 +188,7 @@
                   </constructor-arg>
                   <property name="metadataTrustCheck" value="false"/>
                 </bean>
-                
+
                 <!-- Example of file system metadata without Extended Metadata -->
                 <!--
                 <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
@@ -203,7 +203,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://adfs.providence.edu/adfs/services/trust"/>
+        <property name="defaultIDP" value="https://sts.windows.net/29196f36-1d5e-4d26-8945-3be41ba81178/"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
