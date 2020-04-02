@@ -2755,20 +2755,11 @@ public class DeliveryBean
 
   public String getFeedbackEndDateString()
   {
-    String dateString = "";
     if (feedbackEndDate== null) {
-      return dateString;
+      return "";
     }
 
-    try {
-      TimeUtil tu = new TimeUtil();
-      dateString = tu.getDisplayDateTime(displayFormat, feedbackEndDate, true);
-    }
-    catch (Exception ex) {
-      // we will leave it as an empty string
-      log.warn("Unable to format date.", ex);
-    }
-    return dateString;
+    return userTimeService.dateTimeFormat(feedbackEndDate, new ResourceLoader().getLocale(), DateFormat.MEDIUM);
   }
 
   public String getFeedbackDelivery()
