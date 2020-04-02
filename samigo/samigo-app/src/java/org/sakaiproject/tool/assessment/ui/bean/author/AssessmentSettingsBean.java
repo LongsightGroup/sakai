@@ -1276,7 +1276,7 @@ public class AssessmentSettingsBean
     if (!this.isValidFeedbackEndDate) {
       return this.originalFeedbackEndDateString;
     } else {
-      return getDisplayFormatFromDate(feedbackEndDate, false);
+      return getDisplayFormatFromDate(feedbackEndDate);
     }
   }
 
