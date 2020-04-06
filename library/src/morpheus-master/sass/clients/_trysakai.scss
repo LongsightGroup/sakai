@@ -1,0 +1,36 @@
+$skin-name : "ts-purple" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                  				'../images/trysakai.png';
+$logo-height:           				32px;
+$logo-width:            				184px;
+
+// Base Colors
+$primary-color:         				#4C3041;
+$background-color-secondary: 				#4C3041;
+$top-header-background: 				$background-color-secondary;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			hsla(0, 0%, 92%, 1);
+$sites-nav-menu-item-color: 				hsla(0, 0%, 25%, 1);
+$sites-nav-menu-item-hover-background: 			hsla(0, 0%, 82%, 1);
+$sites-nav-menu-item-hover-color: 			rgba(0,0,0,1);
+	
+$sites-nav-menu-item-selected-background: 		#4C3041;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		none;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #474747;
+$tool-menu-item-selected-icon-color:                    #474747;
+$tool-menu-item-selected-background-color:              #E1D0DB;
+$tool-menu-item-selected-border-left:                   4px solid #E1D0DB;
+
+
+// Button Hover
+$button-primary-hover-background:           		#4C9D2F;
+$button-primary-hover-border-color:         		#4c3041;
