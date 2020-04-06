@@ -276,19 +276,15 @@ public class AssignmentToolUtils {
     @Transactional
     public AssignmentSubmission gradeSubmission(AssignmentSubmission submission, String gradeOption, Map<String, Object> options, List<String> alerts) {
 
-        boolean withGrade = options.get(WITH_GRADES) != null && (Boolean) options.get(WITH_GRADES);
-
-        // for points grading, one have to enter number as the points
-        String grade = (String) options.get(GRADE_SUBMISSION_GRADE);
-
         if (submission != null) {
+            boolean withGrade = options.get(WITH_GRADES) != null && (Boolean) options.get(WITH_GRADES);
+            String grade = (String) options.get(GRADE_SUBMISSION_GRADE);
             boolean gradeChanged = false;
             if (!StringUtils.equals(StringUtils.trimToNull(submission.getGrade()), StringUtils.trimToNull(grade))) {
                 //one is null the other isn't
                 gradeChanged = true;
             }
             Assignment a = submission.getAssignment();
-
             if (!withGrade) {
                 // no grade input needed for the without-grade version of assignment tool
                 submission.setGraded(true);
@@ -425,23 +421,6 @@ public class AssignmentToolUtils {
                 alerts.addAll(integrateGradebook(options, aReference, associateGradebookAssignment, null, null, null, -1, null, sReference, "remove", -1));
             }
 
-            String siteId = (String) options.get("siteId");
-
-            // Persist the rubric evaluations
-            if (rubricsService.hasAssociatedRubric(RubricsConstants.RBCS_TOOL_ASSIGNMENT, submission.getAssignment().getId())){
-                Map<String, String> rubricsParams
-                    = options.entrySet().stream().filter(e -> e.getKey().startsWith("rbcs"))
-                        .collect(Collectors.toMap(e -> e.getKey(), e -> (String) e.getValue()));
-
-                if (StringUtils.isNotBlank(siteId)) {
-                    rubricsParams.put("siteId", siteId);
-                }
-                for (AssignmentSubmissionSubmitter submitter : submission.getSubmitters()) {
-                    String submitterId = submitter.getSubmitter();
-                    rubricsService.saveRubricEvaluation(RubricsConstants.RBCS_TOOL_ASSIGNMENT, submission.getAssignment().getId(), submission.getId(), submitterId, submission.getGradedBy(), rubricsParams);
-                }
-            }
-
             try {
                 return assignmentService.getSubmission(submission.getId());
             } catch (Exception e) {
@@ -511,7 +490,10 @@ public class AssignmentToolUtils {
         String submissionId = AssignmentReferenceReckoner.reckoner().reference(submissionRef).reckon().getId();
 
         try {
-            String gradebookUid = toolManager.getCurrentPlacement().getContext();
+            String gradebookUid = (String) options.get("siteId");
+            if (gradebookUid == null) {
+                gradebookUid = toolManager.getCurrentPlacement().getContext();
+            }
             if (gradebookService.isGradebookDefined(gradebookUid) && gradebookService.currentUserHasGradingPerm(gradebookUid)) {
                 boolean isExternalAssignmentDefined = gradebookExternalAssessmentService.isExternalAssignmentDefined(gradebookUid, assignmentRef);
                 boolean isExternalAssociateAssignmentDefined = gradebookExternalAssessmentService.isExternalAssignmentDefined(gradebookUid, associateGradebookAssignment);

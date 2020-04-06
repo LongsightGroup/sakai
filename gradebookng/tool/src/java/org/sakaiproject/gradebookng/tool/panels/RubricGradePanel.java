@@ -80,7 +80,6 @@ public class RubricGradePanel extends BasePanel {
         final GbAjaxButton submit = new GbAjaxButton("submit") {
             @Override
             public void onSubmit(final AjaxRequestTarget target, final Form<?> form) {
-                rubricsService.saveRubricEvaluation(RubricsConstants.RBCS_TOOL_GRADEBOOKNG, assignmentId.toString(), assignmentId + "." + studentUuid, studentUuid, getCurrentUserId(), getRubricParameters(""));
                 target.appendJavaScript(String.format("GbGradeTable.instance.setDataAtCell(rubricGradingRow, rubricGradingCol, rubricGradingPoints.toString());", studentUuid, assignmentId));
                 RubricGradePanel.this.window.close(target);
             }
@@ -105,6 +104,8 @@ public class RubricGradePanel extends BasePanel {
 	public void renderHead(final IHeaderResponse response) {
 
 		final String version = PortalUtils.getCDNQuery();
+		response.render(StringHeaderItem.forString(
+			"<script src=\"/rubrics-service/webcomponents/sakai-rubrics-utils.js" + version + "\"></script>"));
 		response.render(StringHeaderItem.forString(
 			"<script type=\"module\" src=\"/rubrics-service/webcomponents/rubric-association-requirements.js" + version + "\"></script>"));
     }

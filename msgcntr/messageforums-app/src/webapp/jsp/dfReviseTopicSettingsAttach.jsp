@@ -19,6 +19,7 @@
 	<script src="/messageforums-tool/js/messages.js"></script>
 	<script src="/messageforums-tool/js/datetimepicker.js"></script>
 	<script src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+	<script src="/rubrics-service/webcomponents/sakai-rubrics-utils.js<h:outputText value="#{ForumTool.CDNQuery}" />"></script>
 	<script type="module" src="/rubrics-service/webcomponents/rubric-association-requirements.js<h:outputText value="#{ForumTool.CDNQuery}" />"></script>
 	<link href="/library/webjars/jquery-ui/1.12.1/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 	
@@ -101,6 +102,7 @@
 
 	<!--jsp/dfReviseTopicSettingsAttach.jsp-->
 	<h:form id="revise">
+		<%@ include file="/jsp/discussionForum/menu/forumsMenu.jsp" %>
 		<sakai:tool_bar_message value="#{msgs.cdfm_discussion_topic_settings}" />
 		<h3 class="specialLink">
 			<h:commandLink immediate="true" action="#{ForumTool.processActionHome}" value="#{msgs.cdfm_message_forums}" title=" #{msgs.cdfm_message_forums}"
@@ -505,6 +507,12 @@
 				container: ".charsRemaining",
 				format: charRemFormat
 			});
+
+			var menuLink = $('#forumsMainMenuLink');
+			var menuLinkSpan = menuLink.closest('span');
+			menuLinkSpan.addClass('current');
+			menuLinkSpan.html(menuLink.text());
+
 		 });
 	</script>
 </sakai:view>

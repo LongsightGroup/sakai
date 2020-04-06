@@ -142,7 +142,6 @@ import org.sakaiproject.site.util.SiteParticipantHelper;
 import org.sakaiproject.site.util.SiteSetupQuestionFileParser;
 import org.sakaiproject.site.util.SiteTextEditUtil;
 import org.sakaiproject.site.util.SiteTypeUtil;
-import org.sakaiproject.site.util.ToolComparator;
 import org.sakaiproject.sitemanage.api.SectionField;
 import org.sakaiproject.sitemanage.api.SiteHelper;
 import org.sakaiproject.sitemanage.api.SiteManageConstants;
@@ -175,6 +174,8 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SortedIterator;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.LinkMigrationHelper;
+import org.sakaiproject.util.comparator.GroupTitleComparator;
+import org.sakaiproject.util.comparator.ToolTitleComparator;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.NumberUtils;
@@ -2034,7 +2035,7 @@ public class SiteAction extends PagedResourceActionII {
 
 			// Set participant list
 			if (allowUpdateSite || allowViewRoster || allowUpdateSiteMembership) {
-				Collection participantsCollection = getParticipantList(state);
+				Collection<Participant> participantsCollection = getParticipantList(state);
 				sortedBy = (String) state.getAttribute(SORTED_BY);
 				sortedAsc = (String) state.getAttribute(SORTED_ASC);
 				if (sortedBy == null) {
@@ -2050,6 +2051,9 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("currentSortAsc", sortedAsc);
 				context.put("participantListSize", participantsCollection.size());
 				context.put("participantList", prepPage(state));
+
+				boolean hasCredits = participantsCollection.stream().anyMatch(p -> StringUtils.isNotEmpty(p.getCredits()));
+				context.put("hasCredits", hasCredits);
 
 				ParticipantFilterHandler.putSelectedFilterIntoContext(state, context);
 
@@ -2256,17 +2260,9 @@ public class SiteAction extends PagedResourceActionII {
 							unjoinableGroups.add(g.getId());
 						}
 					}
-					Collections.sort(filteredGroups, new Comparator<Group>(){
-						public int compare(Group o1, Group o2) {
-							return o1.getTitle().compareToIgnoreCase(o2.getTitle());
-						}
-					});
+					Collections.sort(filteredGroups, new GroupTitleComparator());
 					context.put("groups", filteredGroups);
-					Collections.sort(filteredSections, new Comparator<Group>(){
-						public int compare(Group o1, Group o2) {
-							return o1.getTitle().compareToIgnoreCase(o2.getTitle());
-						}
-					});
+					Collections.sort(filteredSections, new GroupTitleComparator());
 					context.put("sections", filteredSections);
 					context.put("viewMembershipGroups", viewMembershipGroups);
 					context.put("unjoinableGroups", unjoinableGroups);
@@ -2564,9 +2560,9 @@ public class SiteAction extends PagedResourceActionII {
 				Locale oLocale = getLocaleFromString(oLocale_string);
 				context.put("oLocale", oLocale);
 			}
-									
+
 			context.put("description", siteInfo.description);
-			context.put("oDescription", site.getDescription());
+			context.put("descriptionUpdated", !StringUtils.equals(StringUtils.strip(site.getDescription()), StringUtils.strip(siteInfo.description)));
 			context.put("short_description", siteInfo.short_description);
 			context.put("oShort_description", site.getShortDescription());
 			context.put("skin", siteInfo.iconUrl);
@@ -3042,7 +3038,6 @@ public class SiteAction extends PagedResourceActionII {
 					return t1.getTitle().compareTo(t2.getTitle());
 				}
 			});
-				
 			final List<String> sortedToolIds = new ArrayList<String>();
 			for (MyTool m: allTools) {
 				sortedToolIds.add(m.getId());
@@ -6649,8 +6644,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		Set<Tool> toolRegistrations = getToolRegistrations(state, type);
 
 		List tools = new Vector();
-		SortedIterator i = new SortedIterator(toolRegistrations.iterator(),
-				new ToolComparator());
+		SortedIterator i = new SortedIterator(toolRegistrations.iterator(), new ToolTitleComparator());
 		for (; i.hasNext();) {
 			// form a new Tool
 			Tool tr = (Tool) i.next();
@@ -10987,7 +10981,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 	 * getParticipantList
 	 * 
 	 */
-	private Collection getParticipantList(SessionState state) {
+	private Collection<Participant> getParticipantList(SessionState state) {
 		List members = new Vector();
 		String siteId = (String) state.getAttribute(STATE_SITE_INSTANCE_ID);
 
@@ -16137,13 +16131,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		return true;
 	}
 
-	private List findWidgets()
-	{
-		class ToolTitleComparator implements Comparator{
-			public int compare(Object tool0, Object tool1) {
-				return ((Tool)tool0).getTitle().compareTo( ((Tool)tool1).getTitle() );
-			}
-		}
+	private List findWidgets() {
 		// get the helpers
 		Set categories = new HashSet();
 		categories.add("widget");

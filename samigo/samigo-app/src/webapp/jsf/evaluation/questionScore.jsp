@@ -34,6 +34,7 @@ $Id$
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
       <head><%= request.getAttribute("html.head") %>
       <title><h:outputText value="#{evaluationMessages.title_question}" /></title>
+      <script src="/rubrics-service/webcomponents/sakai-rubrics-utils.js<h:outputText value="#{questionScores.CDNQuery}" />"></script>
       <script type="module" src="/rubrics-service/webcomponents/rubric-association-requirements.js<h:outputText value="#{questionScores.CDNQuery}" />"></script>
       </head>
       <body onload="<%= request.getAttribute("html.body.onload") %>">
@@ -871,7 +872,7 @@ $Id$
         <f:param name="sortAscending" value="true" />
         </h:commandLink>
       </f:facet>
-      <h:inputText value="#{description.roundedTotalAutoScore}" size="5" id="qscore" styleClass="adjustedScore#{description.assessmentGradingId}" required="false" onchange="toPoint(this.id);">
+      <h:inputText value="#{description.roundedTotalAutoScore}" size="5" id="qscore" styleClass="adjustedScore#{description.assessmentGradingId}.#{questionScores.itemId}" required="false" onchange="toPoint(this.id);">
         <f:validateDoubleRange/>
       </h:inputText>
       <h:message for="qscore" style="color:red"/>

@@ -1245,11 +1245,7 @@ GbGradeTable.renderTable = function (elementId, tableData) {
   on("click", ".gb-dropdown-menu .gb-message-students", function (event) {
 
     $(`#gb-messager-for-${event.target.dataset.assignmentId}`)
-      .dialog({ width: 500, close: function () { $(this).dialog("destroy"); } })
-      .on("submission-message-sent", function (e) {
-        $(this).dialog("destroy");
-        $(this).off("submission-message-sent");
-      });
+      .dialog({ width: 500, close: function () { $(this).dialog("destroy"); } });
   }).
   // View Course Grade Statistics
   on("click", ".gb-dropdown-menu .gb-view-course-grade-statistics", function() {
@@ -3267,7 +3263,7 @@ GbGradeTable.focusColumnForAssignmentId = function(assignmentId, showPopupForNew
             $selectedField.attr('data-content',GbGradeTable.templates['newGradeItemPopoverMessage'].process());
             $selectedField.attr('data-title',GbGradeTable.templates['newGradeItemPopoverTitle'].process());
 
-            $('body').on('click keyup touchend', function (e) {
+            $('body, button').on('click keyup touchend', function (e) {
               if ($(e.target).data('toggle') !== 'popover'
                   && $(e.target).parents('.popover.in').length === 0) { 
                   $('[data-toggle="popover"]').popover('hide');
