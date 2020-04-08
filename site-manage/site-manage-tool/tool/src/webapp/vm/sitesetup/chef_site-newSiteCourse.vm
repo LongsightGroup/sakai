@@ -281,14 +281,6 @@
 					value="$tlang.getString('gen.continue')"
 					onclick="SPNR.disableControlsAndSpin( this, null ); document.getElementById('option').value='add'; document.addCourseForm.submit(); return false;"
 					/>
-				<input
-					type="submit" 
-					accesskey="x"
-					name="Cancel" 
-					id="Cancel" 
-					value="$tlang.getString('gen.back')"
-					onclick="SPNR.disableControlsAndSpin( this, null ); document.getElementById('option').value='cancel_edit'; document.addCourseForm.submit(); return false;"
-				/>
 			</p>
 			#end
 		<input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
