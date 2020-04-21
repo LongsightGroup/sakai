@@ -29,6 +29,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
@@ -1512,6 +1513,7 @@ public class AssignmentAction extends PagedResourceActionII {
             if (s != null) {
                 log.debug("BUILD SUBMISSION FORM HAS SUBMISSION FOR USER {}", user);
                 context.put("submission", s);
+                context.put("submitterId", s);
                 String currentUser = userDirectoryService.getCurrentUser().getId();
                 String grade = assignmentService.getGradeForSubmitter(s, currentUser);
                 context.put("grade", grade);
@@ -3261,6 +3263,7 @@ public class AssignmentAction extends PagedResourceActionII {
             final String submitterNames = users.values().stream().map(u -> u.getDisplayName() + " (" + u.getDisplayId() + ")").collect(Collectors.joining(", "));
             context.put("submitterNames", formattedText.escapeHtml(submitterNames));
             context.put("submissionStatus", assignmentService.getSubmissionStatus(s.getId()));
+            s.getSubmitters().stream().findAny().ifPresent(u -> context.put("submitterId", u.getSubmitter()));
 
             if (assignment.isPresent()) {
                 Assignment a = assignment.get();
@@ -6017,23 +6020,6 @@ public class AssignmentAction extends PagedResourceActionII {
             } else {
                 //remove grade from gradebook
                 integrateGradebook(state, aReference, associateGradebookAssignment, null, null, null, -1, null, sReference, "remove", -1);
-            }
-
-            // Persist the rubric evaluations
-            if (rubricsService.hasAssociatedRubric(RubricsConstants.RBCS_TOOL_ASSIGNMENT, submission.getAssignment().getId())){
-                Map<String, String> rubricsParams
-                    = options.entrySet().stream().filter(e -> e.getKey().startsWith("rbcs"))
-                        .collect(Collectors.toMap(e -> e.getKey(), e -> (String) e.getValue()));
-
-                String siteId = a.getContext();
-
-                if (StringUtils.isNotBlank(siteId)) {
-                    rubricsParams.put("siteId", siteId);
-                }
-                for (AssignmentSubmissionSubmitter submitter : submission.getSubmitters()) {
-                    String submitterId = submitter.getSubmitter();
-                    rubricsService.saveRubricEvaluation(RubricsConstants.RBCS_TOOL_ASSIGNMENT, submission.getAssignment().getId(), submission.getId(), submitterId, submission.getGradedBy(), rubricsParams);
-                }
             }
         }
 
@@ -13575,7 +13561,7 @@ public class AssignmentAction extends PagedResourceActionII {
                                 if (entryName.contains("timestamp")) {
                                     byte[] timeStamp = readIntoBytes(zipFile.getInputStream(entry), entryName, entry.getSize());
                                     UploadGradeWrapper r = (UploadGradeWrapper) submissionTable.get(userEid);
-                                    r.setSubmissionTimestamp(new String(timeStamp));
+                                    r.setSubmissionTimestamp(StringUtils.stripToEmpty(StringUtils.chomp(new String(timeStamp))));
                                     submissionTable.put(userEid, r);
                                 }
                             }
@@ -13757,7 +13743,19 @@ public class AssignmentAction extends PagedResourceActionII {
 
                     // if the current submission lacks timestamp while the timestamp exists inside the zip file
                     if (StringUtils.trimToNull(w.getSubmissionTimeStamp()) != null && submission.getDateSubmitted() == null) {
-                        submission.setDateSubmitted(Instant.ofEpochMilli(Long.parseLong(w.getSubmissionTimeStamp())));
+                        Instant timestamp = Instant.now(); // default is now
+                        if (StringUtils.isNumeric(w.getSubmissionTimeStamp())) {
+                            // if timestamp in file is a numeric
+                            timestamp = Instant.ofEpochMilli(Long.parseLong(w.getSubmissionTimeStamp()));
+                        } else {
+                            // otherwise should be 2020-03-06T16:10:21Z
+                            try {
+                                timestamp = Instant.parse(w.getSubmissionTimeStamp());
+                            } catch (DateTimeParseException dtpe) {
+                                log.warn("Could not parse timestamp {} for submission {}, {}", w.getSubmissionTimeStamp(), submission.getId(), dtpe.toString());
+                            }
+                        }
+                        submission.setDateSubmitted(timestamp);
                         submission.setSubmitted(true);
                     }
 
