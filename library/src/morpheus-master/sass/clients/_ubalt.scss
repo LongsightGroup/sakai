@@ -7,6 +7,7 @@ $background-color-secondary: 		 		#0181b2 !default;
 $text-color:				 		#000000 !default;
 $topNav-text-color:					#FFF !default;
 $sites-nav-background: 					#0181b2;
+$top-header-background:					#0181b2;
 
 /* Logo location */
 $logo: 							'../images/ubalt.png';
@@ -16,9 +17,9 @@ $logo-width: 						209px;
 // Tab colors
 $tool-tab-text-color:			 		#000;
 $tool-tab-background-color:              		#FFF !default;
-$tool-tab-active-text-color:             		#FFF !default;
+$tool-tab-active-text-color:             		#0181b2 !default;
 $tool-tab-active-highlight-color:        		#0181b2 !default;
-$tool-tab-active-background-color:                      #0181b2 !default;
+$tool-tab-active-background-color:                      #FFF !default;
 
 // Breadcrumbs
 $breadcrumbs-color:			 		#000 !default;
@@ -42,7 +43,7 @@ $button-color-background-secondary-color:		#FFFFFF !default;
 $button-primary-background-color:        		#0181b2 !default;
 $button-primary-text-color: 		 		#FFFFFF !default;
 $button-primary-hover-text-color:                       #0181b2 !default;
-$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-background:	                #FFF !default;
 $button-primary-hover-border-color:                     $primary-color;
 
 // Link , Edit, Help Buttons

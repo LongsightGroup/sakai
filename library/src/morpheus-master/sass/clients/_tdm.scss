@@ -1,0 +1,38 @@
+$skin-name : "tdm" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                  				'../images/tdm.png';
+$logo-height:           				85px;
+$logo-width:            				163px;
+$topNav-text-color:					#000;
+$top-header-background:					#FFF;
+
+// Base Colors
+$primary-color:         				#016646;
+$background-color-secondary: 				#FFF;
+$top-header-background: 				$background-color-secondary;
+$banner-height:						85px;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			hsla(0, 0%, 92%, 1);
+$sites-nav-menu-item-color: 				hsla(0, 0%, 25%, 1);
+$sites-nav-menu-item-hover-background: 			hsla(0, 0%, 82%, 1);
+$sites-nav-menu-item-hover-color: 			rgba(0,0,0,1);
+	
+$sites-nav-menu-item-selected-background: 		#016646;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		none;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #01bf8b;
+
+
+// Button Hover
+$button-primary-hover-background:           		#01bf8b;
+$button-primary-hover-border-color:         		#01bf8b;

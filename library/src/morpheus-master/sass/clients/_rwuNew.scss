@@ -1,0 +1,35 @@
+$skin-name : "rwu" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                  				'../images/rwu.svg';
+$logo-height:           				50px;
+$logo-width:            				111px;
+
+// Base Colors
+$primary-color:         				#002f55;
+$background-color-secondary: 				#002f55;
+$top-header-background: 				$background-color-secondary;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			hsla(0, 0%, 92%, 1);
+$sites-nav-menu-item-color: 				hsla(0, 0%, 25%, 1);
+$sites-nav-menu-item-hover-background: 			hsla(0, 0%, 82%, 1);
+$sites-nav-menu-item-hover-color: 			rgba(0,0,0,1);
+	
+$sites-nav-menu-item-selected-background: 		#002f55;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		none;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #002f55;
+
+
+// Button Hover
+//$button-primary-hover-background:           		#4C9D2F;
+//$button-primary-hover-border-color:         		#4c3041;

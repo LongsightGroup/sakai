@@ -1,0 +1,136 @@
+$skin-name : "rwu" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		#002a4b !default;
+$body-background-color: 		 		#FFFFFF !default;
+$background-color-secondary: 		 		#00355f !default;
+$text-color:				 		#000000 !default;
+$topNav-text-color:					#FFF !default;
+$sites-nav-background: 					#00355f !default;
+$tool-border-color:			 		#00355f !default;
+$tool-border-color:			 		#00355f !default;
+$tool-menu-background-color:		 		#ebebeb !default;
+$all-sites-tab-active-background-color: 		#ebebeb !default;
+$tool-menu-width:					250px;
+
+/* Logo location */
+$logo: 							'../images/rwu.svg';
+$logo-height: 						50px;
+$logo-width: 						111px;
+
+// Tab colors
+$tool-tab-text-color:			 		#000;
+$tool-tab-background-color:              		#ebebeb !default;
+$tool-tab-active-text-color:             		#FFF !default;
+$tool-tab-active-highlight-color:        		#9EC3DE !default;
+$tool-tab-active-background-color:			#00355f !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 		#000 !default;
+$breadcrumbs-tool-color:		 		#000 !default;
+$breadcrumbs-hover-color:		 		#000 !default;
+
+// Links 
+$link-color: 				 		#0064cd !default;
+$link-active-color: 			 		#0064cd !default;
+$link-hover-color: 			 		#2A94FE !default;
+
+// Button colors 
+$button-text-color:	 		 		#444444 !default;
+$button-border-color: 			 		#CCCCCC !default;
+$button-background-color: 		 		#FFFFFF !default;
+$button-background-secondary-color: 	 		#FFFFFF !default;
+$button-color-border-color: 		 		#CCCCCC !default;
+$button-color-background-color: 	 		#FFFFFF !default;
+$button-color-background-secondary-color:		#FFFFFF !default;
+// Primary Button Color
+$button-primary-background-color:        		#00355f!default;
+$button-primary-text-color: 		 		#FFF !default;
+$button-primary-hover-text-color:                       #00355f !default;
+$button-primary-hover-background-color:                 #FFF !default;
+$button-primary-hover-border-color:                     #00355f !default;
+
+// Link , Edit, Help Buttons
+$button-secondary-text-color:            		#000 !default;
+$button-secondary-icon-color:            		#000 !default;
+
+
+// Sites Navigation 
+// Non Selected
+$sites-nav-menu-item-background:         		#00355f !default;
+$sites-nav-menu-item-color:              		#FFFFFF !default;
+$sites-nav-menu-item-icon-color:         		#FFFFFF !default;
+$sites-nav-menu-item-border-color:         		#FFF !default;
+$sites-nav-menu-item-hover-background:                  $sites-nav-menu-item-background;
+$sites-nav-menu-item-hover-color:                       $sites-nav-menu-item-color;
+$sites-nav-menu-item-hover-icon-color:                  $sites-nav-menu-item-icon-color;
+//Selected
+$sites-nav-menu-item-selected-background:		#FFFFFF !default;
+$sites-nav-menu-item-selected-color:			#00355f !default;
+$sites-nav-menu-item-selected-icon-color: 		#00355f !default;
+$sites-nav-menu-item-selected-hover-background: 	#FFF !default;
+$sites-nav-menu-item-selected-hover-color:      	#00355f !default;
+$sites-nav-menu-item-selected-hover-icon-color: 	#00355f !default;
+$sites-nav-menu-item-selected-border-color: 		#FFF !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:			#FAFAFA !default;
+$tool-menu-item-color:					#444 !default;
+$tool-menu-item-icon-color:				#444 !default;
+
+// non-selected hover
+$tool-menu-item-hover-text-color:               	#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               	#FFFFFF !default;
+$tool-menu-item-hover-background-color:         	#00355f !default;
+$tool-menu-item-hover-border-left:              	4px solid #000 !default;
+// selected
+$tool-menu-item-selected-text-color:            	#00355f !default;
+$tool-menu-item-selected-icon-color:            	#00355f !default;
+$tool-menu-item-selected-border-left:           	4px solid #00355f !default;
+// submenu
+$tool-sub-menu-hover-color:				#00355f !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      	#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:	#00355f !default;
+$tool-menu-item-selected-hover-border-left:             4px solid #00355f !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:      #00355f !default;
+$tool-menu-collapse-active-text-color:                  #00355f !default;
+$tool-sub-menu-hover-color:				#000; 
+
+// info message colors
+$info-background-color:   				#efefef;
+
+// Customizations
+
+.Mrphs-sakai-schedule table.calendar .borderGrayBackground a {
+    color: #000 !important;
+}
+
+.navIntraTool li span.current a {
+    background: #00355f;
+    color: #fff;
+}
+
+#selectSite .tab-bar .tab-btn.active, #selectQuickLink .tab-bar .tab-btn.active {
+    background: #00355f !important;
+}
+
+#favorite-settings-pane button[aria-checked="true"] :first-child, #favorite-settings-pane button[aria-checked="false"] :last-child {
+    background-color: #00355f !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #0064cd !important;
+    }
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+}
+
+.nav.nav-tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .nav.nav-tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .nav.nav-tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a, .sakai_tabs>li.active>a, .Mrphs-sakai-profile2 .tab-row ul>li.active>a, .sakai_tabs>li.selected>a, .Mrphs-sakai-profile2 .tab-row ul>li.selected>a, .sakai_tabs>li.activeTab>a, .Mrphs-sakai-profile2 .tab-row ul>li.activeTab>a {
+    color: #FFF !important;
+}
