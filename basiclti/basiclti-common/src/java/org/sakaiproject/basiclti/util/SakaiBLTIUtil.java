@@ -415,6 +415,9 @@ public class SakaiBLTIUtil {
 			setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_SOURCEDID,user.getEid());
 			setProperty(lti2subst,LTI2Vars.USER_USERNAME,user.getEid());
 			setProperty(lti2subst,LTI2Vars.PERSON_SOURCEDID,user.getEid());
+			// LUC CUSTOM
+			log.debug("LUC properties {}", user.getProperties());
+			setProperty(ltiProps, "custom_lid", user.getProperties().getProperty("employeeNumber"));
 
 			if ( releasename == 1 ) {
 				setProperty(ltiProps,BasicLTIConstants.LIS_PERSON_NAME_GIVEN,user.getFirstName());
@@ -576,6 +579,10 @@ public class SakaiBLTIUtil {
 				String imageUrl = getOurServerUrl() + "/direct/profile/" + user.getId() + "/image";
 				setProperty(props,BasicLTIConstants.USER_IMAGE,imageUrl);
 			}
+
+			// LUC CUSTOM
+			log.debug("LUC properties {}", user.getProperties());
+			setProperty(props, "custom_lid", user.getProperties().getProperty("employeeNumber"));
 
 			if ( "on".equals(releasename) ) {
 				setProperty(props,BasicLTIConstants.LIS_PERSON_NAME_GIVEN,user.getFirstName());
