@@ -2250,14 +2250,14 @@ public class DeliveryBean
       setSecureDeliveryHTMLFragment( "" );
       setBlockDelivery( false );
       SecureDeliveryServiceAPI secureDelivery = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
-      if ( "takeAssessment".equals(results) && secureDelivery.isSecureDeliveryAvaliable() ) {
+      if ( "takeAssessment".equals(results) && secureDelivery.isSecureDeliveryAvaliable(publishedAssessment.getPublishedAssessmentId()) ) {
    
     	  String moduleId = publishedAssessment.getAssessmentMetaDataByLabel( SecureDeliveryServiceAPI.MODULE_KEY );
     	  if ( moduleId != null && ! SecureDeliveryServiceAPI.NONE_ID.equals( moduleId ) ) {
     		  HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     		  PhaseStatus status = secureDelivery.validatePhase(moduleId, Phase.ASSESSMENT_START, publishedAssessment, request );
-    		  setSecureDeliveryHTMLFragment( 
-    		  			secureDelivery.getHTMLFragment(moduleId, publishedAssessment, request, Phase.ASSESSMENT_START, status, new ResourceLoader().getLocale() ) );
+    		  			String htmlFrag = secureDelivery.getHTMLFragment(moduleId, publishedAssessment, request, Phase.ASSESSMENT_START, status, new ResourceLoader().getLocale() );
+    		  setSecureDeliveryHTMLFragment(htmlFrag);
     		  setBlockDelivery( PhaseStatus.FAILURE == status );
     		  if ( PhaseStatus.SUCCESS == status ) {
     			  results = "takeAssessment";
@@ -2305,9 +2305,9 @@ public class DeliveryBean
         return "takeAssessment";
       }
       return results;
-    } catch (Exception e)
-    {
-    	log.error("accessError{}", e.getMessage());
+    } catch (Exception e) {
+    	log.error("accessError", e);
+
       EventLogService eventService = new EventLogService();
 		 EventLogFacade eventLogFacade = new EventLogFacade();
 		 EventLogData eventLogData = null;
@@ -3412,7 +3412,26 @@ public class DeliveryBean
     if (isTimeRunning() && getTimeExpired() && !turnIntoTimedAssessment){ 
       return "timeExpired";
     }
-    
+
+    // TODO: special case for Proctorio
+    if (isViaUrlLogin) {
+        SecureDeliveryServiceAPI secureDelivery = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI();
+        if ( secureDelivery.isSecureDeliveryAvaliable(publishedAssessment.getPublishedAssessmentId()) ) {
+     
+      	  String moduleId = publishedAssessment.getAssessmentMetaDataByLabel( SecureDeliveryServiceAPI.MODULE_KEY );
+      	  if ( moduleId != null && ! SecureDeliveryServiceAPI.NONE_ID.equals( moduleId ) ) {
+      		  HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+      		  PhaseStatus status = secureDelivery.validatePhase(moduleId, Phase.ASSESSMENT_START, publishedAssessment, request );
+      		  setBlockDelivery( PhaseStatus.FAILURE == status );
+      		  if ( PhaseStatus.FAILURE == status ) {
+      			  setSecureDeliveryHTMLFragment(secureDelivery.getHTMLFragment(moduleId, publishedAssessment, request, Phase.ASSESSMENT_START, status, new ResourceLoader().getLocale()));
+      			  return "secureDeliveryError";
+                }
+      	  }    	  
+        }
+    	
+    }
+
     return "safeToProceed";
   }
   

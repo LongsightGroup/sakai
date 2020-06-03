@@ -239,6 +239,9 @@ public class LoginServlet
         else if ("accessDenied".equals(nextAction)) {
         	path = "/jsf/delivery/accessDenied.faces";
         }
+        else if ("secureDeliveryError".equals(nextAction)) {
+        	path = "/jsf/delivery/secureDeliveryError.faces";
+        }
         else {
         	path = "/jsf/delivery/assessmentNotAvailable.faces";
         }
