@@ -1746,6 +1746,72 @@
     </property>
 </bean>
 
+<!-- Full (w/enrollment) Reconciliation Job for CM data -->
+<bean id="UDCMSyncJob2209"
+    class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+    init-method="init" destroy-method="destroy">
+    <property name="cmService">
+        <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+    </property>
+    <property name="cmAdmin">
+        <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+    </property>
+    <property name="classPathToXml">
+        <value>/sakaimisc/peoplesoft_xml/full-2209.xml</value>
+    </property>
+    <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+    <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+</bean>
+
+<!-- this is the helper that will register the above bean with the job scheduler -->
+<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2209"
+    class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+    scope="singleton" init-method="init">
+    <property name="beanId">
+        <value>UDCMSyncJob2209</value>
+    </property>
+    <property name="jobName">
+        <value>UD Course Management Full Sync Job Fall 2020</value>
+    </property>
+    <property name="schedulerManager">
+        <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+    </property>
+</bean>
+
+<!-- Full (w/enrollment) Reconciliation Job for CM data -->
+<bean id="UDCMSyncJob2208"
+    class="org.sakaiproject.coursemanagement.impl.job.UDCMSyncJob"
+    init-method="init" destroy-method="destroy">
+    <property name="cmService">
+        <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementService"/>
+    </property>
+    <property name="cmAdmin">
+        <ref bean="org.sakaiproject.coursemanagement.api.CourseManagementAdministration"/>
+    </property>
+    <property name="classPathToXml">
+        <value>/sakaimisc/peoplesoft_xml/full-2208.xml</value>
+    </property>
+    <property name="emailService" ref="org.sakaiproject.email.api.EmailService" />
+    <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
+    <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
+</bean>
+
+<!-- this is the helper that will register the above bean with the job scheduler -->
+<bean id="org.sakaiproject.api.app.scheduler.JobBeanWrapper.UDCMSyncJob2208"
+    class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
+    scope="singleton" init-method="init">
+    <property name="beanId">
+        <value>UDCMSyncJob2208</value>
+    </property>
+    <property name="jobName">
+        <value>UD Course Management Full Sync Job Fall 2020 Online</value>
+    </property>
+    <property name="schedulerManager">
+        <ref bean="org.sakaiproject.api.app.scheduler.SchedulerManager" />
+    </property>
+</bean>
+
 
 
 
