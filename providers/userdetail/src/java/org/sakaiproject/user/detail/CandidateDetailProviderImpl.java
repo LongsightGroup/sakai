@@ -41,7 +41,7 @@ public class CandidateDetailProviderImpl implements CandidateDetailProvider {
 	
 	private static final String USER_PROP_CANDIDATE_ID = "candidateID";
 	private static final String USER_PROP_ADDITIONAL_INFO = "additionalInfo";
-	private static final String USER_PROP_STUDENT_NUMBER = "studentNumber";
+	private static final String USER_PROP_STUDENT_NUMBER = "ST_NUM";
 	private static final String USER_PERM_STUDENT_NUMBER_VISIBLE = "user.studentnumber.visible";
 	
 	private final static String PROP_USE_INSTITUTIONAL_ANONYMOUS_ID = "useInstitutionalAnonymousID";
