@@ -81,6 +81,11 @@
     	<servlet-class>org.sakaiproject.login.tool.ContainerLogout</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>disco</servlet-name>
+        <jsp-file>/discovery.jsp</jsp-file>
+    </servlet>
+
 	<!-- map the container login, and then cause it to trigger container authentication -->
     <servlet-mapping>
         <servlet-name>sakai.login.container</servlet-name>
@@ -91,6 +96,11 @@
     <servlet-mapping>
         <servlet-name>sakai.logout.container</servlet-name>
         <url-pattern>/container/logout</url-pattern>
+    </servlet-mapping>
+
+     <servlet-mapping>
+        <servlet-name>disco</servlet-name>
+        <url-pattern>/disco/*</url-pattern>
     </servlet-mapping>
 
      <servlet-mapping>
