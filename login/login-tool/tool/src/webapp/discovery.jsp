@@ -23,9 +23,9 @@
         </a>
       </div>
 
-      <div class="row mt-4 p-2">
-        <a href="/sakai-login-tool/container/saml/login?idp=http://adfs.johnsonu.edu/adfs/services/trust">
-          <img src="https://johnsonu.edu/images/Home/JU-System-w-EX.aspx?width=400&height=59&ext=.png" alt="Johnson University" style="height: 60px" />
+      <div class="row mt-4 p-2" style="background-color: black">
+        <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/ea0ad8b2-8750-4f9a-a9bd-290c49ba022f/">
+          <img src="https://johnsonu.edu/wp-content/themes/ju2019/images/logo-johnson-university-white.png" alt="Johnson University" style="height: 60px" />
         </a>
       </div>
       <div class="row mt-4 p-2" style="background-color: black">
