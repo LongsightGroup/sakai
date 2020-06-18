@@ -274,7 +274,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         //ckconfig.extraPlugins+="atd-ckeditor,";
         //ckconfig.contentsCss = [basePath+'atd-ckeditor/atd.css'];
 
-        ckconfig.extraPlugins+="${ckeditor-extra-plugins}${ckeditor-a11y-extra-plugins}";
+        ckconfig.extraPlugins+="${ckeditor-extra-plugins},balloonpanel,a11ychecker"
 
         // Load FontAwesome CSS in case a user wants to manually add FA markup
         ckconfig.contentsCss = [webJars+'fontawesome/4.7.0/css/font-awesome.min.css'];
