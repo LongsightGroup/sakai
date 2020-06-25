@@ -92,6 +92,8 @@ import org.tsugi.lti13.objects.LTI11Transition;
 import org.tsugi.basiclti.ContentItem;
 
 import io.jsonwebtoken.Jwts;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import net.oauth.OAuth;
 
@@ -451,6 +453,23 @@ public class SakaiBLTIUtil {
 					}
 					setProperty(props, "ext_sakai_academic_session", academicSessionId);
 				}
+                                
+                //Ares integration.
+                //Adding custom_course_code parameter
+                String custom_regex = ServerConfigurationService.getString("brock_custom_lti_regex", "(\\d{4}-\\w{2}-\\w{1}\\d{2}:\\w{4}-\\d{1}\\w{1}\\d{2}:\\w{1}\\d{2})");
+                if (custom_regex.length()>0){
+                    Pattern pattern = Pattern.compile(custom_regex);
+                    if (courseRoster != null){
+                        Matcher matcher = pattern.matcher(courseRoster); 
+                        if (matcher.find()){ 
+                            String custom_lti_regex = matcher.group(1);
+                            setProperty(props,"custom_course_code",custom_lti_regex);
+                        } else 
+                            setProperty(props,"custom_course_code",courseRoster);
+                    }else
+                        setProperty(props,"custom_course_code",site.getId());   
+                }     
+                //end Ares integration
 			}
 
 			// Fix up the return Url
