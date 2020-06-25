@@ -480,6 +480,10 @@ public class SakaiBLTIUtil {
 			if (user != null) {
 				setProperty(ltiProps, BasicLTIConstants.USER_ID, user.getId());
 				setProperty(ltiProps, BasicLTIConstants.LIS_PERSON_SOURCEDID, user.getEid());
+				// DUKE CUSTOM
+				log.debug("addUserInfo properties {}: {} {}", user.getEid(), user.getProperties().getProperty("studentNumber"), user.getProperties().getProperty("duDukeUID"));
+				setProperty(ltiProps, "custom_duke_id", user.getProperties().getProperty("studentNumber"));
+				setProperty(ltiProps, "custom_duke_uid", user.getProperties().getProperty("duDukeUID"));
 
 				if (releasename == 1) {
 					setProperty(ltiProps, BasicLTIConstants.LIS_PERSON_NAME_GIVEN, user.getFirstName());
@@ -642,6 +646,11 @@ public class SakaiBLTIUtil {
 				setProperty(props, "ext_sakai_privacy", isViewable ? "visible" : "hidden");
 
 				setProperty(props, BasicLTIConstants.USER_ID, user.getId());
+
+				// DUKE CUSTOM
+				log.debug("addPlacement properties {}: {} {}", user.getEid(), user.getProperties().getProperty("studentNumber"), user.getProperties().getProperty("duDukeUID"));
+				setProperty(props, "custom_duke_id", user.getProperties().getProperty("studentNumber"));
+				setProperty(props, "custom_duke_uid", user.getProperties().getProperty("duDukeUID"));
 
 				if (ServerConfigurationService.getBoolean(BASICLTI_CONSUMER_USERIMAGE_ENABLED, true)) {
 					String imageUrl = getOurServerUrl() + "/direct/profile/" + user.getId() + "/image";
