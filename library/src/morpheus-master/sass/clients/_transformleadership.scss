@@ -1,0 +1,125 @@
+$skin-name : "transformleadership" !default; // This is used for bootstrap font behaviour.
+
+// Main Colors
+$primary-color:    			 		  	#3d91ba !default;
+$body-background-color: 		 			#FFFFFF !default;
+$background-color-secondary: 		 			#FFF  !default;
+$text-color:				 		    	#000000 !default;
+$topNav-text-color:					    	#000 !default;
+$sites-nav-background: 						#3d91ba;
+$skin-with-icons: 						false !important;
+$all-sites-tab-active-background-color:				$body-background-color;
+$banner-height:							68px;
+
+/* Logo location */
+$logo: 								'../images/tli.png';
+$logo-height: 							65px;
+$logo-width: 							129px;
+
+// Tab colors
+$tool-tab-text-color:			 			#999 !default;
+$tool-tab-background-color:              			#fafafa !default;
+$tool-tab-active-text-color:             			#000 !default;
+$tool-tab-active-highlight-color:        			$primary-color !default;
+$tool-tab-active-background-color:				$body-background-color !default;
+
+// Breadcrumbs
+$breadcrumbs-color:			 			#000 !default;
+$breadcrumbs-tool-color:		 			#000 !default;
+$breadcrumbs-hover-color:		 			#000 !default;
+
+// Links
+$link-color: 				 			#3d91ba !default;
+$link-active-color: 			 			#3d91ba !default;
+$link-hover-color: 			 			#3d91ba !default;
+
+// Button colors
+$button-text-color:	 		 			#FFF !default;
+$button-border-color: 			 			#3d91ba !default;
+$button-background-color: 		 			#3d91ba !default;
+$button-background-secondary-color: 	 			#3d91ba !default;
+
+$button-color-text-color: 		 			#FFF !default;
+$button-color-border-color: 		 			#FFF !default;
+$button-color-background-color: 	 			#3d91ba !default;
+$button-color-background-secondary-color:			#3d91ba !default;
+// Primary Button Color
+$button-primary-background:	        			#3d91ba !default;
+$button-primary-text-color: 		 			#FFF !default;
+$button-primary-hover-text-color:                   		$button-color-text-color;
+$button-primary-hover-background-color:             		$button-primary-background !default;
+$button-primary-hover-border-color:                 		$primary-color;
+// Secondary Buttons
+$button-secondary-icon-color:                                   $button-primary-text-color;
+$button-secondary-text-color:                                   $button-primary-text-color;
+$button-secondary-background-color:                             $button-primary-background;
+
+// Link , Edit, Help Buttons
+$button-secondary-background-color:            			#ebebeb !default;
+$button-secondary-text-color:            			#3d91ba !default;
+$button-secondary-icon-color:            			#3d91ba !default;
+
+
+// Sites Navigation
+// Non Selected
+$sites-nav-menu-item-background:         			#3d91ba !default;
+$sites-nav-menu-item-border-color:              		none !default;
+$sites-nav-menu-item-color:              			#FFF !default;
+$sites-nav-menu-item-icon-color:         			#FFF !default;
+
+$sites-nav-menu-item-hover-background:         			#3d91ba !default;
+$sites-nav-menu-item-hover-color:              			#FFF !default;
+$sites-nav-menu-item-hover-icon-color:         			#FFF !default;
+//Selected
+$sites-nav-menu-item-selected-background:			#FFF !default;
+$sites-nav-menu-item-selected-color:				#3d91ba !default;
+$sites-nav-menu-item-selected-icon-color:			#3d91ba !default;
+$sites-nav-menu-item-selected-border-color: 			#3d91ba !default;
+
+$sites-nav-menu-item-selected-hover-background:			#FFF !default;
+$sites-nav-menu-item-selected-hover-color:			#3d91ba !default;
+$sites-nav-menu-item-selected-hover-icon-color:			#3d91ba !default;
+
+// TOOL MENU COLORS
+// non-selected
+$tool-menu-item-background-color:                          	#FAFAFA;
+$tool-menu-background-color:		 			$tool-menu-item-background-color;
+$tool-menu-color: 			 			#999 !default;
+// non-selected hover
+$tool-menu-item-hover-text-color:               		#FFFFFF !default;
+$tool-menu-item-hover-icon-color:               		#FFFFFF !default;
+$tool-menu-item-hover-background-color:         		#999 !default;
+$tool-menu-item-hover-border-left:              		4px solid #FFFFFF !default;
+// selected
+$tool-menu-item-selected-text-color:            		#3d91ba !default;
+$tool-menu-item-selected-icon-color:            		#3d91ba !default;
+$tool-menu-item-selected-border-left:           		4px solid #3d91ba !default;
+$tool-menu-item-selected-background-color:          		#FFFFFF !default;
+
+// submenu
+$tool-sub-menu-hover-color:					#FFFFFF !default;
+// selected hover
+$tool-menu-item-selected-hover-text-color:      		#FFFFFF !default;
+$tool-menu-item-selected-hover-icon-color:      		#FFFFFF !default;
+$tool-menu-item-selected-hover-background-color:		#3d91ba !default;
+$tool-menu-item-selected-hover-border-left:         		4px solid #FFFFFF !default;
+// collapsed menu
+$tool-menu-collapse-active-hover-background-color:  		#ebebeb !default;
+$tool-menu-collapse-active-text-color:             		#999 !default;
+$tool-sub-menu-hover-color:					#999;
+
+// info message colors
+$info-background-color:   					$body-background-color;
+$info-color:                					$primary-color  !default;
+
+$error-background-color:    					#F2DEDE !default;
+$ok-color:                  					#DFF0D8 !default;
+$warn-background-color:     					#FCF8E3 !default;
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}
+
+#topnav_container {
+    min-height: 100% !important;
+}
