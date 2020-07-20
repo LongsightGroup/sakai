@@ -526,7 +526,6 @@ public class SakaiBLTIUtil {
 		}
 
 		setProperty(props, BasicLTIConstants.LAUNCH_PRESENTATION_RETURN_URL, returnUrl);
-
 	}
 
 	public static void addUserInfo(Properties ltiProps, Properties lti13subst, Map<String, Object> tool) {
@@ -539,6 +538,9 @@ public class SakaiBLTIUtil {
 			setProperty(ltiProps, BasicLTIConstants.LIS_PERSON_SOURCEDID, user.getEid());
 			setProperty(lti13subst, LTICustomVars.USER_USERNAME, user.getEid());
 			setProperty(lti13subst, LTICustomVars.PERSON_SOURCEDID, user.getEid());
+                        // LUC CUSTOM
+                        log.debug("LUC properties {}", user.getProperties());
+                        setProperty(ltiProps, "custom_lid", user.getProperties().getProperty("employeeNumber"));
 
 			UserTimeService userTimeService = ComponentManager.get(UserTimeService.class);
 			TimeZone tz = userTimeService.getLocalTimeZone(user.getId());
@@ -734,6 +736,9 @@ public class SakaiBLTIUtil {
 			setProperty(props, "ext_sakai_privacy", isViewable ? "visible" : "hidden");
 
 			setProperty(props, BasicLTIConstants.USER_ID, user.getId());
+                        // LUC CUSTOM
+                        log.debug("LUC properties {}", user.getProperties());
+                        setProperty(props, "custom_lid", user.getProperties().getProperty("employeeNumber"));
 
 			if (ServerConfigurationService.getBoolean(BASICLTI_CONSUMER_USERIMAGE_ENABLED, true)) {
 				String imageUrl = getOurServerUrl() + "/direct/profile/" + user.getId() + "/image";
