@@ -584,6 +584,9 @@ public class SakaiLTIUtil {
 			setProperty(ltiProps, LTIConstants.LIS_PERSON_SOURCEDID, user.getEid());
 			setProperty(lti13subst, LTICustomVars.USER_USERNAME, user.getEid());
 			setProperty(lti13subst, LTICustomVars.PERSON_SOURCEDID, user.getEid());
+                        // LUC CUSTOM
+                        log.debug("LUC properties {}", user.getProperties());
+                        setProperty(ltiProps, "custom_lid", user.getProperties().getProperty("employeeNumber"));
 
 			ResourceProperties userProperties = user.getProperties();
 			userProperties.getPropertyNames().forEachRemaining(name ->
@@ -907,6 +910,9 @@ public class SakaiLTIUtil {
 			setProperty(props, "ext_sakai_privacy", isViewable ? "visible" : "hidden");
 
 			setProperty(props, LTIConstants.USER_ID, user.getId());
+			// LUC CUSTOM
+			log.debug("LUC properties {}", user.getProperties());
+			setProperty(props, "custom_lid", user.getProperties().getProperty("employeeNumber"));
 
 			if (ServerConfigurationService.getBoolean(LTI_CONSUMER_USERIMAGE_ENABLED, true)) {
 				String imageUrl = getOurServerUrl() + "/direct/profile/" + user.getId() + "/image";
