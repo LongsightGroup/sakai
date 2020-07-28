@@ -1,0 +1,46 @@
+$skin-name : "luc" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/luc.svg';
+$logo-height:                                           50px;
+$logo-width:                                            150px;
+
+// Base Colors
+$primary-color:         				#981e4d;
+$top-header-background: 				#981e4d;
+$sites-nav-background: 					#FFF;
+$topNav-text-color:					#FFF;
+$become-user-primary: 					#febf1d;
+
+$tool-tab-active-highlight-color:			#981e4d;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#E5E5E5;
+$sites-nav-menu-item-color: 				#000;
+//$sites-nav-menu-item-hover-background: 			#000;
+//$sites-nav-menu-item-hover-color: 			rgba(0,0,0,1);
+	
+$sites-nav-menu-item-selected-background: 		#981e4d;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #981e4d;
+
+
+// Button Hover
+$button-primary-hover-background:           		#febf1d;
+$button-primary-hover-border-color:         		#981e4d;
+$button-primary-hover-text-color:      			#981e4d;
+
+// Links
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;

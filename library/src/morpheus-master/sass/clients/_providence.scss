@@ -1,0 +1,54 @@
+$skin-name : "trysakai" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo: 							'../images/providence.svg';
+$logo-height: 						50px;
+$logo-width: 						175px;
+
+// Base Colors
+$primary-color:         				#000;
+$top-header-background: 				#cacaca;
+$sites-nav-background: 					#FFF;
+$topNav-text-color:					#000;
+$become-user-primary: 					#f8b954;
+
+$tool-tab-active-highlight-color:			#f8b954;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#CACACA;
+$sites-nav-menu-item-color: 				#000;
+//$sites-nav-menu-item-hover-background: 			#000;
+//$sites-nav-menu-item-hover-color: 			rgba(0,0,0,1);
+	
+$sites-nav-menu-item-selected-background: 		#f8b954;
+$sites-nav-menu-item-selected-color:        		#000;
+$sites-nav-menu-item-selected-border-color: 		#000;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #000;
+$tool-menu-item-selected-icon-color:                    #000;
+$tool-menu-item-selected-background-color:              #f8b954;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#000;
+$button-primary-hover-text-color:      			#000;
+
+
+//CUSTOM CSS OVERRIDES
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border-top: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+    border-right: 1px solid #FFF;
+    border-left: 1px solid #FFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #000;
+}

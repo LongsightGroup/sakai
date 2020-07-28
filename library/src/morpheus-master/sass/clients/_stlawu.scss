@@ -1,0 +1,50 @@
+$skin-name : "stlawu" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/stlawu.svg';
+$logo-height:                                           50px;
+$logo-width:                                            203px;
+
+// Base Colors
+$primary-color:         				#AF1E2D;
+$top-header-background: 				#AF1E2D;
+$sites-nav-background:					#FAFAFA;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#FFF;
+$sites-nav-menu-item-color: 				#4c4c4c;
+$sites-nav-menu-item-hover-background: 			#ececec;
+$sites-nav-menu-item-hover-color: 			#4c4c4c;
+	
+$sites-nav-menu-item-selected-background: 		#AF1E2D;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		none;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #AF1E2D;
+
+
+// Button Hover
+$button-primary-hover-background:           		#4C9D2F;
+$button-primary-hover-border-color:         		#4c3041;
+
+// TAB colors
+$tool-tab-background-color:                             #FAFAFA; 
+$tool-tab-border-color:                                 #E5E5E5 !default;
+
+// Link colors
+$link-color: 						#15597e;
+$link-active-color: 					#15597e;
+$link-hover-color: 					#986598;
+
+
+// CUSTOM CSS OVERRIDES
+.Mrphs-sakai-lessonbuildertool .portletBody .column {
+    border: 1px solid #000 !important;
+}

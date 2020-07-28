@@ -1,0 +1,51 @@
+$skin-name : "uthink" !default; // This is used for bootstrap font behaviour.
+
+$topNav-text-color:					#FFF;
+$topNav-text-color:					#FFF;
+$sites-nav-background:					#d3453a;
+
+/* Logo location */
+$logo:                                                  '../images/uthink.svg';
+$logo-height:                                           50px;
+$logo-width:                                            135px;
+
+// Base Colors
+$primary-color:         				#d3453a;
+$top-header-background: 				#333;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#d3453a;
+$sites-nav-submenu-item-background: 			#FAFAFA;
+$sites-nav-menu-item-color: 				#FFF;
+
+$sites-nav-menu-item-hover-background:      		#d3453a;
+$sites-nav-menu-item-hover-color:           		#FFF;
+$sites-nav-menu-item-hover-border-color:    		#d3453a;
+	
+$sites-nav-menu-item-selected-background: 		#333;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #d3453a;
+$tool-menu-item-selected-icon-color:                    #d3453a;
+$tool-menu-item-selected-background-color:              #FFF;
+
+$tool-menu-item-hover-text-color:                       #FFF;
+$tool-menu-item-hover-icon-color:                       #FFF;
+$tool-menu-item-hover-background-color:                 #d3453a;
+
+
+// Buttons
+//$button-text-color:					#fff;
+//$button-background: 					$primary-color;
+//$button-border-color:					$primary-color;
+
+// Button Hover
+$button-primary-hover-text-color:			$primary-color;
+$button-primary-hover-background:			#FFF;
+$button-primary-hover-border-color:			$primary-color;

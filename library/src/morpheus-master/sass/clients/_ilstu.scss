@@ -15,6 +15,7 @@ $top-header-background: 				#af0000;
 
 // Sites Navigation
 $sites-nav-menu-item-background: 			#587893;
+$sites-nav-submenu-item-background: 			#FAFAFA;
 $sites-nav-menu-item-color: 				#FFF;
 $sites-nav-menu-item-hover-background: 			#587893;
 $sites-nav-menu-item-hover-color: 			#FFF;
@@ -67,18 +68,10 @@ $button-primary-hover-border-color:			$primary-color;
   #Mrphs-footer--nav__project--sakai {
     visibility: hidden;
   }
-//  ul li {
-//    list-style-type: none;
-//  }
   a {
     color: #ddd;
-//    text-decoration: none;
   }
 
-  /* Remove server time per ISU */
-  .Mrphs-footer--details__server-time {
-    display: none;
-  }
   #isu_bold{
     font-weight: bold;
     padding: 10px;
@@ -110,4 +103,30 @@ $button-primary-hover-border-color:			$primary-color;
 
 .Mrphs-footer .Mrphs-footer--details .popover-title {
     background-color: #535353;
+}
+
+.Mrphs-footer .Mrphs-footer--details .popover-content {
+    text-align: center;
+}
+
+.Mrphs-footer .Mrphs-footer--details .popover-title {
+    text-align: center;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite {
+        margin-top: 30px;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #af0000 !important;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .Mrphs-skipNav__menu a:focus {
+        top: 36px !important;
+    }
 }

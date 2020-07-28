@@ -1,0 +1,24 @@
+$skin-name : "johnson" !default; // This is used for bootstrap font behaviour.
+$primary-color: #000036;
+$top-header-background: #000036;
+
+/* Logo location */
+$logo: 								'../images/johnson.png';
+$logo-height: 							50px;
+$logo-width: 							149px;
+
+$sites-nav-menu-item-selected-background:			#000036;
+$sites-nav-menu-item-selected-color:			#FFF;
+
+$tool-menu-item-selected-background-color:			#000036;
+$tool-menu-item-selected-icon-color:				#FFF;
+$tool-menu-item-selected-text-color:				#FFF;
+
+$tool-menu-item-selected-hover-background-color:		#ECECEC;
+$tool-menu-item-selected-hover-icon-color:			#191919;
+$tool-menu-item-selected-hover-text-color:			#191919;
+
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}

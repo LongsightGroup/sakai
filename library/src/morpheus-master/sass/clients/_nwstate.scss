@@ -1,0 +1,55 @@
+$skin-name : "nwstate" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/nwscc.svg';
+$logo-height:                                           50px;
+$logo-width:                                            170px;
+
+// Base Colors
+$primary-color:         				#033a12;
+$top-header-background: 				#033a12;
+$sites-nav-background:					#d7e4c7;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#d7e4c7;
+$sites-nav-menu-item-color: 				#000;
+$sites-nav-menu-item-hover-background: 			#E6EDDC;
+//$sites-nav-menu-item-hover-color: 			rgba(0,0,0,1);
+	
+$sites-nav-menu-item-selected-background: 		#033a12;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		transparent;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #033a12;
+$tool-menu-item-selected-icon-color:                    #033a12;
+$tool-menu-item-selected-background-color:              #E5E5E5;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-text-color:	           	#033a12;
+$button-primary-hover-border-color:         		#033a12;
+
+// Skin Customizations
+#loginLink1 {
+    background-color: #ededed;
+    padding: 8px;
+    color: #000;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+a#loginLink2:hover {
+    color: #ededed;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #E5E5E5 !important;
+    border-color: #033a12 !important;
+}

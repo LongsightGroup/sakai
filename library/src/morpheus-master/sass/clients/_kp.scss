@@ -1,0 +1,47 @@
+$skin-name : "kp" !default; // This is used for bootstrap font behaviour.
+
+$topNav-text-color:					#FFF;
+$banner-height:                                         107px;
+$topNav-text-color:					#000;
+
+/* Logo location */
+$logo:                                                  '../images/kp.svg';
+$logo-height:                                           107px;
+$logo-width:                                            369px;
+
+// Base Colors
+$primary-color:         				#00625c;
+$top-header-background: 				#FFF;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#00625c;
+$sites-nav-submenu-item-background: 			#FAFAFA;
+$sites-nav-menu-item-color: 				#FFF;
+
+$sites-nav-menu-item-hover-background:      		#00625c;
+$sites-nav-menu-item-hover-color:           		#FFF;
+$sites-nav-menu-item-hover-border-color:    		#00625c;
+	
+$sites-nav-menu-item-selected-background: 		#FFF;
+$sites-nav-menu-item-selected-color:        		#00625c;
+$sites-nav-menu-item-selected-border-color: 		#00625c;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #00625c;
+
+
+// Buttons
+//$button-text-color:					#fff;
+//$button-background: 					$primary-color;
+//$button-border-color:					$primary-color;
+
+// Button Hover
+$button-primary-hover-text-color:			$primary-color;
+$button-primary-hover-background:			#FFF;
+$button-primary-hover-border-color:			$primary-color;

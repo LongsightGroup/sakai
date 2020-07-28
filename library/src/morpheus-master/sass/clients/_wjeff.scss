@@ -2,6 +2,9 @@ $skin-name : "wjeff" !default; // This is used for bootstrap font behaviour.
 
 $banner-height:						63px;
 $topNav-text-color:					#000;
+$text-color:						#000;
+$tool-nav-link-color: 					#000;
+$instruction-color:         				#000;
 
 /* Logo location */
 $logo:                                                  '../images/wjeff.svg';
@@ -23,10 +26,16 @@ $sites-nav-menu-item-selected-background: 		#da3a37;
 $sites-nav-menu-item-selected-color:        		#FFF;
 $sites-nav-menu-item-selected-border-color: 		none;
 
+$link-color: 						#000;
+$link-active-color: 					#424242;
+$link-hover-color: 					$primary-color;
+
 
 // Tool Menu
 $tool-menu-item-separator-color: 			#fff;
 $tool-menu-item-background-color: 			#fff;
+
+$tool-menu-color:					#000;
 
 $tool-menu-item-selected-text-color:                    #FFF;
 $tool-menu-item-selected-icon-color:                    #FFF;
@@ -42,3 +51,8 @@ $tool-menu-item-selected-background-color:              #da3a37;
 $button-primary-hover-text-color:			$primary-color;
 $button-primary-hover-background:			#FFF;
 $button-primary-hover-border-color:			$primary-color;
+
+// Change chat tool text color
+.Mrphs-sakai-chat .panel-chat .panel-body-chat .chatListWrapperCont .chatListWrapper .chatListMonitor .chatList li .chatMessage {
+    color: #424242 !important;
+}

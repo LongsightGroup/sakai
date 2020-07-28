@@ -1,0 +1,43 @@
+$skin-name : "ilstu" !default; // This is used for bootstrap font behaviour.
+
+$topNav-text-color:					#FFF;
+
+/* Logo location */
+$logo:                                                  '../images/antioch.svg';
+$logo-height:                                           45px;
+$logo-width:                                            166px;
+
+// Base Colors
+$primary-color:         				#003c69;
+$background-color-secondary: 				#FFF;
+$top-header-background: 				#003c69;
+$sites-nav-background:					#FAFAFA;
+// Sites Navigation
+$sites-nav-menu-item-background: 			#FFF;
+//$sites-nav-menu-item-color: 				#FFF;
+$sites-nav-menu-item-hover-background: 			#ECECEC;
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#003c69;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#003c69;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #003c69;
+$tool-menu-item-selected-icon-color:                    #003c69;
+$tool-menu-item-selected-background-color:              #FFF;
+
+
+// Buttons
+//$button-text-color:					#fff;
+//$button-background: 					$primary-color;
+//$button-border-color:					$primary-color;
+
+// Button Hover
+$button-primary-hover-text-color:			$primary-color;
+$button-primary-hover-background:			#FFF;
+$button-primary-hover-border-color:			$primary-color;
