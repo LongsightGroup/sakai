@@ -1,0 +1,46 @@
+$skin-name : "clemente" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/clemente.png';
+$logo-height:                                           54px;
+$logo-width:                                            220px;
+
+// Base Colors
+$primary-color:         				#BF1726;
+$top-header-background: 				#BF1726;
+$sites-nav-background: 					#FFF;
+$topNav-text-color:					#FFF;
+$banner-height:						70px;
+
+$tool-tab-active-highlight-color:			#BF1726;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#292929;
+$sites-nav-menu-item-color: 				#FFF;
+$sites-nav-menu-item-hover-background: 			rgba(0,0,0,1);
+$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#BF1726;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #BF1726;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#BF1726;
+$button-primary-hover-text-color:      			#BF1726;
+
+// Links
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;

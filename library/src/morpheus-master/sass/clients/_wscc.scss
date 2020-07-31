@@ -1,0 +1,51 @@
+$skin-name : "wscc" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/wscc.svg';
+$logo-height:                                           52px;
+$logo-width:                                            216px;
+
+// Base Colors
+$primary-color:         				#3F6622;
+$top-header-background: 				#3F6622;
+$sites-nav-background: 					#b5c8aa;
+$topNav-text-color:					#FFF;
+$banner-height:						52px;
+$tool-border-color:					#666;
+
+$tool-tab-active-highlight-color:			#b5c8aa;
+$tool-tab-background-color:				#FFF;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#b5c8aa;
+$sites-nav-menu-item-color: 				#000;
+//$sites-nav-menu-item-hover-background: 			rgba(0,0,0,1);
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#fc5e04;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+
+
+// Tool Menu
+$tool-menu-background-color:				#b5c8aa !default;
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#b5c8aa;
+
+$tool-menu-item-text-color:                    		#000;
+$tool-menu-item-icon-color:                    		#000;
+
+$tool-menu-item-selected-text-color:                    #3F6622;
+$tool-menu-item-selected-icon-color:                    #3F6622;
+$tool-menu-item-selected-background-color:              #FFF;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#3F6622;
+$button-primary-hover-text-color:      			#3F6622;
+
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;

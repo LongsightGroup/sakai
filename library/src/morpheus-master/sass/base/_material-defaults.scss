@@ -21,8 +21,8 @@ $lessons-as-material: true !default;
 
 //Built to be used for padding
 //https://material-components.github.io/material-components-web-catalog/#/component/menu
-$material-menu-padding: calc( #{$standard-spacing} / 2) 0 !default;
-$material-menu-item-padding: calc(#{$standard-spacing} / 2) $standard-spacing !default;
+$material-menu-padding: calc( #{$standard-spacing} / 2) 0;
+$material-menu-item-padding: calc(#{$standard-spacing} / 2) $standard-spacing;
 
 //Built to be used for box-shadow
 //https://material-components.github.io/material-components-web-catalog/#/component/elevation
@@ -36,12 +36,11 @@ $material-elevation-7dp: 0 4px 5px -2px rgba(0,0,0,.2), 0 7px 10px 1px rgba(0,0,
 $material-elevation-8dp: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12) !default;
 
 @if $portal-as-material {
-    $primary-color: #15597e;
-    $secondary-color: #42AAE0;
-    $body-background-color: #fff;
-    $top-header-background: $primary-color;
-    $tool-menu-background-color: $body-background-color;
-    $sites-nav-background: $body-background-color;
+    $primary-color: #15597e !default;
+    $secondary-color: #42AAE0 !default;
+    $body-background-color: #fff !default;
+    //$tool-menu-background-color: $body-background-color;
+    //$sites-nav-background: $body-background-color;
     $footer-background-color: $body-background-color;
 }
 
@@ -50,43 +49,43 @@ $material-elevation-8dp: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,
     $sites-nav-menu-item-border-thickness: 1px;
     $sites-nav-menu-item-border-radius: $button-radius-pill;
     
-    $sites-nav-menu-item-background: hsla(0, 0%, 92%, 1);
-    $sites-nav-menu-item-color: hsla(0, 0%, 25%, 1);
-    $sites-nav-menu-item-border-color: $sites-nav-menu-item-background;
+    $sites-nav-menu-item-background: hsla(0, 0%, 92%, 1) !default;
+    $sites-nav-menu-item-color: hsla(0, 0%, 25%, 1) !default;
+    //$sites-nav-menu-item-border-color: $sites-nav-menu-item-background;
     $sites-nav-menu-item-border-top:            $sites-nav-menu-item-border-thickness solid $sites-nav-menu-item-border-color;
     $sites-nav-menu-item-border-right:          $sites-nav-menu-item-border-top;
     $sites-nav-menu-item-border-bottom:         $sites-nav-menu-item-border-top;
     $sites-nav-menu-item-border-left:           $sites-nav-menu-item-border-top;
     
-    $sites-nav-menu-item-hover-background: hsla(0, 0%, 82%, 1);
-    $sites-nav-menu-item-hover-color: rgba(0,0,0,1);
+    $sites-nav-menu-item-hover-background: hsla(0, 0%, 82%, 1) !default;
+    $sites-nav-menu-item-hover-color: rgba(0,0,0,1) !default;
     $sites-nav-menu-item-hover-border-color:      $sites-nav-menu-item-hover-background;
     $sites-nav-menu-item-hover-border-top:      $sites-nav-menu-item-border-thickness solid $sites-nav-menu-item-hover-border-color;
     $sites-nav-menu-item-hover-border-right:    $sites-nav-menu-item-hover-border-top;
     $sites-nav-menu-item-hover-border-bottom:   $sites-nav-menu-item-hover-border-top;
     $sites-nav-menu-item-hover-border-left:     $sites-nav-menu-item-hover-border-top;
     
-    $sites-nav-menu-item-selected-background: hsla(200, 31%, 84%,1);
-    $sites-nav-menu-item-selected-color: hsl(201, 71%, 20%);
+    $sites-nav-menu-item-selected-background: hsla(200, 31%, 84%,1) !default;
+    $sites-nav-menu-item-selected-color: hsl(201, 71%, 20%) !default;
     $sites-nav-menu-item-selected-border-color: $sites-nav-menu-item-selected-background;
     $sites-nav-menu-item-selected-border-top:   $sites-nav-menu-item-border-thickness solid $sites-nav-menu-item-selected-border-color;
     $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top;
     $sites-nav-menu-item-selected-border-left:  $sites-nav-menu-item-selected-border-top;
     $sites-nav-menu-item-selected-border-right: $sites-nav-menu-item-selected-border-top;
     
-    $sites-nav-menu-item-selected-hover-background:   hsla(200, 31%, 76%,1);
-    $sites-nav-menu-item-selected-hover-color: hsl(201, 71%, 20%);
+    $sites-nav-menu-item-selected-hover-background:   hsla(200, 31%, 76%,1) !default;
+    $sites-nav-menu-item-selected-hover-color: hsl(201, 71%, 20%) !default;
     $sites-nav-menu-item-selected-hover-border-color: $sites-nav-menu-item-selected-hover-background;
     $sites-nav-menu-item-selected-hover-border-top:   $sites-nav-menu-item-border-thickness solid $sites-nav-menu-item-selected-hover-border-color;
     $sites-nav-menu-item-selected-hover-border-right: $sites-nav-menu-item-selected-hover-border-top;
     $sites-nav-menu-item-selected-hover-border-bottom:$sites-nav-menu-item-selected-hover-border-top;
     $sites-nav-menu-item-selected-hover-border-left:  $sites-nav-menu-item-selected-hover-border-top;
     
-    $sites-nav-selected-submenu-border-color: #fff;
-    $sites-nav-selected-submenu-border-color: transparent;
+    $sites-nav-selected-submenu-border-color: #fff !default;
+    $sites-nav-selected-submenu-border-color: transparent !default;
     $sites-nav-selected-submenu-border: none; 
-    $sites-nav-submenu-border: none;
-    $sites-nav-submenu-item-left-border: none;
+    $sites-nav-submenu-border: none !default;
+    $sites-nav-submenu-item-left-border: none !default;
     $sites-nav-submenu-item-padding: $material-menu-item-padding;
     $sites-nav-submenu-padding: $material-menu-padding;
     $sites-nav-submenu-shadow: $material-elevation-8dp;
@@ -96,20 +95,20 @@ $material-elevation-8dp: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,
 @if $tool-menu-as-material {
     $tool-menu-width: 200px + $standard-spacing;
     $tool-menu-width-collapsed: 52px;
-    $tool-menu-item-separator-color: #fff;
-    $tool-menu-item-background-color: #fff;
-    $tool-menu-item-border-left: none;
+    $tool-menu-item-separator-color: #fff !default;
+    $tool-menu-item-background-color: #fff !default;
+    $tool-menu-item-border-left: none !default;
     $tool-menu-item-margin-right: calc( #{$standard-spacing} / 2);
-    $tool-menu-item-hover-background-color: hsla(0, 0%, 92%, 1);
+    $tool-menu-item-hover-background-color: hsla(0, 0%, 92%, 1) !default;
     $tool-menu-item-hover-border-left: $tool-menu-item-border-left;
-    $tool-menu-item-selected-text-color: hsl(201, 71%, 20%);
-    $tool-menu-item-selected-icon-color: hsl(201, 71%, 20%);
-    $tool-menu-item-selected-background-color: hsla(200, 31%, 84%,1);
+    $tool-menu-item-selected-text-color: hsl(201, 71%, 20%) !default;
+    $tool-menu-item-selected-icon-color: hsl(201, 71%, 20%) !default;
+    $tool-menu-item-selected-background-color: hsla(200, 31%, 84%,1) !default;
     $tool-menu-item-selected-border-left: $tool-menu-item-border-left;
-    $tool-menu-item-selected-hover-text-color: hsl(201, 71%, 20%);
-    $tool-menu-item-selected-hover-icon-color: hsl(201, 71%, 20%);
+    $tool-menu-item-selected-hover-text-color: hsl(201, 71%, 20%) !default;
+    $tool-menu-item-selected-hover-icon-color: hsl(201, 71%, 20%) !default;
     $tool-menu-item-selected-hover-border-left: $tool-menu-item-border-left;
-    $tool-menu-item-selected-hover-background-color: hsla(200, 31%, 76%,1);
+    $tool-menu-item-selected-hover-background-color: hsla(200, 31%, 76%,1) !default;
     $tool-menu-item-border-radius: 0 calc(#{$button-radius-pill} * 1.5) calc(#{$button-radius-pill} * 1.5) 0;
      
     $tool-menu-item-padding: calc( #{$standard-spacing} / 2) 0 calc( #{$standard-spacing} / 2) $standard-spacing;
@@ -136,38 +135,38 @@ $material-elevation-8dp: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,
     $button-text-color: $primary-color;
     $button-background: $background-color;
     $button-border-color: $button-text-color;
-    $button-font-weight: 600;
-    $button-shadow: none;
+    $button-font-weight: 600 !default;
+    $button-shadow: none !default;
     // hover and focus states:
     $button-hover-text-color: $button-text-color;
     $button-hover-background: #F7F9FA;
     $button-hover-border-color: $button-hover-text-color;
-    $button-hover-shadow: none;
+    $button-hover-shadow: none !default;
     // active state:
     $button-active-text-color:$button-text-color;
     $button-active-background: #E3EBF0;
     $button-active-border-color:    $button-hover-border-color;
-    $button-active-shadow-color: rgba(0,0,0,0);
-    $button-active-shadow: none;
+    $button-active-shadow-color: rgba(0,0,0,0) !default;
+    $button-active-shadow: none !default;
     // disabled state:
     $button-disabled-text-color:    #717171;
     $button-disabled-background:    #f6f6f6;
     $button-disabled-border-color:  #dbdbdb;
-    $button-disabled-shadow:        none;
-    $button-disabled-font-weight:   300;
+    $button-disabled-shadow:        none !default;
+    $button-disabled-font-weight:   300 !default;
 
     // Primary action button design:
     $button-primary-text-color:                 #fff;
     $button-primary-background:                 $primary-color;
     $button-primary-border-color:               $primary-color;
-    $button-primary-text-transform: uppercase;
-    $button-primary-font-weight: 600;
+    $button-primary-text-transform: uppercase !default;
+    $button-primary-font-weight: 600 !default;
     $button-primary-shadow: $material-elevation-2dp;
  
     // hover and focus states for primary action button:
-    $button-primary-hover-text-color:           $button-primary-text-color;
-    $button-primary-hover-background:           #266688;
-    $button-primary-hover-border-color:         #266688;
+    //$button-primary-hover-text-color:           $button-primary-text-color;
+    //$button-primary-hover-background:           #266688;
+    //$button-primary-hover-border-color:         #266688;
     $button-primary-hover-shadow: $material-elevation-4dp;
     // active state for primary action button:
     $button-primary-active-text-color:          $button-primary-text-color;
@@ -188,7 +187,7 @@ $material-elevation-8dp: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,
     $top-header-profile-border-color-right: $secondary-color;
     $top-header-profile-border-color-bottom: $alt-colour;
     $top-header-profile-border-color-left: $background-color-secondary;
-    $top-header-profile-border-color-inner: #fff;
+    $top-header-profile-border-color-inner: #fff !default;
 }
 
 @if $cards-as-material {
@@ -200,7 +199,7 @@ $material-elevation-8dp: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,
 @if $lessons-as-material {
     $lessons-column-border:none;
     $lessons-item-border-top: 1px solid $sites-nav-menu-item-background;
-    $lessons-item-hover-background: #fff;
+    $lessons-item-hover-background: #fff !default;
     $lessons-item-hover-shadow: $material-elevation-4dp;
     $lessons-item-edit-display: none;
 }
