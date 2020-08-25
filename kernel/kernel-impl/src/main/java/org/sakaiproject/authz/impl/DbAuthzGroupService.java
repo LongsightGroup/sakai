@@ -2941,7 +2941,7 @@ public abstract class DbAuthzGroupService extends BaseAuthzGroupService implemen
 						String userEid = userDirectoryService().getUserEid(userId);
 						String targetRole = (String) target.get(userEid);
 
-						if (role.equals(targetRole) || (StringUtils.isNotBlank(targetRole) && promoteUsersToProvidedRole))
+						if (StringUtils.contains(targetRole, role) || StringUtils.contains(role, targetRole))
 						{
 							log.debug("promoting user={} from role={} to targetRole={}", userEid, role, targetRole);
 
