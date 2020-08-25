@@ -2798,7 +2798,7 @@ public abstract class DbAuthzGroupService extends BaseAuthzGroupService implemen
 						String userEid = userDirectoryService().getUserEid(userId);
 						String targetRole = (String) target.get(userEid);
 
-						if (role.equals(targetRole))
+						if (StringUtils.contains(targetRole, role) || StringUtils.contains(role, targetRole))
 						{
 							// remove from non-provided and add as provided
 							toDelete.add(userId);
@@ -2809,7 +2809,7 @@ public abstract class DbAuthzGroupService extends BaseAuthzGroupService implemen
 								active = false;
 							}
 
-							toInsert.add(new UserAndRole(userId, role, active, true));
+							toInsert.add(new UserAndRole(userId, targetRole, active, true));
 						}
 					}
 					catch (UserNotDefinedException e)
