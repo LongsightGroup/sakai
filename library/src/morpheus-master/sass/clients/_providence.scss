@@ -58,3 +58,12 @@ $button-primary-hover-text-color:      			#000;
 .bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
     background-color: #CACACA !important;
 }
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #FFF !important;
+    }
+}

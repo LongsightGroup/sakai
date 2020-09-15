@@ -1,0 +1,76 @@
+$skin-name : "ndeo2020" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                          '../images/ndeo2020.png';
+$logo-height:                                                   50px;
+$logo-width:                                                    46px;
+
+// Base Colors
+$primary-color:         				#008c99;
+$top-header-background: 				#e5f6f9;
+$sites-nav-background: 					#008c99;
+$topNav-text-color:					#000;
+$text-color:						#000;
+
+$tool-tab-active-highlight-color:			#008c99;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#008c99;
+$sites-nav-menu-item-color: 				#FFF;
+$sites-nav-menu-item-hover-background: 			#CCE8EA;
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#FAFAFA;
+$sites-nav-menu-item-selected-color:        		#000;
+$sites-nav-menu-item-selected-border-color: 		#000;
+$sites-nav-menu-item-selected-hover-background: 	#E1E1E1;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+$tool-menu-item-text-color:                    		#000;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #008c99;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#008c99;
+$button-primary-hover-text-color:      			#008c99;
+
+// Links
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+//CUSTOM CSS OVERRIDES
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #008c99;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #e5f6f9;
+}
+
+span.Mrphs-headerLogo--institution:after {
+    content: "2020 NDEO National Conference";
+    font-size: 38px;
+    font-weight: 600;
+    color: #02838d;
+    white-space: nowrap;
+    padding-left: 60px;
+}
+
+@media only screen and (max-width: 800px) {
+    span.Mrphs-headerLogo--institution:after {
+	display: none;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #2a94c0 !important;
+    }
+}

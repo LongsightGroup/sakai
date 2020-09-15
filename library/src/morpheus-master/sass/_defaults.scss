@@ -348,7 +348,7 @@ $all-sites-close-action-hover-color:                      #4C4C4C !default;
 
 /* Wide tool menu, icons on left */
 $tool-menu-icon-on-left: true !default;
-$tool-menu-width: 200px !default;
+$tool-menu-width: 200px;
 $tool-menu-padding: 6px 0 0 0 !default;
 $tool-menu-width-collapsed: 42px !default;
 $tool-menu-collapseButton-height: $tool-menu-width-collapsed !default;

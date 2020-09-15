@@ -1,0 +1,51 @@
+$skin-name : "ico" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/ico.svg';
+$logo-height:                                           75px;
+$logo-width:                                            158px;
+
+// Base Colors
+$primary-color:         				#0095cb;
+$top-header-background: 				#798188;
+$sites-nav-background: 					#0095cb;
+$topNav-text-color:					#FFF;
+$banner-height:						75px;
+
+$tool-tab-active-highlight-color:			#0095cb;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#798188;
+$sites-nav-menu-item-color: 				#FFF;
+//$sites-nav-menu-item-hover-background: 			rgba(0,0,0,1);
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#0095cb;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #0095cb;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#0095cb;
+$button-primary-hover-text-color:      			#0095cb;
+
+// Links
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+// Customizations
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #FFF;
+}

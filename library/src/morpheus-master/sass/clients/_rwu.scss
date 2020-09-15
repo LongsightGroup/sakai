@@ -43,10 +43,22 @@ $tool-menu-item-selected-hover-background-color:        #00355f;
 
 
 // Button Hover
-//$button-primary-hover-background:           		#4C9D2F;
-//$button-primary-hover-border-color:         		#4c3041;
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-text-color:         		#002f55;
+$button-primary-hover-border-color:         		#002f55;
 
+
+// Customizations
 
 .bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
     background-color: #FAFAFA !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #002f55 !important;
+    }
 }

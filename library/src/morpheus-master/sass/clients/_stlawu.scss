@@ -31,8 +31,9 @@ $tool-menu-item-selected-background-color:              #AF1E2D;
 
 
 // Button Hover
-$button-primary-hover-background:           		#4C9D2F;
-$button-primary-hover-border-color:         		#4c3041;
+$button-primary-hover-background:	           	#FFF;
+$button-primary-hover-text-color:		        #AF1E2D;	
+$button-primary-hover-border-color:         		#AF1E2D;
 
 // TAB colors
 $tool-tab-background-color:                             #FAFAFA; 
@@ -47,4 +48,21 @@ $link-hover-color: 					#986598;
 // CUSTOM CSS OVERRIDES
 .Mrphs-sakai-lessonbuildertool .portletBody .column {
     border: 1px solid #000 !important;
+}
+
+.Mrphs-toolTitleNav .Mrphs-toolTitleNav__link[title="Fullscreen View"] {
+    display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+	width: 124px !important;
+	background-size: 124px 50px !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #15597e !important;
+    }
+    #mastLogin {
+	width: calc(100% - 124px) !important;
+    }
 }

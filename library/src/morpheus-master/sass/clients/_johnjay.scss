@@ -1,0 +1,56 @@
+$skin-name : "johnjay" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                  '../images/johnjay.png';
+$logo-height:                                           80px;
+$logo-width:                                            112px;
+
+// Base Colors
+$primary-color:         				#002d6a;
+$top-header-background: 				#002d6a;
+$sites-nav-background: 					#f0f3f4;
+$topNav-text-color:					#FFF;
+$banner-height:						80px;
+
+$tool-tab-active-highlight-color:			#002d6a;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#f0f3f4;
+$sites-nav-menu-item-color: 				#231f20;
+//$sites-nav-menu-item-hover-background: 			rgba(0,0,0,1);
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#00aeef;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #00aeef;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#002d6a;
+$button-primary-hover-text-color:      			#002d6a;
+
+// Links
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+//CUSTOM CSS OVERRIDES
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #231f20;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #00aeef;
+}
