@@ -132,7 +132,7 @@
 			                </constructor-arg>
 			                <constructor-arg>
                                 <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="sakai/saml_sp.xml"/>
+                                    <constructor-arg value="sakai/saml/sp.xml"/>
                                 </bean>
 			                </constructor-arg>
 			                <property name="parserPool" ref="parserPool"/>
