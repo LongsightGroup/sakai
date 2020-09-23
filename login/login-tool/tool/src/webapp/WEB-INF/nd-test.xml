@@ -160,7 +160,7 @@
                   <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://shib.oit.nd.edu/nd-metadata-2-signed.xml</value>
+                        <value type="java.lang.String">https://okta.nd.edu/app/exk11dcjp8Vx9FEF1357/sso/saml/metadata</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">45000</value>
@@ -192,7 +192,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="https://login.nd.edu/idp/shibboleth"/>
+        <property name="defaultIDP" value="http://www.okta.com/exk11dcjp8Vx9FEF1357"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
