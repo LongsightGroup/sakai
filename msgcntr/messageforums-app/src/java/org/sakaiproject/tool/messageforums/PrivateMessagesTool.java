@@ -39,6 +39,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -66,12 +67,11 @@ import org.sakaiproject.api.app.messageforums.PrivateMessageRecipient;
 import org.sakaiproject.api.app.messageforums.PrivateTopic;
 import org.sakaiproject.api.app.messageforums.SynopticMsgcntrManager;
 import org.sakaiproject.api.app.messageforums.Topic;
-import org.sakaiproject.api.app.messageforums.UserPreferencesManager;
 import org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager;
 import org.sakaiproject.authz.api.Member;
 import org.sakaiproject.authz.api.PermissionsHelper;
 import org.sakaiproject.authz.api.SecurityService;
-import org.sakaiproject.component.app.messageforums.MembershipItem;
+import org.sakaiproject.api.app.messageforums.MembershipItem;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.HiddenGroupImpl;
 import org.sakaiproject.component.app.messageforums.dao.hibernate.PrivateTopicImpl;
 import org.sakaiproject.component.cover.ServerConfigurationService;
@@ -121,7 +121,7 @@ public class PrivateMessagesTool
 
   private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
   private static final String PERMISSIONS_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.permissions";
- 
+
   private static final ResourceLoader rb = new ResourceLoader(MESSAGECENTER_BUNDLE);
   
   /**
@@ -184,9 +184,6 @@ public class PrivateMessagesTool
   private MembershipManager membershipManager;
   @Getter @Setter
   private SynopticMsgcntrManager synopticMsgcntrManager;
-  @Setter
-  private UserPreferencesManager userPreferencesManager;
-  
   /** Dependency Injected   */
   @Setter
   private MessageForumsTypeManager typeManager;
@@ -209,7 +206,6 @@ public class PrivateMessagesTool
   @Setter
   private ToolManager toolManager;
   @Setter
-  @ManagedProperty(value="#{Components[\"org.sakaiproject.util.api.FormattedText\"]}")
   private FormattedText formattedText;
 
 /** Navigation for JSP   */
@@ -253,7 +249,7 @@ public class PrivateMessagesTool
   
   public static final String SET_AS_YES="yes";
   public static final String SET_AS_NO="no";    
-  
+
   public static final String THREADED_VIEW = "threaded";
   
   //huxt
@@ -379,16 +375,16 @@ public class PrivateMessagesTool
   public static final String SORT_DATE_DESC = "date_desc";
 
   private boolean selectedComposedlistequalCurrentuser=false;
-  
+
   /** sort member */
   private String sortType = SORT_DATE_DESC;
   
   private int setDetailMsgCount = 0;
-  
+
   private static final String PERMISSIONS_PREFIX = "msg.";
-  
+
   private boolean instructor = false;
-  
+
   private List<SelectItem> nonHiddenGroups = new ArrayList<SelectItem>();
   private List<HiddenGroup> hiddenGroups = new ArrayList();
   private static final String DEFAULT_NON_HIDDEN_GROUP_ID = "-1";
@@ -397,7 +393,7 @@ public class PrivateMessagesTool
   private static final String PARAM_GROUP_ID = "groupId";
   private boolean currentSiteHasGroups = false;
   private Boolean displayHiddenGroupsMsg = null;
-  
+
   @Getter
   private boolean showProfileInfoMsg = false;
   @Getter
@@ -736,7 +732,7 @@ public class PrivateMessagesTool
           selectItemList.add(new SelectItem(item.getId(), item.getName()));
       }
 
-      return selectItemList;              
+      return selectItemList;
   }
 
   public List getTotalComposeToBccList() {
@@ -766,7 +762,7 @@ public class PrivateMessagesTool
       List<String> hiddenGroupIds = getHiddenGroupIds(area.getHiddenGroups());
       courseMemberMap = membershipManager.getFilteredCourseMembers(true, getHiddenGroupIds(area.getHiddenGroups()));
       List members = membershipManager.convertMemberMapToList(courseMemberMap);
-      
+
       List<SelectItem> selectItemList = new ArrayList<SelectItem>();
       // we need to filter out the hidden groups since they will only appear as recipients in the bcc list
       for (MembershipItem item : (List<MembershipItem>) members) {
@@ -792,13 +788,13 @@ public class PrivateMessagesTool
   
   private List<String> getHiddenGroupIds(Set hiddenGroups){
 	  List<String> returnList = new ArrayList<String>();
-	  
+
 	  if(hiddenGroups != null){
 		  for(HiddenGroup group : (Set<HiddenGroup>) hiddenGroups ) {
 	    	  returnList.add(group.getGroupId());
 		  }
 	  }
-	  
+
 	  return returnList;
   }
   
@@ -851,7 +847,7 @@ public class PrivateMessagesTool
   }
   
   public TimeZone getUserTimeZone() {
-	  return userPreferencesManager.getTimeZone();
+	  return userTimeService.getLocalTimeZone();
   }
 
 public boolean isFromMain() {
@@ -1166,7 +1162,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 	  setAttachments(attachments);
 	  
 	  setSelectedLabel(draft.getLabel());
-	  
+
 	  //go to compose page
 	  setFromMainOrHp();
 	  fromMain = (StringUtils.isEmpty(msgNavMode)) || ("privateMessages".equals(msgNavMode));
@@ -1911,7 +1907,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
 
       //create bcc string to use to display the user's who got BCC'ed
       StringBuffer sendToBccString = new StringBuffer("");
-      StringBuffer sendToBccHiddenString = new StringBuffer("");      
+      StringBuffer sendToBccHiddenString = new StringBuffer("");
       for (int i = 0; i < selectedComposeBccList.size(); i++)
       {
     	  MembershipItem membershipItem = (MembershipItem) courseMemberMap.get(selectedComposeBccList.get(i));  
@@ -2272,7 +2268,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     }
     return SELECTED_MESSAGE_PG;
   }
-  
+
   //////////////////////REPLY SEND  /////////////////
   public String processPvtMsgPreviewReply(){
 	  PrivateMessage pvtMsg = getPvtMsgReplyMessage(getDetailMsg().getMsg(), false);
@@ -2969,10 +2965,10 @@ public void processChangeSelectView(ValueChangeEvent eve)
   }
 
 
-  
-  
+
+
  private boolean containedInList(User user,List list){
-	 
+
 	boolean isContain=false;
 	 if (list==null)
 	 {
@@ -2987,13 +2983,13 @@ public void processChangeSelectView(ValueChangeEvent eve)
 				} catch (UserNotDefinedException e) {
 					log.error(e.getMessage(), e);
 				}
-		   
-		 
-		   
+
+
+
 		   if((replyrecipientaddtmp!=null)&&(replyrecipientaddtmp==user)){
 			   //tmplist.add(tmpPMR);
 			   isContain=true;
-			   
+
 		   }
 	   }
 	   return isContain;
@@ -3350,7 +3346,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     /** block executes when changing value to "no" */
     if (SET_AS_YES.equals(forwardPvtMsg)){
       setForwardPvtMsgEmail(null);
-    }       
+    }
     if (SET_AS_NO.equals(forwardPvtMsg)){
       setValidEmail(true);
     }
@@ -3364,7 +3360,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
     String email= getForwardPvtMsgEmail();
     String activate=getActivatePvtMsg() ;
     String forward=getForwardPvtMsg() ;
-    if (email != null && (!SET_AS_NO.equals(forward)) 
+    if (email != null && (!SET_AS_NO.equals(forward))
             && !EmailValidator.getInstance().isValid(email) ) {
       setValidEmail(false);
       setErrorMessage(getResourceBundleString(PROVIDE_VALID_EMAIL));
@@ -3388,7 +3384,7 @@ public void processChangeSelectView(ValueChangeEvent eve)
           return null;
       }
 
-      Boolean formAutoForward = (SET_AS_YES.equals(forward)) ? Boolean.TRUE : Boolean.FALSE;            
+      Boolean formAutoForward = (SET_AS_YES.equals(forward)) ? Boolean.TRUE : Boolean.FALSE;
       forum.setAutoForward(formAutoForward);
       if (Boolean.TRUE.equals(formAutoForward)){
         forum.setAutoForwardEmail(email);  
@@ -3980,22 +3976,20 @@ public void processChangeSelectView(ValueChangeEvent eve)
 		  if (item == null){
 			  log.warn("getRecipients() could not resolve uuid: " + selectedItem);
 		  }
-		  else{                              
-			  if (MembershipItem.TYPE_ALL_PARTICIPANTS.equals(item.getType())){
+		  else{
+              if (MembershipItem.TYPE_ALL_PARTICIPANTS == item.getType()) {
 				  for (MembershipItem member : (List<MembershipItem>) allCourseUsers){
 					  returnSet.put(member.getUser(), bcc);
 				  }
 				  //if all users have been selected we may as well return and ignore any other entries
 				  return returnSet;
-			  }
-			  else if (MembershipItem.TYPE_ROLE.equals(item.getType())){
+			  } else if (MembershipItem.TYPE_ROLE == item.getType()) {
 				  for (MembershipItem member : (List<MembershipItem>) allCourseUsers){
 					  if (member.getRole().equals(item.getRole())){
 						  returnSet.put(member.getUser(), bcc);
 					  }
 				  }
-			  }
-			  else if (MembershipItem.TYPE_GROUP.equals(item.getType()) || MembershipItem.TYPE_MYGROUPS.equals(item.getType())){
+			  } else if (MembershipItem.TYPE_GROUP == item.getType() || MembershipItem.TYPE_MYGROUPS == item.getType()) {
 				  for (MembershipItem member : (List<MembershipItem>) allCourseUsers){
 					  Set groupMemberSet = item.getGroup().getMembers();
 					  for (Member m : (Set<Member>) groupMemberSet){
@@ -4004,11 +3998,9 @@ public void processChangeSelectView(ValueChangeEvent eve)
 						  }
 					  }
 				  }
-			  }
-			  else if (MembershipItem.TYPE_USER.equals(item.getType()) || MembershipItem.TYPE_MYGROUPMEMBERS.equals(item.getType())){
+			  } else if (MembershipItem.TYPE_USER == item.getType() || MembershipItem.TYPE_MYGROUPMEMBERS == item.getType()) {
 				  returnSet.put(item.getUser(), bcc);
-			  }
-			  else if (MembershipItem.TYPE_MYGROUPROLES.equals(item.getType())){
+			  } else if (MembershipItem.TYPE_MYGROUPROLES == item.getType()) {
 				  for (MembershipItem member : (List<MembershipItem>) allCourseUsers){
 					  Set groupMemberSet = item.getGroup().getMembers();
 					  for (Member m : (Set<Member>) groupMemberSet){
@@ -4382,8 +4374,8 @@ public void processChangeSelectView(ValueChangeEvent eve)
 					pRbValues.put(key, entry.getValue());
 				}
 
-				toolSession.setAttribute("permissionDescriptions", pRbValues); 
-				
+				toolSession.setAttribute("permissionDescriptions", pRbValues);
+
 				// set group awareness
 				 String groupAware = toolManager.getCurrentTool().getRegisteredConfig().getProperty("groupAware");
 				 toolSession.setAttribute("groupAware", groupAware != null ? Boolean.valueOf(groupAware) : Boolean.FALSE);
@@ -4542,15 +4534,15 @@ public void processChangeSelectView(ValueChangeEvent eve)
 		  List sortGroupsList = new ArrayList();
 
 		  sortGroupsList.addAll(groups);
-		  
+
 		  final GroupComparator groupComparator = new GroupComparator("title", true);
-		  
+
 		  Collections.sort(sortGroupsList, groupComparator);
-		  
+
 		  groups.clear();
-		  
+
 		  groups.addAll(sortGroupsList);
-		  
+
 		  return groups;
 	  }
 	  

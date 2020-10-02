@@ -1643,7 +1643,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
     else
       return false;
   }
-  
+
   private boolean isSectionTA(User user) {
       if (user != null)
           return securityService.unlock(user, "section.role.ta", getContextSiteId());
@@ -1655,7 +1655,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
 	  log.debug("isEmailPermit()");
 	  return isEmailPermit(userDirectoryService.getCurrentUser());
   }
-  
+
   private boolean isEmailPermit(User user)
   {
     if (log.isDebugEnabled())
@@ -1667,14 +1667,16 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
     else
       return false;
   }
-  
-  
+
+
+  @Override
   public boolean isAllowToFieldGroups() {
 	  log.debug("isAllowToFieldGroups()");
 	  return isAllowToFieldGroups(userDirectoryService.getCurrentUser());
   }
-  
-  private boolean isAllowToFieldGroups(User user)
+
+  @Override
+  public boolean isAllowToFieldGroups(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1685,13 +1687,15 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
     else
       return false;
   }
-  
+
+  @Override
   public boolean isAllowToFieldAllParticipants() {
 	  log.debug("isAllowToFieldAllParticipants()");
 	  return isAllowToFieldAllParticipants(userDirectoryService.getCurrentUser());
   }
-  
-  private boolean isAllowToFieldAllParticipants(User user)
+
+  @Override
+  public boolean isAllowToFieldAllParticipants(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1702,13 +1706,15 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
     else
       return false;
   }
-  
+
+  @Override
   public boolean isAllowToFieldRoles() {
 	  log.debug("isAllowToFieldRoles()");
 	  return isAllowToFieldRoles(userDirectoryService.getCurrentUser());
   }
-  
-  private boolean isAllowToFieldRoles(User user)
+
+  @Override
+  public boolean isAllowToFieldRoles(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1719,13 +1725,15 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
     else
       return false;
   }
-  
+
+  @Override
   public boolean isAllowToViewHiddenGroups() {
 	  log.debug("isAllowToViewHiddenGroups()");
 	  return isAllowToViewHiddenGroups(userDirectoryService.getCurrentUser());
   }
-  
-  private boolean isAllowToViewHiddenGroups(User user)
+
+  @Override
+  public boolean isAllowToViewHiddenGroups(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1742,8 +1750,9 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
 	  log.debug("isAllowToFieldUsers()");
 	  return isAllowToFieldUsers(userDirectoryService.getCurrentUser());
   }
-  
-  private boolean isAllowToFieldUsers(User user)
+
+  @Override
+  public boolean isAllowToFieldUsers(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1761,7 +1770,8 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
 	  return isAllowToFieldMyGroups(userDirectoryService.getCurrentUser());
   }
 
-  private boolean isAllowToFieldMyGroups(User user)
+  @Override
+  public boolean isAllowToFieldMyGroups(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1779,7 +1789,8 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
 	  return isAllowToFieldMyGroupMembers(userDirectoryService.getCurrentUser());
   }
 
-  private boolean isAllowToFieldMyGroupMembers(User user)
+  @Override
+  public boolean isAllowToFieldMyGroupMembers(User user)
   {
     if (log.isDebugEnabled())
     {
@@ -1795,8 +1806,9 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
   public boolean isAllowToFieldMyGroupRoles() {
 	  return isAllowToFieldMyGroupRoles(userDirectoryService.getCurrentUser());
   }
-  
-  private boolean isAllowToFieldMyGroupRoles(User user)
+
+  @Override
+  public boolean isAllowToFieldMyGroupRoles(User user)
   {
 	  log.debug("isAllowToFieldMyGroupRoles(User {})",user);
 	  if (user != null)

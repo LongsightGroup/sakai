@@ -715,7 +715,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
       nonSpecifiedUser.setUuid(typeManager.getNotSpecifiedType());
       nonSpecifiedUser.setTypeUuid(typeManager.getNotSpecifiedType());
                   
-      actorPermissions.addAccesssor(nonSpecifiedUser);      
+      actorPermissions.addAccessor(nonSpecifiedUser);
       actorPermissions.addContributor(nonSpecifiedUser);
       actorPermissions.addModerator(nonSpecifiedUser);
        return actorPermissions;
@@ -1526,7 +1526,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 				.setLong("id", topicId)
 				.setString("permissionLevelName", permissionName)
                 .setCacheable(true)
-				.list();
+				.uniqueResult();
 			return getHibernateTemplate().execute(hcb);
 		}
 
@@ -1539,8 +1539,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 				.setLong("id", forumId)
 				.setString("permissionLevelName", permissionName)
                 .setCacheable(true)
-				.list();
-
+				.uniqueResult();
 			return getHibernateTemplate().execute(hcb);
 		}
 }

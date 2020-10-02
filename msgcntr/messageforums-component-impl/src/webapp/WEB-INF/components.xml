@@ -28,12 +28,12 @@
             </list>
         </property>
     </bean>
-	   
+
     <bean id="org.sakaiproject.api.app.messageforums.DiscussionForumService" 
         class="org.sakaiproject.component.app.messageforums.DiscussionForumServiceImpl" init-method="init">
         <property name="forumManager">
      		    <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsForumManager"/>
-        </property>		       
+        </property>
         <property name="areaManager">
   	        <ref bean="org.sakaiproject.api.app.messageforums.AreaManager"/>
         </property>
@@ -45,10 +45,10 @@
 		    </property>
 		    <property name="dfManager">
             <ref bean="org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager"/>
-        </property> 
+        </property>
         <property name="permissionManager">
             <ref bean="org.sakaiproject.api.app.messageforums.PermissionLevelManager"/>
-        </property> 
+        </property>
         <property name="contentHostingService">
         		    <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
         </property>
@@ -66,15 +66,15 @@
         </property>
         <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
     </bean>
-	    
+
     <bean id="org.sakaiproject.api.app.messageforums.MessageForumsTypeManager" 
         class="org.sakaiproject.component.app.messageforums.MessageForumsTypeManagerImpl" init-method="init">
         <property name="typeManager">
             <ref bean="org.sakaiproject.api.common.type.TypeManager"/>
-        </property>  
+        </property>
 		    <property name="sqlService">
 		     		<ref bean="org.sakaiproject.db.api.SqlService"/>
-		    </property>        
+		    </property>
     </bean>
      
     <bean id="org.sakaiproject.api.app.messageforums.DummyDataHelperApi" class="org.sakaiproject.component.app.messageforums.DummyDataHelper">
@@ -94,10 +94,10 @@
                 </property>
 				<property name="idManager">
 					<ref bean="org.sakaiproject.id.api.IdManager" />
-				</property>				 				
+				</property>
 				<property name="sessionManager">
 					<ref bean="org.sakaiproject.tool.api.SessionManager" />
-				</property>				 								
+				</property>
 		        <property name="typeManager">
         		    <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsTypeManager"/>
 		        </property>
@@ -106,14 +106,14 @@
                 </property>
 		        <property name="eventTrackingService">
         		    <ref bean="org.sakaiproject.event.api.EventTrackingService"/>
-		        </property>		
+		        </property>
 		         <property name="defaultPermissionsManager">
         		    <ref bean="org.sakaiproject.api.app.messageforums.DefaultPermissionsManager"/>
 		        </property>
 		        <property name="toolManager">
 		        	<ref bean="org.sakaiproject.tool.api.ToolManager"/>
-		        </property>	       
-            </bean>            
+		        </property>
+            </bean>
         </property>
          <property name="transactionAttributes">
             <props>
@@ -135,37 +135,15 @@
     </bean>
      
     <bean id="org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager" class="org.sakaiproject.component.app.messageforums.ui.UIPermissionsManagerImpl" init-method="init">
-		<property name="toolManager">
-             <ref bean="org.sakaiproject.tool.api.ActiveToolManager"/>
-		</property>
-	    <property name="authzGroupService">
-           <ref bean="org.sakaiproject.authz.api.AuthzGroupService"/>
-        </property>
-        <property name="sessionManager">
-			<ref bean="org.sakaiproject.tool.api.SessionManager" />
-		</property>		
-	    <property name="permissionManager">
-            <ref bean="org.sakaiproject.api.app.messageforums.PermissionManager"/>
-        </property>
-        <property name="permissionLevelManager">
-            <ref bean="org.sakaiproject.api.app.messageforums.PermissionLevelManager"/>
-        </property>
-        <property name="typeManager">
-            <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsTypeManager"/>
-	    </property>
-	    <property name="securityService">
-            <ref bean="org.sakaiproject.authz.api.SecurityService"/>
-        </property>	
-        <property name="forumManager">
-            <ref bean="org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager"/>
-        </property>   
-        <property name="areaManager">
-            <ref bean="org.sakaiproject.api.app.messageforums.AreaManager"/>
-        </property>
+        <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService"/>
+        <property name="forumManager" ref="org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager"/>
         <property name="memoryService" ref="org.sakaiproject.memory.api.MemoryService"/>
-        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
+        <property name="permissionLevelManager" ref="org.sakaiproject.api.app.messageforums.PermissionLevelManager"/>
+        <property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager" />
         <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
-        <property name="threadLocalManager" ref="org.sakaiproject.thread_local.api.ThreadLocalManager"/>
+        <property name="toolManager" ref="org.sakaiproject.tool.api.ActiveToolManager"/>
+        <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
      </bean>
     
    
@@ -206,10 +184,10 @@
                 </property>
 				<property name="idManager">
 					<ref bean="org.sakaiproject.id.api.IdManager" />
-				</property>				 				
+				</property>
 				<property name="sessionManager">
 					<ref bean="org.sakaiproject.tool.api.SessionManager" />
-				</property>				 								
+				</property>
 		        <property name="typeManager">
         		    <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsTypeManager"/>
 		        </property>
@@ -218,14 +196,14 @@
 		        </property>
 		        <property name="siteService">
 		        	<ref bean="org.sakaiproject.site.api.SiteService" />
-		        </property>	
+		        </property>
 		        <property name="serverConfigurationService">
 		        	<ref bean="org.sakaiproject.component.api.ServerConfigurationService" />
 		        </property>
 		        <property name="toolManager">
 		        	<ref bean="org.sakaiproject.tool.api.ToolManager"/>
-		        </property>     
-            </bean>            
+		        </property>
+            </bean>
         </property>
          <property name="transactionAttributes">
             <props>
@@ -243,13 +221,13 @@
 			<bean class="org.sakaiproject.component.app.messageforums.MessageForumsForumManagerImpl" init-method="init">
 				<property name="sessionFactory">
                     <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory"/>
-				</property>   
+				</property>
 				<property name="idManager">
 					<ref bean="org.sakaiproject.id.api.IdManager" />
-				</property>				 				
+				</property>
 				<property name="sessionManager">
 					<ref bean="org.sakaiproject.tool.api.SessionManager" />
-				</property>				 								
+				</property>
 		        <property name="typeManager">
         		    <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsTypeManager"/>
 		        </property>
@@ -262,12 +240,12 @@
 		        <property name="rubricsService" ref="org.sakaiproject.rubrics.logic.RubricsService"/>
 	       	</bean>
 		</property>
-		
+
 		<property name="transactionAttributes">
 			<props>
 				<prop key="*">PROPAGATION_REQUIRED</prop>
 			</props>
-		</property>		
+		</property>
 	</bean>
 
     <bean id="org.sakaiproject.api.app.messageforums.MessageForumsMessageManager" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
@@ -281,10 +259,10 @@
                 </property>
 				<property name="idManager">
 					<ref bean="org.sakaiproject.id.api.IdManager" />
-				</property>				 				
+				</property>
 				<property name="sessionManager">
 					<ref bean="org.sakaiproject.tool.api.SessionManager" />
-				</property>				 								
+				</property>
 		        <property name="typeManager">
         		    <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsTypeManager"/>
 		        </property>
@@ -300,7 +278,7 @@
 		        <property name="toolManager">
 		        	<ref bean="org.sakaiproject.tool.api.ToolManager"/>
 		        </property>
-            </bean>            
+            </bean>
         </property>
          <property name="transactionAttributes">
             <props>
@@ -373,10 +351,10 @@
                 </property>
                 <property name="messageManager">
                     <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsMessageManager"/>
-                </property>							
+                </property>
                 <property name="forumManager">
                     <ref bean="org.sakaiproject.api.app.messageforums.MessageForumsForumManager"/>
-                </property>	
+                </property>
                 <property name="permissionManager">
                     <ref bean="org.sakaiproject.api.app.messageforums.PermissionManager"/>
                 </property>
@@ -391,7 +369,7 @@
                 </property>
                 <property name="membershipManager">
                   <ref bean="org.sakaiproject.api.app.messageforums.MembershipManager"/>
-                </property> 
+                </property>
                 <property name="securityService">
                     <ref bean="org.sakaiproject.authz.api.SecurityService"/>
                 </property>
@@ -412,7 +390,7 @@
 		        <property name="threadLocalManager" ref="org.sakaiproject.thread_local.api.ThreadLocalManager"/>
 		        <property name="toolManager" ref="org.sakaiproject.tool.api.ToolManager"/>
 		        <property name="learningResourceStoreService" ref="org.sakaiproject.event.api.LearningResourceStoreService"/>
-            </bean>           
+            </bean>
         </property>
          <property name="transactionAttributes">
             <props>
@@ -435,14 +413,14 @@
 				</property>
 				<property name="userDirectoryService">
 				    <ref bean="org.sakaiproject.user.api.UserDirectoryService"/>
-				</property>				
+				</property>
 		        <property name="eventTrackingService">
         		    <ref bean="org.sakaiproject.event.api.EventTrackingService"/>
 		        </property>
 		        <property name="toolManager">
 		        	<ref bean="org.sakaiproject.tool.api.ToolManager"/>
 		        </property>
-            </bean>           
+            </bean>
         </property>
          <property name="transactionAttributes">
             <props>
@@ -456,29 +434,14 @@
             <ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager"/>
         </property>
         <property name="target">
-            <bean class="org.sakaiproject.component.app.messageforums.MembershipManagerImpl" init-method="init">            
-                <property name="siteService">
-                  <ref bean="org.sakaiproject.site.api.SiteService"/>
-                </property>
-                <property name="userDirectoryService">
-				    <ref bean="org.sakaiproject.user.api.UserDirectoryService"/>
-				</property>
-                <property name="authzGroupService">
-                  <ref bean="org.sakaiproject.authz.api.AuthzGroupService"/>
-                </property>
-                <property name="toolManager">
-                  <ref bean="org.sakaiproject.tool.api.ActiveToolManager"/>
-                </property>
-                <property name="securityService">
-                  <ref bean="org.sakaiproject.authz.api.SecurityService"/>
-                </property>              
-		 	    <property name="privacyManager">
-					<ref bean="org.sakaiproject.api.privacy.PrivacyManager" />
-		        </property>
-		        <property name="prtMsgManager">
-		        	<ref bean="org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager" />
-		        </property>
-            </bean>           
+            <bean class="org.sakaiproject.component.app.messageforums.MembershipManagerImpl">
+                <property name="siteService" ref="org.sakaiproject.site.api.SiteService"/>
+                <property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
+                <property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService"/>
+                <property name="toolManager" ref="org.sakaiproject.tool.api.ActiveToolManager"/>
+                <property name="privacyManager" ref="org.sakaiproject.api.privacy.PrivacyManager" />
+                <property name="prtMsgManager" ref="org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager" />
+            </bean>
         </property>
          <property name="transactionAttributes">
             <props>
@@ -486,11 +449,6 @@
             </props>
         </property> 
     </bean>
-    
-    <bean id="org.sakaiproject.api.app.messageforums.UserPreferencesManager"
-   	   	class="org.sakaiproject.component.app.messageforums.SakaiUserPreferencesManagerImpl">
-   	   	<property name="userTimeService" ref="org.sakaiproject.time.api.UserTimeService" />
-   	</bean>
     
     <bean id="org.sakaiproject.api.app.messageforums.ForumTopicEntityProvider" class="org.sakaiproject.component.app.messageforums.entity.ForumTopicEntityProviderImpl">
 		<property name="forumManager" ref="org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager" />
@@ -548,7 +506,7 @@
 
 	<bean id="org.sakaiproject.api.app.messageforums.SynopticMsgcntrItemProvider" class="org.sakaiproject.component.app.messageforums.entity.SynopticMsgcntrItemEntityProviderImpl">
 		<property name="synopticMsgcntrManager" ref="org.sakaiproject.api.app.messageforums.SynopticMsgcntrManager" />
-		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/> 
+		<property name="userDirectoryService" ref="org.sakaiproject.user.api.UserDirectoryService"/>
     </bean>
 
 
@@ -617,10 +575,10 @@
         </property>
         <property name="areaManager">
   	        <ref bean="org.sakaiproject.api.app.messageforums.AreaManager"/>
-        </property>      
+        </property>
         <property name="forumManager">
              <ref bean="org.sakaiproject.api.app.messageforums.ui.DiscussionForumManager"/>
-         </property>  
+         </property>
 	</bean>
     
     <bean id="org.sakaiproject.api.app.messageforums.SynopticMsgcntrManager"     
@@ -635,8 +593,8 @@
                  </property>
                  <property name="pvtMessageManager">
                      <ref bean="org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager"/>
-                 </property>   
-                
+                 </property>
+
                  <property name="uiPermissionsManager">
                      <ref bean="org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager"/>
                  </property>
@@ -660,23 +618,23 @@
                  </property>
          	</bean>
  		</property>
- 		
+
  		<property name="transactionAttributes">
  			<props>
  				<prop key="*">PROPAGATION_REQUIRED</prop>
  			</props>
- 		</property>	
+ 		</property>
  
  	</bean>
  
- 	
+
  	<bean id="org.sakaiproject.component.app.messageforums.jobs.UpdateSynopticMessageCounts"
     		class="org.sakaiproject.component.app.messageforums.jobs.UpdateSynopticMessageCounts"
-    		init-method="init">   
+    		init-method="init">
     		<property name="pvtMessageManager">
              <ref bean="org.sakaiproject.api.app.messageforums.ui.PrivateMessageManager"/>
-         </property>   
-        
+         </property>
+
          <property name="uiPermissionsManager">
              <ref bean="org.sakaiproject.api.app.messageforums.ui.UIPermissionsManager"/>
          </property>
@@ -699,7 +657,7 @@
          	<ref bean="org.sakaiproject.authz.api.SecurityService"/>
          </property>
     	</bean>
-    	
+
     <bean id="UpdateSynopticMessageCountsJob"
        class="org.sakaiproject.component.app.scheduler.jobs.SpringJobBeanWrapper"
        init-method="init">
@@ -725,16 +683,16 @@
                 </property>
  				<property name="userDirectoryService">
 				    <ref bean="org.sakaiproject.user.api.UserDirectoryService"/>
-				</property>				
+				</property>
 		        <property name="eventTrackingService">
         		    <ref bean="org.sakaiproject.event.api.EventTrackingService"/>
 		        </property>
 		        <property name="sessionManager">
 					<ref bean="org.sakaiproject.tool.api.SessionManager" />
-				</property>		
+				</property>
 				<property name="idManager">
 					<ref bean="org.sakaiproject.id.api.IdManager" />
-				</property>		 								
+				</property>
 		        <property name="contentHostingService">
         		    <ref bean="org.sakaiproject.content.api.ContentHostingService"/>
 		        </property>

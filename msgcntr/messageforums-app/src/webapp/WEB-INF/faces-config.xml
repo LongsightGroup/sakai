@@ -497,9 +497,14 @@
         </managed-property>
         
         <managed-property>
-         	<description>User Preferences Manager</description>
-         	<property-name>userPreferencesManager</property-name>
-         	<value>#{Components["org.sakaiproject.api.app.messageforums.UserPreferencesManager"]}</value>
+         	<description>User Time Serivce</description>
+         	<property-name>userTimeService</property-name>
+         	<value>#{Components["org.sakaiproject.time.api.UserTimeService"]}</value>
+        </managed-property>
+
+        <managed-property>
+            <property-name>formattedText</property-name>
+            <value>#{Components["org.sakaiproject.util.api.FormattedText"]}</value>
         </managed-property>
 
         <managed-property>
@@ -589,9 +594,13 @@
         	<value>#{Components["org.sakaiproject.api.app.messageforums.SynopticMsgcntrManager"]}</value>
         </managed-property>
         <managed-property>
-         	<description>User Preferences Manager</description>
-         	<property-name>userPreferencesManager</property-name>
-         	<value>#{Components["org.sakaiproject.api.app.messageforums.UserPreferencesManager"]}</value>
+            <property-name>formattedText</property-name>
+            <value>#{Components["org.sakaiproject.util.api.FormattedText"]}</value>
+        </managed-property>
+        <managed-property>
+            <description>User Time Serivce</description>
+            <property-name>userTimeService</property-name>
+            <value>#{Components["org.sakaiproject.time.api.UserTimeService"]}</value>
         </managed-property>
         <managed-property>
             <description>Learning Resource Store Service</description>
