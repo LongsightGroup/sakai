@@ -624,8 +624,8 @@ public class SakaiBLTIUtil {
 
 				// DUKE CUSTOM
 				log.debug("addUserInfo properties {}: {} {}", user.getEid(), user.getProperties().getProperty("studentNumber"), user.getProperties().getProperty("duDukeUID"));
-				setProperty(ltiProps, "custom_duke_id", user.getProperties().getProperty("studentNumber"));
-				setProperty(ltiProps, "custom_duke_uid", user.getProperties().getProperty("duDukeUID"));
+				setProperty(props, "custom_duke_id", user.getProperties().getProperty("studentNumber"));
+				setProperty(props, "custom_duke_uid", user.getProperties().getProperty("duDukeUID"));
 
 				}
 				if (role != null) {
