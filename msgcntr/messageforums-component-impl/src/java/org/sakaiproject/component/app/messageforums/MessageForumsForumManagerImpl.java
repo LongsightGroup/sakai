@@ -1526,7 +1526,7 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 				.setLong("id", topicId)
 				.setString("permissionLevelName", permissionName)
                 .setCacheable(true)
-				.uniqueResult();
+				.list();
 			return getHibernateTemplate().execute(hcb);
 		}
 
@@ -1539,7 +1539,8 @@ public class MessageForumsForumManagerImpl extends HibernateDaoSupport implement
 				.setLong("id", forumId)
 				.setString("permissionLevelName", permissionName)
                 .setCacheable(true)
-				.uniqueResult();
+				.list();
+
 			return getHibernateTemplate().execute(hcb);
 		}
 }
