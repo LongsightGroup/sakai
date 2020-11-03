@@ -2798,7 +2798,8 @@ public abstract class DbAuthzGroupService extends BaseAuthzGroupService implemen
 						String userEid = userDirectoryService().getUserEid(userId);
 						String targetRole = (String) target.get(userEid);
 
-						if (StringUtils.contains(targetRole, role) || StringUtils.contains(role, targetRole))
+						// promoteUsersToProvidedRole@org.sakaiproject.authz.api.AuthzGroupService=true in Sakai 20+ 
+						if (1 == 1) // ND Estimate 725 - course management roles
 						{
 							// remove from non-provided and add as provided
 							toDelete.add(userId);
