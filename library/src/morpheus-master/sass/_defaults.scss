@@ -414,14 +414,14 @@ $tool-menu-collapse-min-hover-shadow:                      $tool-menu-collapse-s
 
 
 /* Tool sub menu */
-$tool-sub-menu-border-color: darken( $tool-menu-background-color, 10% ) !default;
-$tool-sub-menu-background-color: darken( $tool-menu-background-color, 10% ) !default;
-$tool-sub-menu-hover-background-color: $primary-color !default;
-$tool-sub-menu-hover-color: #FFF !default;
-$tool-sub-menu-current-color: $primary-color !default;
-$tool-sub-menu-current-background-color: $background-color !default;
-$tool-sub-menu-current-hover-color: $tool-menu-color !default;
-$tool-sub-menu-current-hover-background-color: $background-color !default;
+$tool-sub-menu-border-color: darken( $tool-menu-background-color, 10% );
+$tool-sub-menu-background-color: darken( $tool-menu-background-color, 10% );
+$tool-sub-menu-hover-background-color: $primary-color;
+$tool-sub-menu-hover-color: #FFF;
+$tool-sub-menu-current-color: $primary-color;
+$tool-sub-menu-current-background-color: $background-color;
+$tool-sub-menu-current-hover-color: $tool-menu-color;
+$tool-sub-menu-current-hover-background-color: $background-color;
 
 /* Tool menu - lessons subpage menu enabled - top level pages */
 $tool-lessons-toplevel-menu-icon-padding: $standard-spacing !default;
@@ -440,8 +440,8 @@ $tool-lessons-subpage-menu-selected-parent-background-color: $tool-menu-item-sel
 $tool-lessons-subpage-menu-expanded-background-color: $tool-menu-item-selected-background-color !default;
 
 /* Lessons tool */
-$lessons-column-border: 1px solid #222 !default;
-$lessons-item-border-top: none !default;
+//$lessons-column-border: 1px solid #222;
+$lessons-item-border-top: none;
 $lessons-item-border-right: none !default;
 $lessons-item-border-bottom: none !default;
 $lessons-item-border-left: none !default;
@@ -467,7 +467,7 @@ $logo-height: 36px !default;
 $logo-width: 126px !default;
 
 /* Tool icons */
-$skin-with-icons: false !default;
+$skin-with-icons: true !default;
 $icon-size: 20px !default;
 
 /* Unpublished Banner */

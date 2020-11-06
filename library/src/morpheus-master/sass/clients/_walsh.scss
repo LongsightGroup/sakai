@@ -1,0 +1,100 @@
+$skin-name : "walsh" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                          '../images/walsh.svg';
+$logo-height:                                                   57px;
+$logo-width:                                                    219px;
+
+$banner-height:					       65px;
+
+// Base Colors
+$primary-color:         				#770124;
+$top-header-background: 				#770124;
+$sites-nav-background: 					#FAFAFA;
+$topNav-text-color:					#FFF;
+$text-color:						#000;
+
+$tool-tab-active-highlight-color:			#770124;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#770124;
+$sites-nav-menu-item-color: 				#FFF;
+$sites-nav-menu-item-hover-background: 			#92334F;
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#f0ca03;
+$sites-nav-menu-item-selected-color:        		#000;
+$sites-nav-menu-item-selected-border-color: 		#000;
+$sites-nav-menu-item-selected-hover-background: 	#F9E99A;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+$tool-menu-item-text-color:                    		#333;
+
+$tool-menu-item-selected-text-color:                    #000;
+$tool-menu-item-selected-icon-color:                    #000;
+$tool-menu-item-selected-background-color:              #FFF;
+
+/* Tool sub menu */
+$tool-sub-menu-border-color: 				#fff;
+$tool-sub-menu-background-color: 			#FAFAFA;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#770124;
+$button-primary-hover-text-color:      			#770124;
+
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+//CUSTOM CSS OVERRIDES
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #770124 !important;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #770124 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #770124 !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+	width: 135px !important;
+	background-size: 135px 35px !important;
+    }
+    #mastLogin {
+	width: calc(100% - 135px) !important;
+    }
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border-top: 1px solid #770124;
+    border-bottom: 1px solid #770124;
+    border-right: 1px solid #770124;
+    border-left: 1px solid #770124;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #000;
+}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}
+
+#toolMenu ul li.is-current, #subSites ul li.is-current {
+    border-left: 4px solid #770124;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__category, #subSites ul li .Mrphs-toolsNav__category {
+    color: #000;
+    font-weight: 800;
+    font-size: 14px;
+    background-color: #FFF !important;
+}

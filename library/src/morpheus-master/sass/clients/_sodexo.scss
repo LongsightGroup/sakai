@@ -1,0 +1,63 @@
+$skin-name : "sodexo" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                          '../images/sodexo.jpg';
+$logo-height:                                                   50px;
+$logo-width:                                                    258px;
+
+// Base Colors
+$primary-color:         				#2a295c;
+$top-header-background: 				#FFF;
+$sites-nav-background: 					#2a295c;
+$topNav-text-color:					#2a295c;
+$text-color:						#000;
+
+$tool-tab-active-highlight-color:			#2a295c;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#2a295c;
+$sites-nav-menu-item-color: 				#FFF;
+$sites-nav-menu-item-hover-background: 			#9494AD;
+//$sites-nav-menu-item-hover-color: 			#FFF;
+	
+$sites-nav-menu-item-selected-background: 		#FF0000;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#FFF;
+$sites-nav-menu-item-selected-hover-background: 	#FF9999;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+$tool-menu-item-text-color:                    		#000;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #2a295c;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#2a295c;
+$button-primary-hover-text-color:      			#2a295c;
+
+// Links
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+//CUSTOM CSS OVERRIDES
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #2a295c !important;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #fff !important;
+    }
+}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}

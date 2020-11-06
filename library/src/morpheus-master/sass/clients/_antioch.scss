@@ -12,6 +12,8 @@ $primary-color:         				#003c69;
 $background-color-secondary: 				#FFF;
 $top-header-background: 				#003c69;
 $sites-nav-background:					#FAFAFA;
+$lessons-column-border: 				1px solid #ededed;
+
 // Sites Navigation
 $sites-nav-menu-item-background: 			#FFF;
 //$sites-nav-menu-item-color: 				#FFF;
@@ -41,3 +43,13 @@ $tool-menu-item-selected-background-color:              #FFF;
 $button-primary-hover-text-color:			$primary-color;
 $button-primary-hover-background:			#FFF;
 $button-primary-hover-border-color:			$primary-color;
+
+// Custom CSS
+
+.Mrphs-sakai-rubrics #shared-rubrics-title div {
+    display: none;
+}
+
+.Mrphs-sakai-rubrics #shared-rubrics-title {
+    display: none;
+}

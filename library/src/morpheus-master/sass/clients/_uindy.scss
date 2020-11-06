@@ -1,0 +1,89 @@
+$skin-name : "uindydev" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                          '../images/uindy.svg';
+$logo-height:                                                   108px;
+$logo-width:                                                    244px;
+
+$banner-height:					       110px;
+
+// Base Colors
+$primary-color:         				#911934;
+$top-header-background: 				#911934;
+$sites-nav-background: 					#911934;
+$topNav-text-color:					#FFF;
+$text-color:						#000;
+$lessons-item-border-top:				#FAFAFA;
+
+$tool-tab-active-highlight-color:			#911934;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#FFF;
+$sites-nav-menu-item-color: 				#555;
+$sites-nav-menu-item-hover-background: 			#ccc;
+$sites-nav-menu-item-hover-color: 			#000;
+	
+$sites-nav-menu-item-selected-background: 		#F1AB1C;
+$sites-nav-menu-item-selected-color:        		#000;
+$sites-nav-menu-item-selected-border-color: 		#000;
+$sites-nav-menu-item-selected-hover-background: 	#F6CC76;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+$tool-menu-item-text-color:                    		#000;
+
+$tool-menu-item-selected-text-color:                    #0d213d;
+$tool-menu-item-selected-icon-color:                    #0d213d;
+$tool-menu-item-selected-background-color:              #F1AB1C;
+
+/* Tool sub menu */
+$tool-sub-menu-border-color: 				#fff;
+$tool-sub-menu-background-color: 			#FAFAFA;
+
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#911934;
+$button-primary-hover-text-color:      			#911934;
+
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+//CUSTOM CSS OVERRIDES
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #911934 !important;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #FFF !important;
+    }
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #000;
+}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #FAFAFA !important;
+    border-color: #911934 !important;
+    border-left-color: #911934 !important;
+}
