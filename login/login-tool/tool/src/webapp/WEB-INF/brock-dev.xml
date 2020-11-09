@@ -156,7 +156,7 @@
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <value type="java.lang.String">https://adfs.brocku.ca/federationmetadata/2007-06/federationmetadata.xml</value>
+				<value type="java.lang.String">https://login.microsoftonline.com/76ae1115-1efc-4af2-a536-e2b2443af1a0/federationmetadata/2007-06/federationmetadata.xml?appid=ffb48f82-11c4-4c05-8c30-457b493b46f2</value>
                             </constructor-arg>
                             <constructor-arg>
                                 <value type="int">45000</value>
@@ -177,7 +177,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://adfs.brocku.ca/adfs/services/trust"/>
+        <property name="defaultIDP" value="https://sts.windows.net/76ae1115-1efc-4af2-a536-e2b2443af1a0/" />
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
@@ -244,7 +244,7 @@
 
     <!-- SAML 2.0 WebSSO Assertion Consumer -->
     <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl">
-        <property name="maxAuthenticationAge" value="120000"/>
+        <property name="maxAuthenticationAge" value="62208000"/>
     </bean>
 
     <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
