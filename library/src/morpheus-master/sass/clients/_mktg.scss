@@ -1,0 +1,90 @@
+$skin-name : "mktg" !default; // This is used for bootstrap font behaviour.
+
+/* Logo location */
+$logo:                                                          '../images/mktg.png';
+$logo-height:                                                   90px;
+$logo-width:                                                    814px;
+
+$banner-height:					       90px;
+
+// Base Colors
+$primary-color:         				#113f93;
+$top-header-background: 				#113f93;
+$sites-nav-background: 					#FAFAFA;
+$topNav-text-color:					#FFF;
+$text-color:						#000;
+$become-user-primary:					#CCC;
+$lessons-column-border: 				1px solid #ededed;
+
+$tool-tab-active-highlight-color:			#113f93;
+
+// Sites Navigation
+$sites-nav-menu-item-background: 			#CCC;
+$sites-nav-menu-item-color: 				#000;
+$sites-nav-menu-item-hover-background: 			#DBDBDB;
+$sites-nav-menu-item-hover-color: 			#424242;
+	
+$sites-nav-menu-item-selected-background: 		#113f93;
+$sites-nav-menu-item-selected-color:        		#FFF;
+$sites-nav-menu-item-selected-border-color: 		#113f93;
+$sites-nav-menu-item-selected-hover-background: 	#A1B6DA;
+
+
+// Tool Menu
+$tool-menu-item-separator-color: 			#fff;
+$tool-menu-item-background-color: 			#fff;
+$tool-menu-item-text-color:                    		#000;
+
+$tool-menu-item-selected-text-color:                    #FFF;
+$tool-menu-item-selected-icon-color:                    #FFF;
+$tool-menu-item-selected-background-color:              #113f93;
+
+/* Tool sub menu */
+$tool-sub-menu-border-color: 				#fff;
+$tool-sub-menu-background-color: 			#FAFAFA;
+
+
+/* Tool menu - lessons subpage menu enabled - top level pages */
+$tool-lessons-toplevel-menu-selected-background-color: $tool-menu-item-selected-background-color;
+$tool-lessons-toplevel-menu-expanded-background-color: $tool-menu-item-background-color;
+$tool-lessons-toplevel-menu-expanded-selected-background-color: $tool-menu-item-selected-background-color;
+//$tool-lessons-toplevel-menu-sliding-background-color: $tool-menu-item-selected-background-color !default;
+
+/* Tool menu - lessons subpage menu enabled - sub pages */
+$tool-lessons-subpage-menu-selected-background-color: $tool-menu-item-selected-background-color !default;
+$tool-lessons-subpage-menu-selected-parent-background-color: $tool-menu-item-selected-background-color !default;
+$tool-lessons-subpage-menu-expanded-background-color: $tool-menu-item-background-color !default;
+
+// Button Hover
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#113f93;
+$button-primary-hover-text-color:      			#113f93;
+
+// Links
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
+
+//CUSTOM CSS OVERRIDES
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #113f93 !important;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #113f93 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #113f93 !important;
+    }
+}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none !important;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #FAFAFA !important;
+    border-color: #113f93 !important;
+    border-left-color: #113f93 !important;
+}
