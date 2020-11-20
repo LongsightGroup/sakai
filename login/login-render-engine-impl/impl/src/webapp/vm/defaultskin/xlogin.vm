@@ -9,7 +9,7 @@
     </head>
     <body class="portalBody Mrphs-portalBody">
     	<form id="Mrphs-xlogin" method="post" action="${action}" #if (${notify}) class="with-errors" #end>
-            <h1>${loginRequired}</h1>
+            <h1 style="display:none">${loginRequired}</h1>
             <aside class="logo"></aside>
             #if (${xloginChoice})
                 <div class="xloginMessage">${xloginChoice}&nbsp;<a href="${loginContainerUrl}">${containerText}</a></div>
@@ -17,7 +17,7 @@
             #if (${notify})
         		<div class="alertMessage" role="alert">${notify}</div>
         	#end
-    		<fieldset>	
+    		<fieldset style="visibility: hidden">	
     			<label for="eid">${loginEidWording}</label>
     			<input name="eid" id="eid" value="${eid}" type="text" autocomplete="username" size="15"/>
     			<label for="pw">${loginPwWording}</label>
