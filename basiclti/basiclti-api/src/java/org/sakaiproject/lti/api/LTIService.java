@@ -164,12 +164,6 @@ public interface LTIService extends LTISubstitutionsFilter {
             "lti13_platform_private:textarea:hidden=true:label=bl_lti13_platform_private:maxlength=1M:role=admin",
             "lti13_settings:textarea:hidden=true:maxlength=1M:role=admin",
 
-            // These two are for situations where there is no keyset url for the tool which
-            // hopefully will happen less and less often
-            "lti13_legacy_key:header:fields=lti13_tool_public,lti13_tool_private",
-            "lti13_tool_public:textarea:hide=insert:label=bl_lti13_tool_public:maxlength=1M:role=admin",
-            "lti13_tool_private:textarea:hide=insert:label=bl_lti13_tool_private:maxlength=1M:role=admin",
-
             // TODO: This is purely legacy and can be removed after this is 21-only - SAK-43709
             // we don't even need to remove the column during 21-upgrade - it was never used
             "lti13_tool_kid:text:hidden=true:label=bl_lti13_tool_kid:maxlength=1024:role=admin",
@@ -287,10 +281,7 @@ public interface LTIService extends LTISubstitutionsFilter {
     // LTI 1.3
     String LTI13 = "lti13";
     String LTI13_CLIENT_ID = "lti13_client_id";
-    String LTI13_TOOL_KID = "lti13_tool_kid";
     String LTI13_TOOL_KEYSET = "lti13_tool_keyset";
-    String LTI13_TOOL_PUBLIC = "lti13_tool_public";
-    String LTI13_TOOL_PRIVATE = "lti13_tool_private";
     String LTI13_PLATFORM_PUBLIC = "lti13_platform_public";
     String LTI13_PLATFORM_PRIVATE = "lti13_platform_private";
     String LTI13_OIDC_ENDPOINT = "lti13_oidc_endpoint";
