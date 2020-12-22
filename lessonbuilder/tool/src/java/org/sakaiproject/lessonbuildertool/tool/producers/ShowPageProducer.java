@@ -1289,8 +1289,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		
 			for (SimplePageItem i : itemList) {
 
-				//If the content MULTIMEDIA, type 7, is not released or is hidden will not be rendered on the view
-				if (i.getType() == SimplePageItem.MULTIMEDIA) {
+				// If the content is MULTIMEDIA (type 7) and the sakaiId is populated, then this is
+				// a Sakai content reference. We can then check if it's available to the current user
+				if (i.getType() == SimplePageItem.MULTIMEDIA && StringUtils.isNotBlank(i.getSakaiId())) {
 				    if (!contentHostingService.isAvailable(String.valueOf(i.getSakaiId()))) {
 				        continue;
 				    }
