@@ -342,7 +342,7 @@ public class MembershipManagerImpl implements MembershipManager {
 				try {
 					User user = userDirectoryService.getUser(userId);
 					String name = user.getSortName();
-					if (serverConfigurationService.getBoolean("msg.displayEid", true)) {
+					if (1 == 1) {
 						name = name + " (" + user.getDisplayId() + ")";
 					}
 					MembershipItem memberItem = MembershipItem.makeMembershipItem(
