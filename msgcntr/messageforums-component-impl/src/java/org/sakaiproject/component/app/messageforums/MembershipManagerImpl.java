@@ -67,12 +67,11 @@ public class MembershipManagerImpl implements MembershipManager {
   @Setter private UserDirectoryService userDirectoryService;
 
   private static final String MESSAGECENTER_BUNDLE = "org.sakaiproject.api.app.messagecenter.bundle.Messages";
-  private ResourceLoader rl;
+  private ResourceLoader rl = new ResourceLoader(MESSAGECENTER_BUNDLE);
   
 
   public void init() {
      log.info("init()");
-     rl  = new ResourceLoader(MESSAGECENTER_BUNDLE);
   }
 
   /**
