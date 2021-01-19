@@ -56,11 +56,19 @@ public abstract class AttributeMappingConstants {
 	 * name of a user entry's surname attribute
 	 */
 	public static final String LAST_NAME_ATTR_MAPPING_KEY = "lastName";
+
+  /** Custom LUC **/
+	public static final String PREFERRED_LAST_NAME_ATTR_MAPPING_KEY = "preferredLastName";
 	
 	/** Key into {@link #DEFAULT_ATTR_MAPPINGS} representing the logical
 	 * name of a user entry's email attribute
 	 */
 	public static final String EMAIL_ATTR_MAPPING_KEY = "email";
+	
+	/** Key into {@link #DEFAULT_ATTR_MAPPINGS} representing the logical
+	 * name of a user entry's ALTERNATE email attribute
+	 */
+	public static final String ALTEMAIL_ATTR_MAPPING_KEY = "altEmail";
 	
 	/** Key into {@link #DEFAULT_ATTR_MAPPINGS} representing the logical
 	 * name of a user entry's group membership attribute
@@ -102,6 +110,11 @@ public abstract class AttributeMappingConstants {
 	public static final String DEFAULT_EMAIL_ATTR = "email";
 	
 	/** Default value in {@link #DEFAULT_ATTR_MAPPINGS} representing
+	 * the physical name of a user entry's ALTERNATE email attribute
+	 */
+	public static final String DEFAULT_ALTEMAIL_ATTR = "altEmail";
+	
+	/** Default value in {@link #DEFAULT_ATTR_MAPPINGS} representing
 	 * the physical name of a user entry's group membership attribute
 	 */
 	public static final String DEFAULT_GROUP_MEMBERSHIP_ATTR = "groupMembership";
@@ -121,7 +134,11 @@ public abstract class AttributeMappingConstants {
 		DEFAULT_ATTR_MAPPINGS.put(PREFERRED_FIRST_NAME_ATTR_MAPPING_KEY, DEFAULT_PREFERRED_FIRST_NAME_ATTR);
 		DEFAULT_ATTR_MAPPINGS.put(LAST_NAME_ATTR_MAPPING_KEY, DEFAULT_LAST_NAME_ATTR);
 		DEFAULT_ATTR_MAPPINGS.put(EMAIL_ATTR_MAPPING_KEY, DEFAULT_EMAIL_ATTR);
+		DEFAULT_ATTR_MAPPINGS.put(ALTEMAIL_ATTR_MAPPING_KEY, DEFAULT_ALTEMAIL_ATTR);
 		DEFAULT_ATTR_MAPPINGS.put(GROUP_MEMBERSHIP_ATTR_MAPPING_KEY, DEFAULT_GROUP_MEMBERSHIP_ATTR);
+		// EST-3 LUC immutable ID customization
+		DEFAULT_ATTR_MAPPINGS.put("employeeNumber", "employeeNumber");
+		
 		
 	}
 	
