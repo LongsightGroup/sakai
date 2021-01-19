@@ -156,7 +156,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 			attributeMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
 		MessageFormat valueFormat = valueMappings.get(AttributeMappingConstants.LOGIN_ATTR_MAPPING_KEY);
 		if (valueFormat == null) {
-			return eidAttr + "=" + escapeSearchFilterTerm(eid);
+			return "(&(objectClass=user)(" + eidAttr + "=" + escapeSearchFilterTerm(eid) + "))";
 		} else {
 			valueFormat = (MessageFormat) valueFormat.clone();
 			return eidAttr + "=" + escapeSearchFilterTerm(valueFormat.format(new Object[]{eid}));
@@ -166,7 +166,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 	public String getFindUserByAidFilter(String aid) {
 		String eidAttr = 
 			attributeMappings.get(AttributeMappingConstants.AUTHENTICATION_ATTR_MAPPING_KEY);
-		return eidAttr + "=" + escapeSearchFilterTerm(aid);
+		return "(&(objectClass=user)(" + eidAttr + "=" + escapeSearchFilterTerm(aid) + "))";
 	}
 
 	/**
@@ -205,6 +205,9 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
         
         //enforce use of firstNamePreferred if its set
         userData.setFirstName(usePreferredFirstName(userData));
+
+        //enforce use of lastNamePreferred if its set
+        userData.setLastName(usePreferredLastName(userData));
         
         // calculating a user's "type" potentially involves calculations
         // against the entire LDAPEntry
@@ -302,10 +305,27 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
             log.debug("mapLdapAttributeOntoUserData() mapping attribute to User.lastName: [logical attr name = {}][physical attr name = {}][value = {}]",
                 logicalAttrName, attribute.getName(), attrValue);
             userData.setLastName(attrValue);
-        } else if ( logicalAttrName.equals(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY) ) {
+        } else if ( logicalAttrName.equals(AttributeMappingConstants.PREFERRED_LAST_NAME_ATTR_MAPPING_KEY) ) {
+            	log.debug("mapLdapAttributeOntoUserData() mapping attribute to User.lastNamePreferred: " +
+            			"[logical attr name = " + logicalAttrName + 
+            			"][physical attr name = " + attribute.getName() + 
+            			"][value = " + attrValue + "]");
+        	userData.setPreferredLastName(attrValue);
+        } else if ( logicalAttrName.equals(AttributeMappingConstants.EMAIL_ATTR_MAPPING_KEY) && StringUtils.isNotEmpty(attrValue) ) {
             log.debug("mapLdapAttributeOntoUserData() mapping attribute to User.email: [logical attr name = {}][physical attr name = {}][value = {}]",
                 logicalAttrName, attribute.getName(), attrValue);
             userData.setEmail(attrValue);
+        } else if ( logicalAttrName.equals(AttributeMappingConstants.ALTEMAIL_ATTR_MAPPING_KEY) && StringUtils.isNotEmpty(attrValue) ) {
+                if (StringUtils.isNotBlank (userData.getEmail())) {
+        		        log.debug("mapLdapAttributeOntoUserData() NOT mapping alternate email attribute (" + attrValue + ") because User.email already set.");
+                }
+                else {
+        		        log.debug("mapLdapAttributeOntoUserData() mapping alternate email attribute to User.email: " +
+        				"[logical attr name = " + logicalAttrName + 
+        				"][physical attr name = " + attribute.getName() + 
+        				"][value = " + attrValue + "]");
+                        userData.setEmail(attrValue);
+        	}
         } else if ( logicalAttrName.equals(AttributeMappingConstants.DISPLAY_ID_ATTR_MAPPING_KEY) ) {
             log.debug("mapLdapAttributeOntoUserData() mapping attribute to User display Id: logical attr name = {}][physical attr name = {}][value = {}]",
                 logicalAttrName, attribute.getName(), attrValue);
@@ -526,6 +546,20 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 		} else {
 			 log.debug("usePreferredFirstName() using firstName.");
 			return userData.getFirstName();
+		}
+	}
+
+	protected String usePreferredLastName(LdapUserData userData) {
+		if(StringUtils.isNotBlank(userData.getPreferredLastName())) {
+			 if (log.isDebugEnabled()) {
+				 log.debug("usePreferredLastName() using lastNamePreferred.");
+			 }
+			return userData.getPreferredLastName();
+		} else {
+			 if (log.isDebugEnabled()) {
+				 log.debug("usePreferredLastName() using lastName.");
+			 }
+			return userData.getLastName();
 		}
 	}
 	
