@@ -35,7 +35,13 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.db.api.SqlService;
+import org.sakaiproject.email.api.EmailService;
+import org.sakaiproject.memory.api.Cache;
+import org.sakaiproject.memory.api.MemoryService;
 
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.user.api.AuthenticationIdUDP;
@@ -184,6 +190,13 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 	 */
 	private Map<String,String> attributeMappings;
 
+	private MemoryService memoryService;
+	
+	// EST-3 LUC immutable id customization
+	private SqlService sqlService;
+	private EmailService emailService;
+	private ServerConfigurationService serverConfigurationService;
+	
 	/** Handles LDAPConnection allocation */
 	private LDAPConnectionPool connectionPool;
 
@@ -433,14 +446,54 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			log.debug("authenticateUser(): attempting to allocate bound connection [userLogin = {}][bind dn [{}]", userLogin, endUserDN);
 			
 			lc = connectionPool.getConnection();
+
 			BindResult bindResult = lc.bind(endUserDN, password);
-			if(bindResult.getResultCode().equals(ResultCode.SUCCESS)) {
-				log.info("Authenticated {} ({}) from LDAP in {} ms", userLogin, endUserDN, System.currentTimeMillis() - start);
-				return true;
+			if(!bindResult.getResultCode().equals(ResultCode.SUCCESS)) {
+				log.info("authenticateUser(): unsuccessfull bind attempt [userLogin = {}][bind dn [{}]", userLogin, endUserDN);
+				return false;
 			}
 
-			log.debug("authenticateUser(): unsuccessfull bind attempt [userLogin = {}][bind dn [{}]", userLogin, endUserDN);
-			return false;
+			// EST-3 make sure the LUC user hasn't changed their username
+			String[] ldapAttrs = {"employeeNumber"};
+			LdapUserData resolvedEntry = (LdapUserData)searchDirectoryForSingleEntry("samaccountname=" + userLogin, null, ldapAttrs, null);
+			String employeeNumber = null;
+			try {
+				employeeNumber = resolvedEntry.getProperties().getProperty("employeeNumber");
+			} catch (Exception e) {
+				log.debug("Unboundid could not fetch employeeNumber for user: " + userLogin);
+			}
+            
+			if (StringUtils.isBlank(employeeNumber)) {
+				log.warn("Unboundid could not find employeeNumber of eid " + userLogin);
+			}
+			else {
+				Object[] fields = {employeeNumber};
+				List<String> previousEids = sqlService.dbRead("select eid from jldap_immutable where immutable_id = ?", fields, null);
+				if (!previousEids.isEmpty()) {
+					String previousEid = previousEids.get(0);
+					
+					if (!StringUtils.equals(previousEid, userLogin)) {
+						String emailBody = "Request to change " + previousEid + " to " + userLogin + " in Sakai.";
+						String fromStr = serverConfigurationService.getString("support.email","help@"+ serverConfigurationService.getServerUrl());
+						String toStr = serverConfigurationService.getString("luc.eid.change.email", "sakai@luc.edu");
+						String subject = serverConfigurationService.getString("luc.eid.change.subject", "LUC Sakai EID Change");
+						emailService.send(fromStr, toStr, subject, emailBody, null, null, null);
+						log.warn("Unboundid LUC EID change: " + emailBody);
+						return false;
+					}
+				}
+				else {
+					String insertImmutableSql = "insert into jldap_immutable (immutable_id, eid) VALUES (?,?)";
+					Object insertFields[] = new Object[2];
+					insertFields[0] = employeeNumber;
+					insertFields[1] = userLogin;
+					sqlService.dbWrite(insertImmutableSql, insertFields);
+					log.info("Unboundid added immutable id (" + employeeNumber + ") for eid " + userLogin);
+				}
+			}
+
+			log.info("Authenticated {} ({}) from LDAP in {} ms", userLogin, endUserDN, System.currentTimeMillis() - start);
+			return true;
 		}
 		catch (com.unboundid.ldap.sdk.LDAPException e)
 		{
@@ -1437,6 +1490,39 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			default :
 				throw new IllegalArgumentException("Invalid search scope [" + searchScope +"]");
 		}
+	}
+
+ 	public MemoryService getMemoryService() {
+ 		return memoryService;
+ 	}
+
+ 	public void setMemoryService(MemoryService memoryService) {
+ 		this.memoryService = memoryService;
+ 	}
+
+ 	// EST-3 custom for LUC immutable id checking
+ 	public SqlService getSqlService() {
+ 		return sqlService;
+ 	}
+
+ 	public void setSqlService(SqlService sqlService) {
+ 		this.sqlService = sqlService;
+ 	}
+
+ 	public EmailService getEmailService() {
+ 		return emailService;
+ 	}
+
+ 	public void setEmailService(EmailService emailService) {
+ 		this.emailService = emailService;
+ 	}
+
+ 	public ServerConfigurationService getServerConfigurationService() {
+ 		return serverConfigurationService;
+ 	}
+
+ 	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
+ 		this.serverConfigurationService = serverConfigurationService;
 	}
 
 	/** 
