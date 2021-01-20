@@ -48,12 +48,16 @@ $button-color-background-secondary-color:			#2681B5 !default;
 $button-primary-background-color:        			#0e4220 !default;
 $button-primary-text-color: 		 			#FFFFFF !default;
 $button-primary-hover-text-color:                   		$button-color-text-color;
-$button-primary-hover-background-color:             		$button-color-background-color !default;
+$button-primary-hover-background:             		$button-color-background-color !default;
 $button-primary-hover-border-color:                 		$primary-color;
 // Secondary Buttons
 $button-secondary-icon-color:                                   $button-primary-text-color;
 $button-secondary-text-color:                                   $button-primary-text-color;
 $button-secondary-background-color:                             $button-primary-background-color;
+
+$button-primary-active-text-color:          $button-primary-text-color;
+$button-primary-active-background:          $button-primary-hover-background;
+$button-primary-active-border-color:        $button-primary-hover-border-color;
 
 // Link , Edit, Help Buttons
 $button-secondary-background-color:            			#E6E6E6 !default;
@@ -118,4 +122,13 @@ $warn-background-color:     					#FCF8E3 !default;
 
 #toolMenuWrap .img_site_toolmenu {
     display: none;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #0e4220 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #0e4220 !important;
+    }
 }

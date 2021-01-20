@@ -1,32 +1,33 @@
-$skin-name : "westliberty" !default; // This is used for bootstrap font behaviour.
+$skin-name : "syseng-pd21" !default; // This is used for bootstrap font behaviour.
 
 /* Logo location */
-$logo:                                                          '../images/westliberty.png';
-$logo-height:                                                   80px;
-$logo-width:                                                    295px;
+$logo:                                                          '../images/nps-syseng-pd21.png';
+$logo-height:                                                   60px;
+$logo-width:                                                    542px;
 
-$banner-height:					       85px;
+$banner-height:					       60px;
 
 // Base Colors
-$primary-color:         				#202224;
-$top-header-background: 				#202224;
-$sites-nav-background: 					#f7ce55;
+$primary-color:         				#00447c;
+$top-header-background: 				#00447c;
+$sites-nav-background: 					#FFF;
 $topNav-text-color:					#FFF;
 $text-color:						#000;
-$lessons-item-border-top:				#FAFAFA;
+$become-user-primary:					#CCC;
+$lessons-column-border: 				1px solid #ededed;
 
-$tool-tab-active-highlight-color:			#f7ce55;
+$tool-tab-active-highlight-color:			#00447c;
 
 // Sites Navigation
-$sites-nav-menu-item-background: 			#f7ce55;
+$sites-nav-menu-item-background: 			#ebebeb;
 $sites-nav-menu-item-color: 				#000;
-$sites-nav-menu-item-hover-background: 			#FAE299;
+$sites-nav-menu-item-hover-background: 			#d1d1d1;
 $sites-nav-menu-item-hover-color: 			#000;
 	
-$sites-nav-menu-item-selected-background: 		#000;
+$sites-nav-menu-item-selected-background: 		#00447c;
 $sites-nav-menu-item-selected-color:        		#FFF;
-$sites-nav-menu-item-selected-border-color: 		#FFF;
-$sites-nav-menu-item-selected-hover-background: 	#7F7F7F;
+$sites-nav-menu-item-selected-border-color: 		#00447c;
+$sites-nav-menu-item-selected-hover-background: 	#668EB0;
 
 
 // Tool Menu
@@ -36,7 +37,7 @@ $tool-menu-item-text-color:                    		#000;
 
 $tool-menu-item-selected-text-color:                    #FFF;
 $tool-menu-item-selected-icon-color:                    #FFF;
-$tool-menu-item-selected-background-color:              #000;
+$tool-menu-item-selected-background-color:              #00447c;
 
 /* Tool sub menu */
 $tool-sub-menu-border-color: 				#fff;
@@ -56,8 +57,8 @@ $tool-lessons-subpage-menu-expanded-background-color: $tool-menu-item-background
 
 // Button Hover
 $button-primary-hover-background:           		#FFF;
-$button-primary-hover-border-color:         		#202224;
-$button-primary-hover-text-color:      			#202224;
+$button-primary-hover-border-color:         		#00447c;
+$button-primary-hover-text-color:      			#00447c;
 
 // Links
 $link-color:                                            #2a94c0 !default;
@@ -68,25 +69,18 @@ $link-hover-color:                                      #4e5192 !default;
 
 @media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
-	color: #202224 !important;
-    }
-    .Mrphs-siteHierarchy a {
-	color: #202224 !important;
+	color: #00447c !important;
     }
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-	color: #202224 !important;
+	color: #00447c !important;
     }
-}
-
-#linkNav ul li.Mrphs-sitesNav__menuitem {
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-    border-right: 1px solid #000;
-    border-left: 1px solid #000;
-}
-
-#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
-    border: 1px solid #000;
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+	width: 250px !important;
+	background-size: 250px 28px !important;
+    }
+    #mastLogin {
+	width: calc(100% - 250px) !important;
+    }
 }
 
 #toolMenuWrap .img_site_toolmenu {
@@ -95,10 +89,8 @@ $link-hover-color:                                      #4e5192 !default;
 
 .bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
     background-color: #FAFAFA !important;
-    border-color: #202224 !important;
-    border-left-color: #202224 !important;
+    border-color: #00447c !important;
+    border-left-color: #00447c !important;
 }
 
-.Mrphs-siteStatus.is-unpublished {
-    display: none !important;
-}
+

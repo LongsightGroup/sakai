@@ -98,3 +98,18 @@ $link-hover-color:                                      #4e5192 !default;
     font-size: 14px;
     background-color: #FFF !important;
 }
+
+.fullTitle.walshUnpublishedSite {
+    padding: 8px 0px 8px 30px;
+    color: #666;
+}
+
+.checklistDiv {
+    max-width: 100% !important;
+}
+
+.bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
+    background-color: #FAFAFA !important;
+    border-color: #770124 !important;
+    border-left-color: #770124 !important;
+}
