@@ -80,6 +80,13 @@ public class MyNamePronunciationEdit extends Panel {
         }
         form.add(editWarning);
 
+        WebMarkupContainer pronounsContainer = new WebMarkupContainer("pronounsContainer");
+        pronounsContainer.add(new Label("pronounsLabel", new ResourceModel("profile.pronouns")));
+        TextField pronouns = new TextField("pronouns", new PropertyModel(userProfile, "pronouns"));
+        pronouns.setOutputMarkupId(true);
+        pronounsContainer.add(pronouns);
+        form.add(pronounsContainer);
+
         //phoneticPronunciation
         WebMarkupContainer phoneticContainer = new WebMarkupContainer("phoneticContainer");
         phoneticContainer.add(new Label("phoneticLabel", new ResourceModel("profile.phonetic")));
@@ -235,6 +242,8 @@ public class MyNamePronunciationEdit extends Panel {
         //get userId from the UserProfile (because admin could be editing), then get existing SakaiPerson for that userId
         String userId = userProfile.getUserUuid();
         SakaiPerson sakaiPerson = sakaiProxy.getSakaiPerson(userId);
+
+        sakaiPerson.setPronouns(userProfile.getPronouns());
 
         sakaiPerson.setPhoneticPronunciation(userProfile.getPhoneticPronunciation());
         if (audioBase64.getDefaultModelObject() != null) {
