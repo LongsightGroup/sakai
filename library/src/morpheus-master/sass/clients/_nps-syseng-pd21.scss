@@ -1,7 +1,7 @@
 $skin-name : "syseng-pd21" !default; // This is used for bootstrap font behaviour.
 
 /* Logo location */
-$logo:                                                          '../images/nps-syseng-pd21.png';
+$logo:                                                          '../images/nps-syseng-pd21.svg';
 $logo-height:                                                   60px;
 $logo-width:                                                    542px;
 
@@ -78,6 +78,9 @@ $link-hover-color:                                      #4e5192 !default;
 	width: 250px !important;
 	background-size: 250px 28px !important;
     }
+    .Mrphs-mainHeader .Mrphs-headerLogo {
+        background: url(../images/nps-syseng.svg) no-repeat no-repeat #00447c !important;
+    }
     #mastLogin {
 	width: calc(100% - 250px) !important;
     }
@@ -94,3 +97,10 @@ $link-hover-color:                                      #4e5192 !default;
 }
 
 
+.Mrphs-mainHeader .Mrphs-headerLogo {
+    background: url(../images/nps-syseng-pd21.svg) no-repeat no-repeat #00447c !important;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    background: transparent !important;
+}

@@ -1,7 +1,7 @@
 $skin-name : "syseng" !default; // This is used for bootstrap font behaviour.
 
 /* Logo location */
-$logo:                                                          '../images/nps-syseng.png';
+$logo:                                                          '../images/nps-syseng.svg';
 $logo-height:                                                   60px;
 $logo-width:                                                    542px;
 
@@ -93,4 +93,10 @@ $link-hover-color:                                      #4e5192 !default;
     border-left-color: #00447c !important;
 }
 
+.Mrphs-mainHeader .Mrphs-headerLogo {
+    background: url(../images/nps-syseng.svg) no-repeat no-repeat #00447c !important;
+}
 
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    background: transparent !important;
+}

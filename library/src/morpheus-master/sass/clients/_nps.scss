@@ -88,6 +88,10 @@ $tool-menu-item-selected-text-color:            	#FFF !default;
 $tool-menu-item-selected-icon-color:            	#FFF !default;
 $tool-menu-item-selected-border-left:           	4px solid #35434c !default;
 // submenu
+/* Tool menu - lessons subpage menu enabled - top level pages */
+$tool-lessons-toplevel-menu-selected-background-color: $tool-menu-item-selected-background-color;
+$tool-lessons-toplevel-menu-expanded-background-color: $tool-menu-item-background-color;
+$tool-lessons-toplevel-menu-expanded-selected-background-color: $tool-menu-item-selected-background-color;
 $tool-sub-menu-hover-color:				#FFF !default;
 // selected hover
 $tool-menu-item-selected-hover-text-color:      	#FFF !default;
@@ -99,7 +103,36 @@ $tool-menu-collapse-active-hover-background-color:      #35434c !default;
 $tool-menu-collapse-active-text-color:                  #35434c !default;
 $tool-sub-menu-hover-color:				#FFF; 
 
+// Button Hover
+$button-primary-hover-background:                       #FFF;
+$button-primary-hover-border-color:                     #536573;
+$button-primary-hover-text-color:                       #536573;
+
+
 // info message colors
 $info-background-color:   				#efefef;
 
 $calendar-event-text-color:				#000;
+
+#Mrphs-xlogin .logo, #Mrphs-choice .logo {
+    background-size: 403px 59px !important;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #2a94c0 !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 223px !important;
+        background-size: 223px 30px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 223px) !important;
+    }    
+}

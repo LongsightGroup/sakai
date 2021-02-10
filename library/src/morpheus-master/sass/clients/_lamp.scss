@@ -8,7 +8,7 @@ $logo-width:                                                    354px;
 $banner-height:					       80px;
 
 // Base Colors
-$primary-color:         				#19AFEF;
+$primary-color:         				#0A0D7A;
 $top-header-background: 				#19AFEF;
 $sites-nav-background: 					#FFF;
 $topNav-text-color:					#000;
@@ -61,8 +61,8 @@ $button-primary-hover-border-color:         		#00aaee;
 $button-primary-hover-text-color:      			#00aaee;
 
 // Links
-$link-color:                                            #2a94c0 !default;
-$link-active-color:                                     #2a94c0 !default;
+$link-color:                                            #0A0D7A !default;
+$link-active-color:                                     #0A0D7A !default;
 $link-hover-color:                                      #4e5192 !default;
 
 //CUSTOM CSS OVERRIDES
@@ -90,4 +90,9 @@ $link-hover-color:                                      #4e5192 !default;
     background: #fff url(/library/skin/images/lamp.png) no-repeat center center;
     height: 80px;
     background-size: 354px 80px;
+}
+
+#Mrphs-xlogin .logo, #Mrphs-choice .logo { 
+    background-size: 286px 56px !important;
+    height: 60px !important;
 }
