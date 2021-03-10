@@ -66,7 +66,6 @@ public class UserProfile implements Serializable {
 	private String publications;
 	private String businessBiography;
 	private String phoneticPronunciation;
-	private String pronouns;
 	
 	private boolean locked;
 	
