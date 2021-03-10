@@ -1381,7 +1381,3 @@ button.ui-datepicker-trigger .fa.fa-calendar{
 input[type="submit"].secondary {
     color: #555 !important
 }
-
-#pronouns-input {
-    display: none;
-}
