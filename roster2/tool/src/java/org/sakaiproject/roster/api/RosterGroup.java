@@ -36,17 +36,23 @@ package org.sakaiproject.roster.api;
 
 import java.util.List;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 /**
  * Container for a group.
  * 
  * @author d.b.robinson@lancaster.ac.uk
  */
-@Data
+@RequiredArgsConstructor
 public class RosterGroup {
 
+	@Getter
 	private final String id;
+	@Getter @Setter
 	private String title;
+	@Getter @Setter
 	private List<String> userIds;	
+	
 }

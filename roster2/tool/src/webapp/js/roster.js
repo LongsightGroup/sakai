@@ -274,29 +274,26 @@ roster.renderGroupMembership = function (groupId) {
 
 roster.renderMembership = function (options) {
 
-  const enrollmentsMode = roster.currentState === roster.STATE_ENROLLMENT_STATUS;
+  var enrollmentsMode = roster.currentState === roster.STATE_ENROLLMENT_STATUS;
 
   if (options.replace) {
     $('#roster-members').empty();
     roster.nextPage = 0;
 
-    if (options.mode !== "cards") {
-      // Render the table header
-      roster.render('members_header', {
-        viewEmail: roster.viewEmail,
-        viewUserDisplayId: roster.viewUserDisplayId,
-        viewPronouns: roster.viewPronouns,
-        viewUserNamePronunciation: roster.viewUserNamePronunciation,
-        viewUserProperty: roster.viewUserProperty,
-        viewProfile: roster.currentUserPermissions.viewProfile,
-        viewGroup : roster.currentUserPermissions.viewGroup,
-        viewPicture: true,
-        viewSiteVisits: roster.currentUserPermissions.viewSiteVisits,
-        viewConnections: ((undefined !== window.friendStatus) && roster.viewConnections),
-        enrollmentsMode: enrollmentsMode,
-        showVisits: roster.showVisits,
-        }, 'roster-members-content');
-    }
+    // Render the table header
+    roster.render('members_header', {
+      viewEmail: roster.viewEmail,
+      viewUserDisplayId: roster.viewUserDisplayId,
+      viewUserNamePronunciation: roster.viewUserNamePronunciation,
+      viewUserProperty: roster.viewUserProperty,
+      viewProfile: roster.currentUserPermissions.viewProfile,
+      viewGroup : roster.currentUserPermissions.viewGroup,
+      viewPicture: true,
+      viewSiteVisits: roster.currentUserPermissions.viewSiteVisits,
+      viewConnections: ((undefined !== window.friendStatus) && roster.viewConnections),
+      enrollmentsMode: enrollmentsMode,
+      showVisits: roster.showVisits,
+      }, 'roster-members-content');
 
     $(window).off('scroll.roster');
   }
@@ -306,7 +303,7 @@ roster.renderMembership = function (options) {
     $(window).off('scroll.roster');
   }
 
-  let url = "/direct/roster-membership/" + roster.siteId;
+  var url = "/direct/roster-membership/" + roster.siteId;
 
   if (options.userIds) {
     url += "/get-users.json?userIds=" + options.userIds.join(',');
@@ -340,7 +337,7 @@ roster.renderMembership = function (options) {
     roster.calculatePageSizes();
   }
 
-  if (roster.currentLayout === "cards") {
+  if ($('#roster_content').hasClass('view_mode_cards')) {
     roster.pageSize = roster.cardsPageSize;
   } else if ($('#roster_content').hasClass('view_mode_photogrid')) {
     roster.pageSize = roster.gridPageSize;
@@ -405,8 +402,6 @@ roster.renderMembership = function (options) {
             m.formattedLastVisitTime = roster.i18n.no_visits_yet;
           }
         }
-
-        m.hasProperties = m.userProperties && Object.keys(m.userProperties).length > 0;
       });
 
       roster.renderMembers(members, $('#roster-members'), enrollmentsMode);
@@ -550,7 +545,7 @@ roster.readySearchField = function () {
   });
 };
 
-roster.renderMembers = function (members, target, enrollmentsMode, renderAll, options) {
+roster.renderMembers = function (members, target, enrollmentsMode, renderAll) {
 
   var templateData = {
           members: members,
@@ -558,7 +553,6 @@ roster.renderMembers = function (members, target, enrollmentsMode, renderAll, op
           firstNameLastName: roster.firstNameLastName,
           viewEmail: roster.viewEmail,
           viewUserDisplayId: roster.viewUserDisplayId,
-          viewPronouns: roster.viewPronouns,
           viewUserNamePronunciation: roster.viewUserNamePronunciation,
           viewUserProperty: roster.viewUserProperty,
           viewProfile: roster.currentUserPermissions.viewProfile,
@@ -576,41 +570,41 @@ roster.renderMembers = function (members, target, enrollmentsMode, renderAll, op
   if (!renderAll) {
       $(window).off('scroll.roster.rendered').on('scroll.roster.rendered', roster.checkScroll);
   }
-  const t = roster.currentLayout === "cards" ? Handlebars.templates['members_cardview'] : Handlebars.templates['members'];
+  var t = Handlebars.templates['members'];
   target.append(t(templateData, {helpers: roster.helpers}));
   if (!renderAll) {
       $(window).trigger('scroll.roster.rendered');
   }
 
-  //Associate the members audio with start and stop actions
-  var $allAudioElem = $('.audioPlayer');
-  $.each(members, function(index, member) {
-
-    const audioId = '#audio-' + member.userId;
-    var $audioPlayer = $('.nameAudioPlayer[data-user-id="' + member.userId + '"]');
-    var audioElem = $(audioId)[0];
-    if (audioElem !== undefined) {
-      $audioPlayer.click(function() {
-        var audioElem = $('#audio-'+$(this).data('userId'))[0];
-        if (audioElem.paused) {
-          $allAudioElem.each(function() {
-            this.pause();
-            this.currentTime = 0;
-            $('.nameAudioPlayer').removeClass('playing');
-          });
-          audioElem.play();
-          $audioPlayer.addClass('playing');
-        } else {
-          audioElem.pause();
-          audioElem.currentTime = 0;
-          $audioPlayer.removeClass('playing');
-        }
-      });
-      audioElem.addEventListener('ended', function(e) {
+//Associate the members audio with start and stop actions
+var $allAudioElem = $('.audioPlayer');
+$.each(members, function(index, member) {
+  var audioId = '#audio-' + member.userId;
+  var $audioPlayer = $('.nameAudioPlayer[data-user-id="'+member.userId+'"]');
+  var audioElem = $(audioId)[0];
+  if (audioElem !== undefined) {
+    $audioPlayer.click(function() {
+      var audioElem = $('#audio-'+$(this).data('userId'))[0];
+      if (audioElem.paused) {
+        $allAudioElem.each(function() {
+          this.pause();
+          this.currentTime = 0;
+          $('.nameAudioPlayer').removeClass('playing');
+        });
+        audioElem.play();
+        $audioPlayer.addClass('playing');
+      } else {
+        audioElem.pause();
+        audioElem.currentTime = 0;
         $audioPlayer.removeClass('playing');
-      }, false);
-    }
-  });
+      }
+    });
+    audioElem.addEventListener('ended', function(e) {
+      $audioPlayer.removeClass('playing');
+    }, false);
+  }
+});
+
 };
 
 roster.getScrollFunction = function (options) {
@@ -697,9 +691,7 @@ roster.clickViewCardRadio = function (render) {
   $('#roster_hide_options').hide();
 
   $('#roster_content').removeClass('view_mode_spreadsheet view_mode_photogrid');
-  //$('#roster_content').addClass('view_mode_cards');
-
-  roster.currentLayout = "cards";
+  $('#roster_content').addClass('view_mode_cards');
 
   // Re-render table with dynamic page size for card view
   if (render) {
@@ -721,9 +713,6 @@ roster.clickViewSpreadsheetRadio = function() {
 
   $('#roster_content').removeClass('view_mode_cards view_mode_photogrid');
   $('#roster_content').addClass('view_mode_spreadsheet');
-
-  roster.currentLayout = "spreadsheet";
-  roster.renderMembership({ replace: true });
   roster.checkScroll();
 };
 
@@ -741,8 +730,6 @@ roster.clickViewPhotogridRadio = function() {
 
   $('#roster_content').removeClass('view_mode_cards view_mode_spreadsheet');
   $('#roster_content').addClass('view_mode_photogrid');
-
-  roster.currentLayout = "photogrid";
 
   // Re-render table with dynamic page size for grid view
   roster.renderMembership({ replace: true });
@@ -809,8 +796,6 @@ Handlebars.registerHelper('ifCond', function(v1, v2, options) {
 });
 
 roster.init = function () {
-
-  roster.currentLayout = roster.defaultOverviewMode;
 
   roster.i18n.months = roster.i18n.months.split(',');
 

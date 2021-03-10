@@ -38,7 +38,6 @@
                 firstNameLastName: ${firstNameLastName},
                 hideSingleGroupFilter: ${hideSingleGroupFilter},
                 viewUserDisplayId: ${viewUserDisplayId},
-                viewPronouns: ${viewPronouns},
                 viewUserNamePronunciation: ${viewUserNamePronunciation},
                 viewUserProperty: ${viewUserProperty},
                 officialPictureMode: ${officialPicturesByDefault},

@@ -44,7 +44,6 @@ public class MyNamePronunciationDisplay extends Panel {
         //heading
         add(new Label("heading", new ResourceModel("heading.name.pronunciation")));
 
-        addPronouns();
         addPhoneticPronunciation();
         addNameRecord();
 
@@ -73,18 +72,6 @@ public class MyNamePronunciationDisplay extends Panel {
             noFieldsMessage.setVisible(false);
         }
     }
-
-    private void addPronouns() {
-        WebMarkupContainer pronounsContainer = new WebMarkupContainer("pronounsContainer");
-
-        pronounsContainer.add(new Label("pronounsLabel", new ResourceModel("profile.pronouns")));
-        pronounsContainer.add(new Label("pronouns", ProfileUtils.processHtml(userProfile.getPronouns())).setEscapeModelStrings(false));
-        add(pronounsContainer);
-
-        if (StringUtils.isBlank(userProfile.getPronouns())) pronounsContainer.setVisible(false);
-        else visibleFieldCount++;
-    }
-
 
     private void addPhoneticPronunciation() {
         WebMarkupContainer phoneticPronunciationContainer = new WebMarkupContainer("phoneticPronunciationContainer");

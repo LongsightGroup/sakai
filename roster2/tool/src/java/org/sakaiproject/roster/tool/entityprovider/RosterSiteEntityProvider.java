@@ -39,8 +39,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.sakaiproject.entitybroker.EntityReference;
@@ -85,7 +84,7 @@ public class RosterSiteEntityProvider extends AbstractEntityProvider implements
 	public final static String KEY_ENROLLMENT_STATUS			= "enrollmentStatus";
 	public final static String KEY_PAGE_SIZE					= "pageSize";
 
-    @Resource
+    @Setter
 	private SakaiProxy sakaiProxy;
 	
 	/**
@@ -317,6 +316,23 @@ public class RosterSiteEntityProvider extends AbstractEntityProvider implements
 		}
 		return sakaiProxy.getSearchIndex(siteId, userId, groupId, roleId, enrollmentSetId, enrollmentStatus);
 	}
+
+    /*
+	@EntityCustomAction(action = "get-enrollment", viewKey = EntityView.VIEW_SHOW)
+	public Object getEnrollment(EntityReference reference, Map<String, Object> parameters) {
+		
+		if (null == reference.getId() || DEFAULT_ID.equals(reference.getId())) {
+			throw new EntityException(ERROR_INVALID_SITE, reference.getReference());
+		}
+		
+		String enrollmentSetId = null;
+		if (parameters != null && parameters.containsKey(KEY_ENROLLMENT_SET_ID)) {
+			enrollmentSetId = parameters.get(KEY_ENROLLMENT_SET_ID).toString();
+		}
+		
+		return sakaiProxy.getEnrollmentMembership(reference.getId(), enrollmentSetId, null);
+	}
+    */
 
 	/**
 	 * {@inheritDoc}
