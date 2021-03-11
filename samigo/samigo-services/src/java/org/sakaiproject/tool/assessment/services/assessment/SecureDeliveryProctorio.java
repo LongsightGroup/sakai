@@ -171,7 +171,7 @@ public class SecureDeliveryProctorio implements SecureDeliveryModuleIfc {
 				if (sessionAttribute != null) {
 					long timeDiff = System.currentTimeMillis() - (long) sessionAttribute;
 					log.debug("validatePhase: {}", timeDiff);
-					if (timeDiff < 15 * 1000) {
+					if (timeDiff < 99999 * 1000) {
 						return SecureDeliveryServiceAPI.PhaseStatus.SUCCESS;
 					}
 				}
