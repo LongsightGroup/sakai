@@ -1,0 +1,18 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 213, 68%, 15%);
+
+    --focus-outline-color: hsl(180, 100%, 30%);
+
+    // Logo
+    --logo: url('#{$skin-path}images/nd.png');
+    --logo-height: 41px;
+    --logo-width: 109px;
+}
+
+$skin-name: 'notredame';
+// CUSTOM CSS
+.Mrphs-sakai-profile2 .connection-info-wrap, .Mrphs-sakai-profile2 .search-result-info-wrap {
+    width: 145px !important;
+}

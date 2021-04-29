@@ -1,0 +1,24 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
+
+    --topNav-text-color: hsl(0,0%,0%);
+    --top-header-background: hsl(0, 0%, 79%);
+    --focus-outline-color: hsl(0, 0%, 0%);
+
+    --sites-nav-background: hsl(0,0%,0%);
+    --sites-nav-menu-item-selected-background: hsl(37, 92%, 65%);
+
+    --tool-menu-item-selected-background-color: hsl(37, 92%, 65%);
+    --tool-menu-item-text-color: hsl(0, 0%, 40%);
+    --tool-menu-item-icon-color: hsl(0, 0%, 40%);
+
+
+    // Logo
+    --logo: url('#{$skin-path}images/providence.svg');
+    --logo-height: 50px;
+    --logo-width: 175px;
+}
+
+$skin-name: "providence" !default;

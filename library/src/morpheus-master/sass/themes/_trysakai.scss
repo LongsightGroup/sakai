@@ -41,7 +41,7 @@
     /////////////////////////////////////////////////////////////
 
     // Logo
-    --logo: url('../images/trysakai.png');
+    --logo: url('#{$skin-path}images/trysakai.png');
     --logo-height: 40px;
     --logo-width: 298px;
     //--logo: url('images/logo-jewel.png');
@@ -524,3 +524,4 @@
 $table-bg-accent: var(--sakai-background-color-2);
 $sakai-table-bg-hover: var(--sakai-background-color-2);
 $table-border-color: var(--sakai-border-color);
+$skin-name: 'trysakai';

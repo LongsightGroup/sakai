@@ -251,6 +251,7 @@ $header-font-family: $font-family !default;
 $header-font-weight: 700 !default;										// 400 or 700 as you wish
 
 $skin-name : "morpheus-default" !default; // This is used for bootstrap font behaviour.
+$skin-path: if($skin-name, "/library/skin/" + $skin-name + "/", "");
 
 $sites-nav-submenu-top: -#{$standard-spacing} !default; //fallback to calc( #{$default-font-size} + #{$sites-nav-menu-item-border-thickness})
 
@@ -267,4 +268,8 @@ $active-transition-active: box-shadow 100ms ease-in !default;
     --sakai-course-card-border-radius: $button-radius;
     --sakai-title-bar-font-weight: $button-font-weight;
     --sakai-font-family: #{$font-family};
+}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
 }

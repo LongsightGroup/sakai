@@ -1,0 +1,47 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 225, 48%, 13%);
+    --top-header-background: hsl(0, 0%, 80%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    // Logo
+    --logo: url('/library/sk#{$skin-path}images/tracen.png');
+    --logo-height: 50px;
+    --logo-width: 219px;
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(225, 16%, 30%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(0, 0%, 80%);
+    --sites-nav-menu-item-selected-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-hover-background: hsl(0, 0%, 84%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(0, 0%, 80%);
+    --tool-menu-item-selected-text-color: var(--sakai-brand);
+    --tool-menu-item-selected-icon-color: var(--sakai-brand);
+    --tool-menu-item-selected-hover-background-color: hsl(0, 0%, 84%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid hsl(0, 0%, 100%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid hsl(0, 0%, 80%);
+}
+
+$skin-name: 'trancen';
