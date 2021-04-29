@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 215, 100%, 21%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/johnjay.png');
+    --logo: url(#{$skin-path}images/johnjay.png);
     --logo-height: 80px;
     --logo-width: 112px;
 

@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 221, 100%, 31%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/tennesseewesleyan.png');
+    --logo: url(#{$skin-path}images/tennesseewesleyan.png);
     --logo-height: 50px;
     --logo-width: 249px;
 

@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 217, 100%, 21%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/ohiovalley.png');
+    --logo: url(#{$skin-path}images/ohiovalley.png);
     --logo-height: 52px;
     --logo-width: 208px;
 

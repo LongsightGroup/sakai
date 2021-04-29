@@ -6,7 +6,7 @@
     --focus-outline-color: hsl(180, 100%, 30%);
 
     // Logo
-    --logo: url('#{$skin-path}images/nd.png');
+    --logo: url(#{$skin-path}images/nd.png);
     --logo-height: 41px;
     --logo-width: 109px;
 }

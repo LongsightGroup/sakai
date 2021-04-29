@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 198, 83%, 23%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/lotk.png');
+    --logo: url(#{$skin-path}images/lotk.png);
     --logo-height: 88px;
     --logo-width: 467px;
 

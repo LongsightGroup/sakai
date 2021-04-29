@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 176, 25%, 38%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/kettering.png');
+    --logo: url(#{$skin-path}images/kettering.png);
     --logo-height: 74px;
     --logo-width: 150px;
 

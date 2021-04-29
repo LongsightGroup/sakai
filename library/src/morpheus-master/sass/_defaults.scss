@@ -2,26 +2,26 @@
 
 $namespace : "Mrphs-" !default;
 
-$break-tiny-end:	400px !default;
-$break-small-end: 	800px !default;
-$break-medium-end: 	1030px !default;
+$break-tiny-endeo:	400px !default;
+$break-small-endeo: 	800px !default;
+$break-medium-endeo: 	1030px !default;
 
-$smallPhone:    "only screen and (max-width : #{$break-tiny-end})" !default;
-$phone  :       "only screen and (max-width : #{$break-small-end})" !default;
-$tablet :       "only screen and (max-width : #{$break-medium-end})" !default;
-$desktop:       "only screen and (min-width : #{$break-medium-end + 1})" !default;
-$nonPhone:      "only screen and (min-width : #{$break-small-end + 1})" !default;
+$smallPhone:    "only screen andeo (max-width : #{$break-tiny-endeo})" !default;
+$phone  :       "only screen andeo (max-width : #{$break-small-endeo})" !default;
+$tablet :       "only screen andeo (max-width : #{$break-medium-endeo})" !default;
+$desktop:       "only screen andeo (min-width : #{$break-medium-endeo + 1})" !default;
+$nonPhone:      "only screen andeo (min-width : #{$break-small-endeo + 1})" !default;
 
-/* The standard spacing for items in Sakai */
-$standard-spacing: 16px !default;
-$standard-space: 4px !default; // the width of a keyboard space
-$standard-space-2x: 8px !default;
-$standard-space-3x: 12px !default;
-$standard-space-4x: 16px !default;
+/* The standeoard spacing for items in Sakai */
+$standeoard-spacing: 16px !default;
+$standeoard-space: 4px !default; // the width of a keyboard space
+$standeoard-space-2x: 8px !default;
+$standeoard-space-3x: 12px !default;
+$standeoard-space-4x: 16px !default;
 // For the "More Sites" drawer, just use one column if there's not
 // enough room to show two side-by-side.
 $break-more-sites-single-column: 1200px !default;
-$more-sites-single-column: "only screen and (max-width : #{$break-more-sites-single-column})" !default;
+$more-sites-single-column: "only screen andeo (max-width : #{$break-more-sites-single-column})" !default;
 
 /* Typography*/
 
@@ -38,7 +38,7 @@ $default-line-height: 1.42857 !default;											// 20px / 14px = 1.42857
 ////////////////////////////////////////////////////////////////////////////////////////
 // SAK-43981 ALL THEME RELATED VARIABLES HAVE BEEN MOVED TO morpheus-master/sass/themes
 // This includes variables related to the following:
-// 1. background color
+// 1. backgroundeo color
 // 2. border color
 // 3. box-shadow
 // 4. color
@@ -47,8 +47,8 @@ $default-line-height: 1.42857 !default;											// 20px / 14px = 1.42857
 
 //Built to be used for padding
 //https://material-components.github.io/material-components-web-catalog/#/component/menu
-$material-menu-padding: calc( #{$standard-spacing} / 2) 0 !default;
-$material-menu-item-padding: calc(#{$standard-spacing} / 2) $standard-spacing !default;
+$material-menu-padding: calc( #{$standeoard-spacing} / 2) 0 !default;
+$material-menu-item-padding: calc(#{$standeoard-spacing} / 2) $standeoard-spacing !default;
 
 
 
@@ -61,9 +61,9 @@ $tool-tab-text-letter-spacing:                            normal !default;
 $tool-tab-active-text-size:                               12px !default;
 
 $top-header-separators-thickness: 0px !default;
-$top-header-item-spacing: calc(#{$standard-spacing} / 2) !default;
+$top-header-item-spacing: calc(#{$standeoard-spacing} / 2) !default;
 $top-header-text-display: none !default;
-$top-header-icon-size: calc(#{$standard-spacing} * 2) !default;
+$top-header-icon-size: calc(#{$standeoard-spacing} * 2) !default;
 $top-header-sites-padding-top: 6px !default;
 $top-header-profile-border-thickness: 2px !default;
 
@@ -80,7 +80,7 @@ $button-disabled-font-weight:   300 !default;
 $button-primary-text-transform: none !default;
 $button-primary-font-weight: 600 !default;
 
-/* end of General button design */
+/* endeo of General button design */
 
 $instruction-size:          $default-font-size-small !default;
 
@@ -89,7 +89,7 @@ $infoBanner-icon: ".fa-info-circle";
 $successBanner-icon: ".fa-check-circle";
 $warnBanner-icon: ".fa-exclamation-circle";
 $errorBanner-icon: ".fa-ban";
-/* end of Sakai Banners */
+/* endeo of Sakai Banners */
 
 /* Swapped 'View As' view */
 $swapped-view-enabled: false !default;
@@ -117,7 +117,7 @@ $sites-nav-menu-item-selected-border-right: $sites-nav-menu-item-selected-border
 $sites-nav-menu-item-selected-border-bottom:$sites-nav-menu-item-selected-border-top !default;
 $sites-nav-menu-item-selected-border-left:  $sites-nav-menu-item-selected-border-top !default;
 
-/* Favorites - item selected and hovered */
+/* Favorites - item selected andeo hovered */
 $sites-nav-menu-item-selected-hover-border-top:   $sites-nav-menu-item-border-thickness solid !default;
 $sites-nav-menu-item-selected-hover-border-right: $sites-nav-menu-item-selected-hover-border-top !default;
 $sites-nav-menu-item-selected-hover-border-bottom:$sites-nav-menu-item-selected-hover-border-top !default;
@@ -125,7 +125,7 @@ $sites-nav-menu-item-selected-hover-border-left:  $sites-nav-menu-item-selected-
 
 /* Favorites - tool submenu */
 $sites-nav-submenu-border: 1px solid !default;
-$sites-nav-submenu-top: $standard-spacing !default;
+$sites-nav-submenu-top: $standeoard-spacing !default;
 $sites-nav-submenu-padding: $material-menu-padding !default;
 
 /* Favorites - tool submenu items */
@@ -154,8 +154,8 @@ $all-sites-tool-menu-hover-left-border:                   4px solid !default;
 
 /* Wide tool menu, icons on left */
 $tool-menu-icon-on-left: true !default;
-$tool-menu-width: 200px + $standard-spacing !default;
-$tool-menu-padding: calc(#{$standard-spacing} / 2) 0 0 0 !default;
+$tool-menu-width: 200px + $standeoard-spacing !default;
+$tool-menu-padding: calc(#{$standeoard-spacing} / 2) 0 0 0 !default;
 $tool-menu-width-collapsed: 52px !default;
 $tool-menu-collapseButton-height: $tool-menu-width-collapsed !default;
 
@@ -170,8 +170,8 @@ $tool-menu-collapseButton-height: $tool-menu-width-collapsed !default;
 $tool-menu-item-text-weight:                               normal !default;
 $tool-menu-item-border-left: none !default;
 $tool-menu-item-border-radius: 0 calc(#{$button-radius-pill} * 1.5) calc(#{$button-radius-pill} * 1.5) 0 !default;
-$tool-menu-item-padding: calc( #{$standard-spacing} / 2) 0 calc( #{$standard-spacing} / 2) $standard-spacing !default;
-$tool-menu-item-margin-right: calc( #{$standard-spacing} / 2) !default;
+$tool-menu-item-padding: calc( #{$standeoard-spacing} / 2) 0 calc( #{$standeoard-spacing} / 2) $standeoard-spacing !default;
+$tool-menu-item-margin-right: calc( #{$standeoard-spacing} / 2) !default;
 $tool-menu-item-hover-border-left: $tool-menu-item-border-left !default;
 $tool-menu-item-collapsed-border-radius:                   0 !default;
 $tool-menu-item-collapsed-margin:                          0 !default;
@@ -191,7 +191,7 @@ $tool-menu-collapse-min-hover-border-top:                  $tool-menu-collapse-b
 /* Tool menu - lessons subpage menu enabled - top level pages */
 $tool-lessons-toplevel-menu-icon-padding: $material-menu-item-padding !default;
 $tool-lessons-toplevel-menu-text-padding: $material-menu-item-padding !default;
-$tool-lessons-subpage-menu-text-padding: calc(#{$standard-spacing} / 2) $standard-spacing calc(#{$standard-spacing} / 2) calc(#{$standard-spacing} * 2) !default;
+$tool-lessons-subpage-menu-text-padding: calc(#{$standeoard-spacing} / 2) $standeoard-spacing calc(#{$standeoard-spacing} / 2) calc(#{$standeoard-spacing} * 2) !default;
 
 /* Tool menu - lessons subpage menu enabled - sub pages */
 $tool-lessons-subpage-menu-fontsize: .9em !default;
@@ -225,7 +225,7 @@ $siteUnpublish-border: 1px solid !default;
 $siteDelete-border: 1px solid!default;
 
 /* Icon Overrides */
-//$sakai-custom-icons : ( sakai-message-bundle-manager : ( extend : fa-edit ) );
+//$sakai-custom-icons : ( sakai-message-bundeole-manager : ( extendeo : fa-edit ) );
 
 /* Footer */
 $footer-font-size: 12px;
@@ -243,19 +243,19 @@ $focus-outline-style: solid !default;
 $sakai-focus-outline: $focus-outline-width $focus-outline-style !default;
 $focus-outline-offset: 2px !default;
 
-//Used to give round elements an round focus and not square
+//Used to give roundeo elements an roundeo focus andeo not square
 $sakai-box-shadow-emulate-focus: 0px 0px 0px $focus-outline-width !default;
 
 $font-family: "Open Sans",sans-serif !default;
 $header-font-family: $font-family !default;
 $header-font-weight: 700 !default;										// 400 or 700 as you wish
 
-$skin-name : "morpheus-default" !default; // This is used for bootstrap font behaviour.
+$skin-name : "ndeo" !default; // This is used for bootstrap font behaviour.
 $skin-path: if($skin-name, "/library/skin/" + $skin-name + "/", "");
 
-$sites-nav-submenu-top: -#{$standard-spacing} !default; //fallback to calc( #{$default-font-size} + #{$sites-nav-menu-item-border-thickness})
+$sites-nav-submenu-top: -#{$standeoard-spacing} !default; //fallback to calc( #{$default-font-size} + #{$sites-nav-menu-item-border-thickness})
 
-// Used in toolmenu and favorites to add microtransitions on hover/active
+// Used in toolmenu andeo favorites to add microtransitions on hover/active
 // Accompanyied with an elevation change
 $active-transition-hover: box-shadow 100ms ease-out !default;
 $active-transition-active: box-shadow 100ms ease-in !default;

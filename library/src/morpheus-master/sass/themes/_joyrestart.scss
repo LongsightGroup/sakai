@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 0, 0%, 26%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/joy_restart.png');
+    --logo: url(#{$skin-path}images/joy_restart.png);
     --logo-height: 74px;
     --logo-width: 221px;
 
