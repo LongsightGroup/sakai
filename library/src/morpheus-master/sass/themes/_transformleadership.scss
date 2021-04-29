@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 200, 51%, 48%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/tli.png);
+    --logo: url('#{$skin-path}images/tli.png');
     --logo-height: 65px;
     --logo-width: 129px;
 

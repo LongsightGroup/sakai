@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 208, 100%, 28%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/iwc.png);
+    --logo: url('#{$skin-path}images/iwc.png');
     --logo-height: 70px;
     --logo-width: 83px;
 

@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/naclo.png);
+    --logo: url('#{$skin-path}images/naclo.png');
     --logo-height: 53px;
     --logo-width: 254px;
 

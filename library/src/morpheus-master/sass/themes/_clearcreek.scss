@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 141, 65%, 16%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/clearcreek.png);
+    --logo: url('#{$skin-path}images/clearcreek.png');
     --logo-height: 70px;
     --logo-width: 200px;
 

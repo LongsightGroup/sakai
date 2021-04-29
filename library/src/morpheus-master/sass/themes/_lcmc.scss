@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 213, 87%, 15%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/lcmc.png);
+    --logo: url('#{$skin-path}images/lcmc.png');
     --logo-height: 70px;
     --logo-width: 138px;
 

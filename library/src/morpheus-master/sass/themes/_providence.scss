@@ -16,7 +16,7 @@
 
 
     // Logo
-    --logo: url(#{$skin-path}images/providence.svg);
+    --logo: url('#{$skin-path}images/providence.svg');
     --logo-height: 50px;
     --logo-width: 175px;
 }

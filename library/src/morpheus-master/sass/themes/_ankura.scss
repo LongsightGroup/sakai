@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 207, 73%, 42%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/ankura.png);
+    --logo: url('#{$skin-path}images/ankura.png');
     --logo-height: 75px;
     --logo-width: 360px;
 

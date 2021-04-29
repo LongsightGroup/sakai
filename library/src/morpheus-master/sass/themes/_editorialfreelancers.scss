@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 2, 72%, 43%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/editorialfreelancers.png);
+    --logo: url('#{$skin-path}images/editorialfreelancers.png');
     --logo-height: 75px;
     --logo-width: 197px;
 

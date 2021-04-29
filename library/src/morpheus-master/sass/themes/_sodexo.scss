@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 241, 38%, 26%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/sodexo.jpg);
+    --logo: url('#{$skin-path}images/sodexo.jpg');
     --logo-height: 50px;
     --logo-width: 258px;
 

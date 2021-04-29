@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 0, 0%, 26%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/kentuckychristian.png);
+    --logo: url('#{$skin-path}images/kentuckychristian.png');
     --logo-height: 70px;
     --logo-width: 180px;
 

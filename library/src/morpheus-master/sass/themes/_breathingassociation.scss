@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 204, 98%, 21%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/breathingassociation.png);
+    --logo: url('#{$skin-path}images/breathingassociation.png');
     --logo-height: 102px;
     --logo-width: 237px;
 

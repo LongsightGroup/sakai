@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 44, 26%, 51%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/kuyper.jpg);
+    --logo: url('#{$skin-path}images/kuyper.jpg');
     --logo-height: 50px;
     --logo-width: 247px;
 

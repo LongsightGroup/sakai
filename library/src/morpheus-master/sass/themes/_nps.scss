@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 206, 16%, 39%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/nps.svg);
+    --logo: url('#{$skin-path}images/nps.svg');
     --logo-height: 74px;
     --logo-width: 510px;
 

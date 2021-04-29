@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 200, 97%, 12%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/cadetize.png);
+    --logo: url('#{$skin-path}images/cadetize.png');
     --logo-height: 75px;
     --logo-width: 72px;
 

@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 240, 100%, 40%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/tdainc.png);
+    --logo: url('#{$skin-path}images/tdainc.png');
     --logo-height: 50px;
     --logo-width: 160px;
 
