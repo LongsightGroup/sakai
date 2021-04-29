@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 206, 26%, 49%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/grafton.png');
+    --logo: url(#{$skin-path}images/grafton.png);
     --logo-height: 67px;
     --logo-width: 67px;
 

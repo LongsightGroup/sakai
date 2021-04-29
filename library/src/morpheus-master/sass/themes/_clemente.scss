@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 355, 62%, 48%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/clemente.png');
+    --logo: url(#{$skin-path}images/clemente.png);
     --logo-height: 54px;
     --logo-width: 220px;
 

@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 199, 30%, 12%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/cpi.jpg');
+    --logo: url(#{$skin-path}images/cpi.jpg);
     --logo-height: 80px;
     --logo-width: 326px;
 

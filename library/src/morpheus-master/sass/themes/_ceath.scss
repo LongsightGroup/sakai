@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 138, 100%, 30%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/ceath.jpg');
+    --logo: url(#{$skin-path}images/ceath.jpg);
     --logo-height: 50px;
     --logo-width: 173px;
 

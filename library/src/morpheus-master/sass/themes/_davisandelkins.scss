@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 355, 62%, 48%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/davisandelkins.png');
+    --logo: url(#{$skin-path}images/davisandelkins.png);
     --logo-height: 70px;
     --logo-width: 234px;
 

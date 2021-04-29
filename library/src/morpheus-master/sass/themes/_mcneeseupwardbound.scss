@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 206, 100%, 18%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/mub.jpg');
+    --logo: url(#{$skin-path}images/mub.jpg);
     --logo-height: 65px;
     --logo-width: 144px;
 

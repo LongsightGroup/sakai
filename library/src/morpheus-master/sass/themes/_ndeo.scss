@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 186, 27%, 59%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/ndeo.jpg');
+    --logo: url(#{$skin-path}images/ndeo.jpg);
     --logo-height: 50px;
     --logo-width: 126px;
 

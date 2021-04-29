@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 218, 70%, 28%);
 
     // Logo and Defaults
-    --logo: url('#{$skin-path}images/newbrunswick.png');
+    --logo: url(#{$skin-path}images/newbrunswick.png);
     --logo-height: 54px;
     --logo-width: 237px;
 
