@@ -6,7 +6,7 @@
     --topNav-text-color: hsl(0, 0%, 0%);
 
     // Logo
-    --logo: url(/library/sk#{$skin-path}images/tracen.png);
+    --logo: url(#{$skin-path}images/tracen.png);
     --logo-height: 50px;
     --logo-width: 219px;
 
