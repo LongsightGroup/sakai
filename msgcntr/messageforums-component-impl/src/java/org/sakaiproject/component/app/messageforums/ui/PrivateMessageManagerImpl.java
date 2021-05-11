@@ -42,6 +42,7 @@ import javax.mail.internet.MimeMessage;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.LockMode;
@@ -107,6 +108,7 @@ import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
+import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 
 @Slf4j
@@ -142,6 +144,8 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
   private LearningResourceStoreService learningResourceStoreService;
   @Setter private PreferencesService preferencesService;
   @Setter private ServerConfigurationService serverConfigurationService;
+  @Setter private FormattedText formattedText;
+
   private static final String MESSAGES_TITLE = "pvt_message_nav";// Mensajes-->Messages/need to be modified to support internationalization
   
   private static final String PVT_RECEIVED = "pvt_received";     // Recibidos ( 0 mensajes )-->Received ( 8 messages - 8 unread )
@@ -155,7 +159,7 @@ public class PrivateMessageManagerImpl extends HibernateDaoSupport implements Pr
   private static final String EMAIL_FOOTER3 = "pvt_email_footer3";
   private static final String EMAIL_FOOTER4_A = "pvt_email_footer4_a";
   private static final String EMAIL_FOOTER4_B = "pvt_email_footer4_b";
-  private static final String INIT_VECTOR = "RandomInitVector";
+  private static final String INIT_VECTOR = "RandomIn";
 
   private ResourceLoader rb;
 
@@ -2113,7 +2117,7 @@ return topicTypeUuid;
   	return eventMessagePrefix + contextId + "/" + object.toString() + "/" + userId;
   }
 
-  public PrivateMessage getPrivateMessage(final String id) {
+  public PrivateMessage getPrivateMessage(final String id) throws MessagingException {
 	  PrivateMessage currentMessage = (PrivateMessage) messageManager.getMessageByIdWithAttachments(Long.parseLong(decrypt(id)));
 	  getHibernateTemplate().initialize(currentMessage.getRecipients());
 	  return currentMessage;
@@ -2162,12 +2166,24 @@ return topicTypeUuid;
 
 	  PrivateMessage rrepMsg = createResponseMessage(currentMessage, msg, from);
 
-	  if (StringUtils.isNotBlank(bodyBuf[0].toString())) {
-		  bodyBuf[0].insert(0, "<pre>");
-		  bodyBuf[0].insert(bodyBuf[0].length(), "</pre>");
-		  rrepMsg.setBody(bodyBuf[0].toString());
+	  
+      StringBuilder alertMsg = new StringBuilder();
+      StringBuilder cleanBody;
+	  if (StringUtils.isNotBlank(bodyBuf[1].toString())) {
+		  cleanBody = new StringBuilder(formattedText.processFormattedText(bodyBuf[1].toString(), alertMsg));
 	  } else {
-		  rrepMsg.setBody(bodyBuf[1].toString());
+		  cleanBody = new StringBuilder(formattedText.escapeHtml(bodyBuf[0].toString()));
+		  if(StringUtils.isNotBlank(cleanBody)) {
+			  cleanBody.insert(0, "<pre>");
+			  cleanBody.insert(cleanBody.length(), "</pre>");
+		  }
+	  }
+	  
+	  if(StringUtils.isBlank(cleanBody)) {
+		  log.warn("358 - Unexpected error processing text of body.");
+		  throw new MessagingException("358 - Unexpected error processing text of body.");
+	  }else {
+		  rrepMsg.setBody(cleanBody.toString());
 	  }
 	  rrepMsg.setLabel(currentMessage.getLabel());
 
@@ -2283,15 +2299,15 @@ return topicTypeUuid;
   private String encrypt(String value) {
 	  try {
 		  IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes(StandardCharsets.UTF_8));
-		  String key = serverConfigurationService.getString("msgcntr.no.reply.secret", "1111111111111111");
-		  SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+		  String key = serverConfigurationService.getString("sakai.encryption.secret", serverConfigurationService.getServerName());
+		  SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "DES");
 
-		  Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+		  Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5PADDING");
 		  cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
 
 		  byte[] encrypted = cipher.doFinal(value.getBytes(StandardCharsets.UTF_8));
 
-		  return Base64.encodeBase64String(encrypted);
+		  return Hex.encodeHexString(Base64.encodeBase64String(encrypted).getBytes(StandardCharsets.UTF_8));
 
 	  } catch (Exception ex) {
 		  log.error(ex.getMessage(), ex);
@@ -2300,23 +2316,23 @@ return topicTypeUuid;
 	  return null;
   }
 
-  private String decrypt(String encrypted) {
+  private String decrypt(String encrypted) throws MessagingException {
 	  try {
+		  String hexencrypted = new String(Hex.decodeHex(encrypted.toLowerCase().toCharArray()),StandardCharsets.UTF_8);
 		  IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes(StandardCharsets.UTF_8));
-		  String key = serverConfigurationService.getString("msgcntr.no.reply.secret", "1111111111111111");
-		  SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+		  String key = serverConfigurationService.getString("sakai.encryption.secret", serverConfigurationService.getServerName());
+		  SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "DES");
 
-		  Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+		  Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5PADDING");
 		  cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 
-		  byte[] original = cipher.doFinal(Base64.decodeBase64(encrypted));
+		  byte[] original = cipher.doFinal(Base64.decodeBase64(hexencrypted));
 
 		  return new String(original,StandardCharsets.UTF_8);
 	  } catch (Exception ex) {
-		  log.error(ex.getMessage(), ex);
+		  log.warn("Exception: Recipient couldn't be obtained. Please, reply to this mail from Sakai's private messages tool.");
+		  throw new MessagingException("521 - Recipient couldn't be obtained. Please, reply to this mail from Sakai's private messages tool.");
 	  }
-
-	  return null;
   }
   
   private LRS_Statement getStatementForUserSentPvtMsg(String subject, SAKAI_VERB sakaiVerb, PrivateMessage rrepMsg) {

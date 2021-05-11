@@ -1079,7 +1079,6 @@ public class AssignmentAction extends PagedResourceActionII {
     private static final String CONTEXT_GO_NEXT_UNGRADED_ENABLED = "goNextUngradedEnabled";
     private static final String CONTEXT_GO_PREV_UNGRADED_ENABLED = "goPrevUngradedEnabled";
     private static final String PARAMS_VIEW_SUBS_ONLY_CHECKBOX = "chkSubsOnly1";
-    private static final String RUBRIC_STATE_DETAILS = "rbcs-state-details";
     private static final String RUBRIC_TOKEN = "rbcs-token";
     private static ResourceLoader rb = new ResourceLoader("assignment");
     private boolean nextUngraded = false;
@@ -11523,8 +11522,21 @@ public class AssignmentAction extends PagedResourceActionII {
 
         state.setAttribute(NEW_ASSIGNMENT_SECTION, "001");
         state.setAttribute(NEW_ASSIGNMENT_SUBMISSION_TYPE, Assignment.SubmissionType.TEXT_AND_ATTACHMENT_ASSIGNMENT_SUBMISSION.ordinal());
-        state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, UNGRADED_GRADE_TYPE.ordinal());
-        state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+        Boolean withGradesConfig = serverConfigurationService.getBoolean("assignment.grade.default", Boolean.TRUE);
+        state.setAttribute(WITH_GRADES, withGradesConfig);
+        if (withGradesConfig) {
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, SCORE_GRADE_TYPE.ordinal());
+            String defaultPointsConfig = serverConfigurationService.getString("assignment.points.default", "");
+            if (NumberUtils.isParsable(defaultPointsConfig)) {
+                float defaultPoints = NumberUtils.createFloat(defaultPointsConfig);
+                state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, String.valueOf(defaultPoints));
+            } else {
+                state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+            }
+        } else {
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, UNGRADED_GRADE_TYPE.ordinal());
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+        }
         state.setAttribute(NEW_ASSIGNMENT_CONTENT_ID, null);
         state.setAttribute(NEW_ASSIGNMENT_CONTENT_TITLE, null);
         state.setAttribute(NEW_ASSIGNMENT_CONTENT_LAUNCH_NEW_WINDOW, null);
@@ -11586,9 +11598,6 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // SAK-17606
         state.removeAttribute(NEW_ASSIGNMENT_CHECK_ANONYMOUS_GRADING);
-
-        state.removeAttribute(RUBRIC_STATE_DETAILS);
-
     } // resetNewAssignment
 
     /**
@@ -11704,8 +11713,6 @@ public class AssignmentAction extends PagedResourceActionII {
         state.removeAttribute(AssignmentConstants.ASSIGNMENT_RELEASERESUBMISSION_NOTIFICATION_VALUE);
 
         state.removeAttribute(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
-
-        state.removeAttribute(RUBRIC_STATE_DETAILS);
 
         state.removeAttribute(NEW_ASSIGNMENT_PREVIOUSLY_ASSOCIATED);
     } // resetNewAssignment

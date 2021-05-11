@@ -25,10 +25,9 @@ should be included in file importing DeliveryMessages
 --%>
 -->
 
-<script src="/library/js/swfobject/swfobject.js"></script>
+<script src="/library/webjars/wavesurfer.js/3.3.1/dist/wavesurfer.min.js"></script>
+<script src="/library/webjars/wavesurfer.js/3.3.1/dist/plugin/wavesurfer.microphone.min.js"></script>
 <script src="/library/js/recorder/recorder.js"></script>
-<script src="/library/js/recorder/jRecorder.js"></script>
-<script src="/library/js/sakai-recorder.js"></script>
 <script src="/library/js/sakai-recorder.js"></script>
 <script>includeWebjarLibrary('featherlight');</script>
 <script>
@@ -40,7 +39,7 @@ should be included in file importing DeliveryMessages
           var questionId = $(elem).parent().find("input[name=questionId]").val();
           elem.dataset.featherlight = ".audioRecordingPopup-" + questionId;
           elem.dataset.featherlightPersist = true;
-          elem.dataset.featherlightBeforeClose = "$('.audioRecordingPopup-" + questionId + " #audio-stop:enabled').click();";
+          elem.dataset.featherlightBeforeClose = "$('.audioRecordingPopup-" + questionId + " .audio-stop:enabled').click();";
         }, 0);
       });
       initiatedFeatherlight = true;
