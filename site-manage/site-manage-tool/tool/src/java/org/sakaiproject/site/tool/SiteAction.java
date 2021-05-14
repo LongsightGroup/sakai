@@ -204,7 +204,10 @@ public class SiteAction extends PagedResourceActionII {
 	private static ResourceLoader cfgRb = new ResourceLoader("multipletools");
 
 	private Locale comparator_locale = rb.getLocale();	
-	
+
+	private org.sakaiproject.authz.api.SecurityService securityService = (org.sakaiproject.authz.api.SecurityService) ComponentManager.get(
+			org.sakaiproject.authz.api.SecurityService.class);
+
 	private org.sakaiproject.user.api.UserDirectoryService userDirectoryService = (org.sakaiproject.user.api.UserDirectoryService) ComponentManager.get(
 			org.sakaiproject.user.api.UserDirectoryService.class );
 	
@@ -1307,7 +1310,6 @@ public class SiteAction extends PagedResourceActionII {
 	public String buildMainPanelContext(VelocityPortlet portlet,
 			Context context, RunData data, SessionState state,
 			boolean inShortcut) {
-		rb = new ResourceLoader("sitesetupgeneric");
 		context.put("tlang", rb);
 		context.put("clang", cfgRb);
 		// TODO: what is all this doing? if we are in helper mode, we are
@@ -8703,32 +8705,40 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 								// add current user as the maintainer
 								Member member = currentSite.getMember(userId);
 								if(member != null){
+									SecurityAdvisor yesMan = new SecurityAdvisor() {
+										public SecurityAdvice isAllowed(String userId, String function, String reference) {
+											if (StringUtils.equalsIgnoreCase(function, SiteService.SECURE_UPDATE_SITE)) {
+												return SecurityAdvice.ALLOWED;
+											} else {
+												return SecurityAdvice.PASS;
+											}
+										}
+									};
+
 									try{
 										siteGroup.insertMember(userId, member.getRole().getId(), true, false);
-										SecurityAdvisor yesMan = new SecurityAdvisor() {
-											public SecurityAdvice isAllowed(String userId, String function, String reference) {
-												return SecurityAdvice.ALLOWED;
-											}
-										};
-										SecurityService.pushAdvisor(yesMan);
-										commitSite(currentSite);
-									} catch (IllegalStateException e) {
-										log.error(".doJoinableSet: User with id {} cannot be inserted in group with id {} because the group is locked", userId, siteGroup.getId());
+
+										securityService.pushAdvisor(yesMan);
+										SiteService.saveGroupMembership(currentSite);
+									} catch (IdUnusedException e) {
+										log.error("IdUnusedException while joining site, userId={}, siteId={}, groupId={}", userId, currentSite.getId(), siteGroup.getId());
+									} catch (PermissionException e) {
+										log.error("doJoinableSet could not save new membership because of permissions", e);
 									} catch (Exception e) {
-										log.debug(e.getMessage());
-									}finally{
-										SecurityService.popAdvisor();
+										log.error(".doJoinableSet: User with id {} cannot be inserted in group with id {} because the group is locked", userId, siteGroup.getId());
+									} finally {
+										securityService.popAdvisor(yesMan);
 									}
 								}
 							}
 						}	
-					}catch (Exception e) {
-						log.debug("Error adding user to group: " + groupRef + ", " + e.getMessage(), e);
+					} catch (GroupNotDefinedException e) {
+						log.error("Error adding user to group because group does not exist: {}", groupRef, e);
 					}
 				}
 			}
 		} catch (IdUnusedException e) {
-			log.debug("Error adding user to group: " + groupRef + ", " + e.getMessage(), e);
+			log.error("IdUnusedException while adding user to group: {}", groupRef, e);
 		}
 	}
 	
@@ -8763,31 +8773,37 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 							// remove current user as the maintainer
 							Member member = currentSite.getMember(userId);
 							if(member != null){
+								SecurityAdvisor yesMan = new SecurityAdvisor() {
+									public SecurityAdvice isAllowed(String userId, String function, String reference) {
+										if (StringUtils.equalsIgnoreCase(function, SiteService.SECURE_UPDATE_SITE)) {
+											return SecurityAdvice.ALLOWED;
+										} else {
+											return SecurityAdvice.PASS;
+										}
+									}
+								};
+
 								try{
 									siteGroup.deleteMember(userId);
-									SecurityAdvisor yesMan = new SecurityAdvisor() {
-										public SecurityAdvice isAllowed(String userId, String function, String reference) {
-											return SecurityAdvice.ALLOWED;
-										}
-									};
-									SecurityService.pushAdvisor(yesMan);
-									commitSite(currentSite);
-								}catch (IllegalStateException e) {
+
+									securityService.pushAdvisor(yesMan);
+									SiteService.saveGroupMembership(currentSite);
+								} catch (PermissionException e) {
+									log.error("doUnjoinableSet: permission exception as userId={}", userId, e);
+								} catch (Exception e) {
 									log.error(".doUnjoinableSet: User with id {} cannot be deleted from group with id {} because the group is locked", userId, siteGroup.getId());
-								}catch (Exception e) {
-									log.debug(e.getMessage());
-								}finally{
-									SecurityService.popAdvisor();
+								} finally {
+									securityService.popAdvisor(yesMan);
 								}
 							}
 						}
-					}catch (Exception e) {
-						log.debug("Error removing user to group: {}, {}", groupRef, e.getMessage(), e);
+					} catch (GroupNotDefinedException e) {
+						log.error("Error removing user from group: {}", groupRef, e);
 					}
 				}
 			}
 		} catch (IdUnusedException e) {
-			log.debug("Error removing user to group: {}, {}", groupRef, e.getMessage(), e);
+			log.error("IdUnusedException while removing user to group: {}", groupRef, e);
 		}
 	}
 	

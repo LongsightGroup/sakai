@@ -215,7 +215,8 @@ public class PublishedAssessmentSettingsBean
   private final String HIDDEN_RETRACT_DATE_FIELD = "retractDateISO8601";
   private final String HIDDEN_FEEDBACK_DATE_FIELD = "feedbackDateISO8601";
 
-  private ResourceLoader assessmentSettingMessages;
+  private static final ResourceLoader assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
+
   @Resource(name = "org.sakaiproject.time.api.UserTimeService")
   private UserTimeService userTimeService;
 
@@ -228,7 +229,6 @@ public class PublishedAssessmentSettingsBean
 
   public PublishedAssessmentSettingsBean(WebApplicationContext context) {
     context.getAutowireCapableBeanFactory().autowireBean(this);
-    this.assessmentSettingMessages = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AssessmentSettingsMessages");
   }
 
   public PublishedAssessmentFacade getAssessment() {
@@ -376,18 +376,8 @@ public class PublishedAssessmentSettingsBean
       setIpAddresses(assessment);
 
       // publishedUrl
-      FacesContext context = FacesContext.getCurrentInstance();
-      ExternalContext extContext = context.getExternalContext();
-      // get the alias to the pub assessment
-      this.alias = assessment.getAssessmentMetaDataByLabel(
-          AssessmentMetaDataIfc.ALIAS);
-      String server = ( (javax.servlet.http.HttpServletRequest) extContext.
-                       getRequest()).getRequestURL().toString();
-      int index = server.indexOf(extContext.getRequestContextPath() + "/"); // "/samigo-app/"
-      server = server.substring(0, index);
-      String url = server + extContext.getRequestContextPath();
-      this.publishedUrl = url + "/servlet/Login?id=" + this.alias;
-      
+      this.publishedUrl = generatePublishedURL(assessment);
+
       // secure delivery
       SecureDeliveryServiceAPI secureDeliveryService = SamigoApiFactory.getInstance().getSecureDeliveryServiceAPI(); 
       this.secureDeliveryAvailable = secureDeliveryService.isSecureDeliveryAvaliable();
@@ -1730,4 +1720,17 @@ public void setFeedbackComponentOption(String feedbackComponentOption) {
  	public void setDisplayScoreDuringAssessments(String displayScoreDuringAssessments){
  		this.displayScoreDuringAssessments = displayScoreDuringAssessments;
  	}
+
+  public String generatePublishedURL(PublishedAssessmentFacade paf) {
+      FacesContext context = FacesContext.getCurrentInstance();
+      ExternalContext extContext = context.getExternalContext();
+
+      // get the alias to the pub assessment
+      this.alias = paf.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.ALIAS);
+      String server = ((javax.servlet.http.HttpServletRequest) extContext.getRequest()).getRequestURL().toString();
+      int index = server.indexOf(extContext.getRequestContextPath() + "/"); // "/samigo-app/"
+      server = server.substring(0, index);
+      String url = server + extContext.getRequestContextPath();
+      return url + "/servlet/Login?id=" + this.alias;
+  }
 }

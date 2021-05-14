@@ -127,6 +127,8 @@ public class GenericCalendarImporter implements CalendarImporterService
 	private final Map<String, Class<? extends Reader>> readerMap = new HashMap<>();
 	
 	protected Map<String, String> columnMap = null;
+	
+	private static final ResourceLoader rb = new ResourceLoader("calendar");
 
 	static DateFormat timeFormatter()
 	{
@@ -153,8 +155,6 @@ public class GenericCalendarImporter implements CalendarImporterService
 		rv.setLenient(false);
 		return rv;
 	}
-
-	private static ResourceLoader rb = new ResourceLoader("calendar");
 
 	// These are injected at runtime by Spring.
 	private CalendarService calendarService = null;
