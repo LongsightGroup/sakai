@@ -49,6 +49,7 @@ $sites-nav-menu-item-color:              		#FFFFFF !default;
 $sites-nav-menu-item-icon-color:         		#FFFFFF !default;
 $sites-nav-menu-item-border-color:         		none !default;
 //Selected
+//Selected
 $sites-nav-menu-item-selected-background:		#971A20 !default;
 $sites-nav-menu-item-selected-color:			#FFF !default;
 $sites-nav-menu-item-selected-hover-background: 	#971A20 !default;
@@ -72,8 +73,7 @@ $tool-menu-item-selected-text-color:            	#f05525 !default;
 $tool-menu-item-selected-icon-color:            	#f05525 !default;
 $tool-menu-item-selected-border-left:           	4px solid #f05525 !default;
 // submenu
-$tool-sub-menu-hover-color:				#f05525 !default;
-$tool-sub-menu-current-hover-background-color:		#FFF;
+$tool-sub-menu-hover-color:				#FFF !default;
 // selected hover
 $tool-menu-item-selected-hover-text-color:      	#FFFFFF !default;
 $tool-menu-item-selected-hover-icon-color:      	#FFFFFF !default;
@@ -83,7 +83,6 @@ $tool-menu-item-selected-hover-border-left:             4px solid #f05525 !defau
 $tool-menu-collapse-active-hover-background-color:      #f05525 !default;
 $tool-menu-collapse-active-text-color:                  #f05525 !default;
 $tool-sub-menu-hover-color:				#000;
-
 
 // info message colors
 $info-background-color:   				#efefef;
@@ -95,4 +94,14 @@ $info-background-color:   				#efefef;
 .navIntraTool li span.current a {
     background: #062F4B;
     color: #fff;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: #0064cd !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+        color: #000 !important;
+    }
 }

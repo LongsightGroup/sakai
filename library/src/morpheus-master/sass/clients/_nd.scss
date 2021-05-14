@@ -395,8 +395,8 @@ span.Mrphs-login-Message:hover {
 }
 
 .instruction {
-    border-left-color: #092240 !important;
-    border-color: #092240 !important;
+    border-left-color: transparent !important;
+    border-color: transparent !important;
 }
 
 /* SAK-41954 feature backport */
@@ -477,14 +477,14 @@ select#viewFilter_viewFilterForm:focus {
     background-color: #5aabbc !important;
 }
 
-input, textarea:focus {
-    outline: 1px solid #5aabbc;
-}
-
 .ui-state-active {
     background: #5aabbc !important;
 }
 
 .Mrphs-sakai-chat .panel-chat .panel-heading .chat-block select:focus {
     outline: 3px solid #5aabbc;
+}
+
+input[type="checkbox"]:focus, input[type="radio"]:focus {
+    box-shadow: 0px 0px 3px 3px #5aabbc !important;
 }
