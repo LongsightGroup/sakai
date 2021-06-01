@@ -18,13 +18,16 @@
 			<aside class="logo"></aside>
 			<p class="msg">${choiceRequired}</p>
 			<fieldset>
-				<a class="link" href="${containerLoginUrl}" title="${loginTitle}">
+				<a class="link" href="${containerLoginUrl}" title="${loginTitle}" style="width:32%">
 					#if("$containerLoginChoiceIcon" != "")
 						<img src="${containerLoginChoiceIcon}" alt="${containerLoginChoiceText}" />
 					#end
 					${containerLoginChoiceText}
 				</a>
-				<a class="link" href="${xloginUrl}" title="${loginTitle2}">
+				<a class="link" href="${containerLoginUrl3}" title="${loginTitle3}" style="width:32%">
+					${containerLoginChoiceText3}
+				</a>
+				<a class="link" href="${xloginUrl}" title="${loginTitle2}" style="width:32%">
 					#if("$xloginChoiceIcon" != "")
 						<img src="${xloginChoiceIcon}" alt="${xloginChoiceText}" />
 					#end

@@ -241,7 +241,8 @@ public class SkinnableLogin extends HttpServlet implements Login {
 				session.setAttribute(ATTR_RETURN_URL, Web.returnUrl(req, null));
 
 				String containerCheckPath = this.getServletConfig().getInitParameter("container");
-				String containerCheckUrl = RequestFilter.serverUrl(req) + containerCheckPath;
+				String containerCheckUrl = serverConfigurationService.getString("login.url");
+				String containerCheckUrl3 = serverConfigurationService.getString("login3.url");
 
 				// support query parms in url for container auth
 				String queryString = req.getQueryString();
@@ -275,6 +276,7 @@ public class SkinnableLogin extends HttpServlet implements Login {
 					LoginRenderContext rcontext = startChoiceContext("", req, res);
 					rcontext.put("containerLoginUrl", containerCheckUrl);
 					rcontext.put("xloginUrl", xloginUrl);
+					rcontext.put("containerLoginUrl3", containerCheckUrl3);
 
 					sendResponse(rcontext, res, "choice", null);
 
@@ -523,6 +525,8 @@ public class SkinnableLogin extends HttpServlet implements Login {
 				serverConfigurationService.getString("login.text")));
 		rcontext.put("xloginChoiceText", serverConfigurationService.getString("xlogin.choice.text",
 				serverConfigurationService.getString("xlogin.text")));
+		rcontext.put("containerLoginChoiceText3", serverConfigurationService.getString("login3.text"));
+		rcontext.put("loginTitle3", serverConfigurationService.getString("login3.text"));
 
 		return rcontext;
 	}

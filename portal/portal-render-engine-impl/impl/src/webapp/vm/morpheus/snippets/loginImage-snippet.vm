@@ -28,6 +28,13 @@
         #else
 
             <p class="Mrphs-loginUser__menuitem Mrphs-loginUser__menuitemk--alt">
+                <a href="${loginLogInOutUrl3}" title="${loginMessage3}" id="loginLink3" class="Mrphs-loginUser__message">
+                    <i class="login-Icon"></i>
+                    <span class="Mrphs-login-Message">${loginMessage3}</span>
+                </a>
+            </p>
+
+            <p class="Mrphs-loginUser__menuitem Mrphs-loginUser__menuitemk--alt">
                 <a href="${loginLogInOutUrl2}" title="${loginMessage2}" id="loginLink2" class="Mrphs-loginUser__message">
                     <i class="login-Icon"></i>
                     <span class="Mrphs-login-Message">${loginMessage2}</span>

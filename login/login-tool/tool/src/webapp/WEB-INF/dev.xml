@@ -170,21 +170,43 @@
                 </bean>
    -->
 
-                <!-- Example of HTTP metadata without Extended Metadata -->
+                <!-- UL -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                   <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
-                    <constructor-arg>
-			<value type="java.lang.String">https://login.microsoftonline.com/0084b924-3ab4-4116-9251-9939f695e54c/federationmetadata/2007-06/federationmetadata.xml?appid=540752c8-21aa-4252-86b1-b532a54d7dbf</value>
-                    </constructor-arg>
-                    <constructor-arg>
+                    <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
+                      <constructor-arg>
+                        <value type="java.lang.String">https://login.microsoftonline.com/0084b924-3ab4-4116-9251-9939f695e54c/federationmetadata/2007-06/federationmetadata.xml?appid=540752c8-21aa-4252-86b1-b532a54d7dbf</value>
+                      </constructor-arg>
+                      <constructor-arg>
                         <value type="int">60000</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <value type="java.lang.String">sakai/saml/idp.xml</value>
-                    </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
+                      </constructor-arg>
+                      <constructor-arg>
+                        <value type="java.lang.String">sakai/saml/idp-ul.xml</value>
+                      </constructor-arg>
+                      <property name="parserPool" ref="parserPool"/>
+                    </bean>
+                  </constructor-arg>
+                  <constructor-arg>
+                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
+                  </constructor-arg>
+                  <property name="metadataTrustCheck" value="false"/>
                 </bean>
+
+                <!-- MIC -->
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                  <constructor-arg>
+                    <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
+                      <constructor-arg>
+                        <value type="java.lang.String">https://login.microsoftonline.com/aa52c40e-ac89-4a63-b2cf-7c570fdf1df2/federationmetadata/2007-06/federationmetadata.xml?appid=c5bbebac-f302-4279-b9a8-bcbcfd41d973</value>
+                      </constructor-arg>
+                      <constructor-arg>
+                        <value type="int">60000</value>
+                      </constructor-arg>
+                      <constructor-arg>
+                        <value type="java.lang.String">sakai/saml/idp-mic.xml</value>
+                      </constructor-arg>
+                      <property name="parserPool" ref="parserPool"/>
+                    </bean>
                   </constructor-arg>
                   <constructor-arg>
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
