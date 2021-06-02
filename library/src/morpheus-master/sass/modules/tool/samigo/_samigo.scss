@@ -73,7 +73,8 @@
 	}
 
 	.samigo-inline-radio {
-		label {
+		label,
+		&.fa {
 			margin-right: $standard-spacing;
 		}
 	}
@@ -437,4 +438,13 @@
 		margin-left: $standard-space;
 	}
 
+	.jqplot-target {
+		color: var(--sakai-text-color-1);
+		font-family: var(--sakai-font-family);
+	}
+
+	.disabled.awesomplete {
+		background-color: transparent;
+		color: var(--sakai-text-color-disabled);
+	}
 }

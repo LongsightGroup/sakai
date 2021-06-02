@@ -1,19 +1,22 @@
 package org.sakaiproject.ignite;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.DeploymentMode;
 import org.apache.ignite.configuration.IgniteConfiguration;
+import org.apache.ignite.configuration.TransactionConfiguration;
 import org.apache.ignite.logger.slf4j.Slf4jLogger;
 import org.apache.ignite.spi.communication.tcp.TcpCommunicationSpi;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder;
+import org.apache.ignite.transactions.TransactionConcurrency;
+import org.apache.ignite.transactions.TransactionIsolation;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
@@ -85,6 +88,11 @@ public class IgniteConfigurationAdapter extends AbstractFactoryBean<IgniteConfig
                 igniteConfiguration.setClientMode(false);
             }
 
+            TransactionConfiguration transactionConfiguration = new TransactionConfiguration();
+            transactionConfiguration.setDefaultTxConcurrency(TransactionConcurrency.OPTIMISTIC);
+            transactionConfiguration.setDefaultTxIsolation(TransactionIsolation.READ_COMMITTED);
+            igniteConfiguration.setTransactionConfiguration(transactionConfiguration);
+
             igniteConfiguration.setDeploymentMode(DeploymentMode.CONTINUOUS);
 
             igniteConfiguration.setGridLogger(new Slf4jLogger());
@@ -104,13 +112,20 @@ public class IgniteConfigurationAdapter extends AbstractFactoryBean<IgniteConfig
             TcpDiscoverySpi tcpDiscovery = new TcpDiscoverySpi();
             TcpDiscoveryVmIpFinder finder = new TcpDiscoveryVmIpFinder();
 
-            List<String> discoveryAddresses = new ArrayList<>();
+            Set<String> discoveryAddresses = new HashSet<>();
+            String localDiscoveryAddress;
             if (StringUtils.isNotBlank(address)) {
                 tcpCommunication.setLocalAddress(address);
                 tcpDiscovery.setLocalAddress(address);
-                discoveryAddresses.add(address + ":" + (port + range) + ".." + (port + range + range - 1));
+                localDiscoveryAddress = address;
             } else {
-                discoveryAddresses.add("127.0.0.1:" + (port + range) + ".." + (port + range + range - 1));
+                localDiscoveryAddress = "127.0.0.1";
+            }
+
+            if (range - 1 == 0) {
+                discoveryAddresses.add(localDiscoveryAddress + ":" + (port + range));
+            } else {
+                discoveryAddresses.add(localDiscoveryAddress + ":" + (port + range) + ".." + (port + range + range - 1));
             }
 
             tcpCommunication.setLocalPort(port);
