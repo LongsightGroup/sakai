@@ -48,6 +48,14 @@
     --button-hover-background: var(--sakai-brand);
     --button-hover-border-color: var(--sakai-brand);
     --button-hover-shadow: none;
+
+    //Link colors
+    --link-color: var(--sakai-brand);
+    --link-active-color: hsl(186, 49%, 39%);
+    --link-hover-color: hsl(186, 70%, 34%);
+    --link-background-color: transparent;
+    --link-active-background-color: transparent;
+    --link-hover-background-color: transparent;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem {
@@ -62,4 +70,15 @@
     border-bottom: 1px solid hsl(186, 100%, 24%);
 }
 
+span#bullhorn-counter {
+    background-color: #006E7A !important;
+    color: #fff !important;
+}
+
+.Mrphs-sakai-resources table.resourcesList tr.inactive *:hover {
+    color: #FFF !important;
+}
+
 $skin-name: 'marist';
+
+
