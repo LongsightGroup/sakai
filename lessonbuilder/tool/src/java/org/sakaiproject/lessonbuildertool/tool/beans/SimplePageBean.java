@@ -139,6 +139,7 @@ import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.comparator.AlphaNumericComparator;
 import org.springframework.web.multipart.MultipartFile;
 import org.tsugi.basiclti.ContentItem;
 
@@ -210,7 +211,6 @@ public class SimplePageBean {
 	public static final String GRADEBOOK_TOOL_ID = "sakai.gradebookng";
 
 	private static String PAGE = "simplepage.page";
-	private static String SITE_UPD = "site.upd";
 	private String contents = null;
 	private String pageTitle = null;
 	private String newPageTitle = null;
@@ -373,6 +373,8 @@ public class SimplePageBean {
         // SAK-41846 - Counters to adjust item sequences when multiple files are added simultaneously
         private int totalMultimediaFilesToAdd = 0;
         private int remainingMultimediaFilesToAdd = 0;
+        
+     // Spring Injection
 
 	public void setPeerEval(boolean peerEval) {
 		this.peerEval = peerEval;
@@ -654,7 +656,7 @@ public class SimplePageBean {
 	@Setter private SecurityService securityService;
 	@Setter private SiteService siteService;
 	@Setter private AuthzGroupService authzGroupService;
-	@Setter private SimplePageToolDao simplePageToolDao;
+    @Getter @Setter private SimplePageToolDao simplePageToolDao;
 	@Setter private LessonsAccess lessonsAccess;
     @Setter private LessonBuilderAccessService lessonBuilderAccessService;
 	@Getter @Setter private MessageLocator messageLocator;
@@ -2356,7 +2358,7 @@ public class SimplePageBean {
 		// we're only checking when you first go into a tool
 		Properties roleConfig = placement.getPlacementConfig();
 		String roleList = roleConfig.getProperty("functions.require");
-		boolean siteHidden = (roleList != null && roleList.contains(SITE_UPD));
+		boolean siteHidden = (roleList != null && roleList.contains(SiteService.SECURE_UPDATE_SITE));
 
 		// Let's go back to where we were last time.
 		Long l = (Long) sessionManager.getCurrentToolSession().getAttribute("current-pagetool-page");
@@ -3424,72 +3426,55 @@ public class SimplePageBean {
     // code twice, we take that list and translate to titles, rather than calling
     // getItemGroups again
 	public String getItemGroupTitles(String itemGroups, SimplePageItem item) {
-	    String ret = "";
-	    if (itemGroups == null || itemGroups.equals(""))
-		ret = "";
-	    else {
+		String ret = null;
+		if (StringUtils.isNotBlank(itemGroups)) {
 
-	    List<String> groupNames = new ArrayList<>();
-	    Site site = getCurrentSite();
-	    String[] groupIds = split(itemGroups, ",");
-	    for (int i = 0; i < groupIds.length; i++) {
-		Group group=site.getGroup(groupIds[i]);
-		if (group != null) {
-		    String title = group.getTitle();
-		    if (title != null && !title.equals(""))
-			groupNames.add(title);
-		    else
-			groupNames.add(messageLocator.getMessage("simplepage.deleted-group"));
-		} else
-		    groupNames.add(messageLocator.getMessage("simplepage.deleted-group"));
-	    }
-	    Collections.sort(groupNames);
-	    for (String name: groupNames) {
-		if (ret.equals(""))
-		    ret = name;
-		else
-		    ret = ret + "," + name;
-	    }
-
-	    }
-
-	    if (item.isPrerequisite()) {
-		if (ret.equals(""))
-		    ret = messageLocator.getMessage("simplepage.prerequisites_tag");
-		else
-		    ret = messageLocator.getMessage("simplepage.prerequisites_tag") + "; " + ret;
-	    }
-
-	    if (ret.equals(""))
-		return null;
-
-	    return ret;
-	}
-	
-	public String getSubPagePath(SimplePageItem item, boolean subPageTitleContinue) {
-		String subPageTitle = "";
-		List<SimplePageItem> items = simplePageToolDao.findItemsBySakaiId(String.valueOf(item.getPageId()));
-		while(items != null && items.size()>0)
-		{
-			if("".equals(subPageTitle) && subPageTitleContinue)
-			{
-				subPageTitle = items.get(0).getName() + " (" + messageLocator.getMessage("simplepage.printall.continuation") + ")";
+			List<String> groupNames = new ArrayList<>();
+			for (String groupId : split(itemGroups, ",")) {
+				Group group = getCurrentSite().getGroup(groupId);
+				if (group != null && StringUtils.isNotBlank(group.getTitle())) {
+					groupNames.add(group.getTitle());
+				} else {
+					groupNames.add(messageLocator.getMessage("simplepage.deleted-group"));
+				}
 			}
-			else if("".equals(subPageTitle))
-			{
-				subPageTitle = items.get(0).getName();
-			}
-			else
-			{
-				subPageTitle = items.get(0).getName() +" > "+ subPageTitle;
-			}
-			items = simplePageToolDao.findItemsBySakaiId(String.valueOf(items.get(0).getPageId()));
+			groupNames.sort(new AlphaNumericComparator());
+			ret = StringUtils.join(groupNames, ", ");
 		}
-				
-		if("".equals(subPageTitle)) subPageTitle = null;
-			
-		return subPageTitle;
+
+		if (StringUtils.isBlank(ret) && item.isPrerequisite()) {
+			return messageLocator.getMessage("simplepage.prerequisites_tag");
+		} else if (item.isPrerequisite()) {
+			return messageLocator.getMessage("simplepage.prerequisites_tag") + "; " + ret;
+		}
+
+		return ret;
 	}
+
+    private String getParentTitle(SimplePageItem item, boolean continuation, Set<Long> seen) {
+        if (item != null) {
+            // get parent item
+            List<SimplePageItem> parentItems = simplePageToolDao.findItemsBySakaiId(Long.toString(item.getPageId()));
+            if (!parentItems.isEmpty()) {
+                SimplePageItem parent = parentItems.get(0);
+                // skip if this parent was already seen, guard against infinite loop
+                if (!seen.contains(parent.getId())) {
+                    seen.add(parent.getId());
+                    String title = parent.getName();
+                    if (seen.size() > 1) {
+                        title += continuation ? " (" + messageLocator.getMessage("simplepage.printall.continuation") + ") " : " > ";
+                    }
+                    return getParentTitle(parent, continuation, seen) + title;
+                }
+            }
+        }
+        return "";
+    }
+
+    public String getSubPagePath(SimplePageItem item, boolean subPageTitleContinue) {
+        String subPageTitle = getParentTitle(item, subPageTitleContinue, new HashSet<>());
+        return StringUtils.trimToNull(subPageTitle);
+    }
 
     // too much existing code to convert to throw at the moment
         public String getItemGroupString (SimplePageItem i, LessonEntity entity, boolean nocache) {
@@ -4034,7 +4019,7 @@ public class SimplePageBean {
 		   public int compare(Object o1, Object o2) {
 		       GroupEntry e1 = (GroupEntry)o1;
 		       GroupEntry e2 = (GroupEntry)o2;
-		       return e1.name.compareTo(e2.name);
+		       return new AlphaNumericComparator().compare(e1.name, e2.name);
 		   }
 	       });
 	   currentGroups = groupEntries;
@@ -4311,7 +4296,7 @@ public class SimplePageBean {
 				// simplepage.upd privileges, but site.save requires site.upd.
 				SecurityAdvisor siteUpdAdvisor = new SecurityAdvisor() {
 					public SecurityAdvice isAllowed(String userId, String function, String reference) {
-						if (function.equals(SITE_UPD) && reference.equals("/site/" + getCurrentSiteId())) {
+						if (function.equals(SiteService.SECURE_UPDATE_SITE) && reference.equals("/site/" + getCurrentSiteId())) {
 							return SecurityAdvice.ALLOWED;
 						} else {
 							return SecurityAdvice.PASS;
@@ -6548,52 +6533,31 @@ public class SimplePageBean {
 	public void handleImportItem() {
 		ToolSession toolSession = sessionManager.getCurrentToolSession();
 		if (toolSession != null) toolSession.setAttribute("lessonbuilder.fileImportDone", "true");
-                String returnedData = ToolUtils.getRequestParameter("data");
-                String contentItems = ToolUtils.getRequestParameter("content_items");
+                String contentItemUrl = ToolUtils.getRequestParameter("content_item_url");
+                log.debug("handleImportItem contentItemUrl={}", contentItemUrl);
 
                 // Retrieve the tool associated with the content item
                 String toolId = ToolUtils.getRequestParameter("toolId");
                 Long toolKey = SakaiBLTIUtil.getLongNull(toolId);
                 if ( toolKey == 0 || toolKey < 0 ) {
-			setErrKey("simplepage.lti-import-error-id", toolId);
+                        setErrKey("simplepage.lti-import-error-id", toolId);
                         return;
                 }
 
                 Map<String, Object> tool = ltiService.getTool(toolKey, getCurrentSiteId());
                 if ( tool == null ) {
-			setErrKey("simplepage.lti-import-error-id", toolId);
+                        setErrKey("simplepage.lti-import-error-id", toolId);
                         return;
                 }
-
-                // Parse, validate and check OAuth signature for the incoming ContentItem
-                ContentItem contentItem;
-                try {
-                        contentItem = SakaiBLTIUtil.getContentItemFromRequest(tool);
-                } catch(Exception e) {
-			setErrKey("simplepage.lti-import-bad-content-item", e.getMessage());
-			log.error(e.getMessage(), e);
-                        return;
-                }
-		// log.info("contentItem="+contentItem);
-
-		// Extract the content item data
-		Map item = (Map) contentItem.getItemOfType(ContentItem.TYPE_FILEITEM);
-		if ( item == null ) {
-			setErrKey("simplepage.lti-import-missing-file-item", null);
-			return;
-		}
-
-		String localUrl = (String) item.get("url");
-		// log.info("localUrl="+localUrl);
 
 		InputStream fis;
-		if ( localUrl != null && localUrl.length() > 1 ) {
+		if ( contentItemUrl != null && contentItemUrl.length() > 1 ) {
 			try {
-				URL parsedUrl = new URL(localUrl);
+				URL parsedUrl = new URL(contentItemUrl);
 				URLConnection yc = parsedUrl.openConnection();
 				fis = yc.getInputStream();
 			} catch ( Exception e ) {
-				setErrKey("simplepage.lti-import-error-reading-url", localUrl);
+				setErrKey("simplepage.lti-import-error-reading-url", contentItemUrl);
 				log.error(e.getMessage(), e);
 				return;
 			}
@@ -6788,24 +6752,25 @@ public class SimplePageBean {
 			if (roleList == null) {
 				roleList = "";
 			}
-			if (!roleList.contains( SITE_UPD ) && !visible) {
+			if (!roleList.contains(SiteService.SECURE_UPDATE_SITE) && !visible) {
 				if (roleList.length() > 0) {
 					roleList += ",";
 				}
-				roleList += SITE_UPD;
+				roleList += SiteService.SECURE_UPDATE_SITE;
 				saveChanges = true;
-			} else if ((roleList.contains( SITE_UPD )) && visible) {
-				roleList = roleList.replaceAll("," + SITE_UPD, "");
-				roleList = roleList.replaceAll(SITE_UPD, "");
+			} else if ((roleList.contains( SiteService.SECURE_UPDATE_SITE )) && visible) {
+				roleList = roleList.replaceAll("," + SiteService.SECURE_UPDATE_SITE, "");
+				roleList = roleList.replaceAll(SiteService.SECURE_UPDATE_SITE, "");
 				saveChanges = true;
 			}
 
 			if (saveChanges) {
 				roleConfig.setProperty("functions.require", roleList);
-				if (visible)
-				    roleConfig.remove("sakai-portal:visible");
-				else
- 				    roleConfig.setProperty("sakai-portal:visible", "false");
+				if (visible) {
+				    roleConfig.remove(ToolManager.PORTAL_VISIBLE);
+				} else {
+					roleConfig.setProperty(ToolManager.PORTAL_VISIBLE, "false");
+				}
 
 				placement.save();
 

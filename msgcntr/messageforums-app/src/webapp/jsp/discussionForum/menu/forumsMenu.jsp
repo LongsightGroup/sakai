@@ -49,6 +49,15 @@
         </span>
       </li>
     </h:panelGroup>
+    <h:panelGroup rendered="#{!ForumTool.instructor}">
+      <li role="menuitem">
+        <span id="forumsStatisticsMenuLink">
+          <h:commandLink value="#{msgs.stat_list_student}" id="statListStudent" action="#{mfStatisticsBean.processActionStatisticsUser}" immediate="true">
+              <f:param value="#{ForumTool.userId}" name="siteUserId"/>
+          </h:commandLink>
+        </span>
+      </li>
+    </h:panelGroup>
     <h:panelGroup rendered="#{ForumTool.displayPendingMsgQueue}">
       <li role="menuitem">
         <span id="forumsQueueMenuLink">
@@ -59,7 +68,7 @@
     <h:panelGroup rendered="#{ForumTool.instructor && ForumTool.ranksEnabled}">
       <li role="menuitem">
         <span id="forumsRanksMenuLink">
-            <h:commandLink value="#{msgs.ranks}" id="viewRanks" action="#{ForumTool.processPendingMsgQueue}" immediate="true"/>
+            <h:commandLink value="#{msgs.ranks}" id="viewRanks" action="#{ForumTool.processActionViewRanks}" immediate="true"/>
         </span>
       </li>
     </h:panelGroup>

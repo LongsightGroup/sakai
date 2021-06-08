@@ -23,6 +23,7 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -127,6 +128,7 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SortedIterator;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
+import org.sakaiproject.util.comparator.AlphaNumericComparator;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
 
 import org.springframework.web.context.WebApplicationContext;
@@ -2470,7 +2472,7 @@ public class AssignmentAction extends PagedResourceActionII {
     } // build_list_assignments_context
 
     private List<String> getSortedAsnGroupTitles(Assignment asn, Site site, AssignmentComparator groupComparator) {
-        List<Group> asnGroups = asn.getGroups().stream().map(id -> site.getGroup(id)).collect(Collectors.toList());
+        List<Group> asnGroups = asn.getGroups().stream().map(id -> site.getGroup(id)).filter(Objects::nonNull).collect(Collectors.toList());
         asnGroups.sort(groupComparator);
         return asnGroups.stream().map(Group::getTitle).collect(Collectors.toList());
     }
@@ -5964,6 +5966,11 @@ public class AssignmentAction extends PagedResourceActionII {
 
                 if (submission != null) {
                     // the submission already exists, change the text and honor pledge value, post it
+                    submission.setUserSubmission(true);
+                    submission.setSubmittedText(text);
+                    submission.setDateSubmitted(Instant.now());
+                    submission.setSubmitted(post);
+
                     Map<String, String> properties = submission.getProperties();
 
                     if (a.getIsGroup()) {
@@ -5992,10 +5999,6 @@ public class AssignmentAction extends PagedResourceActionII {
                         setResubmissionProperties(a, submission);
                     }
 
-                    submission.setUserSubmission(true);
-                    submission.setSubmittedText(text);
-                    submission.setDateSubmitted(Instant.now());
-                    submission.setSubmitted(post);
                     String currentUser = sessionManager.getCurrentSessionUserId();
                     // identify who the submittee is using the session
                     submission.getSubmitters().stream().filter(s -> s.getSubmitter().equals(currentUser)).findFirst().ifPresent(s -> s.setSubmittee(true));
@@ -9511,6 +9514,7 @@ public class AssignmentAction extends PagedResourceActionII {
                 state.setAttribute("selectedAssignments", new ArrayList());
                 state.setAttribute(STATE_MODE, MODE_LIST_ASSIGNMENTS);
                 state.setAttribute(STATE_SELECTED_VIEW, MODE_LIST_ASSIGNMENTS);
+                state.setAttribute(SORTED_BY, SORTED_BY_DEFAULT);
             }
         } else {
             addAlert(state, rb.getString("youmust6"));
@@ -9570,6 +9574,7 @@ public class AssignmentAction extends PagedResourceActionII {
                 state.setAttribute("selectedAssignments", new ArrayList());
                 state.setAttribute(STATE_MODE, MODE_LIST_ASSIGNMENTS);
                 state.setAttribute(STATE_SELECTED_VIEW, MODE_LIST_ASSIGNMENTS);
+                state.setAttribute(SORTED_BY, SORTED_BY_DEFAULT);
             }
         } else {
             addAlert(state, rb.getString("youmust6"));
@@ -11218,6 +11223,21 @@ public class AssignmentAction extends PagedResourceActionII {
         state.setAttribute(NEW_ASSIGNMENT_SUBMISSION_TYPE, Assignment.SubmissionType.TEXT_AND_ATTACHMENT_ASSIGNMENT_SUBMISSION.ordinal());
         state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, UNGRADED_GRADE_TYPE.ordinal());
         state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+        Boolean withGradesConfig = serverConfigurationService.getBoolean("assignment.grade.default", Boolean.TRUE);
+        state.setAttribute(WITH_GRADES, withGradesConfig);
+        if (withGradesConfig) {
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, SCORE_GRADE_TYPE.ordinal());
+            String defaultPointsConfig = serverConfigurationService.getString("assignment.points.default", "");
+            if (NumberUtils.isParsable(defaultPointsConfig)) {
+                float defaultPoints = NumberUtils.createFloat(defaultPointsConfig);
+                state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, String.valueOf(defaultPoints));
+            } else {
+                state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+            }
+        } else {
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_TYPE, UNGRADED_GRADE_TYPE.ordinal());
+            state.setAttribute(NEW_ASSIGNMENT_GRADE_POINTS, "");
+        }
         state.setAttribute(NEW_ASSIGNMENT_DESCRIPTION, "");
         state.setAttribute(ResourceProperties.NEW_ASSIGNMENT_CHECK_ADD_DUE_DATE, Boolean.FALSE.toString());
         state.setAttribute(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE, Boolean.FALSE.toString());
@@ -12695,8 +12715,9 @@ public class AssignmentAction extends PagedResourceActionII {
 
             final Path destination = Paths.get(tempFile.getCanonicalPath());
             Files.copy(fileContentStream, destination, StandardCopyOption.REPLACE_EXISTING);
+            final Charset tempFileCharset = getZipFileCharset(tempFile);
 
-            ZipFile zipFile = new ZipFile(tempFile, StandardCharsets.UTF_8);
+            ZipFile zipFile = new ZipFile(tempFile, tempFileCharset);
             Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
             ZipEntry entry;
             // SAK-17606
@@ -13016,6 +13037,33 @@ public class AssignmentAction extends PagedResourceActionII {
 
         }
         return submissionTable;
+    }
+
+    private Charset getZipFileCharset(File tempFile) {
+        final Charset[] possibleCharSets = new Charset[]{
+                StandardCharsets.UTF_8,
+                Charset.forName("IBM437"),
+                Charset.forName("windows-1252"),
+                StandardCharsets.ISO_8859_1,
+                StandardCharsets.US_ASCII,
+                Charset.forName("Cp437")
+        };
+
+        for (Charset c : possibleCharSets) {
+            try {
+                ZipFile zf = new ZipFile(tempFile, c);
+                Enumeration<? extends ZipEntry> zipEntries = zf.entries();
+                // Try to provoke a MalformedNameException
+                while (zipEntries.hasMoreElements()) {
+                    zipEntries.nextElement();
+                }
+                return c;
+            } catch (Exception e) {
+                log.debug("ZIP encoding detection was incorrect for charset=", c.toString());
+            }
+        }
+
+        return StandardCharsets.UTF_8;
     }
 
     /**
@@ -14540,7 +14588,7 @@ public class AssignmentAction extends PagedResourceActionII {
                 // sorted by the group title
                 String factor1 = ((Group) o1).getTitle();
                 String factor2 = ((Group) o2).getTitle();
-                result = compareString(factor1, factor2);
+                result = new AlphaNumericComparator().compare(factor1, factor2);
             } else if (m_criteria.equals(SORTED_BY_GROUP_DESCRIPTION)) {
                 // sorted by the group description
                 String factor1 = ((Group) o1).getDescription();
@@ -14620,6 +14668,8 @@ public class AssignmentAction extends PagedResourceActionII {
                     String anon1 = u1.getSubmission().getId();
                     String anon2 = u2.getSubmission().getId();
                     result = compareString(anon1, anon2);
+                } else if (u1.getUser() != null && u2.getUser() != null) {
+                    result = new UserSortNameComparator().compare(u1.getUser(), u2.getUser());
                 } else {
                     String lName1 = u1.getUser() == null ? u1.getGroup().getTitle() : u1.getUser().getSortName();
                     String lName2 = u2.getUser() == null ? u2.getGroup().getTitle() : u2.getUser().getSortName();

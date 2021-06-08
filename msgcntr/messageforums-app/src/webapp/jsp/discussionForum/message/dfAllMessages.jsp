@@ -92,7 +92,6 @@
          }
 
  		</script>
-		<%@ include file="/jsp/discussionForum/menu/forumsMenu.jsp" %>
 		<h:outputText styleClass="showMoreText"  style="display:none" value="#{msgs.cdfm_show_more_full_description}"  />
 
 	<%--//
@@ -127,6 +126,7 @@
 		<span class="highlight"  id="maxthreaddepth" class="skip"><h:outputText value="#{msgs.cdfm_maxthreaddepth}" /></span>
 //--%>
 	<h:form id="msgForum" rendered="#{!ForumTool.selectedTopic.topic.draft || ForumTool.selectedTopic.topic.createdBy == ForumTool.userId}">
+        <%@ include file="/jsp/discussionForum/menu/forumsMenu.jsp" %>
         <f:subview id="picker2">
             <%@ include file="moveThreadPicker.jsp" %>
         </f:subview>
@@ -218,7 +218,7 @@
 					<h:panelGroup rendered="#{!empty ForumTool.selectedTopic.attachList || ForumTool.selectedTopic.topic.extendedDescription != '' && ForumTool.selectedTopic.topic.extendedDescription != null && ForumTool.selectedTopic.topic.extendedDescription != '<br/>'}">
 						<p id="openLinkBlock" class="toggleParent openLinkBlock">
 							<a href="#" id="showMessage" class="toggle show">
-								<h:graphicImage url="/images/expand.gif" alt=""/>
+								<h:graphicImage url="/images/collapse.gif" alt=""/>
 								<h:outputText value=" #{msgs.cdfm_read_full_description}" />
 								<h:outputText value=" #{msgs.cdfm_and}" rendered="#{!empty ForumTool.selectedTopic.attachList}"/>
 								<h:outputText value=" #{msgs.cdfm_attach}" rendered="#{!empty ForumTool.selectedTopic.attachList}"/>
@@ -226,7 +226,7 @@
 						</p>
 						<p id="hideLinkBlock" class="toggleParent hideLinkBlock display-none">
 							<a href="#" id="hideMessage" class="toggle show">
-								<h:graphicImage url="/images/collapse.gif" alt="" />
+								<h:graphicImage url="/images/expand.gif" alt="" />
 								<h:outputText value=" #{msgs.cdfm_hide_full_description}"/>
 								<h:outputText value=" #{msgs.cdfm_and}" rendered="#{!empty ForumTool.selectedTopic.attachList}" />
 								<h:outputText value=" #{msgs.cdfm_attach}" rendered="#{!empty ForumTool.selectedTopic.attachList}"/>

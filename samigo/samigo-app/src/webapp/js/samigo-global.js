@@ -1,8 +1,8 @@
 // SAM-1817: This was originally in RichTextEditor.java
-function show_editor(client_id, frame_id) {
+function show_editor(client_id, frame_id, max_chars) {
 	var status =  document.getElementById(client_id + '_textinput_current_status');
 	status.value = "expanded";
-	chef_setupformattedtextarea(client_id, true, frame_id);
+	chef_setupformattedtextarea(client_id, true, frame_id, max_chars);
 	if (typeof setBlockDivs == "function" && typeof retainHideUnhideStatus == "function") {
 		setBlockDivs();
 		retainHideUnhideStatus('none');
@@ -22,7 +22,7 @@ function encodeHTML(text) {
 	return text;
 }
 
-function chef_setupformattedtextarea(client_id, shouldToggle, frame_id) {
+function chef_setupformattedtextarea(client_id, shouldToggle, frame_id, max_chars) {
 	$("body").height($("body").outerHeight() + 600);
 
 	var textarea_id = client_id + "_textinput";
@@ -34,7 +34,11 @@ function chef_setupformattedtextarea(client_id, shouldToggle, frame_id) {
 		input_text.value = input_text_encoded;
 	}
 
-	sakai.editor.launch(textarea_id,'','450','240');
+	config = ''
+	if (max_chars) {
+		config = {wordcount: {'maxCharCount' : 32000}}
+	}
+	sakai.editor.launch(textarea_id, config,'450','240');
 	//setMainFrameHeight(frame_id);
 }
 
@@ -151,7 +155,7 @@ $(function () {
   });
 
   const save = e => {
-    [...document.getElementsByTagName("sakai-rubric-grading")].forEach(srb => srb.save());
+    [...document.getElementsByTagName("sakai-rubric-grading")].forEach(srb => srb.release());
   };
 
   let saveButton = document.getElementById("editStudentResults:save");
@@ -159,4 +163,23 @@ $(function () {
 
   saveButton = document.getElementById("editTotalResults:save");
   saveButton && saveButton.addEventListener("click", save);
+
+  if ( $("#selectIndexForm\\:selectTable").length ) {
+    $("#selectIndexForm\\:selectTable").tablesorter({ 
+      sortList: [[2,0]],
+      textExtraction: {
+        0: function(node, table, cellIndex) { return $(node).find("a").text(); }
+      }
+    });
+  }
+  if ( $("#editform\\:questionpool-questions").length ) {
+    $("#editform\\:questionpool-questions").tablesorter({
+      headers: {
+        0: {
+          sorter: false
+        }
+      }
+    });
+  }
+
 });
