@@ -1,33 +1,33 @@
-$skin-name : "ttuhsc" !default; // This is used for bootstrap font behaviour.
+$skin-name : "mfr_full" !default; // This is used for bootstrap font behaviour.
 
 /* Logo location */
-$logo:                                                          '../images/ttuhsc.png';
-$logo-height:                                                   43px;
-$logo-width:                                                    299px;
+$logo:                                                          '../images/nps-mfr_full.svg';
+$logo-height:                                                   60px;
+$logo-width:                                                    542px;
 
-$banner-height:					       50px;
+$banner-height:					       60px;
 
 // Base Colors
-$primary-color:         				#333;
-$top-header-background: 				#333;
-$sites-nav-background: 					#99281e;
+$primary-color:         				#14385e;
+$top-header-background: 				#14385e;
+$sites-nav-background: 					#6F120D;
 $topNav-text-color:					#FFF;
 $text-color:						#000;
 $become-user-primary:					#CCC;
 $lessons-column-border: 				1px solid #ededed;
 
-$tool-tab-active-highlight-color:			#99281e;
+$tool-tab-active-highlight-color:			#14385e;
 
 // Sites Navigation
-$sites-nav-menu-item-background: 			#555;
+$sites-nav-menu-item-background: 			#6F120D;
 $sites-nav-menu-item-color: 				#FFF;
-$sites-nav-menu-item-hover-background: 			#777777;
-$sites-nav-menu-item-hover-color: 			#000;
+$sites-nav-menu-item-hover-background: 			#7D2925;
+$sites-nav-menu-item-hover-color: 			#FFF;
 	
-$sites-nav-menu-item-selected-background: 		#99281E;
+$sites-nav-menu-item-selected-background: 		#14385e;
 $sites-nav-menu-item-selected-color:        		#FFF;
-$sites-nav-menu-item-selected-border-color: 		#99281E;
-$sites-nav-menu-item-selected-hover-background: 	#ad534b;
+$sites-nav-menu-item-selected-border-color: 		#14385e;
+$sites-nav-menu-item-selected-hover-background: 	#2B4B6E;
 
 
 // Tool Menu
@@ -37,10 +37,7 @@ $tool-menu-item-text-color:                    		#000;
 
 $tool-menu-item-selected-text-color:                    #FFF;
 $tool-menu-item-selected-icon-color:                    #FFF;
-$tool-menu-item-selected-background-color:              #99281E;
-$tool-menu-item-selected-hover-background-color:        #ad534b;
-$tool-menu-item-selected-hover-text-color:              #FFF;
-$tool-menu-item-selected-hover-icon-color:              #FFF;
+$tool-menu-item-selected-background-color:              #14385e;
 
 /* Tool sub menu */
 $tool-sub-menu-border-color: 				#fff;
@@ -59,55 +56,55 @@ $tool-lessons-subpage-menu-selected-parent-background-color: $tool-menu-item-sel
 $tool-lessons-subpage-menu-expanded-background-color: $tool-menu-item-background-color !default;
 
 // Button Hover
-$button-primary-hover-background:           		#99281E;
-$button-primary-hover-border-color:         		#FFF;
-$button-primary-hover-text-color:      			#FFF;
+$button-primary-hover-background:           		#FFF;
+$button-primary-hover-border-color:         		#14385e;
+$button-primary-hover-text-color:      			#14385e;
 
 // Links
-$link-color:                                            #300 !default;
-$link-active-color:                                     #99281E !default;
-$link-hover-color:                                      #99281E !default;
+$link-color:                                            #2a94c0 !default;
+$link-active-color:                                     #2a94c0 !default;
+$link-hover-color:                                      #4e5192 !default;
 
 //CUSTOM CSS OVERRIDES
 
 @media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
-	color: #99281E !important;
+	color: #14385e !important;
     }
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-	color: #FFF !important;
-    }
-    .Mrphs-siteHierarchy a {
-	color: #FFF !important;
+	color: #14385e !important;
     }
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
-	width: 157px !important;
-	background-size: 157px 26px !important;
+	width: 250px !important;
+	background-size: 250px 28px !important;
     }
     #mastLogin {
-	width: calc(100% - 157px) !important;
+	width: calc(100% - 250px) !important;
     }
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #FFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #14385e;
 }
 
 #toolMenuWrap .img_site_toolmenu {
     display: none;
 }
 
-#linkNav ul li.Mrphs-sitesNav__menuitem {
-    border: 1px solid #555;
-}
-
-#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
-    border: 1px solid #FFF;
-}
-
 .bs-callout-primary, .validationEmbedded, .validation, .Mrphs-sakai-samigo #samigo-create-new-box, .Mrphs-sakai-samigo #samigo-create-import-box, .bs-callout-info, .messageInformation, .messageInstruction, .messageProgress {
     background-color: #FAFAFA !important;
-    border-color: #99281E !important;
-    border-left-color: #99281E !important;
+    border-color: #14385e !important;
+    border-left-color: #14385e !important;
 }
 
-span.Mrphs-login-Message:hover {
-    color: #99281e;
-    text-decoration: underline;
+.Mrphs-mainHeader .Mrphs-headerLogo {
+    background: url(../images/nps-mfr_full.svg) no-repeat no-repeat #14385e !important;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    background: transparent !important;
 }
