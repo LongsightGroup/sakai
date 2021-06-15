@@ -446,6 +446,7 @@ public class SimplePageBean {
         
      // Spring Injection
 
+    @Setter private ActivityAlertService activityAlertService;
     @Setter private SessionManager sessionManager;
     @Setter private ContentHostingService contentHostingService;
     @Setter private GradebookIfc gradebookIfc = null;
@@ -742,31 +743,7 @@ public class SimplePageBean {
 	    Arrays.sort(htmlTypes);
 	}
 
-	private LessonEntity assignmentEntity = null;
-	public void setAssignmentEntity(Object e) {
-		assignmentEntity = (LessonEntity)e;
-	}
 
-        private LessonEntity bltiEntity = null;
-        public void setBltiEntity(Object e) {
-	    bltiEntity = (LessonEntity)e;
-        }
-	
-	@Setter private ActivityAlertService activityAlertService;
-	@Setter private AssignmentService assignmentService;
-	@Setter private ToolManager toolManager;
-	@Setter private LTIService ltiService;
-	@Setter private SecurityService securityService;
-	@Setter private SiteService siteService;
-	@Setter private AuthzGroupService authzGroupService;
-	@Setter private SimplePageToolDao simplePageToolDao;
-	@Setter private LessonsAccess lessonsAccess;
-        @Setter private LessonBuilderAccessService lessonBuilderAccessService;
-	@Getter @Setter private MessageLocator messageLocator;
-        @Setter private HttpServletResponse httpServletResponse;
-        @Setter private LessonBuilderEntityProducer lessonBuilderEntityProducer;
-
-    // End Injection
 
 	static Class levelClass = null;
 	static Object[] levels = null;
@@ -2044,42 +2021,6 @@ public class SimplePageBean {
 		return true;
 	    String ref = "/site/" + getCurrentSiteId();
 	    return securityService.unlock(SimplePage.PERMISSION_LESSONBUILDER_SEE_ALL, ref);
-	}
-
-	public void setLtiService(LTIService service) {
-		ltiService = service;
-	}
-
-	public void setToolManager(ToolManager toolManager) {
-		this.toolManager = toolManager;
-	}
-
-	public void setSecurityService(SecurityService service) {
-		securityService = service;
-	}
-
-	public void setSiteService(SiteService service) {
-		siteService = service;
-	}
-
-	public void setAuthzGroupService(AuthzGroupService authzGroupService) {
-		this.authzGroupService = authzGroupService;
-	}
-
-	public void setSimplePageToolDao(Object dao) {
-		simplePageToolDao = (SimplePageToolDao) dao;
-	}
-	
-	public void setActivityAlertService(ActivityAlertService activityAlertService){
-		this.activityAlertService = activityAlertService;
-	}
-
-	public void setLessonsAccess(LessonsAccess a) {
-		lessonsAccess = a;
-	}
-
-	public void setLessonBuilderAccessService(LessonBuilderAccessService a) {
-		lessonBuilderAccessService = a;
 	}
 
 	public List<SimplePageItem>  getItemsOnPage(long pageid) {

@@ -4865,12 +4865,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
  			makeCsrf(form, "csrf23");
 
  			//Roles:
- 			String currentSiteId = toolManager.getCurrentPlacement().getContext();
- 			Site site = null;
  			List<String> roles = new ArrayList<String>();
  			try {
- 				site = siteService.getSite(currentSiteId);
- 				for(Role role : site.getRoles()){
+ 				for(Role role : simplePageBean.getCurrentSite().getRoles()){
  					roles.add(role.getId());
  				}
  			} catch (Exception e) {
