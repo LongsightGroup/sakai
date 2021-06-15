@@ -203,12 +203,10 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 	 */
 	private Map<String,String> attributeMappings;
 
-	private MemoryService memoryService;
-	
 	// EST-3 LUC immutable id customization
-	private SqlService sqlService;
-	private EmailService emailService;
-	private ServerConfigurationService serverConfigurationService;
+	@Getter @Setter private SqlService sqlService;
+	@Getter @Setter private EmailService emailService;
+	@Getter @Setter private ServerConfigurationService serverConfigurationService;
 	
 	/** Handles LDAPConnection allocation */
 	private LDAPConnectionPool connectionPool;
@@ -1581,39 +1579,6 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			default :
 				throw new IllegalArgumentException("Invalid search scope [" + searchScope +"]");
 		}
-	}
-
- 	public MemoryService getMemoryService() {
- 		return memoryService;
- 	}
-
- 	public void setMemoryService(MemoryService memoryService) {
- 		this.memoryService = memoryService;
- 	}
-
- 	// EST-3 custom for LUC immutable id checking
- 	public SqlService getSqlService() {
- 		return sqlService;
- 	}
-
- 	public void setSqlService(SqlService sqlService) {
- 		this.sqlService = sqlService;
- 	}
-
- 	public EmailService getEmailService() {
- 		return emailService;
- 	}
-
- 	public void setEmailService(EmailService emailService) {
- 		this.emailService = emailService;
- 	}
-
- 	public ServerConfigurationService getServerConfigurationService() {
- 		return serverConfigurationService;
- 	}
-
- 	public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
- 		this.serverConfigurationService = serverConfigurationService;
 	}
 
 	/** 
