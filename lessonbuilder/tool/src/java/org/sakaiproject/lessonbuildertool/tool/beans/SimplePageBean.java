@@ -470,7 +470,7 @@ public class SimplePageBean {
         
      // Spring Injection
 
-	@Setter private ActivityAlertService activityAlertService;
+    @Setter private ActivityAlertService activityAlertService;
     @Setter private SessionManager sessionManager;
     @Setter private ContentHostingService contentHostingService;
     @Setter private GradebookIfc gradebookIfc = null;
@@ -766,8 +766,6 @@ public class SimplePageBean {
 	    }
 	    Arrays.sort(htmlTypes);
 	}
-
-    // End Injection
 
 	static Class levelClass = null;
 	static Object[] levels = null;
