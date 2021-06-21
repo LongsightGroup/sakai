@@ -289,7 +289,7 @@
 		<property name="contentHostingService" ref="org.sakaiproject.content.api.ContentHostingService" />
 		<property name="authzGroupService" ref="org.sakaiproject.authz.api.AuthzGroupService" />
 		<property name="simplePageToolDao" ref="org.sakaiproject.lessonbuildertool.model.SimplePageToolDao" />
-		<property name="activityAlertService" ref bean="org.sakaiproject.lessonbuildertool.model.ActivityAlertService" />
+		<property name="activityAlertService" ref="org.sakaiproject.lessonbuildertool.model.ActivityAlertService" />
 		<property name="httpServletResponse" ref="httpServletResponse" />
 		<property name="multipartMap" ref="multipartMap" />
 		<property name="forumEntity" ref="org.sakaiproject.lessonbuildertool.service.ForumEntity"/>
