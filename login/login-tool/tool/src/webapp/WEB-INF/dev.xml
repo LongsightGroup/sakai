@@ -35,7 +35,7 @@
     <!-- Handler deciding where to redirect user after successful login -->
     <bean id="successRedirectHandler"
           class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-        <property name="defaultTargetUrl" value="/portal"/>
+	  <property name="defaultTargetUrl" value="/container/saml/container"/>
     </bean>
 
     <!-- Handler deciding where to redirect user after failed login -->
