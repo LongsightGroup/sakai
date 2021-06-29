@@ -572,7 +572,10 @@ public class AssignmentAction extends PagedResourceActionII {
      * the hide assignment flag in the view assignment page *
      */
     private static final String VIEW_ASSIGNMENT_HIDE_ASSIGNMENT_FLAG = "view_assignment_hide_assignment_flag";
-
+    /**
+     * the warning for content review requiring EULA
+     */
+    private static final String CONTENT_REVIEW_EULA_REQUIRED_ALERTED = "content_review_eula_required_alerted";
     /* ************** view assignment ***************************************** */
     /**
      * the hide student view flag in the view assignment page *
@@ -602,6 +605,7 @@ public class AssignmentAction extends PagedResourceActionII {
     private static final String GRADE_SUBMISSION_SUBMIT = "grade_submission_submit";
     private static final String GRADE_SUBMISSION_SHOW_STUDENT_DETAILS = "grade_showStudentDetails";
     private static final String GRADE_SUBMISSION_SUBMITTERS_NAMES = "grade_ssubmission_submitters_names";
+    private static final String RUBRIC_ASSOCIATION = "rubric_association";
     /**
      * ****************** instructor's export assignment *****************************
      */
@@ -3159,6 +3163,8 @@ public class AssignmentAction extends PagedResourceActionII {
 
         // release grade notification option
         putReleaseResubmissionNotificationOptionIntoContext(state, context, a);
+
+        context.put(RUBRIC_ASSOCIATION, state.getAttribute(RUBRIC_ASSOCIATION));
 
         // the supplement information
         // model answers
@@ -6209,8 +6215,16 @@ public class AssignmentAction extends PagedResourceActionII {
 
             if (state.getAttribute(STATE_MESSAGE) == null) {
                 if (StringUtils.isNotEmpty(params.getString(SUBMISSION_REVIEW_CHECK_SERVICE_EULA_AGREEMENT))) {
+                	boolean requireEulaForSubmission = serverConfigurationService.getBoolean("contentreview.submission.eula.required", false);
                     if (!Boolean.valueOf(eulaAgreementYes)) {
-                        addAlert(state, rb.getFormattedMessage("youarenot21", contentReviewService.getServiceName()));
+                    	//if the user hasn't seen the EULA alert or the EULA is required to submit the assignment, then show the user the alert
+                    	if (state.getAttribute(CONTENT_REVIEW_EULA_REQUIRED_ALERTED) == null
+                    			|| requireEulaForSubmission) {
+                    		addAlert(state, rb.getFormattedMessage("youarenot21", contentReviewService.getServiceName()));
+                    		state.setAttribute(CONTENT_REVIEW_EULA_REQUIRED_ALERTED, true);
+                    	}
+                    } else {
+                    	state.removeAttribute(CONTENT_REVIEW_EULA_REQUIRED_ALERTED);
                     }
                     state.setAttribute(SUBMISSION_REVIEW_SERVICE_EULA_AGREEMENT, eulaAgreementYes);
                 }
@@ -6940,6 +6954,21 @@ public class AssignmentAction extends PagedResourceActionII {
                 if (state.getAttribute(NEW_ASSIGNMENT_PREVIOUSLY_ASSOCIATED) != null && validify) {
                     addAlert(state, rb.getString("addtogradebook.previouslyAssoc"));
                 }
+            }
+        }
+
+        String rubricId = params.getString(RubricsConstants.RBCS_LIST);
+        if (StringUtils.isNotBlank(rubricId)) {
+            Map<String, Object> rubricAssociationMap = new HashMap<>();
+            rubricAssociationMap.put("rubricId", rubricId);
+            Map<String, String> rubricAssociationParameters = new HashMap<>();
+            rubricAssociationParameters.put("fineTunePoints", params.getString("rbcs-config-fineTunePoints"));
+            rubricAssociationParameters.put("hideStudentPreview", params.getString("rbcs-config-hideStudentPreview"));
+            rubricAssociationMap.put("parameters", rubricAssociationParameters);
+            try {
+                state.setAttribute(RUBRIC_ASSOCIATION, (new ObjectMapper()).writeValueAsString(rubricAssociationMap));
+            } catch (Exception e) {
+                log.error("Failed to serialise rubrics parameters to JSON", e);
             }
         }
 
@@ -8468,7 +8497,7 @@ public class AssignmentAction extends PagedResourceActionII {
                                 header.setSubject(/* subject */rb.getFormattedMessage("assig5", title));
                             }
 
-                            String formattedOpenTime = assignmentService.getUsersLocalDateTimeString(openTime, FormatStyle.MEDIUM, FormatStyle.LONG);
+                            String formattedOpenTime = userTimeService.dateTimeFormat(openTime, FormatStyle.MEDIUM, FormatStyle.LONG);
                             if (updatedOpenDate) {
                                 // revised assignment open date
                                 message.setBody(/* body */ "<p>" + rb.getFormattedMessage("newope", formattedText.convertPlaintextToFormattedText(title), formattedOpenTime) + "</p>");
@@ -8638,7 +8667,7 @@ public class AssignmentAction extends PagedResourceActionII {
                         if (group != null) eGroups.add(group);
                     }
                 }
-		String formattedDueTime = assignmentService.getUsersLocalDateTimeString(dueTime);
+                String formattedDueTime = userTimeService.dateTimeFormat(dueTime, FormatStyle.MEDIUM, FormatStyle.LONG);
                 e = c.addEvent(/* TimeRange */timeService.newTimeRange(dueTime.toEpochMilli(), 0),
 						/* title */rb.getString("gen.due") + " " + title,
 			       /* description */rb.getFormattedMessage("assign_due_event_desc", title, formattedDueTime),
@@ -11399,6 +11428,7 @@ public class AssignmentAction extends PagedResourceActionII {
         state.removeAttribute(GRADE_GREATER_THAN_MAX_ALERT);
         state.removeAttribute(VIEW_SUBMISSION_ASSIGNMENT_INSTRUCTOR);
         state.removeAttribute(PREVIEW_SUBMISSION_TEXT);
+        state.removeAttribute(CONTENT_REVIEW_EULA_REQUIRED_ALERTED);
     } // resetViewSubmission
 
     /**
@@ -11715,6 +11745,8 @@ public class AssignmentAction extends PagedResourceActionII {
         state.removeAttribute(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
 
         state.removeAttribute(NEW_ASSIGNMENT_PREVIOUSLY_ASSOCIATED);
+
+        state.removeAttribute(RUBRIC_ASSOCIATION);
     } // resetNewAssignment
 
     /**
@@ -14010,7 +14042,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
                         if (mode.equals(MODE_STUDENT_VIEW_SUBMISSION)) {
                             if (fileConversionService.canConvert(attachment.getContentType())) {
-                                fileConversionService.convert(attachment.getId());
+                                fileConversionService.submit(attachment.getId());
                             }
                         }
 

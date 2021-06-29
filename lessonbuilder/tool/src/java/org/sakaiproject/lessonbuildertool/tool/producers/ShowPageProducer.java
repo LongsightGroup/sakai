@@ -4027,10 +4027,18 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		SecurityAdvisor yesMan = (String arg0, String arg1, String agr2) -> SecurityAdvisor.SecurityAdvice.ALLOWED;
 		securityService.pushAdvisor(yesMan);
 		try {
-			AssignmentEntity assignment = (AssignmentEntity) assignmentEntity.getEntity(sakaiId, simplePageBean);		
+			TimeZone tz = userTimeService.getLocalTimeZone();
+			df.setTimeZone(tz);
+
+			AssignmentEntity assignment = (AssignmentEntity) assignmentEntity.getEntity(sakaiId, simplePageBean);
 			linkText += " " + messageLocator.getMessage("simplepage.assignment.open_close_date", 
-					new Object[] {df.format(assignment.getOpenDate()), df.format(assignment.getDueDate())});
-		} catch (Exception ex) {}
+					new Object[] {
+							df.format(assignment.getOpenDate()),
+							assignment.isHiddenDueDate() ? "-" : df.format(assignment.getDueDate())
+			});
+		} catch (Exception ex) {
+			log.debug("getLinkText date exception", ex);
+		}
 		finally {
 			securityService.popAdvisor(yesMan);
 		}
@@ -4949,17 +4957,23 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 		UIOutput.make(form, "pageTitleLabel", messageLocator.getMessage("simplepage.pageTitle_label"));
 
-		final String placementId = toolManager.getCurrentPlacement() != null ? toolManager.getCurrentPlacement().getId() : null;
-		final SitePage sitePage = simplePageBean.getCurrentSite() != null ? simplePageBean.getCurrentSite().getPage(page.getToolId()) : null;
-		String externalPageTitle = null;
-		if (sitePage != null && StringUtils.isNotBlank(placementId)) {
-			 externalPageTitle = sitePage.getTools().stream()
-					.filter(t -> t.getId().equals(placementId))
-					.findFirst()
-					.map(Placement::getTitle)
-					.orElse("");
+		// If this is a subpage we don't have to check tool configuration (only top level tool instance can be renamed via Site Info -> Tool Order)
+		String effectivePageTitle = page.getTitle();
+		if (page.getParent() == null) {
+			final String placementId = toolManager.getCurrentPlacement() != null ? toolManager.getCurrentPlacement().getId() : null;
+			final SitePage sitePage = simplePageBean.getCurrentSite() != null ? simplePageBean.getCurrentSite().getPage(page.getToolId()) : null;
+			String externalPageTitle = null;
+			if (sitePage != null && StringUtils.isNotBlank(placementId)) {
+				 externalPageTitle = sitePage.getTools().stream()
+						.filter(t -> t.getId().equals(placementId))
+						.findFirst()
+						.map(Placement::getTitle)
+						.orElse("");
+			}
+
+			effectivePageTitle = StringUtils.defaultIfBlank(externalPageTitle, effectivePageTitle);
 		}
-		String effectivePageTitle = StringUtils.defaultIfBlank(externalPageTitle, page.getTitle());
+
 		UIInput.make(form, "pageTitle", "#{simplePageBean.pageTitle}", effectivePageTitle);
 
 		if (!simplePageBean.isStudentPage(page)) {

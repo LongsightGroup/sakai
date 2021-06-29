@@ -1350,7 +1350,10 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         Assert.notNull(submission.getId(), "Submission doesn't appear to have been persisted yet");
 
         String reference = AssignmentReferenceReckoner.reckoner().submission(submission).reckon().getReference();
-        if (!allowUpdateSubmission(reference)) {
+        String assignmentReference = AssignmentReferenceReckoner.reckoner().assignment(submission.getAssignment()).reckon().getReference();
+
+        // TODO these permissions checks should coincide with the changes that are being made for the submission
+        if (!(allowUpdateSubmission(reference) || allowGradeSubmission(assignmentReference))) {
             throw new PermissionException(sessionManager.getCurrentSessionUserId(), SECURE_UPDATE_ASSIGNMENT_SUBMISSION, null);
         }
         eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_UPDATE_ASSIGNMENT_SUBMISSION, reference, true));
@@ -1655,7 +1658,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
         Instant submitTime = submission.getDateSubmitted();
         AssignmentConstants.SubmissionStatus subStatus = getSubmissionCannonicalStatus(submission);
-        return getFormattedStatus(subStatus, getUsersLocalDateTimeString(submitTime));
+        return getFormattedStatus(subStatus, userTimeService.dateTimeFormat(submitTime, null, null));
     }
 
     private String getFormattedStatus(AssignmentConstants.SubmissionStatus subStatus, String submittedTime) {
@@ -2105,7 +2108,15 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             AssignmentSubmission submission = getSubmission(AssignmentReferenceReckoner.reckoner().assignment(assignment).reckon().getId(), userId);
 
             if (submission != null) {
-                // check for allow resubmission or not first
+
+                if (isBeforeAssignmentCloseDate && (submission.getDateSubmitted() == null || !submission.getSubmitted())) {
+                    // before the assignment close date
+                    // and if no date then a submission was never never submitted
+                    // or if there is a submitted date and its a not submitted then it is considered a draft
+                    return true;
+                }
+
+                // check for allow resubmission or not
                 // return true if resubmission is allowed and current time is before resubmission close time
                 // get the resubmit settings from submission object first
                 String allowResubmitNumString = submission.getProperties().get(AssignmentConstants.ALLOW_RESUBMIT_NUMBER);
@@ -2126,13 +2137,6 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     } catch (NumberFormatException e) {
                         log.warn("allowResubmitNumString = {}, allowResubmitCloseTime = {}", allowResubmitNumString, allowResubmitCloseTime, e);
                     }
-                }
-
-                if (isBeforeAssignmentCloseDate && (submission.getDateSubmitted() == null || !submission.getSubmitted())) {
-                    // before the assignment close date
-                    // and if no date then a submission was never never submitted
-                    // or if there is a submitted date and its a not submitted then it is considered a draft
-                    return true;
                 }
             } else {
                 // there is no submission yet so only check if before assignment close date
@@ -4319,18 +4323,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
 
     @Override
     public String getUsersLocalDateTimeString(Instant date) {
-        return getUsersLocalDateTimeString(date, FormatStyle.MEDIUM, FormatStyle.SHORT);
-    }
-
-    public String getUsersLocalDateTimeString(Instant date, FormatStyle dateStyle, FormatStyle timeStyle) {
-        if (date == null) return "";
-        if (dateStyle == null) { dateStyle = FormatStyle.MEDIUM; }
-        if (timeStyle == null) { timeStyle = FormatStyle.SHORT; }
-        ZoneId zone = userTimeService.getLocalTimeZone().toZoneId();
-        DateTimeFormatter df = DateTimeFormatter.ofLocalizedDateTime(dateStyle, timeStyle)
-                                                .withZone(zone)
-                                                .withLocale(resourceLoader.getLocale());
-        return df.format(date);
+        return userTimeService.dateTimeFormat(date, null, null);
     }
 
     private String removeReferencePrefix(String referenceId) {
