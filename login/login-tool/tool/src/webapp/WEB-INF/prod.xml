@@ -175,7 +175,7 @@
                   <constructor-arg>
                     <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                       <constructor-arg>
-                        <value type="java.lang.String">https://login.microsoftonline.com/0084b924-3ab4-4116-9251-9939f695e54c/federationmetadata/2007-06/federationmetadata.xml?appid=540752c8-21aa-4252-86b1-b532a54d7dbf</value>
+                        <value type="java.lang.String">https://login.microsoftonline.com/0084b924-3ab4-4116-9251-9939f695e54c/federationmetadata/2007-06/federationmetadata.xml?appid=ddae2583-be35-465c-85e7-ee9f36e75ab3</value>
                       </constructor-arg>
                       <constructor-arg>
                         <value type="int">60000</value>
@@ -197,7 +197,7 @@
                   <constructor-arg>
                     <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                       <constructor-arg>
-                        <value type="java.lang.String">https://login.microsoftonline.com/aa52c40e-ac89-4a63-b2cf-7c570fdf1df2/federationmetadata/2007-06/federationmetadata.xml?appid=c5bbebac-f302-4279-b9a8-bcbcfd41d973</value>
+                        <value type="java.lang.String">https://login.microsoftonline.com/aa52c40e-ac89-4a63-b2cf-7c570fdf1df2/federationmetadata/2007-06/federationmetadata.xml?appid=df4b733d-977f-4e68-8af1-a0e3dcb800be</value>
                       </constructor-arg>
                       <constructor-arg>
                         <value type="int">60000</value>
