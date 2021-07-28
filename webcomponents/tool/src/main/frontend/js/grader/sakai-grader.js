@@ -20,7 +20,8 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
     this.sumittedTextMode = false;
     this.rubricParams = new Map();
     this.graderOnLeft = this.getSetting("grader", "graderOnLeft");
-    this.saved = false;
+    this.saveSucceeded = false;
+    this.saveFailed = false;
     this.submissions = [];
     this.ungradedOnly = false;
     this.submittedOnly = false;
@@ -53,7 +54,8 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
       submission: Object,
       graderOnLeft: Boolean,
       selectedAttachment: { type: Object },
-      saved: Boolean,
+      saveSucceeded: Boolean,
+      saveFailed: Boolean,
       submissions: { type: Array },
       ungradedOnly: Boolean,
       submissionsOnly: Boolean,
@@ -78,7 +80,8 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
   set submission(newValue) {
 
     this._submission = newValue;
-    this.saved = false;
+    this.saveSucceeded = false;
+    this.saveFailed = false;
     this.modified = false;
     this.rubricParams = new Map();
     this.showResubmission = this._submission.resubmitsAllowed === -1 || this._submission.resubmitsAllowed > 0;
@@ -90,7 +93,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
     if (!this.submittedTextMode && this._submission.submittedAttachments
           && this._submission.submittedAttachments.length > 0) {
       this.selectedAttachment = this._submission.submittedAttachments[0];
-      let preview = this.submission.previewableAttachments[this.selectedAttachment.ref];
+      const preview = this.submission.previewableAttachments[this.selectedAttachment.ref];
       this.selectedPreview = preview || this.selectedAttachment;
     }
 
@@ -176,7 +179,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
     return html`
       <div class="gradable">
-        ${this.submission.submittedTime ? html`
+        ${this.submission.submittedTime || (this.submission.draft && this.submission.visible) ? html`
           ${this.submittedTextMode ? html`
             <div class="sak-banner-info">${unsafeHTML(this.i18n["inline_feedback_instruction"])}</div>
             <textarea id="grader-feedback-text-editor" style="display: none">${this.submission.feedbackText}</textarea>
@@ -194,7 +197,17 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
   }
 
   renderSaved() {
-    return html`<span class="saved fa fa-check-circle" title="${this.i18n["saved_successfully"]}" style="display: ${this.saved ? "inline" : "none"};"></span>`;
+    return html`<span class="saved fa fa-check-circle"
+                  title="${this.i18n["saved_successfully"]}"
+                  style="display: ${this.saveSucceeded ? "inline" : "none"};">
+                </span>`;
+  }
+
+  renderFailed() {
+    return html`<span class="saved failed fa fa-times-circle"
+                  title="${this.i18n["failed_save"]}"
+                  style="display: ${this.saveFailed ? "inline" : "none"};">
+                </span>`;
   }
 
   renderGrader() {
@@ -206,13 +219,17 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
           <div style="display: flex;">
             ${this.showPhoto() ? html`
               <div class="profile-image" style="flex: 1;">
-                <img src="/direct/profile/${this.submission.firstSubmitterId}/image/official?siteId=${portal.siteId}" alt="${this.submission.firstSubmitterName}${this.i18n["profile_image"]}" />
+                <img src="/direct/profile/${this.submission.firstSubmitterId}/image/official?siteId=${portal.siteId}"
+                      alt="${this.submission.firstSubmitterName}${this.i18n["profile_image"]}" />
               </div>
             ` : ""}
             <div class="submitted-time" style="flex: 4;">
-              ${this.submission.submittedTime ? html`
+              ${this.submission.submittedTime || (this.submission.draft && this.submission.visible) ? html`
                 <span class="submitter-name">${this.renderSubmitter()}</span>
-                <div class="submitted-time">${this.submission.submittedTime}</div>
+                ${this.submission.draft && this.submission.visible ? html`
+                <span class="draft-submission">(${this.i18n["draft_submission"]})</span>
+                ` : ""}
+                <div class="submitted-time ${this.submission.draft ? "draft-time" : ""}">${this.submission.submittedTime}</div>
                 ${this.submission.late ? html`<span class="grader-late">${this.assignmentsI18n["grades.lateness.late"]}</span>` : ""}
                 ${this.submission.returned ? html`<span class="grader-returned fa fa-eye" title="${this.i18n["returned_tooltip"]}" />` : ""}
               ` : html`
@@ -238,6 +255,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
               ${this.letterGradeOptions.map(grade => html`<option value="${grade}" .selected=${this.submission.grade === grade}>${grade}</option>`)}
             </select>
             ${this.renderSaved()}
+            ${this.renderFailed()}
           ` : ""}
           ${this.gradeScale === "SCORE_GRADE_TYPE" ? html`
             <span>${this.assignmentsI18n["gen.assign.gra"]}</span>
@@ -248,6 +266,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
               class="points-input"
               .value=${this.submission.grade} />
             ${this.renderSaved()}
+            ${this.renderFailed()}
             <span>(${this.assignmentsI18n["grade.max"]} ${this.gradable.maxGradePoint})</span>
             ${this.gradable.allowPeerAssessment ? html`
               <a id="peer-info" class="fa fa-info-circle" data-toggle="popover" data-container="body" data-placement="auto" data-content="${this.assignmentsI18n["peerassessment.peerGradeInfo"]}"></a>
@@ -261,10 +280,12 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
               <option value="fail" .selected=${this.submission.grade.match(/^fail$/i)}>${this.assignmentsI18n["fail"]}</option>
             </select>
             ${this.renderSaved()}
+            ${this.renderFailed()}
           ` : ""}
           ${this.gradeScale === "CHECK_GRADE_TYPE" ? html`
             <input aria-label="${this.i18n["checkgrade_label"]}" @click=${this.gradeSelected} type="checkbox" value="Checked" .checked=${this.submission.grade === this.assignmentsI18n["gen.checked"]}></input><span>${this.assignmentsI18n["gen.gra2"]} ${this.assignmentsI18n["gen.checked"]}</span>
             ${this.renderSaved()}
+            ${this.renderFailed()}
           ` : ""}
           <!-- start hasAssociatedRubric -->
           ${this.hasAssociatedRubric === "true" ? html`
@@ -364,6 +385,8 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
           <button accesskey="d" name="return" @click=${this.saveAndRelease}>${this.assignmentsI18n["gen.retustud"]}</button>
           <button accesskey="x" name="cancel" @click=${this.cancel}>${this.assignmentsI18n["gen.can"]}</button>
         </div>
+        ${this.saveSucceeded ? html`<div class="sak-banner-success">${this.i18n["successful_save"]}</div>` : ""}
+        ${this.saveFailed ? html`<div class="sak-banner-error">${this.i18n["failed_save"]}</div>` : ""}
       </div>` : ""}
     `;
   }
@@ -417,12 +440,9 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
     this.querySelector("#grader-rubric-link").focus();
   }
 
-  replaceWithEditor(id, width, height) {
+  replaceWithEditor(id, width = 160, height = 60) {
 
-    if (!width) width = 160;
-    if (!height) height = 60;
-
-    let editor = CKEDITOR.replace(id, {
+    const editor = CKEDITOR.replace(id, {
       toolbar: [['Bold', 'Italic', 'Underline', 'TextColor'], ['NumberedList', 'BulletedList', 'Blockquote']],
       width: width,
       height: height,
@@ -458,7 +478,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
   toggleFeedback() {
 
-    let feedbackPanel = $("#feedback-panel");
+    const feedbackPanel = $("#feedback-panel");
 
     if (!feedbackPanel.dialog("instance")) {
       feedbackPanel.dialog({
@@ -482,7 +502,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
   togglePrivateNotes() {
 
-    let privateNotesPanel = $("#private-notes-panel");
+    const privateNotesPanel = $("#private-notes-panel");
 
     if (!privateNotesPanel.dialog("instance")) {
       privateNotesPanel.dialog({
@@ -517,7 +537,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
     this.submittedTextMode = false;
     this.previewMode = true;
     this.selectedAttachment = this.submission.submittedAttachments.find(sa => sa.url === e.target.dataset.url);
-    let preview = this.submission.previewableAttachments[this.selectedAttachment.ref];
+    const preview = this.submission.previewableAttachments[this.selectedAttachment.ref];
     this.selectedPreview = preview || this.selectedAttachment;
   }
 
@@ -558,7 +578,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
   loadData(gradableId) {
 
-    let doIt = data => {
+    const doIt = data => {
 
       this.gradeScale = data.gradable.gradeScale;
 
@@ -584,7 +604,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
    */
   getFormData() {
 
-    let formData = new FormData();
+    const formData = new FormData();
 
     formData.valid = true;
 
@@ -618,7 +638,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
     if (this.debug) {
       // Display the key/value pairs
-      for (var pair of formData.entries()) {
+      for (const pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
     }
@@ -631,7 +651,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
    */
   save() {
 
-    let formData = this.getFormData();
+    const formData = this.getFormData();
     if (formData.valid) {
       formData.set("gradeOption", "retract");
       this.submitGradingData(formData);
@@ -645,7 +665,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
    */
   saveAndRelease() {
 
-    let formData = this.getFormData();
+    const formData = this.getFormData();
     if (formData.valid) {
       formData.set("gradeOption", "return");
       this.submitGradingData(formData);
@@ -656,9 +676,14 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
   submitGradingData(formData) {
 
-    fetch("/direct/assignment/setGrade.json", { method: "POST", cache: "no-cache", credentials: "same-origin", body: formData }).then(r => r.json()).then(data => {
+    fetch("/direct/assignment/setGrade.json", {
+      method: "POST",
+      cache: "no-cache",
+      credentials: "same-origin",
+      body: formData,
+    }).then(r => r.json()).then(data => {
 
-      let submission = new Submission(data, this.groups);
+      const submission = new Submission(data, this.groups, this.i18n);
 
       submission.grade = formData.get("grade");
 
@@ -668,8 +693,14 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
       this.modified = false;
       this.submission = submission;
       this.totalGraded = this.submissions.filter(s => s.graded).length;
-      this.saved = true;
-    }).catch(e => console.error(`Failed to save grade for submission ${this.submission.id}: ${e}`));
+      this.saveSucceeded = true;
+      setTimeout(() => this.saveSucceeded = false, 2000);
+    }).catch(e => {
+
+      console.error(`Failed to save grade for submission ${this.submission.id}: ${e}`);
+      this.saveFailed = true;
+      setTimeout(() => this.saveFailed = false, 2000);
+    });
   }
 
   resetEditors(cancelling) {
@@ -689,8 +720,8 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
   cancel() {
 
-    let os = Object.create(this.originalSubmissions.find(os => os.id === this.submission.id));
-    let i = this.submissions.findIndex(s => s.id === this.submission.id);
+    const os = Object.create(this.originalSubmissions.find(os => os.id === this.submission.id));
+    const i = this.submissions.findIndex(s => s.id === this.submission.id);
     this.submissions.splice(i, 1, os);
 
     this.submission = this.submissions[i];
@@ -818,7 +849,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
     }
 
     if (this.currentGroup && this.currentGroup !== `/site/${portal.siteId}`) {
-      let group = this.groups.find(g => g.reference === this.currentGroup);
+      const group = this.groups.find(g => g.reference === this.currentGroup);
       this.submissions = this.submissions.filter(s => group.users.includes(s.firstSubmitterId));
     }
 
@@ -845,7 +876,7 @@ export class SakaiGrader extends gradableDataMixin(SakaiElement) {
 
     if (confirm(this.i18n["confirm_remove_attachment"])) {
 
-      let ref = e.target.dataset.ref;
+      const ref = e.target.dataset.ref;
 
       fetch(`/direct/assignment/removeFeedbackAttachment?gradableId=${this.gradableId}&submissionId=${this.submission.id}&ref=${ref}`).then(r => {
 
