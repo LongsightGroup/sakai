@@ -63,10 +63,6 @@ class SakaiEditor extends SakaiElement {
       this.editor = CKEDITOR.replace(this.elementId, {toolbar: SakaiEditor.toolbars.get("basic")});
     }
 
-    if (!this.editor) {
-      this.editor = CKEDITOR.instances[this.elementId];
-    }
-
     this.editor.on("change", (e) => {
       this.dispatchEvent(new CustomEvent("changed", { detail: { content: e.editor.getData() }, bubbles: true }));
     });
