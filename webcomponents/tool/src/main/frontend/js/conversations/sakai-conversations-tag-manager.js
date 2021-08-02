@@ -10,6 +10,7 @@ export class SakaiConversationsTagManager extends SakaiElement {
       siteId: { attribute: "site-id", type: String },
       tags: { type: Array },
       tagsBeingEdited: { attribute: false, type: Array },
+      saveable: { attribute: false, type: Boolean },
     };
   }
 
@@ -149,12 +150,12 @@ export class SakaiConversationsTagManager extends SakaiElement {
         <div class="add-topic-label">Tags</div>
         <div id="tag-creation-block" style="flex-wrap: wrap;">
           <div>
-            <textarea id="tag-creation-field"></textarea>
+            <textarea id="tag-creation-field" @input=${() => this.saveable = true}></textarea>
             <div id="tag-creation-instruction" class="topic-option-label-text">Add multiple tags separated by a comma</div>
           </div>
           <div class="act" style="white-space: nowrap;">
-            <input type="button" @click=${this.cancel} value="${this.i18n["cancel"]}">
-            <input type="button" class="active" @click=${this.createTags} value="Add New Tags">
+            <input type="button" @click=${this.cancel} value="${this.i18n["cancel"]}" ?disabled=${!this.saveable}>
+            <input type="button" class="active" @click=${this.createTags} value="Add New Tags" ?disabled=${!this.saveable}>
           </div>
         </div
         <div id="current-tags">
