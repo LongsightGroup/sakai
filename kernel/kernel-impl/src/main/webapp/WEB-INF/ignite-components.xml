@@ -48,9 +48,10 @@
           class="org.apache.ignite.configuration.DataRegionConfiguration">
         <property name="name" value="hibernate_l2_region"/>
         <property name="initialSize" value="#{300 * 1024 * 1024}"/>
-        <property name="maxSize" value="#{600 * 1024 * 1024}"/>
+        <property name="maxSize" value="#{1024 * 1024 * 1024}"/>
         <property name="pageEvictionMode" value="RANDOM_2_LRU"/>
         <property name="persistenceEnabled" value="false"/>
+        <property name="emptyPagesPoolSize" value="10000"/>
         <property name="metricsEnabled" value="true"/>
     </bean>
 

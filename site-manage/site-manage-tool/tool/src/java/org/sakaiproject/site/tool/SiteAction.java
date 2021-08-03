@@ -1733,7 +1733,7 @@ public class SiteAction extends PagedResourceActionII {
 					sbFlashNotifAction = new StringBuilder();
 					sbFlashNotifAction.append("<div id=\"newSiteAlertActions\" class=\"newSiteAlertActions\">");
 					sbFlashNotifAction.append("<a href=\"#\" id=\"newSiteAlertPublish\" class=\""+state.getAttribute(STATE_NEW_SITE_STATUS_ID)+"\""+">" + rb.getString("sitetype.publishSite") + "</a>");
-					sbFlashNotifAction.append("<span id=\"newSiteAlertPublishMess\" class=\"messageSuccess\" style=\"display:none\">" + rb.getString("list.publi") + "</span>");
+					sbFlashNotifAction.append("<span id=\"newSiteAlertPublishMess\" style=\"display:none\">" + rb.getString("list.publi") + "</span>");
 					sbFlashNotifAction.append("</div>");
 					addFlashNotif(state, sbFlashNotifAction.toString());
 				}
@@ -2081,6 +2081,9 @@ public class SiteAction extends PagedResourceActionII {
 
 			// Will have the choice to active/inactive user or not
 			context.put("activeInactiveUser", ServerConfigurationService.getBoolean("activeInactiveUser", false));
+
+			context.put("showEnrollmentStatus", ServerConfigurationService.getBoolean(
+				"sitemanage.manageParticipants.showEnrollmentStatus", false));
 
 			// Provide last modified time
 			realmId = SiteService.siteReference(site.getId());
