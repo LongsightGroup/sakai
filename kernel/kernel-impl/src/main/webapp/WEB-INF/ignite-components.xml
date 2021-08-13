@@ -78,20 +78,12 @@
 
     <bean id="org.sakaiproject.ignite.SakaiIgniteConfiguration"
           class="org.sakaiproject.ignite.IgniteConfigurationAdapter">
-        <property name="dataStorageConfiguration">
-            <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
-                <property name="defaultDataRegionConfiguration" ref="org.sakaiproject.ignite.DataRegionConfiguration.SpringRegion"/>
-                <property name="dataRegionConfigurations">
-                    <list>
-                        <ref bean="org.sakaiproject.ignite.DataRegionConfiguration.HibernateL2Region"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="hibernateCacheConfiguration" ref="org.sakaiproject.ignite.cache.list.hibernate"/>
-        <property name="requiredCacheConfiguration" ref="org.sakaiproject.ignite.cache.list.core"/>
-        <property name="conditionalCacheConfiguration" ref="org.sakaiproject.ignite.cache.list.contrib"/>
-        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
+        <property name="springDataRegionConfiguration" ref="org.sakaiproject.ignite.DataRegionConfiguration.SpringRegion" />
+        <property name="hibernateDataRegionConfiguration" ref="org.sakaiproject.ignite.DataRegionConfiguration.HibernateL2Region" />
+        <property name="hibernateCacheConfiguration" ref="org.sakaiproject.ignite.cache.list.hibernate" />
+        <property name="requiredCacheConfiguration" ref="org.sakaiproject.ignite.cache.list.core" />
+        <property name="conditionalCacheConfiguration" ref="org.sakaiproject.ignite.cache.list.contrib" />
+        <property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService" />
     </bean>
 
     <bean id="org.sakaiproject.ignite.cache.list.hibernate"

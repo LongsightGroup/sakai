@@ -449,11 +449,10 @@
 				<prop key="hibernate.jdbc.use_streams_for_binary">true</prop>
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<prop key="hibernate.use_second_level_cache">true</prop>
-				<prop key="hibernate.cache.region.factory_class">org.apache.ignite.cache.hibernate.HibernateRegionFactory</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.SingletonEhCacheRegionFactory</prop>
 				<prop key="hibernate.generate_statistics">true</prop>
 				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
-				<prop key="org.apache.ignite.hibernate.default_access_type">READ_ONLY</prop>
 				<prop key="hibernate.id.new_generator_mappings">false</prop>
 				<!-- prop key="hibernate.cache.query_cache_factory">org.sakaiproject.hibernate.IgniteStandardQueryCacheFactory</prop -->
 				<prop key="javax.persistence.query.timeout">30000</prop>

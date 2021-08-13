@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ignite.configuration.CacheConfiguration;
+import org.apache.ignite.configuration.DataRegionConfiguration;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.DeploymentMode;
 import org.apache.ignite.configuration.IgniteConfiguration;
@@ -49,13 +50,15 @@ public class IgniteConfigurationAdapter extends AbstractFactoryBean<IgniteConfig
     public static final String IGNITE_STOP_ON_FAILURE = "ignite.stopOnFailure";
 
     private static final IgniteConfiguration igniteConfiguration = new IgniteConfiguration();
+    private static final Boolean EHCACHE = Boolean.TRUE;
     private static Boolean configured = Boolean.FALSE;
 
     @Setter private ServerConfigurationService serverConfigurationService;
     @Setter private List<CacheConfiguration> hibernateCacheConfiguration;
     @Setter private List<CacheConfiguration> requiredCacheConfiguration;
     @Setter private List<IgniteConditionalCache> conditionalCacheConfiguration;
-    @Setter private DataStorageConfiguration dataStorageConfiguration;
+    @Setter private DataRegionConfiguration springDataRegionConfiguration;
+    @Setter private DataRegionConfiguration hibernateDataRegionConfiguration;
 
     @Getter @Setter private String address;
     @Getter @Setter private String home;
@@ -120,7 +123,13 @@ public class IgniteConfigurationAdapter extends AbstractFactoryBean<IgniteConfig
 
             igniteConfiguration.setGridLogger(new Slf4jLogger());
 
-            configureCaches();
+            DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
+            dataStorageConfiguration.setDefaultDataRegionConfiguration(springDataRegionConfiguration);
+
+            if (!EHCACHE) {
+                configureCaches();
+                dataStorageConfiguration.setDataRegionConfigurations(hibernateDataRegionConfiguration);
+            }
 
             igniteConfiguration.setDataStorageConfiguration(dataStorageConfiguration);
 

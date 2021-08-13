@@ -673,6 +673,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.terracotta</groupId>
             <artifactId>terracotta-toolkit-1.6-runtime</artifactId>
             <scope>compile</scope>
