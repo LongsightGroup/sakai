@@ -339,21 +339,19 @@
     It is important that the cache timeout of the underlying cache implementation be set to a
     higher value than the timeouts of any of the query caches. In fact, it is recommended that
     the the underlying cache not be configured for expiry at all. -->
-<!--
-   <cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
+   <cache name="default-update-timestamps-region"
       maxElementsInMemory="6000"
       eternal="true"
       statistics="true"
       overflowToDisk="false" />
--->
+
     <!-- this cache stores the actual objects pulled out of the DB by hibernate -->
-<!--
-    <cache name="org.hibernate.cache.internal.StandardQueryCache"
+    <cache name="default-query-results-region"
       maxElementsInMemory="12000"
       eternal="false"
       timeToIdleSeconds="600"
       timeToLiveSeconds="1200"
       statistics="true"
       overflowToDisk="false" />
--->
+
 </ehcache>
