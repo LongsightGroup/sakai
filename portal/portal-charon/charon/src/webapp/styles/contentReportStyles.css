@@ -1,0 +1,83 @@
+/*[Source code]. https://www.w3schools.com/howto/howto_css_responsive_form.asp */
+#contentReport__close{
+    border: none;
+    font-size: 28px;
+    font-weight: bold;
+}
+#contentReport__close:hover,
+#contentReport__close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.contentReport__form input[type=text],
+.contentReport__form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.contentReport__form input[type=text]:invalid {
+    border: 2px solid #CC0000;
+}
+
+.contentReport__form label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+.contentReport__form input[type=submit]{
+    background-color: #CC0000;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+    width: 100%;
+}
+
+.contentReport__form input[type=submit]:hover {
+    background-color: #99281E;
+}
+
+.contentReport__success,
+.contentReport__error{
+    display: none;
+    font-size: 28px;
+    font-weight: bold;
+    text-align:center;
+    margin-top: 40px;
+    margin-right: 40px;
+    margin-left: 40px;
+    margin-bottom: 40px;
+}
+
+.contentReport__col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.contentReport__col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.contentReport__row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+ /*Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .contentReport__col-25, .contentReport__col-75, .contentReport__form input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+}

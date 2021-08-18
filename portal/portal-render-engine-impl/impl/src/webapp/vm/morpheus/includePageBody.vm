@@ -118,6 +118,12 @@
                                     </div>
 
                                 #end ## END of IF ( $toolDirectUrlEnabled && ${tool.showDirectToolUrl} )
+                                #if ($loggedIn && !$homePage)
+                                    <button id="contentReport__button" class="Mrphs-toolTitleNav__link">Report</button> ## adding contentReportTool modal
+                                #end
+                                <script>
+                                var contentReport__directUrl = '${tool.directToolUrl}';
+                                </script>
 
                                 #if (${tool.toolShowHelpButton})
 
@@ -193,7 +199,6 @@
                         #parse("/vm/morpheus/snippets/toolBody-snippet.vm")
 
                     #end ## END of IF ( ${bufferedResponse} && ${responseBody} )
-
                     <!-- end Tool Body -->
                     
                     </div>

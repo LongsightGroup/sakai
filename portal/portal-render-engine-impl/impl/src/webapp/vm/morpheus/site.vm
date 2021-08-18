@@ -229,7 +229,9 @@
         #parse("/vm/morpheus/includeGoogleTM-NoScript.vm")
 
         ${includeExtraHead}
-
+            #if ($loggedIn && !$homePage)
+                #parse("/vm/morpheus/contentReportTool.vm") ## adding contentReportTool modal
+            #end
         #if ($loggedIn)
         <!-- Modal popup for profile picture changer -->
         <div class="modal fade" id="profileImageUpload" tabindex="-1" role="dialog">

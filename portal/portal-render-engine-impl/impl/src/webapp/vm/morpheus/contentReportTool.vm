@@ -1,0 +1,31 @@
+<div class="modal fade" id="contentReport__modal" tabindex="-1" role="dialog" aria-labelledby="contentReport__title" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="contentReport__close" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="contentReport__title">Report Broken Content to the Sakai Support Team</h2>
+            </div>
+            <div class="modal-body" id="contentReport__modal-body">
+            </div>
+            <p id="contentReport__error" class="contentReport__error" style="display:none">Report is not submitted due to the technical issues, please contact edtech@brocku.ca</p>
+            <p id="contentReport__success" class="contentReport__success" style="display:none">Report successfully submitted, you will be contacted for follow-up.</p>
+        </div>
+    </div>
+</div>
+<a href="#"></a>
+<script>
+    var serverLabel='${bottomNavServer}';
+
+    $('#contentReport__button').on('click',function(){
+        document.getElementById("contentReport__error").style.display = 'none';
+        document.getElementById("contentReport__success").style.display = 'none';
+        $('#contentReport__modal-body').load('/portal/scripts/contentReport__form.html', function(){
+            $('#contentReport__modal').modal({show:true});
+            document.getElementById("contentReport__site").value = portal["siteTitle"];
+        });
+    });
+
+    $('#contentReport__modal').on('hidden.bs.modal', function (event) {
+        document.getElementById('contentReport__button').focus();
+    })
+</script>

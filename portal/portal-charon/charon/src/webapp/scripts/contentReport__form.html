@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html"/>
+</head>
+<body>
+<form id="contentReport__form" class="contentReport__form">
+    <div class="contentReport__row">
+        <div class="contentReport__col-25">
+            <label for="contentReport__site">Site</label>
+        </div>
+        <div class="contentReport__col-75">
+            <input type="text" id="contentReport__site" name="contentReport__site" readonly="readonly" value="" tabindex="-1">
+        </div>
+    </div>
+    <div class="contentReport__row">
+        <div class="contentReport__col-25">
+            <label for="contentReport__title">Subject</label>
+        </div>
+        <div class="contentReport__col-75">
+            <input type="text" id="contentReport__title" name="contentReport__title" placeholder="What would you like to report?">
+        </div>
+    </div>
+    <div class="contentReport__row">
+        <div class="contentReport__col-25">
+            <label for="contentReport__problemBox">Problem Description</label>
+        </div>
+        <div class="contentReport__col-75">
+			<textarea id="contentReport__problemBox" name="contentReport__problemBox" style="height:300px" placeholder="Please provide details about exactly what happened. Including where the problem occurred, how frequently, and what you were doing at the time." oninvalid="this.setCustomValidity('Please describe your problem')" oninput="this.setCustomValidity('')" required></textarea>
+            <input type="hidden" id="contentReport__directUrl" name='directUrl' value ="">
+            <input type="hidden" id="contentReport__userTime" name='userTime' value ="">
+            <input type="hidden" id="contentReport__userTimeZone" name="userTimeZone" value ="">
+            <input type="hidden" id="contentReport__serverLabel" name="serverLabel" value="">
+            <input type="hidden" id="contentReport__userAgent" name="userAgent" value ="">
+            <input type="hidden" id="contentReport__role" name="role" value="">
+        </div>
+    </div>
+    <div class="contentReport__row">
+        <div class="contentReport__col-25"></div>
+        <div class="contentReport__col-75">
+            <input type="submit" value="Submit" id="contentReport__submit">
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+$("#contentReport__form").submit(function(event){
+    event.preventDefault();
+    document.getElementById("contentReport__directUrl").value = contentReport__directUrl;
+    document.getElementById("contentReport__userTime").value = portal["user"]["iso8601Timestamp"];
+    document.getElementById("contentReport__userTimeZone").value = portal["user"]["timezone"];
+    document.getElementById("contentReport__serverLabel").value = serverLabel;
+    document.getElementById("contentReport__userAgent").value = navigator.userAgent;
+    document.getElementById("contentReport__role").value = portal["user"]["siteRole"];
+
+    $.ajax({
+       type: "POST",
+       url: "/direct/portal-chat/content",
+       data: $("#contentReport__form").serialize(),
+       success: function(){
+           console.log("Broken content successfully reported");
+           document.getElementById("contentReport__form").style.display = 'none';
+           document.getElementById("contentReport__success").style.display = 'block';
+       },
+       error: function(){
+           console.log("Broken content failed to report");
+           document.getElementById("contentReport__form").style.display = 'none';
+           document.getElementById("contentReport__error").style.display = 'block';
+       }
+    });
+});
+</script>
+</body>
+</html>
