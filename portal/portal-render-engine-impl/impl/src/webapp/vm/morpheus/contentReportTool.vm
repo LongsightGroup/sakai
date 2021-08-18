@@ -1,0 +1,101 @@
+## Start of Content Report Tool
+<div id="contentReport__modal" class="contentReport__main">
+	<div class="contentReport__modal">
+		<button id = "contentReport__close">&times;</button>
+		<div class="contentReport__container">
+			<form id="contentReport__form" onsubmit="return contentReport()">
+				<div class="contentReport__row">
+					<h2 id="contentReport__modalTitle">Report Broken Content</h2>
+				</div>
+				<div class="contentReport__row">
+					<div class="contentReport__col-25">
+						<label for="contentReport__site">Site</label>
+					</div>
+					<div class="contentReport__col-75">
+						<input type="text" id="contentReport__site" name="contentReport__site" readonly="readonly" value="${siteTitle}" tabindex="-1">
+					</div>
+				</div>
+				<div class="contentReport__row">
+					<div class="contentReport__col-25">
+						<label for="contentReport__title">Subject</label>
+					</div>
+					<div class="contentReport__col-75">
+						<input type="text" id="contentReport__title" name="contentReport__title" placeholder="Subject">
+					</div>
+				</div>
+				<div class="contentReport__row">
+					<div class="contentReport__col-25">
+						<label for="contentReport__problemBox">Problem Description</label>
+					</div>
+					<div class="contentReport__col-75">
+						<textarea id="contentReport__problemBox" name="contentReport__problemBox" style="height:200px" placeholder="Please detail exactly what happened that you are reporting. Including details such as where the problem occured, how frequently, and what you were doing at the time."
+								  oninvalid="this.setCustomValidity('Please describe your problem')"
+								  oninput="this.setCustomValidity('')" required></textarea>
+						<input type="hidden" id="contentReport__directUrl" value ="${tool.directToolUrl}">
+						<input type="hidden" id="contentReport__userTime" value ="$!{userISO8601Timestamp}">
+						<input type="hidden" id="contentReport__userTimeZone" value ="$!{userTimezone}">
+						<input type="hidden" id="contentReport__serverLabel" value="${bottomNavServer}">
+					</div>
+				</div>
+				<div class="contentReport__row">
+					<div class="contentReport__col-25"></div>
+					<div class="contentReport__col-75">
+						<input type="submit" value="Submit" id="contentReport__submit">
+					</div>
+				</div>
+			</form>
+			<p id="contentReport__error"> Report is not submitted due to the technical issues, please contact edtech@brocku.ca</p>
+			<p id="contentReport__success"> Report Submitted. Our team will contact you soon.</p>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var contentReport__Modal = document.getElementById("contentReport__modal");
+	var contentReport__Button = document.getElementById("contentReport__button");
+	var contentReport__close = document.getElementById("contentReport__close");
+	var contentReport__Form = document.getElementById("contentReport__form");
+	var contentReport__error =document.getElementById("contentReport__error");
+	var contentReport__success = document.getElementById("contentReport__success");
+
+	contentReport__Button.onclick = function() {
+		contentReport__Modal.style.display = "block";
+		document.getElementById('contentReport__problemBox').value="";
+		document.getElementById('contentReport__title').value="";
+
+		var contentReport__focusableEls = contentReport__Modal.querySelectorAll('button:not([disabled]), input[type="submit"]:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled])');
+		var contentReport__firstFocusableEl = contentReport__focusableEls[0];
+		var contentReport__lastFocusableEl = contentReport__focusableEls[contentReport__focusableEls.length - 1];
+		var contentReport__KEYCODE_TAB = 9;
+
+		contentReport__Modal.addEventListener('keydown', function(e) {
+			var contentReport__isTabPressed = (e.key === 'Tab' || e.keyCode === contentReport__KEYCODE_TAB);
+
+			if (!contentReport__isTabPressed) {
+					return;
+				}
+
+			if ( e.shiftKey ) /* shift + tab */ {
+				if (document.activeElement === contentReport__firstFocusableEl) {
+					contentReport__lastFocusableEl.focus();
+					e.preventDefault();
+				}
+			} else /* tab */ {
+				if (document.activeElement === contentReport__lastFocusableEl) {
+					contentReport__firstFocusableEl.focus();
+					e.preventDefault();
+				}
+			}
+		});
+		document.getElementById('contentReport__title').focus();
+	}
+	contentReport__close.onclick = function() {
+		contentReport__Modal.style.display = "none";
+		contentReport__Form.style.display = "block";
+		contentReport__success.style.display= 'none';
+		contentReport__error.style.display= 'none';
+		if (document.body.contains(contentReport__Button)) {
+			contentReport__Button.focus();
+		}
+	}
+</script>
+## End of Content Report Tool

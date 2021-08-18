@@ -655,7 +655,12 @@ public final class PCServiceEntityProvider extends AbstractEntityProvider implem
 		data.put("iceServers", iceServers);
 		return data;
 	}
-	
+	@EntityCustomAction (action = "content", viewKey= EntityView.VIEW_NEW)
+	public String reportHandler(Map<String, Object> params){
+		ContentReportTool caller = new ContentReportTool();
+		String result = caller.sendReport(params);
+		return result;
+	}
     /**
      * Implements a threadsafe addition to the message map
      */

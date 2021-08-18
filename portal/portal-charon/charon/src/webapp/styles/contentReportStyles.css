@@ -1,0 +1,114 @@
+/*[Source code]. https://www.w3schools.com/howto/howto_css_responsive_form.asp */
+/* The Modal (background) */
+.contentReport__main {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 99999999; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.contentReport__modal {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
+/* The Close Button */
+.contentReport__modal button{
+    background-color: #f2f2f2;
+    border: none;
+    border-radius: 8px;
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.contentReport__close:hover,
+.contentReport__close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.contentReport__container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 40px;
+}
+
+.contentReport__container input[type=text],
+.contentReport__container textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.contentReport__container input[type=text]:invalid {
+    border: 2px solid #CC0000;
+}
+
+.contentReport__container label {
+    padding: 12px 12px 12px 0;
+    display: inline-block;
+}
+
+.contentReport__container input[type=submit]{
+    background-color: #CC0000;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    float: right;
+    width: 100%;
+}
+
+.contentReport__container input[type=submit]:hover {
+    background-color: #99281E;
+}
+
+.contentReport__container p {
+    display: none;
+    font-size: 28px;
+    font-weight: bold;
+    text-align:center;
+}
+
+.contentReport__col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.contentReport__col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.contentReport__row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+    .contentReport__col-25, .contentReport__col-75, .contentReport__container input[type=submit] {
+        width: 100%;
+        margin-top: 0;
+    }
+}
