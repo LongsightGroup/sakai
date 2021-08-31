@@ -246,7 +246,7 @@ public class SkinnableLogin extends HttpServlet implements Login {
 
 				// support query parms in url for container auth
 				String queryString = req.getQueryString();
-				if (queryString != null) containerCheckUrl = containerCheckUrl + "?" + queryString;
+				//if (queryString != null) containerCheckUrl = containerCheckUrl + "?" + queryString;
 
 				/*
 				 * FindBugs: HRS_REQUEST_PARAMETER_TO_HTTP_HEADER Looks like the
