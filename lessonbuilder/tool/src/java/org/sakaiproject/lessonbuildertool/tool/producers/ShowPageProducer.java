@@ -1290,14 +1290,6 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 		
 			for (SimplePageItem i : itemList) {
 
-				// If the content is MULTIMEDIA (type 7) and the sakaiId is populated, then this is
-				// a Sakai content reference. We can then check if it's available to the current user
-				if (i.getType() == SimplePageItem.MULTIMEDIA && StringUtils.isNotBlank(i.getSakaiId())) {
-				    if (!contentHostingService.isAvailable(String.valueOf(i.getSakaiId()))) {
-				        continue;
-				    }
-				}
-				
 				// break is not a normal item. handle it first
 			        // this will work whether first item is break or not. Might be a section
 			        // break or a normal item
@@ -4879,17 +4871,23 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 		UIOutput.make(form, "pageTitleLabel", messageLocator.getMessage("simplepage.pageTitle_label"));
 
-		final String placementId = toolManager.getCurrentPlacement() != null ? toolManager.getCurrentPlacement().getId() : null;
-		final SitePage sitePage = simplePageBean.getCurrentSite() != null ? simplePageBean.getCurrentSite().getPage(page.getToolId()) : null;
-		String externalPageTitle = null;
-		if (sitePage != null && StringUtils.isNotBlank(placementId)) {
-			 externalPageTitle = sitePage.getTools().stream()
-					.filter(t -> t.getId().equals(placementId))
-					.findFirst()
-					.map(Placement::getTitle)
-					.orElse("");
+		// If this is a subpage we don't have to check tool configuration (only top level tool instance can be renamed via Site Info -> Tool Order)
+		String effectivePageTitle = page.getTitle();
+		if (page.getParent() == null) {
+			final String placementId = toolManager.getCurrentPlacement() != null ? toolManager.getCurrentPlacement().getId() : null;
+			final SitePage sitePage = simplePageBean.getCurrentSite() != null ? simplePageBean.getCurrentSite().getPage(page.getToolId()) : null;
+			String externalPageTitle = null;
+			if (sitePage != null && StringUtils.isNotBlank(placementId)) {
+				 externalPageTitle = sitePage.getTools().stream()
+						.filter(t -> t.getId().equals(placementId))
+						.findFirst()
+						.map(Placement::getTitle)
+						.orElse("");
+			}
+
+			effectivePageTitle = StringUtils.defaultIfBlank(externalPageTitle, effectivePageTitle);
 		}
-		String effectivePageTitle = StringUtils.defaultIfBlank(externalPageTitle, page.getTitle());
+
 		UIInput.make(form, "pageTitle", "#{simplePageBean.pageTitle}", effectivePageTitle);
 
 		if (!simplePageBean.isStudentPage(page)) {
