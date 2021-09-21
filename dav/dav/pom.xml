@@ -64,7 +64,7 @@
         <dependency>
             <groupId>com.unboundid</groupId>
             <artifactId>unboundid-ldapsdk</artifactId>
-            <version>${sakai.unboundid.version}</version>
+            <version>5.1.1</version>
         </dependency>
 
     </dependencies>
