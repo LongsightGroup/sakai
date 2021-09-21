@@ -153,6 +153,9 @@
                     <property name="name" value="org.sakaiproject.grading.api.model.Gradebook"/>
                 </bean>
                 <bean parent="org.sakaiproject.ignite.cache.atomic">
+                    <property name="name" value="org.sakaiproject.lessonbuildertool.ActivityAlertImpl"/>
+                </bean>
+                <bean parent="org.sakaiproject.ignite.cache.atomic">
                     <property name="name" value="org.sakaiproject.lessonbuildertool.ChecklistItemStatusImpl"/>
                 </bean>
                 <bean parent="org.sakaiproject.ignite.cache.atomic">
