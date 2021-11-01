@@ -343,16 +343,16 @@ document.links[newindex].onclick();
          <sakai-rubric-student
            token='<h:outputText value="#{delivery.rbcsToken}" />'
            tool-id="sakai.samigo"
-           entity-id='<h:outputText value="pub.#{delivery.assessmentId}.#{question.itemData.itemId}"/>'
+           entity-id='<h:outputText value="#{delivery.rubricAssociation}.#{question.effectiveItemId}"/>'
            evaluated-item-id='<h:outputText value="#{delivery.assessmentGradingId}.#{question.itemData.itemId}" />'>
          </sakai-rubric-student>
        </h:panelGroup>
 
-       <h:panelGroup rendered="#{delivery.actionString == 'takeAssessment' || delivery.actionString == 'takeAssessmentViaUrl'}">
+       <h:panelGroup rendered="#{delivery.actionString == 'takeAssessment' || delivery.actionString == 'takeAssessmentViaUrl' || delivery.actionString == 'previewAssessment'}">
            <sakai-rubric-student-preview-button
                 token="<h:outputText value="#{delivery.rbcsToken}" />"
                 tool-id="sakai.samigo"
-                entity-id="<h:outputText value="pub.#{delivery.assessmentId}.#{question.itemData.itemId}" />"></sakai-rubric-student-preview-button>
+                entity-id="<h:outputText value="#{delivery.rubricAssociation}.#{question.effectiveItemId}" />"></sakai-rubric-student-preview-button>
        </h:panelGroup>
 
        <div class="samigo-question-callout">

@@ -667,7 +667,7 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
 
         options.put("siteId", (String) params.get("siteId"));
 
-        submission = assignmentToolUtils.gradeSubmission(submission, gradeOption, options, alerts);
+        assignmentToolUtils.gradeSubmission(submission, gradeOption, options, alerts);
 
         Set<String> activeSubmitters = site.getUsersIsAllowed(SECURE_ADD_ASSIGNMENT_SUBMISSION);
 
@@ -1207,10 +1207,10 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
                     try {
                         return new DecoratedAttachment(contentHostingService.getResource(id));
                     } catch (Exception e) {
-                        log.info("There was an attachment on assignment " + a.getId() + " that was invalid");
+                        log.warn("Attachment {} on assignment {} is invalid", id, a.getId());
                         return null;
                     }
-                }).collect(Collectors.toList());
+                }).filter(Objects::nonNull).collect(Collectors.toList());
 
             // Translate grade scale from its numeric value to its description.
             this.gradeScale = a.getTypeOfGrade().toString();
@@ -1388,12 +1388,12 @@ public class AssignmentEntityProvider extends AbstractEntityProvider implements 
                     try {
                         return new DecoratedAttachment(contentHostingService.getResource(id));
                     } catch (Exception e) {
-                        log.info("There was a feeback attachment on submission {} that was invalid", as.getId());
+                        log.warn("Attachment {} on submission {} is invalid", id, as.getId());
                         return null;
                     }
-                }).collect(Collectors.toList());
+                }).filter(Objects::nonNull).collect(Collectors.toList());
             this.graded = as.getGraded();
-            this.properties = as.getProperties();
+            this.properties.putAll(as.getProperties());
         }
     }
 

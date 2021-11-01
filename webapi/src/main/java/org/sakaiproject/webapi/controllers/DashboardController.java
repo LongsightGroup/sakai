@@ -28,6 +28,7 @@ import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResourceEdit;
 import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
+import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.site.api.SiteService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.ToolConfiguration;
@@ -176,6 +177,8 @@ public class DashboardController extends AbstractSakaiApiController {
                 bean.setWorksiteSetupUrl("/portal/directtool/" + tc.getId() + "?panel=Shortcut&sakai_action=doNew_site");
             } catch (IdUnusedException idue) {
                 log.warn("No home site found for user {}", session.getUserId());
+            } catch (Exception e) {
+                log.warn("Failed to find the worksite setup tool for {}", userId, e);
             }
         }
 
@@ -296,7 +299,7 @@ public class DashboardController extends AbstractSakaiApiController {
             ContentResourceEdit edit;
             try {
                 edit = contentHostingService.editResource(collectionId + "site_icon_image.png");
-            } catch (IdUnusedException idue) {
+            } catch (IdUnusedException | PermissionException e) {
                 edit = contentHostingService.addResource(collectionId, "site_icon_image", ".png", 1);
             }
             edit.setContent(fi.get());

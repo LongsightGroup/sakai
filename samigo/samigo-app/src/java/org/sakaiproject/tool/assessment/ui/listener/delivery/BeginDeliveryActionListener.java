@@ -104,7 +104,7 @@ public class BeginDeliveryActionListener implements ActionListener
       delivery.setActionString(actionString);
     }
 
-    if (StringUtils.equalsAny(delivery.getActionString(), "reviewAssessment", "takeAssessment", "takeAssessmentViaUrl")) {
+    if (StringUtils.equalsAny(delivery.getActionString(), "reviewAssessment", "takeAssessment", "takeAssessmentViaUrl", "previewAssessment")) {
       delivery.setRbcsToken(rubricsService.generateJsonWebToken(RubricsConstants.RBCS_TOOL_SAMIGO, delivery.getSiteId()));
     }
 
@@ -296,9 +296,17 @@ public class BeginDeliveryActionListener implements ActionListener
    */
   private void populateDelivery(DeliveryBean delivery, PublishedAssessmentIfc pubAssessment){
 
+    AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
     Long publishedAssessmentId = pubAssessment.getPublishedAssessmentId();
     AssessmentAccessControlIfc control = pubAssessment.getAssessmentAccessControl();
     PublishedAssessmentService service = new PublishedAssessmentService();
+    
+    if (author.getIsEditPendingAssessmentFlow()) {
+    	delivery.setRubricAssociation(pubAssessment.getAssessmentId().toString());
+    }
+    else {
+    	delivery.setRubricAssociation("pub." + publishedAssessmentId.toString());
+    }
 
     // #0 - global information
     delivery.setAssessmentId((pubAssessment.getPublishedAssessmentId()).toString());
