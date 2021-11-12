@@ -23,7 +23,9 @@ package org.sakaiproject.unboundid;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -150,13 +152,25 @@ public class EntryAttributeToUserTypeMapper implements UserTypeMapper {
 	 * @return a Sakai user type, possibly null
 	 */
 	protected String mapUserTypeAttributeValues(String[] attrValues) {
+	Set<String> possibleUserTypes = new HashSet<String>();
+
 	for ( String value : attrValues ) {
 			String userType = mapUserTypeAttributeValue(value);
 			if ( userType != null ) {
-				return userType;
+				possibleUserTypes.add(userType);
 			}
 		}
 		
+		if (!possibleUserTypes.isEmpty()) {
+			for (Map.Entry<String, String> entry : attributeValueToSakaiUserTypeMap.entrySet()) {
+				for (String p : possibleUserTypes) {
+					if (entry.getValue().equals(p)) {
+						return entry.getKey();
+					}
+				}
+			}
+		}
+
 		if ( isReturnLiteralAttributeValueIfNoMapping() ) {
 			return attrValues.length > 0 ? attrValues[0] : null;
 		}
