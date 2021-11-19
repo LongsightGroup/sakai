@@ -36,6 +36,11 @@ import org.sakaiproject.lti.api.LTIExportService.ExportType;
  * </p>
  */
 public interface LTIService extends LTISubstitutionsFilter {
+
+    /** Constants */
+    String ADMIN_SITE = "!admin";
+    String LAUNCH_PREFIX = "/access/basiclti/site/";
+
     /**
      * This string starts the references to resources in this service.
      */
@@ -73,7 +78,7 @@ public interface LTIService extends LTISubstitutionsFilter {
             "settings:text:hidden=true:maxlength=1M",
             // Sakai LTI 1.x extension settings (see SAK-25621)
             "settings_ext:text:hidden=true:maxlength=1M",
-            // LTI Content-Item (see SAK-29328)
+            // This actually ends up storing the lineitem within the contentitem (not the whole contentitem)
             "contentitem:text:label=bl_contentitem:rows=5:cols=25:maxlength=1M:hidden=true",
             "placement:text:hidden=true:maxlength=256",
             "placementsecret:text:hidden=true:maxlength=512",
@@ -156,10 +161,14 @@ public interface LTIService extends LTISubstitutionsFilter {
             "lti13_oidc_endpoint:text:label=bl_lti13_oidc_endpoint:maxlength=1024:role=admin",
             "lti13_oidc_redirect:text:label=bl_lti13_oidc_redirect:maxlength=1024:role=admin",
 
+            // SAK-45491 - Key rotation interval
+            "lti13_platform_public_next:textarea:hidden=true:label=bl_lti13_platform_public:maxlength=1M:role=admin",
+            "lti13_platform_public_next_at:date",
+            "lti13_platform_private_next:textarea:hidden=true:label=bl_lti13_platform_public:maxlength=1M:role=admin",
             "lti13_platform_public:textarea:hidden=true:label=bl_lti13_platform_public:maxlength=1M:role=admin",
+            "lti13_platform_private:textarea:hidden=true:label=bl_lti13_platform_private:maxlength=1M:role=admin",
             "lti13_platform_public_old:textarea:hidden=true:label=bl_lti13_platform_public:maxlength=1M:role=admin",
             "lti13_platform_public_old_at:date",
-            "lti13_platform_private:textarea:hidden=true:label=bl_lti13_platform_private:maxlength=1M:role=admin",
             "lti13_settings:textarea:hidden=true:maxlength=1M:role=admin",
 
             "lti11_launch_type:radio:label=bl_lti11_launch_type:role=admin:choices=inherit,legacy,lti112",
@@ -213,7 +222,9 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_ALLOWCONTENTITEM = "allowcontentitem";
     String LTI_SETTINGS = "settings";
     String LTI_SETTINGS_EXT = "settings_ext";
+    // This field is mis-named - so we make an alias :(
     String LTI_CONTENTITEM = "contentitem";
+    String LTI_LINEITEM = "contentitem";
     String LTI_NEWPAGE = "newpage";
     String LTI_PROTECT = "protect";
     String LTI_DEBUG = "debug";
@@ -257,6 +268,7 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI_PL_ASSESSMENTSELECTION = "pl_assessmentselection";
     String LTI_PL_LESSONSSELECTION = "pl_lessonsselection";
     String LTI_PL_COURSENAV = "pl_coursenav";
+    String LTI_PL_PRIVACY = "pl_privacy";
     String LTI_SEARCH_TOKEN_SEPARATOR_AND = "#&#";
     String LTI_SEARCH_TOKEN_SEPARATOR_OR = "#|#";
     String ESCAPED_LTI_SEARCH_TOKEN_SEPARATOR_AND = "\\#\\&\\#";
@@ -279,10 +291,13 @@ public interface LTIService extends LTISubstitutionsFilter {
     String LTI13 = "lti13";
     String LTI13_CLIENT_ID = "lti13_client_id";
     String LTI13_TOOL_KEYSET = "lti13_tool_keyset";
+    String LTI13_PLATFORM_PUBLIC_NEXT = "lti13_platform_public_next";
+    String LTI13_PLATFORM_PUBLIC_NEXT_AT = "lti13_platform_public_next_at";
+    String LTI13_PLATFORM_PRIVATE_NEXT = "lti13_platform_private_next";
     String LTI13_PLATFORM_PUBLIC = "lti13_platform_public";
-    String LTI13_PLATFORM_PUBLIC_OLD = "lti13_platform_public_old";
-    String LTI13_PLATFORM_PUBLIC_OLD_at = "lti13_platform_public_old_at";
     String LTI13_PLATFORM_PRIVATE = "lti13_platform_private";
+    String LTI13_PLATFORM_PUBLIC_OLD = "lti13_platform_public_old";
+    String LTI13_PLATFORM_PUBLIC_OLD_AT = "lti13_platform_public_old_at";
     String LTI13_OIDC_ENDPOINT = "lti13_oidc_endpoint";
     String LTI13_OIDC_REDIRECT = "lti13_oidc_redirect";
 
