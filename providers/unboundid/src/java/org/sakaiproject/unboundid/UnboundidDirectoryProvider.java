@@ -38,6 +38,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.memory.api.MemoryService;
 import org.sakaiproject.user.api.AuthenticationIdUDP;
 import org.sakaiproject.user.api.DisplayAdvisorUDP;
@@ -62,7 +63,7 @@ import com.unboundid.ldap.sdk.SearchScope;
 import com.unboundid.ldap.sdk.ServerSet;
 import com.unboundid.ldap.sdk.SimpleBindRequest;
 import com.unboundid.ldap.sdk.SingleServerSet;
-import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection;
+import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPEntry;
 import com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPException;
 import com.unboundid.util.ssl.SSLUtil;
@@ -84,6 +85,9 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 
 	/** Memory Service */
 	@Setter private MemoryService memoryService;
+
+	/** ServerConfig Service */
+	@Setter private ServerConfigurationService serverConfigurationService;
 
 	/** Default LDAP connection port */
 	public static final int[] DEFAULT_LDAP_PORT = {389};
@@ -456,25 +460,34 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			return false;
 		}
 
+		LDAPConnection duke = new LDAPConnection();
+		String endUserDN = null;
+
 		try
 		{
 			long start = System.currentTimeMillis();
 
-			// look up the end-user's DN, which could be nested at some 
-			// arbitrary depth below getBasePath().
-			// TODO: optimization opportunity if user entries are 
-			// directly below getBasePath()
-			final String endUserDN = lookupUserBindDn(userLogin);
+			// Hardcoded connection because idms-authdir does not allow user binds
+			duke.connect(serverConfigurationService.getString("duke.ldapauth.host", "ldap.duke.edu"), serverConfigurationService.getInt("duke.ldapauth.port", 636));
+			SearchResult dukeSearchResult = duke.search(scrubSearchBaseDn(null), searchScope, ldapAttributeMapper.getFindUserByEidFilter(userLogin), new String[]{"dn"});
+			List<SearchResultEntry> searchResults = dukeSearchResult.getSearchEntries();
+			for (SearchResultEntry sre : searchResults) {
+				LDAPEntry entry = new LDAPEntry(sre);
+				endUserDN = entry.getDN();
+				break;
+			}
+
+			log.debug("authenticateUser(): duke endUserDN: {} :: {}", endUserDN, userLogin);
 
 			if ( endUserDN == null ) {
 				log.debug("authenticateUser(): failed to find bind dn for login [userLogin = {}], returning false", userLogin);
 				return false;
 			}
 
+			BindResult bindResult = duke.bind(endUserDN, password);
+
 			log.debug("authenticateUser(): attempting to allocate bound connection [userLogin = {}][bind dn [{}]", userLogin, endUserDN);
 			
-			lc = connectionPool.getConnection();
-			BindResult bindResult = lc.bind(endUserDN, password);
 			if(bindResult.getResultCode().equals(ResultCode.SUCCESS)) {
 				log.info("Authenticated {} ({}) from LDAP in {} ms", userLogin, endUserDN, System.currentTimeMillis() - start);
 				return true;
@@ -499,8 +512,11 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 					"authenticateUser(): Exception during authentication attempt [userLogin = "
 					+ userLogin + "]", e);
 		} finally {
-			// We don't want this user-bound LDAP connection returned to the pool
-			connectionPool.releaseDefunctConnection(lc);
+			if ( duke != null ) {
+				log.debug("authenticateUser(): closing duke conn");
+				duke.close();
+			}
+
 		}
 	}
 
@@ -1516,13 +1532,13 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 	 */
 	public void setSearchScope(int searchScope) throws IllegalArgumentException {
 		switch ( searchScope ) {
-			case LDAPConnection.SCOPE_BASE :
+			case com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection.SCOPE_BASE :
 				this.searchScope = SearchScope.BASE;
 				return;
-			case LDAPConnection.SCOPE_ONE :
+			case com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection.SCOPE_ONE :
 				this.searchScope = SearchScope.ONE;
 				return;
-			case LDAPConnection.SCOPE_SUB :
+			case com.unboundid.ldap.sdk.migrate.ldapjdk.LDAPConnection.SCOPE_SUB :
 				this.searchScope = SearchScope.SUB;
 				return;
 			default :
