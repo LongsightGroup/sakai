@@ -7,6 +7,7 @@
 		class="org.sakaiproject.unboundid.UnboundidDirectoryProvider" init-method="init"
 		destroy-method="destroy">
 
+		<property name="serverConfigurationService" ref="org.sakaiproject.component.api.ServerConfigurationService"/>
 		<property name="securityService" ref="org.sakaiproject.authz.api.SecurityService"/>
 		<property name="memoryService" ref="org.sakaiproject.memory.api.MemoryService"/>
 		
