@@ -846,7 +846,6 @@ function includeWebjarLibrary(library) {
 			} else if (library.endsWith(".css")) {
 				document.write('\x3Clink rel="stylesheet" type="text/css" href="' + webjars + library + ver + '" />');
 			}
->>>>>>> c450cf053d... SAK-45842 CKEditor change to web jar full and update configuration (#9614)
 	}
 
 	if (library == 'bootstrap') {
