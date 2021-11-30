@@ -579,6 +579,7 @@
     &.nopad {
       padding: 0.5em 0;
     }
+  }
 
   .box-group {
     padding: 9px 14px;
@@ -730,7 +731,7 @@
     padding-left: 15px;
     font-size: smaller;
   }
-  
+ } 
   #newSiteAlert {
     position:absolute;
     top:25px;
@@ -779,7 +780,7 @@
     text-decoration: none;
     font-size:120%;
     position:absolute;
-}
+  }
 
 #dropdownMenuButton {
   margin: 2px 0px 2px 4px;
