@@ -401,15 +401,14 @@ public class SecureDeliveryServiceImpl implements SecureDeliveryServiceAPI {
 	
 		try
 		{
-			// This is a built-in integration with no additional JAR file
-			if (secureDeliveryPlugin.equalsIgnoreCase("proctorio")) {
+			// TTUHSC custom load Proctorio and Respondus
+			if (1 == 1) {
 				ApplicationContext appCtx = new AnnotationConfigApplicationContext(SecureDeliveryProctorio.class);
 				SecureDeliveryModuleIfc secureDeliveryModuleBean = (SecureDeliveryModuleIfc) appCtx.getBean("secureDeliveryProctorio");
 				log.info("handlePlugin Proctorio: {}", secureDeliveryModuleBean.toString());
 				if ( secureDeliveryModuleBean.initialize() ) {
 					secureDeliveryModules.put( "Proctorio", secureDeliveryModuleBean );
 				}
-				return;
 			}
 
 			// This is the JAR method where the vendor sends a custom file
