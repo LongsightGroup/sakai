@@ -159,7 +159,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 			return "(&(objectClass=user)(" + eidAttr + "=" + escapeSearchFilterTerm(eid) + "))";
 		} else {
 			valueFormat = (MessageFormat) valueFormat.clone();
-			return eidAttr + "=" + escapeSearchFilterTerm(valueFormat.format(new Object[]{eid}));
+			return "(" + eidAttr + "=" + escapeSearchFilterTerm(valueFormat.format(new Object[]{eid})) + ")";
 		}
 	}
 
@@ -618,9 +618,7 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
 		sb.append("(|");
 
 		for ( Iterator<String> eidIterator = criteria.iterator(); eidIterator.hasNext(); ) {
-			sb.append("(");
 			sb.append(getFindUserByEidFilter(eidIterator.next()));
-			sb.append(")");
 		}
 		
 		sb.append(")");
