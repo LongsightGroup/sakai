@@ -64,8 +64,14 @@ public class FileConversionQueueItem implements PersistableEntity<Long> {
     @Type(type = "org.hibernate.type.InstantType")
     private Instant lastAttemptStarted;
 
+    /**
+     * NOT_STARTED = first time around, or a retry
+     * FAILED = max attemptes reached, give up.
+     * IN_PROGRESS = A worker is in the process of sending this to the converter
+     */
     public enum Status {
         NOT_STARTED,
-        IN_PROGRESS
+        FAILED,
+        IN_PROGRESS;
     }
 }
