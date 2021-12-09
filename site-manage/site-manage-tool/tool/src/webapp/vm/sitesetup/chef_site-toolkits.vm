@@ -6,9 +6,7 @@
 
 *#
 
-<script type="text/javascript" src="/library/js/jquery/jquery-ui/js/jquery.js"></script>
 <script type="text/javascript" src="/sakai-site-manage-tool/js/site-manage.js"></script>
-<link type="text/css" href="/sakai-site-manage-tool/css/site-manage.css" rel="stylesheet" media="screen" />
 <div class ="portletBody">
 	<div class="clear">
 		<h3>$toolkitsHeader</h3>
@@ -17,7 +15,6 @@
 	</div>
 		<input type="hidden" name="option" value="cancel" />
 		<iframe id="wciframe" width="100%" scrolling="auto" frameborder="0"
-			onload="updateMainFrameHeight();"
 			src="$toolkitsUrl"
 			marginheight="0" marginwidth="0"
 			style="width: 100%; padding: 0pt ! important; height: 600px;"

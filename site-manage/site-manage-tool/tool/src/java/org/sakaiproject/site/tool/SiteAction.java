@@ -246,10 +246,6 @@ public class SiteAction extends PagedResourceActionII {
 	
 	private static org.sakaiproject.sitemanage.api.model.SiteSetupQuestionService questionService = (org.sakaiproject.sitemanage.api.model.SiteSetupQuestionService) ComponentManager
 	.get(org.sakaiproject.sitemanage.api.model.SiteSetupQuestionService.class);
-
-	private static org.sakaiproject.sitemanage.api.TermsOfServiceHelper termsOfServiceHelper = (org.sakaiproject.sitemanage.api.TermsOfServiceHelper) ComponentManager
-	.get(org.sakaiproject.sitemanage.api.TermsOfServiceHelper.class);
-
 	
 	private static org.sakaiproject.sitemanage.api.UserNotificationProvider userNotificationProvider = (org.sakaiproject.sitemanage.api.UserNotificationProvider) ComponentManager
 	.get(org.sakaiproject.sitemanage.api.UserNotificationProvider.class);
@@ -443,10 +439,6 @@ public class SiteAction extends PagedResourceActionII {
 	private final static String STATE_SITE_QUEST_UNIQNAME = "site_quest_uniqname";
 	
 	private static final String STATE_SITE_ADD_COURSE = "canAddCourse";
-	
-	private static final String STATE_TOS_ACCEPT = "tosAccept";
-	private final static String PROP_PRIMARY_USE = "primaryUse";
-
 	
 	private static final String STATE_SITE_ADD_PORTFOLIO = "canAddPortfolio";
 	
@@ -1269,7 +1261,6 @@ public class SiteAction extends PagedResourceActionII {
 		state.removeAttribute(SITE_USER_SEARCH);
 		state.removeAttribute(STATE_SITE_PARTICIPANT_FILTER);
 
-		state.removeAttribute(STATE_TOS_ACCEPT);
 		// SAK-24423 - remove joinable site settings from the state
 		JoinableSiteSettings.removeJoinableSiteSettingsFromState( state );
 
@@ -1997,9 +1988,7 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("short_description", siteInfo.short_description);
 			context.put("siteContactName", siteInfo.site_contact_name);
 			context.put("siteContactEmail", siteInfo.site_contact_email);
-			if (siteInfo.getPrimaryUse() != null) {
-				context.put("primaryUse",  siteInfo.getPrimaryUse());
-			}	
+			
 			/// site language information
  							
  			String locale_string_selected = (String) state.getAttribute("locale_string");
@@ -2196,7 +2185,6 @@ public class SiteAction extends PagedResourceActionII {
 				}
 
 				ResourceProperties siteProperties = site.getProperties();
-				context.put("primaryUse", siteProperties.get(PROP_PRIMARY_USE));
 
 				allowUpdateSite = SiteService.allowUpdateSite(site.getId());
 				isMyWorkspace = isSiteMyWorkspace(site);
@@ -2530,14 +2518,6 @@ public class SiteAction extends PagedResourceActionII {
 				context.put("isCourseSite", Boolean.FALSE);
 				if (SiteTypeUtil.isProjectSite(siteType)) {
 					context.put("isProjectSite", Boolean.TRUE);
-					String primaryUse = (String) state.getAttribute("primaryUse");
-					if (StringUtils.isBlank(primaryUse)) {
-						primaryUse = siteInfo.getPrimaryUse();
-					}
-					if (StringUtils.isNotBlank(primaryUse)) {
-						context.put("primaryUseList", termsOfServiceHelper.getPrimaryUseList());
-						context.put("primaryUse", primaryUse);
-					}
 				}
 			}
 
@@ -2634,7 +2614,6 @@ public class SiteAction extends PagedResourceActionII {
 			context.put("name", siteInfo.site_contact_name);
 			context.put("oName", siteProperties.getProperty(Site.PROP_SITE_CONTACT_NAME));
 			context.put("email", siteInfo.site_contact_email);
-			context.put("primaryUse", siteInfo.getPrimaryUse());
 			context.put("oEmail", siteProperties.getProperty(Site.PROP_SITE_CONTACT_EMAIL));
 			context.put("siteUrls",  getSiteUrlsForAliasIds(siteInfo.siteRefAliases));
 			context.put("oSiteUrls", getSiteUrlsForSite(site));
@@ -3904,24 +3883,6 @@ public class SiteAction extends PagedResourceActionII {
 
 			return (String) getContext(data).get("template") + TEMPLATE[65];
 
-		/*
-		 * Additional template for DUKE TOS and Tracking information:
-		 */
-		case 66:
-			/*
-			 * build context for chef_site-showTos.vm
-			 */
-			String primaryUse = siteInfo.getPrimaryUse();
-			context.put("primaryUse", primaryUse == null ? "-1" : primaryUse);
-			String tosAccept = (String)state.getAttribute(STATE_TOS_ACCEPT);
-			context.put("tosAccept", tosAccept == null ? "decline" : tosAccept);
-			List<String> primaryUseList = termsOfServiceHelper.getPrimaryUseList();
-			if (primaryUseList != null) {
-				context.put("primaryUseList", primaryUseList);
-			}
-			String tosText = termsOfServiceHelper.getTosText();
-			context.put("tosText", tosText);
-			return (String) getContext(data).get("template") + TEMPLATE[66];
 		case 67:
 			/*
 			 * build context for chef_site-toolkits
@@ -5863,33 +5824,6 @@ public class SiteAction extends PagedResourceActionII {
 	} // doView_sites
 
 	/**
-	 * doAccept_TOS is called when "eventSubmit_doShow_TOS" is in the request
-	 * parameters
-	 */
-	public void doAccept_TOS(RunData data) throws Exception {
-		SessionState state = ((JetspeedRunData) data)
-				.getPortletSessionState(((JetspeedRunData) data).getJs_peid());
-		ParameterParser params = data.getParameters();
-
-		String primaryUse = params.getString("primaryUse");
-		String tosAccept = params.getString("tosAccept");
-		if (!"-1".equals(primaryUse)) {
-			state.setAttribute("primaryUse", primaryUse);
-		} else {
-			state.removeAttribute("primaryUse");
-		}
-		state.setAttribute("tosAccept", tosAccept);
-
-		// if the site was craeted using a template, finish the creation
-		if (state.getAttribute(STATE_TEMPLATE_SITE) != null) {
-			doFinish(data);
-		} else {
-			state.setAttribute(STATE_TEMPLATE_INDEX, "13");
-		}
-	} // doAccept_TOS
-
-
-	/**
 	 * do called when "eventSubmit_do" is in the request parameters to c
 	 */
 	public void doView(RunData data) throws Exception {
@@ -5931,7 +5865,7 @@ public class SiteAction extends PagedResourceActionII {
 				// redirect
 				redirectCourseCreation(params, state, "selectTerm");
 			} else if (SiteTypeUtil.isProjectSite(type)) { // UMICH-1035
-				state.setAttribute(STATE_TEMPLATE_INDEX, "66");
+				state.setAttribute(STATE_TEMPLATE_INDEX, "13");
 			} else if (pSiteTypes != null && pSiteTypes.contains(SiteTypeUtil.getTargetSiteType(type))) {  // UMICH-1035
 				// if of customized type site use pre-defined site info and exclude
 				// from public listing
@@ -8750,11 +8684,6 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		LessonsSubnavEnabler.prepareSiteForSave(Site, state);
 		PortalNeochatEnabler.prepareSiteForSave(Site, state);
 				
-		String primaryUse = siteInfo.getPrimaryUse();
-		if (primaryUse != null) {
-			siteProperties.addProperty(PROP_PRIMARY_USE, primaryUse);
-		}
-
 		if (state.getAttribute(STATE_MESSAGE) == null) {
 			try {
 				SiteService.save(Site);
@@ -11203,10 +11132,6 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		// SAK-24423 - update site info for joinable site settings
 		JoinableSiteSettings.updateSiteInfoFromParams( params, siteInfo );
 
-		if (params.getString("primaryUse") != null) {
-			siteInfo.setPrimaryUse(params.getString("primaryUse"));
-		}
-
 		// site contact information
 		String name = StringUtils.trimToEmpty(params.getString("siteContactName"));
 		if (name.length() == 0)
@@ -12381,11 +12306,6 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 				rp.addProperty(Site.PROP_SITE_CONTACT_EMAIL,
 						siteInfo.site_contact_email);
 
-				String primaryUse = siteInfo.getPrimaryUse();
-				if (primaryUse != null && !"-1".equals(primaryUse)) {
-					rp.addProperty(PROP_PRIMARY_USE, primaryUse);
-				}
-				
 				// SAK-22790 add props from SiteInfo object
 				rp.addAll(siteInfo.getProperties());
 				
@@ -12473,6 +12393,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
                 //SAK25400 sort templates by type
                 context.put("templateSites",sortTemplateSitesByType(templateSites));
 		context.put("titleMaxLength", state.getAttribute(STATE_SITE_TITLE_MAX));
+		
 	} // setTemplateListForContext
 	
 	/**
@@ -12526,7 +12447,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 				if (contactEmail != null) {
 					siteInfo.site_contact_email = contactEmail;
 				}
-				siteInfo.primaryUse = siteProperties.getProperty(PROP_PRIMARY_USE);	
+				
 				state.setAttribute(FORM_SITEINFO_ALIASES, getSiteReferenceAliasIds(site));
 			}
 			
@@ -13589,8 +13510,6 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		
 		public String term = NULL_STRING; // academic term
 
-		public String primaryUse = NULL_STRING; // academic term
-		
 		public ResourceProperties properties = new BaseResourcePropertiesEdit();
 
 		// SAK-24423 - joinable site settings
@@ -13698,15 +13617,6 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 		public void setTerm(String term) {
 			this.term = term;
 		}		
-	
-		public String getPrimaryUse() {
-			return primaryUse;
-		}
-
-		public void setPrimaryUse(String primaryUse) {
-			this.primaryUse = primaryUse;
-		}
-
 
 	} // SiteInfo
 
