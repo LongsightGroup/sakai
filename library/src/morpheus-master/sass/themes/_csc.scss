@@ -1,0 +1,48 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 330, 100%, 16%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/csc.svg);
+    --logo-height: 50px;
+    --logo-width: 175px;
+
+    --top-header-background: hsl(210, 12%, 16%);
+    --sites-nav-background: hsl(0, 0%, 98%);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    --sites-nav-menu-item-selected-background:  var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(330, 39%, 33%);
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color:  var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(330, 39%, 33%);
+}
+
+:root.sakaiUserTheme-dark {
+     --sites-nav-background: hsl(216, 7%,14%);
+}
+
+
+$skin-name: "csc";
+
+// Custom CSS
+//@media only screen and (max-width: 800px) {
+//    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+//	color: #19AFEF !important;
+//    }
+//    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+//	color: #19AFEF !important;
+//    }
+//}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}

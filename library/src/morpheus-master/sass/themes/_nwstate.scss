@@ -4,6 +4,7 @@
     @include defineColorHSL(--sakai-brand, 136, 90%, 12%)
     --top-header-background: var(--sakai-brand);
     --topNav-text-color: hsl(0, 0%, 100%);
+    --become-user-primary: var(--sakai-brand);
 
     // Logo
     --logo: url(#{$skin-path}images/nwscc.svg);
@@ -30,7 +31,43 @@
     --tool-menu-item-selected-background-color: var(--sakai-brand);
     --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
     --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
-    --tool-menu-item-selected-hover-background-color: hsl(136, 29%, 29%);
+    --tool-menu-item-selected-hover-background-color: hsl(86, 34%, 86%);
+    --tool-menu-item-selected-hover-text-color: var(--sakai-brand);
+    --tool-menu-item-selected-hover-icon-color: var(--sakai-brand);
+
+}
+
+:root.sakaiUserTheme-dark {
+    --sites-nav-background: hsl(210, 9%, 13%);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-background: hsl(216, 9%, 21%);
+    --sites-nav-menu-item-hover-background: hsl(212, 9%, 29%);
+    --sites-nav-menu-item-selected-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-background:  hsl(87, 35%, 84%);
+    --sites-nav-menu-item-selected-hover-background: hsl(86, 34%, 86%);
+    --sites-nav-menu-item-selected-hover-color: var(--sakai-brand);
+
+    --tool-menu-item-selected-background-color: hsl(87, 35%, 84%);
+    --tool-menu-item-selected-text-color: var(--sakai-brand);
+    --tool-menu-item-selected-icon-color: var(--sakai-brand);
+    --tool-menu-item-selected-hover-background-color: hsl(86, 34%, 86%);
+    //--tool-menu-item-selected-hover-text-color: var(--sakai-brand);
+    //--tool-menu-item-selected-hover-icon-color: var(--sakai-brand);
+
+
+    --tool-tab-active-highlight-color: hsl(87, 35%, 84%);
+
+    // Primary action button design:
+    --button-primary-text-color: var(--sakai-brand);
+    --button-primary-background: hsl(87, 35%, 84%);
+    --button-primary-border-color: hsl(87, 35%, 84%);
+    --button-primary-shadow: var(--elevation-2dp);
+    // hover and focus states for primary action button:
+    --button-primary-hover-text-color: var(--sakai-brand); 
+    --button-primary-hover-background: hsl(86, 34%, 86%);
+    --button-primary-hover-border-color: hsl(86, 34%, 86%);
+    --button-primary-hover-shadow: var(--elevation-4dp);
+    // active state for primary action button:
 
 }
 
@@ -63,3 +100,12 @@ $skin-name: 'nwstate';
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
     border: 1px solid #033a12;
 }
+
+a#loginLink1:hover {
+   color: #d8e4c8;
+}
+
+a#loginLink2:hover {
+   color: #d8e4c8;
+}
+

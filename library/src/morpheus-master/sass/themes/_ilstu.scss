@@ -27,6 +27,8 @@
     --sites-nav-menu-item-selected-background: hsl(0, 0%, 100%);
     --sites-nav-menu-item-selected-color: var(--sakai-brand);
     --sites-nav-menu-item-selected-hover-background: hsl(0, 0%, 95%);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(0, 0%, 95%);
+    --sites-nav-submenu-item-selected-hover-color: var(--sakai-brand);
     //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
 
     //Tool Menu
@@ -49,6 +51,38 @@
     --link-background-color: transparent;
     --link-active-background-color: transparent;
     --link-hover-background-color: transparent;
+}
+
+:root.sakaiUserTheme-dark {
+//    --tool-menu-item-selected-text-color: hsl(0,0%, 0%);
+//    --tool-menu-item-selected-icon-color: hsl(0,0%, 0%);
+//    --tool-menu-item-selected-hover-background-color: hsl(37, 92%, 75%);
+//    --tool-menu-item-selected-hover-text-color: hsl(0,0%, 0%);
+//    --tool-menu-item-selected-hover-icon-color: hsl(0,0%, 0%);
+
+//    --sites-nav-menu-item-selected-color: hsl(0,0%, 0%);
+//    --sites-nav-menu-item-selected-hover-background: hsl(37, 92%, 75%);
+//    --sites-nav-menu-item-selected-hover-color: hsl(220, 4%, 83%);
+//    --sites-nav-menu-item-selected-hover-icon-background: hsl(37, 92%, 75%);
+
+//    --sites-nav-submenu-item-selected-hover-color: hsl(0, 0%, 0%);
+//    --sites-nav-submenu-item-selected-hover-icon-color: hsl(0, 0%, 0%);
+
+//    --button-primary-text-color: hsl(0,0%, 0%);
+//    --button-primary-background: hsl(37, 92%, 65%);
+ //   --button-primary-border-color: hsl(37, 92%, 65%);
+//    --button-primary-shadow: var(--elevation-2dp);
+    // hover and focus states for primary action button:
+//    --button-primary-hover-text-color: hsl(0,0%, 0%);
+ //   --button-primary-hover-background: hsl(37, 92%, 65%);
+ //   --button-primary-hover-border-color: hsl(37, 92%, 65%);
+ //   --button-primary-hover-shadow: var(--elevation-4dp);
+
+//    --tool-tab-active-highlight-color: hsl(37, 92%, 65%);
+//    --topNav-text-color: hsl(220, 4%, 83%);
+    --logo: url(#{$skin-path}images/ilstu-dark.png);
+    --logo-height: 40px;
+    --logo-width: 155px;
 }
 
 $input-border-focus: hsl(0, 100%, 34%);
@@ -99,4 +133,38 @@ $banner-height: 50px;
 
 .Mrphs-skipNav__menu a:focus {
     top: 42px !important;
+}
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #ac0102 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite {
+	margin-top: 30px;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu a:focus {
+        top: 0px !important;
+    }
+    #toolMenu ul li .Mrphs-toolsNav__menuitem--link, #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
+	color: #FFF !important;
+    }
+    #toolMenu ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+	color: #FFF !important;
+    }
+    .Mrphs-sakai-lessonbuildertool .topaction {
+	top: 4em !important;
+    }
+}
+
+#gradeTableWrapper .handsontable th > .relative, #gradeTableWrapper .handsontable td > .relative {
+    padding: 2px !important;
+}
+
+// Disable Wiki Search
+.rwiki_searchBox {
+    visibility: hidden;
 }

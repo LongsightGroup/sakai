@@ -6,6 +6,10 @@
     --topNav-text-color: hsl(0, 0%, 100%);
     --tool-tab-active-highlight-color: var(--sakai-brand);
     --tool-tab-active-text-color: var(--sakai-brand);
+    --tool-border-color: hsl(0,0%, 100%);
+    --infoBanner-color: hsl(210, 2%, 20%);
+    --sakai-calendar-today-bg: hsl(0, 1%, 45%);
+    --all-sites-button-selected-background-color: hsl(209, 100%, 93%);
 
     // Logo
     --logo: url(#{$skin-path}images/pepperdine-logo.svg);
@@ -61,25 +65,36 @@ $sakai-custom-icons: (
     );
 
 // Custom CSS
-/* @media only screen and (max-width: 800px) {
-    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-	color: #333435 !important;
-    }
+@media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
-	color: #333435 !important;
+	color: hsl(219, 100%, 18%) !important;
     }
-    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a.Mrphs-skipNav--toolName {
-        color: #333435 !important;
+    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link {
+	background: hsl(199, 100%, 35%) !important;
+    }
+    #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--title:after {
+	top: 6px !important;
     }
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
-	width: 180px !important;
-	background-size: 180px 32px !important;
+        width: 130px !important;
+        background-size: 130px 27px !important;
     }
     #mastLogin {
-        width: calc(100% - 180px) !important;
+        width: calc(100% - 130px) !important;
     }
 } 
-*/
+
+@media only screen and (min-width: 801px) {
+   .Mrphs-toolMenu-collapsed:not(.tool-maximised) #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after{
+        content: '\25c9';
+        position: absolute;
+        right: 4px;
+        top: 0px;
+        color: #FFF;
+        font-size: 25px;
+        display:block;
+    }
+}
 
 // Selected indicator in left tool menu
 .Mrphs-toolMenu-collapsed:not(.tool-maximised) #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after {
@@ -97,7 +112,11 @@ $sakai-custom-icons: (
 }
 
 .fa-lock:before {
-    padding-right:8px;
+    margin-right:8px;
+}
+
+.fa-eye-slash:before {
+    margin-right:8px;
 }
 
 #toolMenu li.has-lessons-sub-pages ul.lessons-sub-page-menu li.is-current:after {
@@ -157,3 +176,38 @@ a#loginLink2:hover {
    color: #FAFAFA;
 }
 //END Hover Login link
+
+// Change hover color for logout dropdown profile image hover
+#mastLogin .has-avatar .Mrphs-userNav__pic-changer:hover:after, #mastLogin .has-avatar .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span .Mrphs-userNav__pic-changer.paginate_button.current:after, .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span #mastLogin .has-avatar .Mrphs-userNav__pic-changer.paginate_button.current:after, #mastLogin .has-avatar .Mrphs-userNav__pic-changer:active:after, #mastLogin .has-avatar .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span .Mrphs-userNav__pic-changer.paginate_button.current:after, .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span #mastLogin .has-avatar .Mrphs-userNav__pic-changer.paginate_button.current:after {
+    background: #00205c !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem, #linkNav #selectQuickLink li.Mrphs-sitesNav__menuitem {
+    margin: 0 10px 10px 0 !important;
+}
+
+.Mrphs-calendarSynoptic .calDay .calToday {
+    background-color: #757373 !important;
+    color: #FFF !important;
+}
+
+span[title="This tool has import options. Click to see them."] {
+    display: none;
+}
+
+.sakai-search-input {
+    display: none !important;
+}
+
+
+.checklistDiv {
+    background-color: #daedff !important;
+}
+
+.Mrphs-sakai-lessonbuildertool .questionDiv .contentCol, .Mrphs-sakai-lessonbuildertool .checklistDiv {
+    background-color: #daedff !important;
+}
+
+.Mrphs-sitesNav__menuitem.view-all-sites-btn a:after {
+    content: "Sites";
+}

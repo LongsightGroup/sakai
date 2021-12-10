@@ -1,0 +1,55 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 214, 15%, 21%);
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: var(--sakai-brand);
+
+    // Logo
+    --logo: url(#{$skin-path}images/explorersacademy.png);
+    --logo-height: 65px;
+    --logo-width: 63px;
+
+    // Tabs
+    --tool-tab-active-highlight-color: var(--sakai-brand);
+    --tool-tab-active-text-color: var(--sakai-brand);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(49, 100%, 50%); 
+    --sites-nav-menu-item-hover-background: hsl(217, 7%, 37%);
+    --sites-nav-menu-item-hover-color: hsl(49, 100%, 50%);
+
+    --sites-nav-menu-item-selected-background: hsl(49, 100%, 50%);
+    --sites-nav-menu-item-selected-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-hover-background: hsl(49, 100%, 70%);
+
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(49, 100%, 50%);
+    --tool-menu-item-selected-icon-color: hsl(49, 100%, 50%);
+    --tool-menu-item-selected-hover-background-color: hsl(217, 7%, 37%);
+}
+
+$banner-height: 65px;
+$skin-name: 'explorersacademy';
+
+// Custom CSS
+ @media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+	color: #ffd202 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #2e343e !important;
+    }
+}
+
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #ffd202;
+}
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #ffd202;
+}

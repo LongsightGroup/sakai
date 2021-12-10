@@ -3,11 +3,11 @@
 :root{
 
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 1, 69%, 54%);
+    @include defineColorHSL(--sakai-brand, 357, 52%, 42%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/wjeff.svg);
-    --logo-height: 66px;
+    --logo: url(#{$skin-path}images/wjeff.png);
+    --logo-height: 71px;
     --logo-width: 180px;
 
     --top-header-background: hsl(0, 0%, 100%);
@@ -22,14 +22,17 @@
 
     --sites-nav-menu-item-selected-background: var(--sakai-brand);
     --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
-    --sites-nav-menu-item-selected-hover-background: hsl(0, 69%, 63%);
-    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+    --sites-nav-menu-item-selected-hover-background: hsl(357, 38%, 54%); 
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(0, 0%, 0%);
 
     //Tool Menu
     --tool-menu-item-selected-background-color: var(--sakai-brand);
     --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
     --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
-    --tool-menu-item-selected-hover-background-color: hsl(0, 69%, 63%);
+    --tool-menu-item-selected-hover-background-color: hsl(357, 38%, 54%);
+    --tool-menu-item-selected-hover-text-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 0%);
 
     //--tool-menu-item-background-color: hsl(206, 16%, 39%);
     --tool-menu-item-text-color: hsl(0, 0%, 40%);
@@ -47,5 +50,10 @@
     --link-hover-background-color: transparent;
 }
 
+:root.sakaiUserTheme-dark {
+    --topNav-text-color: hsl(220, 4%, 83%);
+    --logo: url(#{$skin-path}images/wjeff-dark.png);
+}
+
 $skin-name: "wjeff" !default;
-$banner-height: 66px;
+$banner-height: 73px;
