@@ -1,6 +1,7 @@
 import { html } from "../assets/lit-element/lit-element.js";
 import { SakaiElement } from "../sakai-element.js";
 import "../sakai-icon.js";
+import { getPostsForTopic } from "./utils.js";
 import { QUESTION, DISCUSSION } from "./sakai-conversations-constants.js";
 
 export class SakaiTopicSummary extends SakaiElement {
@@ -19,11 +20,29 @@ export class SakaiTopicSummary extends SakaiElement {
     this.loadTranslations("conversations").then(r => this.i18n = r);
   }
 
-  topicSelected(e) {
+  topicSelected() {
 
-    e.target.focus();
-    window.scrollTo(0, 0);
-    this.dispatchEvent(new CustomEvent("topic-selected", { detail: { topic: this.topic }, bubbles: true }));
+    if (!this.topic.posts || this.topic.posts.length === 0) {
+
+      getPostsForTopic(this.topic).then(posts => {
+
+        this.topic.posts = posts;
+        this.dispatchEvent(new CustomEvent("topic-updated", { detail: { topic: this.topic }, bubbles: true }));
+        /*
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth"
+        });
+        */
+        this.requestUpdate();
+      })
+      .finally(() => {
+        this.dispatchEvent(new CustomEvent("topic-selected", { detail: { topic: this.topic }, bubbles: true }));
+      });
+    } else {
+      this.dispatchEvent(new CustomEvent("topic-selected", { detail: { topic: this.topic }, bubbles: true }));
+    }
   }
 
   shouldUpdate() {
