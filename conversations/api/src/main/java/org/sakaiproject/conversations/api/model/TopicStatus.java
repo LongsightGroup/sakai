@@ -43,6 +43,9 @@ public class TopicStatus implements PersistableEntity<Long> {
     @Column(name = "UNREAD")
     private Integer unread = 0;
 
+    @Column(name = "VIEWED")
+    private Boolean viewed = Boolean.FALSE;
+
     public TopicStatus() {
     }
 
