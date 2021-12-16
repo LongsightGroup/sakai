@@ -38,8 +38,7 @@ export const topic1 = `
     { "href": "/api/sites/playpen/topics/topic1/hidden", "rel": "hide" },
     { "href": "/api/sites/playpen/topics/topic1/locked", "rel": "lock" },
     { "href": "/api/sites/playpen/topics/topic1/bookmarked", "rel": "bookmark" },
-    { "href": "/api/sites/playpen/topics/topic1/reactions", "rel": "react" },
-    { "href": "/api/sites/playpen/topics/topic1/posts", "rel": "posts" }
+    { "href": "/api/sites/playpen/topics/topic1/reactions", "rel": "react" }
   ],
   "resolved": false,
   "read": true,

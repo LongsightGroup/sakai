@@ -1,5 +1,4 @@
-import { html } from "../assets/lit-element/lit-element.js";
-import { unsafeHTML } from "../assets/lit-html/directives/unsafe-html.js";
+import { html, unsafeHTML } from "../assets/@lion/core/index.js";
 import { SakaiElement } from "../sakai-element.js";
 
 export class SakaiConversationsGuidelines extends SakaiElement {

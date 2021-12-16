@@ -53,6 +53,7 @@ public class MainController {
         return "bootstrap";
 	}
 
+    /*
 	@GetMapping(value = "/topics/{topicId}")
     public String topic(Model model, @PathVariable String topicId, HttpServletRequest request) {
 
@@ -63,18 +64,6 @@ public class MainController {
         return "bootstrap";
     }
 
-	@GetMapping(value = "/topics/{topicId}/posts/{postId}")
-    public String topic(Model model, @PathVariable String topicId, @PathVariable String postId, HttpServletRequest request) {
-
-        checkSakaiSession();
-
-        loadModel(model, request);
-        model.addAttribute("topicId", topicId);
-        model.addAttribute("postId", postId);
-        return "bootstrap";
-    }
-
-    /*
     @GetMapping(value = "/settings")
     public String topic(Model model, HttpServletRequest request) {
 
