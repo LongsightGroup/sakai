@@ -3,8 +3,8 @@ package org.sakaiproject.conversations.impl.repository;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Projections;
 
 import org.sakaiproject.conversations.api.model.Topic;
 import org.sakaiproject.conversations.api.repository.TopicRepository;
@@ -39,6 +39,8 @@ public class TopicRepositoryImpl extends SpringCrudRepositoryImpl<Topic, String>
             .add(Restrictions.eq("siteId", siteId))
             .add(Restrictions.eq("metadata.creatorId", creatorId))
             .setProjection(Projections.rowCount()).uniqueResult();
+
+
     }
 
     @Transactional
