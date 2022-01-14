@@ -1056,10 +1056,7 @@ public abstract class BasePreferencesService implements PreferencesService, Sing
 				return new BaseResourceProperties();
 			}
 
-			String baseKey = NotificationService.PREFS_TYPE + commonToolId.replace(".", ":");
-			ResourceProperties props = getProperties(baseKey);
-			props.addAll(getProperties(baseKey + NotificationService.NOTI_OVERRIDE_EXTENSION));
-			return props;
+			return getProperties(NotificationService.PREFS_TYPE + commonToolId.replace(".", ":"));
 		}
 
 		/**

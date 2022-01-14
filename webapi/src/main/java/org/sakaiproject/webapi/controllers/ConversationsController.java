@@ -18,7 +18,6 @@ import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.conversations.api.ConversationsService;
 import org.sakaiproject.conversations.api.ConversationsPermissionsException;
 import org.sakaiproject.conversations.api.Permissions;
-import org.sakaiproject.conversations.api.PostSort;
 import org.sakaiproject.conversations.api.Reaction;
 import org.sakaiproject.conversations.api.beans.CommentTransferBean;
 import org.sakaiproject.conversations.api.beans.PostTransferBean;
@@ -56,14 +55,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
@@ -93,7 +89,7 @@ public class ConversationsController extends AbstractSakaiApiController {
 	private UserDirectoryService userDirectoryService;
 
 	@GetMapping(value = "/sites/{siteId}/conversations", produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntityModel<ConversationsRestBean> getSiteConversations(@PathVariable String siteId) throws ConversationsPermissionsException {
+    public EntityModel getSiteConversations(@PathVariable String siteId) throws ConversationsPermissionsException {
 
 		String currentUserId = checkSakaiSession().getUserId();
 
@@ -119,15 +115,11 @@ public class ConversationsController extends AbstractSakaiApiController {
             bean.canPin = settings.getAllowPinning() && securityService.unlock(Permissions.TOPIC_PIN.label, siteRef);
             bean.isInstructor = securityService.unlock(Permissions.ROLETYPE_INSTRUCTOR.label, siteRef);
             bean.canViewAnonymous = securityService.unlock(Permissions.VIEW_ANONYMOUS.label, siteRef);
-            //bean.canViewHidden = securityService.unlock(Permissions.POST_VIEW_HIDDEN.label, siteRef);
-            bean.maxThreadDepth = serverConfigurationService.getInt(ConversationsService.PROP_MAX_THREAD_DEPTH, 5);
             bean.settings = settings;
 
             ConvStatus convStatus = conversationsService.getConvStatusForSiteAndUser(siteId, currentUserId);
             bean.showGuidelines = settings.getRequireGuidelinesAgreement() && !convStatus.getGuidelinesAgreed();
             bean.tags = conversationsService.getTagsForSite(siteId);
-
-            bean.disableDiscussions = serverConfigurationService.getBoolean(ConversationsService.PROP_DISABLE_DISCUSSIONS, false);
 
             List<Link> links = new ArrayList<>();
             if (bean.canViewSiteStatistics) links.add(Link.of("/api/sites/" + siteId + "/conversations/stats", "stats"));
@@ -165,6 +157,8 @@ public class ConversationsController extends AbstractSakaiApiController {
     public EntityModel updateTopic(@PathVariable String siteId, @PathVariable String topicId, @RequestBody TopicTransferBean topicBean) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
+
+        System.out.println(topicBean.groups);
 
         topicBean.id = topicId;
         topicBean.siteId = siteId;
@@ -234,13 +228,13 @@ public class ConversationsController extends AbstractSakaiApiController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
     private EntityModel entityModelForTopicBean(TopicTransferBean topicBean) {
 
         List<Link> links = new ArrayList<>();
         links.add(Link.of(topicBean.url, "self"));
         links.add(Link.of(topicBean.url + "/bookmarked", "bookmark"));
         links.add(Link.of(topicBean.url + "/posts/markpostsviewed", "markpostsviewed"));
-        links.add(Link.of(topicBean.url + "/posts", "posts"));
         if (topicBean.canPin) links.add(Link.of(topicBean.url + "/pinned", "pin"));
         if (topicBean.canPost) links.add(Link.of(topicBean.url + "/posts", "post"));
         if (topicBean.canDelete) links.add(Link.of(topicBean.url, "delete"));
@@ -251,7 +245,7 @@ public class ConversationsController extends AbstractSakaiApiController {
     }
 
 	@PostMapping(value = "/sites/{siteId}/topics/{topicId}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntityModel<PostTransferBean> createPost(@PathVariable String siteId, @PathVariable String topicId, @RequestBody PostTransferBean postBean) throws ConversationsPermissionsException {
+    public EntityModel createPost(@PathVariable String siteId, @PathVariable String topicId, @RequestBody PostTransferBean postBean) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
         postBean.siteId = siteId;
@@ -260,21 +254,15 @@ public class ConversationsController extends AbstractSakaiApiController {
     }
 
 	@GetMapping(value = "/sites/{siteId}/topics/{topicId}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EntityModel<PostTransferBean>> getTopicPosts(
-            @PathVariable String siteId,
-            @PathVariable String topicId,
-            @RequestParam Integer page,
-            @RequestParam(required = false) PostSort sort,
-            @RequestParam(required = false) String postId) throws ConversationsPermissionsException {
+    public List<EntityModel> getTopicPosts(@PathVariable String siteId, @PathVariable String topicId) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
-
-        return conversationsService.getPostsByTopicId(siteId, topicId, page, sort, postId).stream()
+        return conversationsService.getPostsByTopicId(siteId, topicId).stream()
             .map(pb -> entityModelForPostBean(pb)).collect(Collectors.toList());
     }
 
 	@PutMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntityModel<PostTransferBean> updatePost(@PathVariable String siteId, @PathVariable String topicId, @PathVariable String postId, @RequestBody PostTransferBean postBean) throws ConversationsPermissionsException {
+    public EntityModel updatePost(@PathVariable String siteId, @PathVariable String topicId, @PathVariable String postId, @RequestBody PostTransferBean postBean) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
 
@@ -283,13 +271,16 @@ public class ConversationsController extends AbstractSakaiApiController {
         return entityModelForPostBean(conversationsService.savePost(postBean));
     }
 
-	@DeleteMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}")
     public ResponseEntity deletePost(@PathVariable String siteId, @PathVariable String topicId, @PathVariable String postId) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
 
-        conversationsService.deletePost(siteId, topicId, postId, true);
-        return ResponseEntity.ok().build();
+        if (conversationsService.deletePost(siteId, topicId, postId, true)) {
+            return new ResponseEntity(HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 	@GetMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}/upvote")
@@ -309,15 +300,15 @@ public class ConversationsController extends AbstractSakaiApiController {
     }
 
 	@PostMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}/reactions", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<Reaction, Integer> postPostReactions(@PathVariable String topicId, @PathVariable String postId, @RequestBody Map<Reaction, Boolean> reactions) throws ConversationsPermissionsException {
+    public Map<Reaction, Integer> postPostReactions(@PathVariable String postId, @RequestBody Map<Reaction, Boolean> reactions) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
 
-        return conversationsService.savePostReactions(topicId, postId, reactions);
+        return conversationsService.savePostReactions(postId, reactions);
     }
 
 	@PostMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}/locked", produces = MediaType.APPLICATION_JSON_VALUE)
-    public EntityModel<PostTransferBean> lockPost(@PathVariable String siteId, @PathVariable String topicId, @PathVariable String postId, @RequestBody Boolean locked) throws ConversationsPermissionsException {
+    public EntityModel lockPost(@PathVariable String siteId, @PathVariable String topicId, @PathVariable String postId, @RequestBody Boolean locked) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
 
@@ -325,38 +316,23 @@ public class ConversationsController extends AbstractSakaiApiController {
     }
 
 	@PostMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}/hidden")
-    public EntityModel<PostTransferBean> hidePost(@PathVariable String siteId, @PathVariable String topicId, @PathVariable String postId, @RequestBody Boolean hidden) throws ConversationsPermissionsException {
+    public ResponseEntity hidePost(@PathVariable String siteId, @PathVariable String postId, @RequestBody Boolean hidden) throws ConversationsPermissionsException {
 
 		checkSakaiSession();
 
-        return entityModelForPostBean(conversationsService.hidePost(siteId, topicId, postId, hidden));
+        conversationsService.hidePost(postId, hidden, siteId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    private EntityModel<PostTransferBean> entityModelForPostBean(PostTransferBean postBean) {
+    private EntityModel entityModelForPostBean(PostTransferBean postBean) {
 
         List<Link> links = new ArrayList<>();
         links.add(Link.of(postBean.url, "self"));
-        links.add(Link.of("/api/sites/" + postBean.siteId + "/topics/" + postBean.topic + "/posts", "reply"));
         if (postBean.canDelete) links.add(Link.of(postBean.url, "delete"));
-        if (postBean.canDelete) links.add(Link.of(postBean.url + "/restore", "restore"));
         if (postBean.canReact) links.add(Link.of(postBean.url + "/reactions", "react"));
         if (postBean.canModerate) links.add(Link.of(postBean.url + "/locked", "lock"));
         if (postBean.canModerate) links.add(Link.of(postBean.url + "/hidden", "hide"));
-        recursivelyAddEntityModelForDescendants(postBean);
         return EntityModel.of(postBean, links);
-    }
-
-    private void recursivelyAddEntityModelForDescendants(PostTransferBean postBean) {
-
-        ListIterator childIterator = postBean.posts.listIterator();
-
-        while (childIterator.hasNext()) {
-            try {
-                PostTransferBean child = (PostTransferBean) childIterator.next();
-                childIterator.set(entityModelForPostBean(child));
-            } catch (ClassCastException cce) {
-            }
-        }
     }
 
 	@PostMapping(value = "/sites/{siteId}/topics/{topicId}/posts/{postId}/comments", produces = MediaType.APPLICATION_JSON_VALUE)

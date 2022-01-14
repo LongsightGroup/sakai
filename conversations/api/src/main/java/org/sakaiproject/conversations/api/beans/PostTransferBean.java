@@ -13,15 +13,11 @@
  ******************************************************************************/
 package org.sakaiproject.conversations.api.beans;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.sakaiproject.conversations.api.Reaction;
 import org.sakaiproject.conversations.api.model.Metadata;
 import org.sakaiproject.conversations.api.model.Post;
 import org.sakaiproject.entity.api.Entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +33,7 @@ public class PostTransferBean implements Entity {
     public String id;
     public String message;
     public int numberOfComments;
-    public int numberOfThreadReplies;
-    public int numberOfThreadReactions;
-    public int howActive;
-    public List<CommentTransferBean> comments = new ArrayList<>();
+    public List<CommentTransferBean> comments;
     public String creator;
     public Instant created;
     public String formattedCreatedDate;
@@ -50,6 +43,7 @@ public class PostTransferBean implements Entity {
     public String formattedModifiedDate;
     public Map<Reaction, Boolean> myReactions = new HashMap<>();
     public Map<Reaction, Integer> reactionTotals = new HashMap<>();
+    public boolean viewed;
     public boolean locked;
     public boolean hidden;
     public boolean draft;
@@ -57,21 +51,14 @@ public class PostTransferBean implements Entity {
     public boolean isMine;
     public boolean privatePost;
     public int upvotes;
-    public int depth;
     public String topic;
-    public String parentPost;
-    public String parentThread;
-    public boolean isThread;
-    public List posts = new ArrayList();
 
     public String creatorDisplayName;
     public String verifierDisplayName;
-    public boolean viewed;
     public boolean upvoted;
     public boolean canView;
     public boolean canEdit;
     public boolean canDelete;
-    public boolean canReply;
     public boolean canComment;
     public boolean canUpvote;
     public boolean canReact;
@@ -79,23 +66,7 @@ public class PostTransferBean implements Entity {
     public boolean isInstructor;
 
     public String url;
-    public String portalUrl;
     public String reference;
-
-    public void clear() {
-
-        message = "";
-        comments = Collections.<CommentTransferBean>emptyList();
-        creator = "blank";
-        creatorDisplayName = "";
-        verifierDisplayName = "";
-        formattedCreatedDate = "";
-        canEdit = false;
-        canDelete = false;
-        canModerate = false;
-        canReact = false;
-        canReply = false;
-    }
 
     public static PostTransferBean of(Post post) {
 
@@ -104,9 +75,6 @@ public class PostTransferBean implements Entity {
         postBean.id = post.getId();
         postBean.message = post.getMessage();
         postBean.numberOfComments = post.getNumberOfComments();
-        postBean.numberOfThreadReplies = post.getNumberOfThreadReplies();
-        postBean.numberOfThreadReactions = post.getNumberOfThreadReactions();
-        postBean.howActive = post.getHowActive();
         Metadata metadata = post.getMetadata();
         postBean.creator = metadata.getCreator();
         postBean.created = metadata.getCreated();
@@ -118,12 +86,8 @@ public class PostTransferBean implements Entity {
         postBean.siteId = post.getSiteId();
         postBean.privatePost = post.getPrivatePost();
         postBean.upvotes = post.getUpvotes();
-        postBean.depth = post.getDepth();
         postBean.topic = post.getTopic().getId();
         postBean.anonymous = post.getAnonymous();
-        postBean.parentPost = post.getParentPostId();
-        postBean.parentThread = post.getParentThreadId();
-        postBean.isThread = StringUtils.isBlank(postBean.parentPost);
 
         return postBean;
     }
@@ -134,9 +98,6 @@ public class PostTransferBean implements Entity {
         post.setId(this.id);
         post.setMessage(this.message);
         post.setNumberOfComments(this.numberOfComments);
-        post.setNumberOfThreadReplies(this.numberOfThreadReplies);
-        post.setNumberOfThreadReactions(this.numberOfThreadReactions);
-        post.setHowActive(this.howActive);
 
         Metadata metadata = new Metadata();
         metadata.setCreator(this.creator);
@@ -151,11 +112,8 @@ public class PostTransferBean implements Entity {
         post.setLocked(this.locked);
         post.setDraft(this.draft);
         post.setUpvotes(this.upvotes);
-        post.setDepth(this.depth);
         post.setPrivatePost(this.privatePost);
         post.setAnonymous(this.anonymous);
-        post.setParentThreadId(this.parentThread);
-        post.setParentPostId(this.parentPost);
 
         return post;
     }

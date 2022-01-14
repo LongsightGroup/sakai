@@ -69,9 +69,8 @@ export default {
       .post(/api\/sites\/\w*\/topics$/, (url, opts) => {
 
         const requestTopic = JSON.parse(opts.body);
-        const topicId = "" + Math.floor(Math.random() * 20) + 1;
         return {
-          id: topicId,
+          id: "" + Math.floor(Math.random() * 20) + 1,
           creator: "adrian",
           created: Date.now(),
           title: requestTopic.title,
@@ -85,20 +84,7 @@ export default {
           canDelete: true,
           numberOfPosts: 0,
           replies: [],
-          myReactions: {},
-          reactionTotals: {},
           tags: requestTopic.tags,
-          type: requestTopic.type,
-          links: [
-            { "href": `/api/sites/playpen/topics/${topicId}`, "rel": "self" },
-            { "href": `/api/sites/playpen/topics/${topicId}/pinned`, "rel": "pin" },
-            { "href": `/api/sites/playpen/topics/${topicId}/hidden`, "rel": "hide" },
-            { "href": `/api/sites/playpen/topics/${topicId}/locked`, "rel": "lock" },
-            { "href": `/api/sites/playpen/topics/${topicId}/bookmarked`, "rel": "bookmark" },
-            { "href": `/api/sites/playpen/topics/${topicId}/reactions`, "rel": "react" },
-            { "href": `/api/sites/playpen/topics/${topicId}/post`, "rel": "post" },
-            { "href": `/api/sites/playpen/topics/${topicId}/posts`, "rel": "posts" }
-          ],
           groups: requestTopic.groups,
           anonymous: requestTopic.anonymous,
           visibility: requestTopic.visibility,
