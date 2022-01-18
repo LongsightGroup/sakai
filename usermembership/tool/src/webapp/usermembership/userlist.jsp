@@ -102,6 +102,14 @@
 		        </f:facet>
 				<h:outputText value="#{row.userID}"/>
 			</t:column>
+			<t:column id="studentNumber" headerstyleClass="hidden-xs">
+				<f:facet name="header">
+		            <t:commandSortHeader columnName="studentNumber" immediate="true" arrow="true">
+		                <h:outputText value="ID"/>
+		            </t:commandSortHeader>
+		        </f:facet>
+				<h:outputText value="#{row.studentNumber}"/>
+			</t:column>
 			<h:column id="userName">
 				<f:facet name="header">
 		            <t:commandSortHeader columnName="name" immediate="true" arrow="true">
