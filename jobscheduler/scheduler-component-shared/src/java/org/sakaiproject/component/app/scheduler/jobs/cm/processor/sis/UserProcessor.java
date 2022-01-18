@@ -98,7 +98,8 @@ public class UserProcessor extends AbstractUserProcessor {
             } catch (UserNotDefinedException ex) {
                 log.debug("User not found with id: {}", user.getUserId());
             }
-        } else {
+        }
+        if ( u == null) {
             // Lookup by EID
             try {
                 u = userDirectoryService.getUserByEid(user.getUserName());
