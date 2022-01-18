@@ -70,6 +70,7 @@ public class UserListBean {
 	private static final String				USER_AUTH_EXTERNAL	= "External";
 	private static final String				SORT_USER_NAME		= "name";
 	private static final String				SORT_USER_ID		= "id";
+	private static final String				SORT_STUDENT_NUMBER = "studentNumber";
 	private static final String				SORT_USER_EMAIL		= "email";
 	private static final String				SORT_USER_TYPE		= "type";
 	private static final String				SORT_USER_AUTHORITY	= "authority";
@@ -124,6 +125,7 @@ public class UserListBean {
 		private String				userID;
 		private String				userEID;
 		private String				userDisplayId; 
+		private String				studentNumber; 
 		private String				userName;
 		private String				userEmail;
 		private String				userType;
@@ -142,12 +144,13 @@ public class UserListBean {
 		public UserRow() {
 		}
 
-		public UserRow(String userID, String userEID, String userDisplayId, String userName, 
+		public UserRow(String userID, String userEID, String userDisplayId, String studentNumber, String userName, 
 				       String userEmail, String userType, String authority, Date createdOn, 
 				       Date modifiedOn) {
 			this.userID = userID;
 			this.userEID = userEID;
 			this.userDisplayId = userDisplayId;
+			this.studentNumber = studentNumber;
 			this.userName = userName;
 			this.userEmail = userEmail;
 			this.userType = userType;
@@ -166,6 +169,10 @@ public class UserListBean {
 
 		public String getUserEID() {
 			return this.userEID;
+		}
+
+		public String getStudentNumber() {
+			return this.studentNumber;
 		}
 
 		public String getUserDisplayId()
@@ -197,6 +204,7 @@ public class UserListBean {
 			this.userID = row.getUserID();
 			this.userEID = row.getUserEID();
 			this.userDisplayId = row.getUserDisplayId();
+			this.studentNumber = row.getStudentNumber();
 			this.userName = row.getUserName();
 			this.userEmail = row.getUserEmail();
 			this.userType = row.getUserType();
@@ -226,6 +234,12 @@ public class UserListBean {
 						}else if(fieldName.equals(SORT_USER_ID)){
 							String s1 = r1.getUserEID();
 							String s2 = r2.getUserEID();
+							int res = collator.compare(s1!=null? s1.toLowerCase():"", s2!=null? s2.toLowerCase():"");
+							if(sortAscending) return res;
+							else return -res;
+						}else if(fieldName.equals(SORT_STUDENT_NUMBER)){
+							String s1 = r1.getStudentNumber();
+							String s2 = r2.getStudentNumber();
 							int res = collator.compare(s1!=null? s1.toLowerCase():"", s2!=null? s2.toLowerCase():"");
 							if(sortAscending) return res;
 							else return -res;
@@ -337,6 +351,7 @@ public class UserListBean {
 					if(userTypeMatches(u.getType())) {
 						userRows.add(new UserRow(
 								u.getId(), u.getEid(), u.getDisplayId(), 
+								u.getProperties().getProperty("studentNumber"),
 								u.getDisplayName(), 
 								u.getEmail(), 
 								u.getType(), 
@@ -366,10 +381,12 @@ public class UserListBean {
 			try{
 				List<User> users = M_uds.searchExternalUsers(searchKeyword, -1, -1);
 				for(User u : users) {
+
 					// filter user type
 					if(userTypeMatches(u.getType())) {
 						userRows.add(new UserRow(
 								u.getId(), u.getEid(), u.getDisplayId(), 
+								u.getProperties().getProperty("studentNumber"),
 								u.getDisplayName(), 
 								u.getEmail(), 
 								u.getType(), 
@@ -668,6 +685,7 @@ public class UserListBean {
 		List<Object> header = new ArrayList<Object>();
 		header.add(msgs.getString("user_id"));
 		header.add(msgs.getString("internal_user_id"));
+		header.add("Student ID");
 		header.add(msgs.getString("user_name"));
 		header.add(msgs.getString("user_email"));
 		header.add(msgs.getString("user_type"));
@@ -681,6 +699,7 @@ public class UserListBean {
 			List<Object> currentRow = new ArrayList<Object>();
 			currentRow.add(userRow.getUserEID());
 			currentRow.add(userRow.getUserID());
+			currentRow.add(userRow.getStudentNumber());
 			currentRow.add(userRow.getUserName());
 			currentRow.add(userRow.getUserEmail());
 			currentRow.add(userRow.getUserType());
