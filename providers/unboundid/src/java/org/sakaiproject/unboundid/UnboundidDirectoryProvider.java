@@ -609,12 +609,9 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 
 			// No LDAPException means we have a good connection. Cache a negative result.
 			if (!userFound) {
-				Object o = negativeCache.get(edit.getEid());
-				Integer seenCount = 0;
-				if (o != null) {
-					seenCount = (Integer) o;
-				}
-				negativeCache.put(edit.getEid(), (seenCount + 1));
+				edit.setFirstName("-");
+				edit.setLastName("-");
+				return true;
 			}
 
 			return userFound;
@@ -719,17 +716,11 @@ public class UnboundidDirectoryProvider implements UserDirectoryProvider, LdapCo
 			}
 			
 			// Finally clean up the original collection and remove and users we could not find
-			for (UserEdit userRemove : usersToRemove) {
-				log.debug("Unboundid getUsers could not find user: {}", userRemove.getEid());
-				users.remove(userRemove);
-
-				// Add eid to negative cache. We are confident the LDAP conn is alive and well here.
-				Integer seenCount = 0;
-				Object o = negativeCache.get(userRemove.getEid());
-				if (o != null) {
-					seenCount = (Integer) o;
-				}
-				negativeCache.put(userRemove.getEid(), (seenCount + 1));
+			for (UserEdit userNotFound : usersToRemove) {
+				log.debug("Unboundid getUsers could not find user: {}", userNotFound.getEid());
+				// users.remove(userRemove);
+				userNotFound.setFirstName("-");
+				userNotFound.setLastName("-");
 			}
 			
 		} catch (LDAPException e)	{
