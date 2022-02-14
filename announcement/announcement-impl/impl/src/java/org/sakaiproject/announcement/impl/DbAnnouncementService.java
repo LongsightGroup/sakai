@@ -612,8 +612,7 @@ public class DbAnnouncementService extends BaseAnnouncementService
 		// First grab all the current user's sites
 		m_siteService.getUserSites().forEach(site -> {
 
-			String siteId = site.getId();
-			String channelRef = channelReference(siteId, "main");
+			String channelRef = channelReference(site.getId(), "main");
 			try {
 				ViewableFilter viewableFilter = new ViewableFilter(null, null, Integer.MAX_VALUE, this);
 				if (maxAgeInDays != null) {
@@ -623,7 +622,6 @@ public class DbAnnouncementService extends BaseAnnouncementService
 				}
 				allAnnouncements.put(site.getId(), (List<AnnouncementMessage>) getMessages(channelRef, viewableFilter, true, true));
 			} catch (Exception e) {
-				log.warn("Failed to add announcements from site {}", siteId, e);
 			}
 		});
 
