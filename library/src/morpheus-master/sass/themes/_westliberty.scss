@@ -13,7 +13,7 @@
     --top-header-background: hsl(210, 6%, 13%);
     --topNav-text-color: hsl(0, 0%, 100%);
 
-    --lessons-item-border-top-color: hsl(0, 0, 100%);
+    --lessons-item-border-top-color: hsl(0, 0%, 100%);
 
     //Sites Nav
     --sites-nav-background: hsl(45, 91%, 65%);
@@ -36,6 +36,14 @@
     --tool-menu-item-selected-hover-background-color: hsl(220, 2%, 30%);
     --tool-menu-item-selected-hover-text-color: hsl(0, 0%, 100%);
     --tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 100%);
+
+    //Link colors
+    --link-color: hsl(203, 76%, 25%);
+    --link-active-color: hsl(203, 38%, 40%);
+    --link-hover-color: hsl(203, 38%, 40%);
+    --link-background-color: transparent;
+    --link-active-background-color: transparent;
+    --link-hover-background-color: transparent;
 
     //--tool-menu-item-background-color: hsl(206, 16%, 39%);
     //--tool-menu-item-text-color: hsl(0, 0%, 40%);
