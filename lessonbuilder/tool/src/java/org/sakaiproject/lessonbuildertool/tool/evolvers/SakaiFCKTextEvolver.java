@@ -152,7 +152,7 @@ public class SakaiFCKTextEvolver implements TextInputEvolver {
 		    js = HTMLUtil.emitJavascriptCall("SakaiProject.fckeditor.initializeEditor", new String[] { toevolve.getFullID(), collectionID, height, width });
 		}
 		
-		UIVerbatim.make(joint, "textarea-js", js);
+		UIVerbatim.make(joint, "textarea-js", "document.addEventListener('DOMContentLoaded', function() { " + js + " });");
 
 		return joint;
 	}
