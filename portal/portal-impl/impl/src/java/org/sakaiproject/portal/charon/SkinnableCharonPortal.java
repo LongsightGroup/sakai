@@ -1828,6 +1828,10 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			String image2 = null;
 			String logoutWarningMessage = "";
 
+      // UL CUSTOM
+			String logInOutUrl3 = ServerConfigurationService.getString("login3.url", "");
+			String message3 = StringUtils.trimToNull(ServerConfigurationService.getString("login3.text"));
+
 			// for showing user display name and id next to logout (SAK-10492)
 			String loginUserDispName = null;
 			String loginUserDispId = null;
@@ -1934,9 +1938,11 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				rcontext.put("loginImage1", image1);
 				rcontext.put("loginHasImage1", Boolean.valueOf(image1 != null));
 				rcontext.put("loginLogInOutUrl2", logInOutUrl2);
+				rcontext.put("loginLogInOutUrl3", logInOutUrl3);
 				rcontext.put("loginHasLogInOutUrl2", Boolean
 						.valueOf(logInOutUrl2 != null));
 				rcontext.put("loginMessage2", message2);
+				rcontext.put("loginMessage3", message3);
 				rcontext.put("loginImage2", image2);
 				rcontext.put("loginHasImage2", Boolean.valueOf(image2 != null));
 				// put out the links version
