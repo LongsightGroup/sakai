@@ -89,7 +89,7 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="https://stlawu.saml.longsight.com/samlauth" />
+                <property name="entityId" value="https://stlawu-dev.saml.longsight.com/samlauth" />
                 <!-- <property name="includeDiscoveryExtension" value="true"/> -->
                 <!-- <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
@@ -175,7 +175,7 @@
                   <constructor-arg>
                 <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://sts.stlawu.edu/federationmetadata/2007-06/federationmetadata.xml</value>
+                        <value type="java.lang.String">https://login.microsoftonline.com/bb31816d-91e7-4219-8acb-d6c0e715eb0c/federationmetadata/2007-06/federationmetadata.xml?appid=a0fed441-5cc3-4417-b4a7-9f81d053767b</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">60000</value>
@@ -203,7 +203,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://sts.stlawu.edu/adfs/services/trust"/>
+        <property name="defaultIDP" value="https://sts.windows.net/bb31816d-91e7-4219-8acb-d6c0e715eb0c/"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
