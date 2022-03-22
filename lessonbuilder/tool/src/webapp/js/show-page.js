@@ -1349,7 +1349,7 @@ $(document).ready(function() {
 
 			$('#question-error-container').hide();
 			$("#questionEditId").val("-1");
-			$("#question-text-input").val("");
+			$("#question-text-area-evolved\\:\\:input").val("");
 			$("#question-answer-input").val("");
 			$("#question-graded").prop("checked", false);
 			$("#question-gradebook-title").val("");
@@ -1402,8 +1402,8 @@ $(document).ready(function() {
 			$("#questionEditId").val(itemId);
 			
 			$("#activeQuestion").val(row.find(".raw-question-text").prop("name"));
-			var questionText = row.find(".raw-question-text").val();
-			$("#question-text-input").val(questionText);
+			let questionText = row.find(".raw-question-text").val();
+			CKEDITOR.instances["question-text-area-evolved::input"].setData(questionText);
 			
 			resetMultipleChoiceAnswers();
 			resetShortanswers();
@@ -3663,7 +3663,7 @@ function prepareQuestionDialog() {
 	    $('#question-error').text(msg("simplepage.gbname-expected"));
 	    $('#question-error-container').show();
 	    return false;
-	} else if ($("#question-text-input").val() === '') {
+	} else if ($("#question-text-area-evolved\\:\\:input").val() === '') {
 	    $('#question-error').text(msg("simplepage.missing-question-text"));
 	    $('#question-error-container').show();
 	    return false;
@@ -3679,7 +3679,7 @@ function prepareQuestionDialog() {
 	updateMultipleChoiceAnswers();
 	updateShortanswers();
 
-	$("input[name='" + $("#activeQuestion").val() + "'").val($("#question-text-input").val());
+	$("input[name='" + $("#activeQuestion").val() + "'").val($("#question-text-area-evolved\\:\\:input").val());
 
 	// RSF bugs out if we don't undisable these before submitting
 	$("#multipleChoiceSelect").prop("disabled", false);
