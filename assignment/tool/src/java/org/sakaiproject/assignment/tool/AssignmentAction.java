@@ -5297,6 +5297,14 @@ public class AssignmentAction extends PagedResourceActionII {
             context.put("searchString", state.getAttribute(VIEW_SUBMISSION_SEARCH) != null ? state.getAttribute(VIEW_SUBMISSION_SEARCH) : "");
 
             context.put("showSubmissionByFilterSearchOnly", state.getAttribute(SUBMISSIONS_SEARCH_ONLY) != null && ((Boolean) state.getAttribute(SUBMISSIONS_SEARCH_ONLY)) ? Boolean.TRUE : Boolean.FALSE);
+
+            if (a.getContentReview())
+            {
+                Map<String, String> properties = a.getProperties();
+                boolean isSubmissionIndexed = "true".equalsIgnoreCase(properties.get("store_inst_index"));
+                String plagiarismNoteKey = isSubmissionIndexed ? "gen.thesubswill.indexed" : "gen.thesubswill";
+                context.put("plagiarismNote", rb.getFormattedMessage(plagiarismNoteKey, contentReviewService.getServiceName()));
+            }
         }
 
         String template = getContext(data).get("template");
@@ -6495,12 +6503,15 @@ public class AssignmentAction extends PagedResourceActionII {
                 }
 
                 // SAK-26322 - add inline as an attachment for the content review service
-                if (post && a.getContentReview()) {
+                if (post) {
                     if (!isHtmlEmpty(text)) {
+                        /* prepares a file representing the inline content;
+                         * needed whether or not content review is used - it will be queued retroactively if we enable content review on the assignment in the future */
                         prepareInlineForContentReview(text, submission, state, u);
                     }
+
                     // Check if we need to post the attachments
-                    if (!submission.getAttachments().isEmpty()) {
+                    if (a.getContentReview() && !submission.getAttachments().isEmpty()) {
                         assignmentService.postReviewableSubmissionAttachments(submission);
                     }
                 }
@@ -7258,6 +7269,14 @@ public class AssignmentAction extends PagedResourceActionII {
 
         if (validify && state.getAttribute(NEW_ASSIGNMENT_DESCRIPTION_EMPTY) != null) {
             addAlert(state, rb.getString("thiasshas"));
+        }
+
+        Integer assignmentType = params.getInt(NEW_ASSIGNMENT_SUBMISSION_TYPE);
+        if ( assignmentType != null && assignmentType == 6 ) {
+            Integer contentId = params.getInt(NEW_ASSIGNMENT_CONTENT_ID);
+            if ( contentId < 1 ) {
+                addAlert(state, rb.getString("pleaseselectlti"));
+            }
         }
 
         // allow resubmission numbers
@@ -8145,7 +8164,8 @@ public class AssignmentAction extends PagedResourceActionII {
                     }
                 }
             }
-            if (newAssignment) {
+            //SAK-45967
+            if (newAssignment || !a.getDraft()) {
                 // post new assignment event since it is fully initialized by now
                 eventTrackingService.post(eventTrackingService.newEvent(AssignmentConstants.EVENT_ADD_ASSIGNMENT, assignmentReference, true));
             }
@@ -13379,13 +13399,25 @@ public class AssignmentAction extends PagedResourceActionII {
                         continue;
                     }
                 }
+                User contentReviewSubmitter = null;
+                if (assignment.getContentReview()) {
+                    // Identify the user submitting to the content review service
+                    if (assignment.getIsGroup()) {
+                        // Same behaviour as submit_on_behalf_of in group assignments - use the current user
+                        contentReviewSubmitter = userDirectoryService.getCurrentUser();
+                    } else {
+                        try {
+                            contentReviewSubmitter = userDirectoryService.getUser(eid);
+                        }
+                        catch (UserNotDefinedException e) {
+                            log.warn("Cannot find user {} for submission {}; skipping", eid, submission.getId());
+                            continue;
+                        }
+                    }
+                }
+
                 UploadGradeWrapper w = submissionTable.get(eid);
                 if (w != null) {
-                    // the submission text
-                    if (hasSubmissionText) {
-                        submission.setSubmittedText(w.getText());
-                    }
-
                     // the feedback text
                     if (hasFeedbackText) {
                         submission.setFeedbackText(w.getFeedbackText());
@@ -13393,14 +13425,32 @@ public class AssignmentAction extends PagedResourceActionII {
 
                     // the submission attachment
                     if (hasSubmissionAttachment) {
-                        // update the submission attachments with newly added ones from zip file
-                        Set<String> submittedAttachments = submission.getAttachments();
-                        for (Object o : w.getSubmissionAttachments()) {
-                            Reference a = (Reference) o;
-                            if (!submittedAttachments.contains(a.getReference())) {
-                                submittedAttachments.add(a.getReference());
+                        // update the submission attachments with newly added ones from the zip file
+                        List<Reference> newAttachments = w.getSubmissionAttachments();
+                        if (!newAttachments.isEmpty()) {
+                            Set<String> submittedAttachments = submission.getAttachments();
+                            // To eliminate duplication, it would be good to clear existing attachments here; but only once we have submission histories (would introduce data loss atm)
+                            newAttachments.stream().forEach(ref -> {
+                                if (!submittedAttachments.contains(ref.getReference())) {
+                                    submittedAttachments.add(ref.getReference());
+                                }
+                            });
+                        }
+                    }
+
+                    // the submission text
+                    if (hasSubmissionText) {
+                        String submissionText = w.getText();
+                        if (assignment.getContentReview()) {
+                            if (!isHtmlEmpty(submissionText)) {
+                                prepareInlineForContentReview(submissionText, submission, state, contentReviewSubmitter);
                             }
                         }
+                        submission.setSubmittedText(submissionText);
+                    }
+
+                    if (assignment.getContentReview() && !submission.getAttachments().isEmpty()) {
+                        assignmentService.postReviewableSubmissionAttachments(submission);
                     }
 
                     // the feedback attachment
@@ -13460,6 +13510,11 @@ public class AssignmentAction extends PagedResourceActionII {
                         }
                         submission.setDateSubmitted(timestamp);
                         submission.setSubmitted(true);
+                    }
+                    else if (submission.getDateSubmitted() == null && (submission.getSubmittedText() != null || !submission.getAttachments().isEmpty()))
+                    {
+                        // Timestamp isn't present; use the current time
+                        submission.setDateSubmitted(Instant.now());
                     }
 
                     // for further information
