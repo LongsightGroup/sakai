@@ -1,0 +1,172 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 0, 100%, 34%);
+    --focus-outline-color: hsl(0,0%,0%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/reggienet.svg);
+    --logo-height: 45px;
+    --logo-width: 149px;
+
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    --tool-tab-active-highlight-color: var(--sakai-brand);
+    --tool-tab-active-text-color: var(--sakai-brand);
+
+    //Sites Nav
+    --sites-nav-background: hsl(0, 0%, 0%);
+    --sites-nav-menu-item-background: hsl(207, 25%, 46%);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(206, 22%, 57%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-hover-background: hsl(0, 0%, 95%);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(0, 0%, 95%);
+    --sites-nav-submenu-item-selected-hover-color: var(--sakai-brand);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(0, 58%, 47%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    --tool-menu-item-text-color: hsl(0, 0%, 40%);
+    --tool-menu-item-icon-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+
+    //Link colors
+    --link-color: var(--sakai-brand);
+    --link-active-color: hsl(0, 58%, 47%);
+    --link-hover-color: hsl(0, 58%, 47%);
+    --link-background-color: transparent;
+    --link-active-background-color: transparent;
+    --link-hover-background-color: transparent;
+}
+
+:root.sakaiUserTheme-dark {
+//    --tool-menu-item-selected-text-color: hsl(0,0%, 0%);
+//    --tool-menu-item-selected-icon-color: hsl(0,0%, 0%);
+//    --tool-menu-item-selected-hover-background-color: hsl(37, 92%, 75%);
+//    --tool-menu-item-selected-hover-text-color: hsl(0,0%, 0%);
+//    --tool-menu-item-selected-hover-icon-color: hsl(0,0%, 0%);
+
+//    --sites-nav-menu-item-selected-color: hsl(0,0%, 0%);
+//    --sites-nav-menu-item-selected-hover-background: hsl(37, 92%, 75%);
+//    --sites-nav-menu-item-selected-hover-color: hsl(220, 4%, 83%);
+//    --sites-nav-menu-item-selected-hover-icon-background: hsl(37, 92%, 75%);
+
+//    --sites-nav-submenu-item-selected-hover-color: hsl(0, 0%, 0%);
+//    --sites-nav-submenu-item-selected-hover-icon-color: hsl(0, 0%, 0%);
+
+//    --button-primary-text-color: hsl(0,0%, 0%);
+//    --button-primary-background: hsl(37, 92%, 65%);
+ //   --button-primary-border-color: hsl(37, 92%, 65%);
+//    --button-primary-shadow: var(--elevation-2dp);
+    // hover and focus states for primary action button:
+//    --button-primary-hover-text-color: hsl(0,0%, 0%);
+ //   --button-primary-hover-background: hsl(37, 92%, 65%);
+ //   --button-primary-hover-border-color: hsl(37, 92%, 65%);
+ //   --button-primary-hover-shadow: var(--elevation-4dp);
+
+//    --tool-tab-active-highlight-color: hsl(37, 92%, 65%);
+//    --topNav-text-color: hsl(220, 4%, 83%);
+    --logo: url(#{$skin-path}images/ilstu-dark.png);
+    --logo-height: 40px;
+    --logo-width: 155px;
+}
+
+$input-border-focus: hsl(0, 100%, 34%);
+
+$skin-name: "ilstu" !default;
+$banner-height: 50px;
+
+// Custom Footer
+.Mrphs-footer .Mrphs-footer--project {
+    text-align: center;
+}
+
+.Mrphs-footer #footer-links, .Mrphs-footer #Mrphs-footer--poweredBy {
+    text-align: center;
+}
+
+.Mrphs-footer #Mrphs-footer--poweredBy, .Mrphs-footer .Mrphs-footer--copyright {
+    text-align: center !important;
+}
+
+.Mrphs-footer a {
+    color: #ddd !important;
+}
+
+.Mrphs-footer {
+    display: list-item !important;
+}
+
+#footer {
+    background: url(images/bg_seal.png) no-repeat scroll center -350px #545454;
+    color: #ddd !important;
+}
+
+.Mrphs-footer .Mrphs-footer--details .popover-title {
+    color: #000;
+}
+
+.Mrphs-footer .Mrphs-footer--details .popover {
+    color: #000;
+}
+
+
+// CUSTOM iGuide Top Banner
+
+.pasystem-banner-alerts {
+//.Mrphs-mainHeader .Mrphs-headerLogo {
+    margin-top: 30px;
+}
+#iguide a {display:block; height:30px;}#iguide span {float:left}#iguide-isu a {width:122px}#iguide-admissions a {width:72px}#iguide-academics a {width:72px}#iguide-events a {width:91px}#iguide-map a {width:81px}#iguide-AtoZ a {width:74px}#iguide-access a {width:28px}.clear {clear:both}a.giveRed-link { margin: auto; padding:0; display: block; width: 200px; height: 70px; background: transparent url(//iguides.illinoisstate.edu/giving/btn_giveRed.png) no-repeat 0px 0px; }a:hover.giveRed-link { background-position: 0px -70px; }a:focus.giveRed-link, a:active.giveRed-link { background-position: 0px -140px; }a.giveGray-link { margin: auto; padding:0; display: block; width: 200px; height: 70px; background: transparent url(//iguides.illinoisstate.edu/giving/btn_giveGray.png) no-repeat 0px 0px; }a:hover.giveGray-link { background-position: 0px -70px; }a:focus.giveGray-link, a:active.giveGray-link { background-position: 0px -140px; }#iguide {background-image: url("//iguides.illinoisstate.edu/iguide/iguide-black.png"); background-repeat:no-repeat; background-color:#000; height:30px; }#iguide a:hover {background-image:url("//iguides.illinoisstate.edu/iguide/hover.png"); background-color:transparent; height:30px} html, body {min-height: 100%;}#iguide-float { height:30px; font-size: 16px;font-family: Helvetica, Arial, sans-serif;padding: 0;margin: 0;background-image: none;z-index: 2000000000;position: fixed;width: 100%;left: 0;top: 0;border: 0;box-shadow: 0 0 5px rgba(0,0,0,.4);}#iguide-float a:visited, #iguide-float a:focus, #iguide-float a:link, #iguide-float a:hover{text-decoration: none;}#iguide-float .iguide-link-container {position: absolute; left: 0;top: 0;}#iguide-float a.iguide-link, #iguide-float a.iguide-isu, #iguide-float a.iguide-isu:hover { padding: 0 7px 0 7px; display:block; float:left; height:30px; line-height:30px;color: #eee;font-size: 12px;font-family: Helvetica, Arial, sans-serif;font-weight: bold;letter-spacing: 0px;}#iguide-float a.iguide-link-active {height: 27px; }#iguide-float div.iguide-application-active {height: 32px; opacity: 1;filter: alpha(opacity=100);}#iguide-float .iguide-link-divider {height: 20px;float: left;width: 6px;margin: 5px -1px 5px -1px;}.iguide-background {color: #303030;position: absolute;left: 0;top: -15px;height: 45px;overflow: hidden;z-index: 0;width: 100%;font: 50px "Times New Roman", serif;font-weight: 100;text-transform: uppercase;letter-spacing: -5px;text-align: left;}.clear {clear:both}.iguide-link span { position: static;}.lowercase {text-transform: lowercase;}.uppercase {text-transform: uppercase;}#iguide-float span {display: inline;}#iguide-announcements, #iguide-email, #iguide-signout, #iguide-feedback { float: right; height: 35px; clear: none;margin: -5px 0 0 0;opacity: 0.65;filter: alpha(opacity=65);}#iguide-my-link {position: absolute;top: 0;right: 0;}#iguide-announcements.iguide-active, #iguide-email.iguide-active, #iguide-signout.iguide-active, #iguide-feedback.iguide-active { display: none;}#iguide-float a img {border: 0 !important;}#iguide-announcements.iguide-hover, #iguide-email.iguide-hover, #iguide-signout.iguide-hover, #iguide-feedback.iguide-hover, #iguide-signin.iguide-hover{ opacity: 1;filter: alpha(opacity=100);background-color: rgba(210, 210, 210, 0.15);}#iguide-signin { position: absolute; top: 0; right: 0;background-position: 6px 4px;width: 109px;height: 30px;background-repeat: no-repeat;}#iguide-email {width: 39px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-announcements {width: 38px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-feedback {width: 41px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-signout {width: 30px;background-position: 0 9px;background-repeat: no-repeat;}#iguide-signin a, #iguide-signout a {display: block;width: 100%;height: 100%;}#iguide-float #iguide-signin a { margin: 0; padding: 0; }#iguide-float #iguide-signin a img { margin: 0; height: 30px;}#iguide-float div a img, #iguide-float div > img { margin-top: 10px;}.hover {cursor:pointer}.iguide-popup-content-frame input[type='button'] {cursor: pointer;}.iguide-popup-content-frame .iguide-ajax-loading {height: 16px;padding-left: 20px;margin: 20px 15px;background-repeat: no-repeat;background-position: left center;background-image: url('//iguides.illinoisstate.edu/iguide/images/loading.gif');color: #c88;}.iguide-small {font-size: 80%;}#iguide-icon-container {float: right;height: 30px;}#iguide-float span#iguide-welcome {color: #eee;opacity: 0.65;filter: alpha(opacity=65);display: block;font-weight: bold;padding: 8px 20px 0 10px;float: right;clear: none;height: 22px;font-size: 12px;font-family: Helvetica, Arial, sans-serif;}.iguide-popup-content-frame #iguide-view-read-announcements {color: #900;float: right;cursor: pointer;}.iguide-popup-content-frame {color: #333;position: absolute;display: none;background-color: #fff;opacity: .95;border: 1px solid #333333;padding: 10px;z-index: 2000002;font-size: 14px;font-family: Helvetica, Arial, sans-serif;}.iguide-popup-content-frame h3 {text-transform: none;padding: 0;color: #454545;font-size: 24px;font-family: Helvetica, Arial, sans-serif;border-bottom: 1px solid #454545;margin: 0 0 25px 0;}.iguide-popup-content-frame .iguide-frame-close {float: right;color: #999;width: 30px;height: 20px;font-weight: bold;text-align: center;font-size: 16px;cursor: pointer;border: 0;}#iguide-announcement-frame #iguide-announcement-container {margin-top: 5px;padding: 5px 8px;font-size: 14px;}#iguide-announcement-frame #iguide-announcement-container .iguide-announcement {background-repeat: no-repeat;background-position: 0 8px;background-image: url('//iguides.illinoisstate.edu/iguide/images/Pushpin.png');padding: 5px 0 15px 30px;min-height: 30px;font-size: 16px;font-family: Helvetica, Arial, sans-serif;}#iguide-announcement-frame #iguide-announcement-container #iguide-hidden-announcements {display: none;font-size: 90%;color: #454545;}#iguide-announcement-frame #iguide-announcement-container #iguide-hidden-announcements .iguide-announcement {font-size: 12px;}#iguide-announcement-frame #iguide-announcement-container #iguide-hidden-announcements a {color: #944;}#iguide-blackout {position: absolute;background-color: rgba(16, 16, 16, .8);width: 960px;display: none;height: 100%;top: 100px;z-index: 2000001;display: none;}.iguide-popup-content-frame .iguide-message {background-color: #f3f3f3;color: #454545;border: 1px solid #dddde3;padding: 4px 8px;font-size: 95%;}.iguide-popup-content-frame .iguide-warning {background-color: #ffffaa;color: #454545;border: 1px solid #dddde3;padding: 4px 8px;font-size: 95%;}#iguide-redbird-mail-frame iframe {margin-top: -48px;}#iguide-feedback-frame .iguide-feedback-container {margin-top: 10px;}#iguide-dropdown {display: none;position: absolute;left: 0;top: 0;border: 1px solid #999;background-color: rgba(255, 255, 255, 0.975);color: #454545;padding: 8px 3px;z-index: 50000;-moz-box-shadow: 0px 0px 10px rgba(255,255,255,0.6), 0px 0px 20px rgba(0,0,0,0.8);-webkit-box-shadow: 0px 0px 10px rgba(255,255,255,0.6), 0px 0px 20px rgba(0,0,0,0.8);box-shadow: 0px 0px 10px rgba(255,255,255,0.6), 0px 0px 20px rgba(0,0,0,0.8);}#iguide-dropdown li {list-style-type: none;margin: 0;}#iguide-dropdown li a {text-decoration: none;display: block;padding: 3px 30px 3px 25px;font-size: 12px;font-family: Helvetica, Arial, sans-serif;margin: 0;color: #900;}#iguide-dropdown li.iguide-submenu-heading {color: #aaa;font-size: 14px;font-family: Helvetica, Arial, sans-serif;font-weight: bold;padding: 10px 0 5px 5px;}#iguide-dropdown li.iguide-submenu-separator {display: block;border-bottom: 1px solid #fff;border-top: 1px solid #c3c3c3;height: 0;padding: 0;margin: 3px 0;}#iguide-dropdown li a:hover {background-color: rgba(0,0,0,0.1);}#iguide-personalized-links {display: none;}.iguide-down-arrow {border-color: #fff transparent transparent;border-right: 3px dashed transparent;border-style: solid dashed dashed;border-width: 3px 3px 0;display: inline-block;font-size: 0;height: 0;left: 4px;line-height: 0;padding-top: 1px;position: relative;top: -1px;width: 0;float: none !important;}@media only screen and (max-width: 599px) { nav #iguide-float .iguide-link-divider, nav #iguide-float .iguide-link {display: none; } } #iguide-float {background: #2e2e2e;background: linear-gradient(#585858, #020202);background: -webkit-gradient(linear, left top, left bottom, color-stop(0.00, #585858), color-stop(1.00, #020202)); background: -webkit-linear-gradient(top, #585858, #020202);background: -moz-linear-gradient(top, #585858, #020202); background: -o-linear-gradient(top, #585858, #020202);background: -ms-linear-gradient(top, #585858, #020202);filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff585858', endColorstr='#ff020202');}#iguide-float a:visited, #iguide-float a:focus, #iguide-float a:link {color: #eee;text-shadow: 0px 0px 2px rgba(0,0,0,0.4);}#iguide-float a.iguide-link-active, #iguide-float div.iguide-application-active {color: #fff;border-bottom: 3px solid #c00;background-color: rgb(90, 90, 90);}#iguide-float a.iguide-link:hover, #iguide-float a.iguide-isu:hover, #iguide-announcements.iguide-hover, #iguide-email.iguide-hover, #iguide-signout.iguide-hover, #iguide-feedback.iguide-hover, #iguide-signin.iguide-hover {color: #fff; background-color: rgb(90, 90, 90); }#iguide-float .iguide-link-divider {background-image: url('//iguides.illinoisstate.edu/iguide/images/divider_dark.png');}#iguide-signin { background-image: url('//iguides.illinoisstate.edu/iguide/images/login_redDark.png');}#iguide-email {background-image: url('//iguides.illinoisstate.edu/iguide/images/mail_redDark.png');}#iguide-announcements {background-image: url('//iguides.illinoisstate.edu/iguide/images/announcements_redDark.png');}#iguide-feedback {background-image: url('//iguides.illinoisstate.edu/iguide/images/feedback_redDark.png');}#iguide-signout {background-image: url('//iguides.illinoisstate.edu/iguide/images/logout_redDark.png');}
+
+.Mrphs-skipNav__menu a:focus {
+    top: 42px !important;
+}
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #ac0102 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite {
+	margin-top: 30px;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu a:focus {
+        top: 0px !important;
+    }
+    #toolMenu ul li .Mrphs-toolsNav__menuitem--link, #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
+	color: #FFF !important;
+    }
+    #toolMenu ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+	color: #FFF !important;
+    }
+    .Mrphs-sakai-lessonbuildertool .topaction {
+	top: 4em !important;
+    }
+}
+
+#gradeTableWrapper .handsontable th > .relative, #gradeTableWrapper .handsontable td > .relative {
+    padding: 2px !important;
+}
+
+// Disable Wiki Search
+.rwiki_searchBox {
+    visibility: hidden;
+}

@@ -1,0 +1,62 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 206, 16%, 39%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/nps.svg);
+    --logo-height: 74px;
+    --logo-width: 510px;
+
+    --topNav-text-color: hsl(40, 100%, 70%);
+
+    //Sites Nav
+    --sites-nav-background: hsl(203, 18%, 25%);
+    --sites-nav-menu-item-background: hsl(206, 16%, 39%);
+    --sites-nav-menu-item-color: hsl(40, 100%, 70%);
+    --sites-nav-menu-item-hover-background: hsl(205, 10%, 51%);
+    --sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(203, 18%, 25%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(202, 9%, 40%);
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(203, 18%, 25%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+
+    --tool-menu-item-background-color: hsl(206, 16%, 39%);
+    --tool-menu-item-text-color: hsl(40, 100%, 70%);
+    --tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    --tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    --tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "nps" !default;
+$banner-height: 75px;
+
+// Custom CSS
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected, #linkNav #selectQuickLink li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #fff;
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+	color: hsl(40, 100%, 70%) !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: hsl(206, 16%, 39%) !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 223px !important;
+        background-size: 223px 30px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 223px) !important;
+    }
+}

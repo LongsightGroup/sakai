@@ -1,0 +1,49 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 220, 100%, 23%);
+
+    --topNav-text-color: hsl(0,0%,100%);
+    --top-header-background: var(--sakai-brand);
+
+    //--sites-nav-background: hsl(0,0%,0%);
+    --sites-nav-menu-item-selected-background: var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(220, 48%, 38%);
+
+    --sites-nav-submenu-item-selected-hover-color: hsl(0, 0%, 100%);
+    --sites-nav-submenu-item-selected-hover-icon-color: hsl(0, 0%, 100%);
+
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(220, 48%, 38%);
+
+
+    // Logo
+    --logo: url(#{$skin-path}images/wellesley.svg);
+    --logo-height: 50px;
+    --logo-width: 65px;
+}
+
+:root.sakaiUserTheme-dark {
+    --tool-menu-item-selected-text-color: hsl(0,0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0,0%, 100%);
+    --tool-menu-item-selected-hover-text-color: hsl(220, 4%, 83%);
+    --tool-menu-item-selected-hover-icon-color: hsl(220, 4%, 83%);
+
+    --sites-nav-menu-item-selected-color: hsl(0,0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(37, 92%, 75%):
+    --sites-nav-menu-item-selected-hover-color: hsl(220, 4%, 83%);
+
+    --topNav-text-color: hsl(220, 4%, 83%);
+}
+$skin-name: "wellesley" !default;
+
+a#loginLink1:hover {
+   color: #c7d5dd;
+}
+
+a#loginLink2:hover {
+   color: #c7d5dd;
+}

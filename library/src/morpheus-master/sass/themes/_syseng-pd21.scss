@@ -1,0 +1,65 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 207, 100%, 24%);
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/nps-syseng-pd21.svg);
+    --logo-height: 60px;
+    --logo-width: 542px;
+
+    // Tabs
+    --tool-tab-active-highlight-color: var(--sakai-brand);
+    --tool-tab-active-text-color: var(--sakai-brand);
+
+    //Sites Nav
+    //--sites-nav-background: hsl(3, 79%, 24%);
+    //--sites-nav-menu-item-background: hsl(3, 79%, 24%);
+    //--sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    //--sites-nav-menu-item-hover-background: hsl(3, 39%, 39%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(207, 49%, 39%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(207, 49%, 39%);
+
+}
+
+$skin-name: 'syseng-pd21';
+$banner-height: 60px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #00447c !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #00447c !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+	width: 250px !important;
+	background-size: 250px 28px !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo {
+        background: url(images/nps-syseng.svg) no-repeat no-repeat #00447c !important;
+    }
+    #mastLogin {
+	width: calc(100% - 250px) !important;
+    }
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo {
+    background: url(images/nps-syseng-pd21.svg) no-repeat no-repeat #00447c !important;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    background: transparent !important;
+}
