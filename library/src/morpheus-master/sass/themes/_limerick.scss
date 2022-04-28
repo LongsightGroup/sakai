@@ -1,0 +1,99 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 148, 98%, 25%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/limerick.jpg);
+    --logo-height: 115px;
+    --logo-width: 225px;
+
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: hsl(148, 99%, 33%);
+    --sites-nav-menu-item-background: hsl(148, 99%, 33%);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(148, 49%, 53%);
+    --sites-nav-menu-item-hover-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-icon-background: hsl(148, 49%, 53%);
+
+    --sites-nav-menu-item-selected-background: hsl(159, 100%, 16%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(159, 39%, 33%);
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(159, 39%, 33%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(159, 100%, 16%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(159, 39%, 33%);
+    --tool-menu-item-selected-hover-text-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 0%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-icon-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+
+    //Link colors
+    --link-color: hsl(238, 85%, 26%);
+    --link-active-color: hsl(238, 85%, 26%);
+    --link-hover-color: hsl(237, 30%, 44%);
+    //--link-background-color: transparent;
+    //--link-active-background-color: transparent;
+    //--link-hover-background-color: transparent;
+}
+
+:root.sakaiUserTheme-dark {
+//    --topNav-text-color: hsl(220, 4%, 83%);
+//    --logo: url(#{$skin-path}images/amc-dark.png);
+}
+
+$skin-name: "limerick" !default;
+$banner-height: 115px;
+
+// CUSTOMIZATIONS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: hsl(238, 85%, 26%) !important;
+    }
+    .Mrphs-topHeader .Mrphs-loginNav {
+        height: 50px !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo {
+        height: 50px !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+            width: 46px !important;
+            background-size: 46px 46px !important;
+            background: url(data:image/png;base64,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)
+            no-repeat
+            center center !important;
+          padding: 5px;
+    }
+    #mastLogin {
+          width: calc(100% - 46px) !important;
+    }
+    #mastLogin #loginLinks {
+          font-size: 1.2em;
+    }
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #FFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid hsl(159, 100%, 16%);
+}
+
+#topnav_container {
+    min-height: 55px !important;
+}
