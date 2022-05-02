@@ -12,6 +12,7 @@
 
     --top-header-background: var(--sakai-brand);
     --topNav-text-color: hsl(0, 0%, 100%);
+    --become-user-primary: var(--sakai-brand);
 
     //Sites Nav
     --sites-nav-background: var(--sakai-brand);
@@ -70,3 +71,16 @@
 
 $skin-name: "rwu" !default;
 $banner-height: 55px;
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: var(--link-color) !important;
+    }
+}
+
+.Mrphs-sitesNav__menuitem.view-all-sites-btn a:after {
+    content: "My Courses";
+}
