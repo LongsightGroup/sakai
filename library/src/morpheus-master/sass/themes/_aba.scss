@@ -1,0 +1,61 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 255, 31%, 40%);
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/aba.png);
+    --logo-height: 100px;
+    --logo-width: 192px;
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(254, 20%, 52%);
+    --sites-nav-menu-item-hover-icon-background: hsl(254, 20%, 52%);
+    --sites-nav-menu-item-hover-color: hsl(0, 0%, 100%);
+
+    --sites-nav-menu-item-selected-background: hsl(34, 89%, 52%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%,0%);
+    --sites-nav-menu-item-selected-hover-background: hsl(34, 90%, 62%);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(34, 90%, 62%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(34, 89%, 52%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%,0%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%,0%);
+    --tool-menu-item-selected-hover-background-color: hsl(34, 90%, 62%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: 'aba';
+$banner-height: 100px;
+
+// Custom CSS 
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid hsl(0, 0%, 100%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid hsl(34, 89%, 52%);
+}
+
+// Mobile Fixes
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+        color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: var(--link-color) !important;
+    }
+}
