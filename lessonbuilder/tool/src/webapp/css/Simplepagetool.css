@@ -552,9 +552,11 @@ div.layout-option > div {
     margin-top: 10px;
     margin-bottom: 10px;
 } 
+.mainList div.question .matchingAnswer,
 .mainList div.question .multipleChoiceAnswer {
     padding: .5em 0;
 }
+.matchingAnswer label,
 .multipleChoiceAnswer label {
   margin-left: 5px;
 }
@@ -2156,4 +2158,33 @@ button.accordionBtn.collapsed:before {
     content: "\f0da";
     color: var(--sakai-text-color-1);
     padding-right: 5px;
+}
+
+span#buttonAndTextArea {
+    width: 53%;
+    display: inline-block;
+    margin: 4em 2em 2em 2em;
+}
+span#previewArea {
+    width: 40%;
+    display: inline-block;
+    margin: 2em;
+    height: 500px;
+}
+.inlineHeading {
+    display: inline;
+    margin-left: 1em;
+}
+.templateTypeDescription {
+    margin-top: 1em;
+}
+div.pageTemplateDiv {
+    margin-top: 2em;
+}
+img.pagePreviewImage {
+    max-height: 150px;
+}
+a.layoutPreviewLink{
+    display: block;
+    text-align: center;
 }
