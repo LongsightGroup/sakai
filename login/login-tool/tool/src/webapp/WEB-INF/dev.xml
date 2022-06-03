@@ -26,16 +26,21 @@
 
     <!-- Secured pages with SAML as entry point -->
     <security:http entry-point-ref="samlEntryPoint" use-expressions="false">
-        <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
         <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
         <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
         <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
     </security:http>
+
+    <bean id="containerRedirectStrategy" class="org.springframework.security.web.DefaultRedirectStrategy">
+        <property name="contextRelative" value="true"/>
+    </bean>
 
     <!-- Handler deciding where to redirect user after successful login -->
     <bean id="successRedirectHandler"
           class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
         <property name="defaultTargetUrl" value="/portal"/>
+        <property name="redirectStrategy" ref="containerRedirectStrategy"/>
     </bean>
 
     <!-- Handler deciding where to redirect user after failed login -->
@@ -43,11 +48,13 @@
           class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
         <property name="useForward" value="true"/>
         <property name="defaultFailureUrl" value="/portal/xlogin"/>
+        <property name="redirectStrategy" ref="containerRedirectStrategy"/>
     </bean>
 
     <!-- Handler for successful logout -->
     <bean id="successLogoutHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
         <property name="defaultTargetUrl" value="/portal"/>
+        <property name="redirectStrategy" ref="containerRedirectStrategy"/>
     </bean>
 
     <security:authentication-manager alias="authenticationManager">
@@ -147,38 +154,17 @@
 			        </constructor-arg>
 			    </bean>
 
-                <!-- Example of classpath metadata with Extended Metadata -->
-<!--
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                    <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider">
-                            <constructor-arg>
-                                <bean class="java.util.Timer"/>
-                            </constructor-arg>
-                            <constructor-arg>
-                                <bean class="org.opensaml.util.resource.FilesystemResource">
-                                    <constructor-arg value="sakai/saml/incommon.xml"/>
-                                </bean>
-                            </constructor-arg>
-                            <property name="parserPool" ref="parserPool"/>
-                        </bean>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                        </bean>
-                    </constructor-arg>
-                </bean>
-   -->
-
-                <!-- Example of HTTP metadata without Extended Metadata -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                   <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.HTTPMetadataProvider">
+                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                     <constructor-arg>
                         <value type="java.lang.String">https://login.microsoftonline.com/4ddebea0-7048-45df-a9d0-358172b22e07/federationmetadata/2007-06/federationmetadata.xml?appid=f531ef67-879b-404d-a77a-88dcfb10bc3f</value>
                     </constructor-arg>
                     <constructor-arg>
-                        <value type="int">60000</value>
+                                <value type="int">45000</value>
+                            </constructor-arg>
+                            <constructor-arg>
+                                <value type="java.lang.String">sakai/saml/idp.xml</value>
                     </constructor-arg>
                     <property name="parserPool" ref="parserPool"/>
                 </bean>
@@ -188,16 +174,6 @@
                   </constructor-arg>
                   <property name="metadataTrustCheck" value="false"/>
                 </bean>
-
-                <!-- Example of file system metadata without Extended Metadata -->
-                <!--
-                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
-                    <constructor-arg>
-                        <value type="java.io.File">/usr/local/metadata/idp.xml</value>
-                    </constructor-arg>
-                    <property name="parserPool" ref="parserPool"/>
-                </bean>
-                -->
             </list>
         </constructor-arg>
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
@@ -233,9 +209,12 @@
     </bean>
 
     <!-- Logout handler terminating local session -->
-    <bean id="logoutHandler"
-          class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
-        <property name="invalidateHttpSession" value="false"/>
+    <bean id="logoutHandler" class="org.sakaiproject.login.filter.SakaiLogoutSamlFilter">
+        <property name="usageSessionService" ref="org.sakaiproject.event.api.UsageSessionService"/>
+        <property name="sessionManager" ref="org.sakaiproject.tool.api.SessionManager"/>
+        <property name="invalidateHttpSession" value="true"/>
+        <!-- property name="invalidateSakaiSession" value="true"/-->
+        <property name="clearAuthentication" value="true"/>
     </bean>
 
     <!-- Override default logout processing filter with the one processing SAML messages -->
@@ -267,7 +246,7 @@
 
     <!-- SAML 2.0 WebSSO Assertion Consumer -->
     <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl">
-        <property name="maxAuthenticationAge" value="28800" />
+        <property name="maxAuthenticationAge" value="94608000" />
     </bean>
 
     <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
@@ -326,6 +305,9 @@
 
     <!-- Initialization of OpenSAML library-->
     <bean class="org.springframework.security.saml.SAMLBootstrap"/>
+
+    <!-- Use SHA256SAMLBootstrap for SHA-256 instead of default SHA-1 -->
+    <bean class="org.sakaiproject.login.springframework.SHA256SAMLBootstrap"/>
 
     <!-- Initialization of the velocity engine -->
     <bean id="velocityEngine" class="org.springframework.security.saml.util.VelocityFactory" factory-method="getEngine"/>
