@@ -6,7 +6,7 @@
     @include defineColorHSL(--sakai-brand, 209, 100%, 20%);
 
     // Logo and Defaults
-    --logo: url(#{$skin-path}images/tennesseestate.svg);
+    --logo: url(#{$skin-path}images/tennesseestate.png);
     --logo-height: 40px;
     --logo-width: 110px;
 
