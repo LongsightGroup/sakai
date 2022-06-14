@@ -35,7 +35,7 @@
     <sakai.ehcache.groupId>net.sf.ehcache</sakai.ehcache.groupId>
     <sakai.ehcache.artifactId>ehcache-core</sakai.ehcache.artifactId>
     <sakai.ehcache.version>2.6.11</sakai.ehcache.version>
-    <sakai.elasticsearch.version>7.17.1</sakai.elasticsearch.version>
+    <sakai.elasticsearch.version>7.17.4</sakai.elasticsearch.version>
     <sakai.hibernate.version>5.3.20.Final</sakai.hibernate.version>
     <sakai.hikaricp.version>4.0.3</sakai.hikaricp.version>
     <sakai.httpclient.version>4.5.14</sakai.httpclient.version>
@@ -1380,7 +1380,7 @@
       <dependency>
         <groupId>org.codelibs.elasticsearch.module</groupId>
         <artifactId>analysis-common</artifactId>
-        <version>${sakai.elasticsearch.version}</version>
+        <version>7.17.1</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
