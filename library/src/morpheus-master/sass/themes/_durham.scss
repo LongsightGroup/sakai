@@ -55,3 +55,32 @@ li.Mrphs-sitesNav__menuitem.is-selected {
 li.Mrphs-sitesNav__menuitem {
     border: 1px solid hsl(0, 0%, 100%);
 }
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+        color:  hsl(0, 0%, 100%) !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+        color: var(--link-color) !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 197px !important;
+        background-size: 197px 40px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 197px) !important;
+    }
+    body.toolsNav--displayed #toolMenu, body.toolsNav--displayed #subSites {
+	background-color: #FFF !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
+	background-color: #FFF !important;
+    }
+    #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+	color: var(--link-color) !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link {
+	color: var(--link-color) !important;
+    }
+}
