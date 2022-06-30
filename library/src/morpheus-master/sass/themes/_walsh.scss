@@ -53,8 +53,10 @@
 
 :root.sakaiUserTheme-dark {
     --sites-nav-background: hsl(216, 7%, 14%);
-//    --topNav-text-color: hsl(220, 4%, 83%);
-//    --logo: url(#{$skin-path}images/walsh-dark.png);
+    a.Mrphs-toolsNav__category {
+        color: #FFF !important;
+        font-weight: 700;
+    }
 }
 
  @media only screen and (max-width: 800px) {
