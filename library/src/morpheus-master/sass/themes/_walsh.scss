@@ -52,8 +52,25 @@
 }
 
 :root.sakaiUserTheme-dark {
+    --sites-nav-background: hsl(216, 7%, 14%);
 //    --topNav-text-color: hsl(220, 4%, 83%);
 //    --logo: url(#{$skin-path}images/walsh-dark.png);
+}
+
+ @media only screen and (max-width: 800px) {
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 106px !important;
+        background-size: 106px 40px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 106px) !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: var(--link-color) !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: var(--link-color) !important;
+    }
 }
 
 $skin-name: "walsh" !default;
