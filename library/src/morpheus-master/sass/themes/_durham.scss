@@ -65,22 +65,17 @@ li.Mrphs-sitesNav__menuitem {
         color: var(--link-color) !important;
     }
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
-        width: 197px !important;
-        background-size: 197px 40px !important;
+	background: url(/library/skin/durham/images/durham-mobile.png) no-repeat center center !important;
+        width: 50px !important;
+        background-size: 50px 40px !important;
     }
     #mastLogin {
-        width: calc(100% - 197px) !important;
+        width: calc(100% - 50px) !important;
     }
-    body.toolsNav--displayed #toolMenu, body.toolsNav--displayed #subSites {
-	background-color: #FFF !important;
+    #toolMenu ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+	color: hsl(0,0%,100%) !important;
     }
-    body.toolsNav--displayed #toolMenu ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
-	background-color: #FFF !important;
-    }
-    #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
-	color: var(--link-color) !important;
-    }
-    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link {
-	color: var(--link-color) !important;
+    #toolMenu ul li .Mrphs-toolsNav__menuitem--link, #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, #subSites ul li .Mrphs-toolsNav__menuitem--link, #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
+	color: hsl(0,0%,100%) !important;
     }
 }
