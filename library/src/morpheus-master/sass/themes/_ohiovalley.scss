@@ -1,0 +1,58 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 217, 100%, 21%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/ohiovalley.png);
+    --logo-height: 52px;
+    --logo-width: 208px;
+
+    //--top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color:  hsl(0, 0%, 100%);
+
+    //Sites Nav
+    --sites-nav-background: hsl(216, 100%, 90%);
+    //--sites-nav-menu-item-background: hsl(213, 48%, 50%);
+    //--sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    //--sites-nav-menu-item-hover-background: hsl(206, 41%, 34%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(12, 88%, 40%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(12, 59%, 52%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(12, 88%, 40%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(12, 59%, 52%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "ohiovalley" !default;
+$banner-height: 56px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: hsl(217, 100%, 21%) !important;
+    }
+
+    .Mrphs-siteHierarchy a {
+	color: hsl(217, 100%, 21%) !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: hsl(217, 100%, 21%) !important;
+    }
+}

@@ -42,8 +42,11 @@ $banner-height: 75px;
 	width: 180px !important;
 	background-size: 180px 32px !important;
     }
-    #mastLogin {
-        width: calc(100% - 180px) !important;
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: var(--link-color) !important;
+    }
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
     }
 }
 

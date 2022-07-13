@@ -1,0 +1,67 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 44, 26%, 51%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/kuyper.jpg);
+    --logo-height: 50px;
+    --logo-width: 247px;
+
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: hsl(305, 39%, 22%);
+    --sites-nav-menu-item-background: hsl(0, 0%, 92%);
+    --sites-nav-menu-item-color: hsl(0, 0%, 0%);
+    //--sites-nav-menu-item-hover-background: hsl(0, 0%, 96%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(44, 26%, 51%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 0%);
+    --sites-nav-menu-item-selected-hover-background: hsl(44, 26%, 61%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(44, 26%, 51%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-hover-background-color: hsl(44, 26%, 61%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "kuyper" !default;
+$banner-height: 55px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: hsl(0, 0%, 100%) !important;
+    }
+
+    .Mrphs-siteHierarchy a {
+	color: hsl(0, 0%, 100%) !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: hsl(0, 0%, 26%) !important;
+    }
+
+    //.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    //    width: 200px !important;
+    //    background-size: 200px 40px !important;
+    //}
+
+    //#mastLogin {
+    //    width: calc(100% - 200px) !important;
+    //}
+}

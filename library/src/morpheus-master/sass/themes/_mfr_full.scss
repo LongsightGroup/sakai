@@ -39,17 +39,17 @@ $banner-height: 75px;
 // Custom CSS
 @media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
-	color: #14385e !important;
+	color: #15385e !important;
     }
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-	color: #14385e !important;
+	color: #FFF !important;
     }
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
 	width: 250px !important;
 	background-size: 250px 28px !important;
     }
-    #mastLogin {
-	width: calc(100% - 250px) !important;
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
     }
 }
 

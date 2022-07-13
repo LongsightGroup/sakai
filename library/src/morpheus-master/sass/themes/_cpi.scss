@@ -1,0 +1,79 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 199, 30%, 12%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/cpi.jpg);
+    --logo-height: 80px;
+    --logo-width: 326px;
+
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(194, 100%, 60%);
+    --sites-nav-menu-item-hover-background: hsl(200, 10%, 30%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(194, 100%, 60%);
+    --sites-nav-menu-item-selected-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-hover-background: hsl(194, 100%, 76%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(194, 100%, 60%);
+    --tool-menu-item-selected-text-color: var(--sakai-brand);
+    --tool-menu-item-selected-icon-color: var(--sakai-brand);
+    --tool-menu-item-selected-hover-background-color: hsl(194, 100%, 76%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "cpi" !default;
+$banner-height: 70px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: hsl(194, 100%, 60%) !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color:hsl(194, 100%, 60%) !important;
+    }
+
+    .Mrphs-siteHierarchy a {
+	color: hsl(194, 100%, 60%) !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: hsl(194, 100%, 60%) !important;
+    }
+
+    //.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    //    width: 200px !important;
+    //    background-size: 200px 40px !important;
+    //}
+
+    //#mastLogin {
+    //    width: calc(100% - 200px) !important;
+    //}
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid hsl(194, 100%, 60%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid hsl(194, 100%, 60%);
+}

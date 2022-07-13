@@ -37,25 +37,21 @@ $skin-name: 'hrcoe';
 $banner-height: 75px;
 
 // Custom CSS
-/* @media only screen and (max-width: 800px) {
+@media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-	color: #333435 !important;
+	color: #FFF !important;
+    }
+    .Mrphs-siteHierarchy a { 
+        color: #FFF !important;
     }
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
-	color: #333435 !important;
-    }
-    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a.Mrphs-skipNav--toolName {
-        color: #333435 !important;
+	color: var(--link-color) !important;
     }
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
-	width: 180px !important;
-	background-size: 180px 32px !important;
-    }
-    #mastLogin {
-        width: calc(100% - 180px) !important;
+        width: 216px !important;
+        background-size: 216px 30px !important;
     }
 }
-*/
 
 .Mrphs-mainHeader .Mrphs-headerLogo {
     background: url(images/hrcoe.svg) no-repeat no-repeat #12385d !important;

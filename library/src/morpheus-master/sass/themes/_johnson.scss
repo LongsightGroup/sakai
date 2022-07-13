@@ -1,0 +1,11 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 240, 100%, 11%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/johnson.png);
+    --logo-height: 50px;
+    --logo-width: 149px;
+}
+$skin-name: 'johnson';

@@ -37,6 +37,10 @@ $skin-name: 'nps-whcm';
 $banner-height: 75px;
 
 // Custom CSS
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: var(--logo-width) !important;
+}
+
 @media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
 	color: #00447c !important;
@@ -50,9 +54,6 @@ $banner-height: 75px;
     .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
         width: 223px !important;
         background-size: 223px 30px !important;
-    }
-    #mastLogin {
-        width: calc(100% - 223px) !important;
     }
 }
 

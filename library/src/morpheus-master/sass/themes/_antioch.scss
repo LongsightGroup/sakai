@@ -1,0 +1,24 @@
+/* Light Theme */
+
+:root{
+    // In addition to the primary branding color defined here, Sakai comes 
+    // predefined with gray, blue, teal, gold, green, orange,
+    // purple, and red palettes available for you to use.
+    // More info about defineColorHSL in sass/themes/_base.scss
+    @include defineColorHSL(--sakai-brand, 206, 99%, 21%);
+    /////////////////////////////////////////////////////////////
+
+    // Logo
+    --logo: url(#{$skin-path}images/antioch.svg);
+    --logo-height: 45px;
+    --logo-width: 166px;
+    --logo-opacity: 1;
+}
+
+// Tables
+$skin-name: 'antioch';
+
+
+.navIntraTool li span a[title='My Official Course Enrollments'] {
+    display: none !important;
+}

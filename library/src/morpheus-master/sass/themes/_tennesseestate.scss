@@ -1,0 +1,48 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 209, 100%, 20%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/tennesseestate.png);
+    --logo-height: 40px;
+    --logo-width: 110px;
+
+    --top-header-background: var(--sakai-brand);
+    --sites-nav-background: hsl(0, 0%, 98%);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    --sites-nav-menu-item-selected-background:  var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(209, 45%, 36%);
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color:  var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(209, 45%, 36%);
+}
+
+:root.sakaiUserTheme-dark {
+     --sites-nav-background: hsl(216, 7%,14%);
+}
+
+
+$skin-name: "tennesseestate";
+
+// Custom CSS
+//@media only screen and (max-width: 800px) {
+//    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+//	color: #19AFEF !important;
+//    }
+//    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+//	color: #19AFEF !important;
+//    }
+//}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}

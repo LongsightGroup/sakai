@@ -46,7 +46,7 @@
     --logo-height: 36px;
     --logo-width: 126px;
     --logo-opacity: 1;
-    --logo-background-color: var(--sakai-primary-color-1);
+    --logo-background-color: var(--top-header-background);
 
     // Primary branding color. 
     // Suggested: Your institution's main branding color.
@@ -203,7 +203,7 @@
     --tool-tab-active-background-color: var(--sakai-background-color-1);
     --tool-tab-active-highlight-color:var(--sakai-active-color-3);
 
-    --top-header-background: var(--sakai-color-gray--darker-7);
+    --top-header-background: var(--sakai-brand);
     --top-header-profile-border-color-top: var(--sakai-secondary-color-1);
     --top-header-profile-border-color-right: var(--sakai-secondary-color-1);
     --top-header-profile-border-color-bottom: var(--sakai-tertiary-color-1);
@@ -565,3 +565,7 @@
 $table-bg-accent: var(--sakai-background-color-2);
 $sakai-table-bg-hover: var(--sakai-background-color-2);
 $table-border-color: var(--sakai-border-color);
+
+.img_site_toolmenu {
+    display: none;
+}

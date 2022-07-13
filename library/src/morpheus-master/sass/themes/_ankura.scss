@@ -1,0 +1,75 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 207, 73%, 42%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/ankura.png);
+    --logo-height: 75px;
+    --logo-width: 360px;
+
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(207, 53%, 54%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(36, 100%, 48%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0% ,0%);
+    --sites-nav-menu-item-selected-hover-background: hsl(36, 91%, 58%);
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(36, 100%, 48%);
+    --tool-menu-item-selected-text-color: hsl(0, 0% ,0%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0% ,0%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "ankura" !default;
+$banner-height: 80px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #1D72B8 !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color:#1D72B8 !important;
+    }
+
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #FFF !important;
+    }
+
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 200px !important;
+        background-size: 200px 40px !important;
+    }
+
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #FFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid hsl(207, 73%, 42%);
+}

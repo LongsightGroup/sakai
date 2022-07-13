@@ -1,0 +1,63 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 238, 85%, 26%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/lamp.png);
+    --logo-height: 80px;
+    --logo-width: 354px;
+
+    --top-header-background: hsl(198, 87%, 52%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    --sites-nav-menu-item-selected-background: hsl(34, 95%, 49%);
+    --sites-nav-menu-item-selected-color: hsl(238, 85%, 26%);
+    --sites-nav-menu-item-selected-hover-background: hsl(36, 100%, 75%);
+    --sites-nav-menu-item-selected-hover-color: hsl(238, 85%, 26%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(34, 95%, 49%);
+    --tool-menu-item-selected-text-color: hsl(238, 85%, 26%);
+    --tool-menu-item-selected-icon-color: hsl(238, 85%, 26%);
+}
+
+:root.sakaiUserTheme-dark {
+    --topNav-text-color: hsl(0, 0%, 100%);
+    --logo: url(#{$skin-path}images/lamp-dark.svg);
+}
+
+
+$skin-name: "lamp";
+$banner-height: 80px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #19AFEF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #19AFEF !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 152px !important;
+        background-size: 152px 40px !important;
+    }
+}
+
+#toolMenuWrap .img_site_toolmenu {
+    display: none;
+}
+
+.stylized .logo {
+    background: #fff url(/library/sk#{$skin-path}images/lamp.png) no-repeat center center;
+    height: 80px;
+    background-size: 354px 80px;
+}
+
+#Mrphs-xlogin .logo, #Mrphs-choice .logo {
+    background-size: 286px 56px !important;
+    height: 60px !important;
+}

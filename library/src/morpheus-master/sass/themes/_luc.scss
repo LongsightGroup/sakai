@@ -1,0 +1,57 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 337, 67%, 36%);
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/luc.svg);
+    --logo-height: 50px;
+    --logo-width: 150px;
+
+    // Tabs
+    --tool-tab-active-highlight-color: var(--sakai-brand);
+    --tool-tab-active-text-color: var(--sakai-brand);
+
+    //Sites Nav
+    //--sites-nav-background: hsl(0, 0%, 95%);
+    //--sites-nav-menu-item-background: hsl(0, 0%, 48%);
+    //--sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    //--sites-nav-menu-item-hover-background: hsl(0, 0%, 58%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(337, 67%, 41%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(337, 67%, 41%);
+
+}
+
+$skin-name: 'luc';
+
+// Custom CSS
+/* @media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: #333435 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: #333435 !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a.Mrphs-skipNav--toolName {
+        color: #333435 !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+	width: 180px !important;
+	background-size: 180px 32px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 180px) !important;
+    }
+}
+*/
