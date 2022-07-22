@@ -385,7 +385,7 @@ public class ExternalLogicImpl implements ExternalLogic {
 		else if (pollQuestion == null)
 			throw new IllegalArgumentException("Poll Question cannot be null");
 		
-		Map<String, Object> replacementValues = new HashMap<>();
+		Map<String, String> replacementValues = new HashMap<String, String>();
 
 		String from = (fromEmailAddress == null || fromEmailAddress.equals("")) ?
 					serverConfigurationService.getString("setup.request", "no-reply@" + serverConfigurationService.getServerName()) : fromEmailAddress;

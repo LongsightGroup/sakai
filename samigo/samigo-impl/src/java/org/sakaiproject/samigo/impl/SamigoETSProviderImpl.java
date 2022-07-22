@@ -118,7 +118,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
         String supportAddress = serverConfigurationService.getString(SamigoConstants.SAK_PROP_SUPPORT_EMAIL_ADDRESS, fromAddress);
         String toAddress = serverConfigurationService.getString(SamigoConstants.SAK_PROP_AUTO_SUBMIT_ERROR_NOTIFICATION_TO_ADDRESS, supportAddress);
 
-        Map<String, Object> replacementValues = new HashMap<>();
+        Map<String, String> replacementValues = new HashMap<>();
         replacementValues.put("failureCount", Integer.toString(count));
 
         try {
@@ -159,7 +159,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
     private     void                assessmentSubmittedHelper           (Map<String, Object> notificationValues, Event event, int assessmentSubmittedType){
         log.debug("assessment Submitted helper, assessmentSubmittedType: " + assessmentSubmittedType);
         String              priStr                  = Integer.toString(event.getPriority());
-        Map<String, Object> replacementValues       = new HashMap<>(constantValues);
+        Map<String, String> replacementValues       = new HashMap<>(constantValues);
         try {
             User            user                    = userDirectoryService.getUser(notificationValues.get("userID").toString());
 
@@ -222,7 +222,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
     }
 
     private     void                notifyInstructor                    (String siteID, Integer instructNoti, int assessmentSubmittedType,
-                                                                            User submittingUser, Map<String, Object> replacementValues){
+                                                                            User submittingUser, Map<String, String> replacementValues){
         log.debug("notifyInstructor");
         replacementValues.put("changeSettingInstructions" , CHANGE_SETTINGS_HOW_TO_INSTRUCTOR);
 
@@ -235,7 +235,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
             Set<String>     siteUsersHasRole        = new HashSet<>();
             
             if (replacementValues.get("releaseToGroups") != null){
-            	siteUsersHasRole = extractInstructorsFromGroups(site,(String) replacementValues.get("releaseToGroups") );
+            	siteUsersHasRole = extractInstructorsFromGroups(site,replacementValues.get("releaseToGroups") );
             }
 
             if (siteUsersHasRole.isEmpty()) {
@@ -302,7 +302,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
     }
 
     private     void                notifyStudent                       (User user, String priStr, int assessmentSubmittedType,
-                                                                            Map<String, Object> replacementValues){
+                                                                            Map<String, String> replacementValues){
         log.debug("notifyStudent");
         replacementValues.put( "changeSettingInstructions" , CHANGE_SETTINGS_HOW_TO_STUDENT );
 
@@ -361,7 +361,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
         return body.toString();
     }
 
-    private     RenderedTemplate    getRenderedTemplateBySubmissionType (int assessmentSubmittedType, User user, Map<String, Object> replacementValues){
+    private     RenderedTemplate    getRenderedTemplateBySubmissionType (int assessmentSubmittedType, User user, Map<String, String> replacementValues){
         RenderedTemplate template;
         switch(assessmentSubmittedType){
             case 2:
@@ -378,7 +378,7 @@ public class SamigoETSProviderImpl implements SamigoETSProvider {
         return template;
     }
 
-    private     RenderedTemplate    getRenderedTemplate                 (String templateName, User user, Map<String, Object> replacementValues){
+    private     RenderedTemplate    getRenderedTemplate                 (String templateName, User user, Map<String,String> replacementValues){
         log.debug("getting template: " + templateName);
         RenderedTemplate    template            = null;
 

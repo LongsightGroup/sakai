@@ -56,14 +56,6 @@ public interface Preferences extends Entity, Comparable
 	ResourceProperties getProperties(String key);
 
 	/**
-	 * Access the properties keyed by the specified value.
-	 *
-	 * @param commonToolId The tool for which we want the user's preferences
-	 * @return The tool notification properties (possibly empty)
-	 */
-	ResourceProperties getToolNotificationProperties(String commonToolId);
-
-	/**
 	 * Access the keys defined in this Preferences
 	 * 
 	 * @return A Collection of the keys (String) defined in this Preferences.
