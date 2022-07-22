@@ -111,7 +111,7 @@ export class SakaiRubricCriteria extends RubricsElement {
                 </span>
 
                 <div class="add-criterion-item">
-                  <span tabindex="0" role="button" title="${tr("add_rating")} ${c.title}" data-criterion-id="${c.id}" class="fa fa-plus" @click="${this.addRating}" data-rating-pos="${i+1}"></span>
+                  <span tabindex="0" role="button" title="${tr("add_rating")} ${c.title}" data-criterion-id="${c.id}" class="fa fa-plus" @click="${this.addRating}" data-rating-pos="${i + 1}"></span>
                 </div>
 
                 <span @focus="${this.onFocus}" @focusout="${this.focusOut}" tabindex="0" role="button" title="${tr("drag_order")}" class="reorder-icon sideways fa fa-bars"></span>
@@ -157,10 +157,13 @@ export class SakaiRubricCriteria extends RubricsElement {
     `;
   }
 
-  onFocus(e){
+  onFocus(e) {
+
     e.target.closest('.criterion-row').classList.add("focused");
   }
-  focusOut(e){
+
+  focusOut(e) {
+
     e.target.closest('.criterion-row').classList.remove("focused");
   }
 
@@ -192,8 +195,7 @@ export class SakaiRubricCriteria extends RubricsElement {
   debounce(fn, delay) {
 
     let timer = null;
-    return function() {
-      const args = arguments;
+    return function (...args) {
       clearTimeout(timer);
       timer = setTimeout(() => {
         fn.apply(this, args);
@@ -317,11 +319,11 @@ export class SakaiRubricCriteria extends RubricsElement {
     criterion.ratings.splice(parseInt(ratingPos), 0, newRating);
 
     const getUrl = window.location;
-    const baseUrl = getUrl.protocol + "//" + getUrl.host + "/rubrics-service/rest/ratings/";
+    const baseUrl = `${getUrl.protocol  }//${  getUrl.host  }/rubrics-service/rest/ratings/`;
 
     let urlList = '';
     for (let i = criterion.ratings.length - 1; i >= 0; i--) {
-      urlList = baseUrl + criterion.ratings[i].id + '\n' + urlList;
+      urlList = `${baseUrl + criterion.ratings[i].id  }\n${  urlList}`;
     }
 
     const url = `/rubrics-service/rest/criterions/${criterionId}/ratings`;
@@ -379,8 +381,8 @@ export class SakaiRubricCriteria extends RubricsElement {
 
     // Add the criterion to the rubric
     const getUrl = window.location;
-    const baseUrl = getUrl.protocol + "//" + getUrl.host + "/rubrics-service/rest/criterions/";
-    const urlList = baseUrl + nc.id + '\n';
+    const baseUrl = `${getUrl.protocol  }//${  getUrl.host  }/rubrics-service/rest/criterions/`;
+    const urlList = `${baseUrl + nc.id  }\n`;
     this.requestUpdate();
 
     $.ajax({
@@ -434,7 +436,7 @@ export class SakaiRubricCriteria extends RubricsElement {
   updateRatings(url, urlList) {
 
     $.ajax({
-      url: url,
+      url,
       headers: {"authorization": this.token},
       method: "PUT",
       contentType: "text/uri-list",
@@ -449,7 +451,7 @@ export class SakaiRubricCriteria extends RubricsElement {
   }
 
   openEditWithKeyboard(e) {
-	
+
     if (e.keyCode == 32) {
       this.cloneCriterion(e);
     }

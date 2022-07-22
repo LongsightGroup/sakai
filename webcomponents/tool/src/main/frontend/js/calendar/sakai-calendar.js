@@ -1,6 +1,5 @@
 import { html, css } from "../assets/lit-element/lit-element.js";
 import {ifDefined} from '../assets/lit-html/directives/if-defined.js';
-import  "./sakai-calendar-create-event.js";
 import  "./sakai-calendar-display-event.js";
 import { LionCalendar } from "../assets/@lion/calendar/src/LionCalendar.js";
 import moment from "../assets/moment/dist/moment.js";
@@ -34,10 +33,10 @@ export class SakaiCalendar extends LionCalendar {
 
     this.readOnly = true;
 
-    this.addEventListener("user-selected-date-changed", e => {
+    this.addEventListener("user-selected-date-changed", event => {
 
-      const time = e.detail.selectedDate.getTime();
-      this.daysEvents = this.events.filter(e => e.start > time && e.start < (time + 24*60*60*1000));
+      const time = event.detail.selectedDate.getTime();
+      this.daysEvents = this.events.filter(e => e.start > time && e.start < (time + 24 * 60 * 60 * 1000));
       this.selectedDate = time;
     });
   }
@@ -80,14 +79,26 @@ export class SakaiCalendar extends LionCalendar {
       c.classList.remove("deadline");
 
       const time = c.date.getTime();
-      const e = this.events.find(e => e.start > time && e.start < (time + 24*60*60*1000));
-      if (e) {
+      const matchingEvent = this.events.find(e => e.start > time && e.start < (time + 24 * 60 * 60 * 1000));
+      if (matchingEvent) {
         c.classList.add("has-events");
-        if (e.type === "deadline") {
+        if (matchingEvent.type === "deadline") {
           c.classList.add("deadline");
         }
       }
     });
+  }
+
+  __renderNavigation() {
+
+    return html`
+      <div class="sakai-calendar__navigation-wrapper">
+        ${super.__renderNavigation()}
+        <div class="sakai-calendar__navigation__today">
+          <a href="javascript:;" @click=${() => { this.selectedDate = null; this.initCentralDate(); } }>${this.i18n.today}</a>
+        </div>
+      </div>
+    `;
   }
 
   render() {
@@ -96,7 +107,7 @@ export class SakaiCalendar extends LionCalendar {
 
       <div id="container">
         <lion-dialog id="display-dialog">
-          <sakai-calendar-display-event slot="content" selected="${ifDefined(this.selected ? JSON.stringify(this.selected): undefined)}"></sakai-calendar-display-event>
+          <sakai-calendar-display-event slot="content" selected="${ifDefined(this.selected ? JSON.stringify(this.selected) : undefined)}"></sakai-calendar-display-event>
           <button slot="invoker" style="display: none">none</button>
         </lion-dialog>
         ${this.readOnly ? "" : html`
@@ -111,7 +122,7 @@ export class SakaiCalendar extends LionCalendar {
         ${this.daysEvents.length > 0 ? html`
         <div id="days-events">
           <div id="days-events-title">
-            ${this.i18n["events_for"]} ${moment(this.selectedDate).format("LL")}
+            ${this.i18n.events_for} ${moment(this.selectedDate).format("LL")}
           </div>
           ${this.daysEvents.map(e => html`
             <div>

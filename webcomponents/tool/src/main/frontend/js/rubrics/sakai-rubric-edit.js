@@ -16,7 +16,7 @@ export class SakaiRubricEdit extends RubricsElement {
 
     super.attributeChangedCallback(name, oldValue, newValue);
 
-    if ("rubric" === name) {
+    if (name === "rubric") {
       this.rubricClone = JSON.parse(newValue);
       if (this.rubricClone.new) {
         this.updateComplete.then(() => this.querySelector(".edit").click() );
@@ -64,19 +64,19 @@ export class SakaiRubricEdit extends RubricsElement {
   firstUpdated() {
 
     $(this).find(".popover.rubric-edit-popover input").on('keydown', function(event) {
-      if(event.keyCode == 9){
+      if (event.keyCode == 9) {
         event.preventDefault();
         $(this).parents('.popover.rubric-edit-popover').find('.save').focus();
       }
     });
     $(this).find(".popover.rubric-edit-popover .save").on('keydown', function(event) {
-      if(event.keyCode == 9){
+      if (event.keyCode == 9) {
         event.preventDefault();
         $(this).parents('.popover.rubric-edit-popover').find('.cancel').focus();
       }
     });
     $(this).find(".popover.rubric-edit-popover .cancel").on('keydown', function(event) {
-      if(event.keyCode == 9){
+      if (event.keyCode == 9) {
         event.preventDefault();
         $(this).parents('.popover.rubric-edit-popover').find('input').focus();
       }
@@ -87,13 +87,15 @@ export class SakaiRubricEdit extends RubricsElement {
     e.stopPropagation();
   }
 
-  openEditWithKeyboard(e){
-    if(e.keyCode == 32 || e.keyCode == 32 ){
-      this.editRubric(e)
+  openEditWithKeyboard(e) {
+
+    if (e.keyCode == 32 || e.keyCode == 32 ) {
+      this.editRubric(e);
     }
   }
 
   editRubric(e) {
+
     e.preventDefault();
     e.stopPropagation();
     this.dispatchEvent(new CustomEvent("show-tooltip", {detail: this.rubric}));
@@ -101,17 +103,17 @@ export class SakaiRubricEdit extends RubricsElement {
     if (!this.classList.contains("show-tooltip")) {
       this.closeOpen();
       this.popoverOpen = "true";
-      var target = this.querySelector(".fa-edit");
+      const target = this.querySelector(".fa-edit");
 
       this.classList.add("show-tooltip");
 
-      var popover = $(`#edit_rubric_${this.rubric.id}`);
+      const popover = $(`#edit_rubric_${this.rubric.id}`);
 
-      popover[0].style.top = target.offsetTop + 20 + "px";
-      popover[0].style.left = (target.offsetLeft - 125) + "px";
+      popover[0].style.top = `${target.offsetTop + 20  }px`;
+      popover[0].style.left = `${target.offsetLeft - 125  }px`;
 
       popover.show();
-      var input =  popover.find("input[type='text']")[0];
+      const input =  popover.find("input[type='text']")[0];
       input.setSelectionRange(0, input.value.length);
       input.focus();
 
@@ -137,7 +139,7 @@ export class SakaiRubricEdit extends RubricsElement {
     e.stopPropagation();
     this.rubricClone.title = this.rubric.title;
     this.hideToolTip();
-    var popover = $(`#edit_rubric_${this.rubric.id}`);
+    const popover = $(`#edit_rubric_${this.rubric.id}`);
     popover.find("input[type='text']")[0].value = this.rubric.title;
     popover.hide();
   }

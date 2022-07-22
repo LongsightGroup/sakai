@@ -65,7 +65,8 @@ export class SakaiRubricCriterionRatingEdit extends RubricsElement {
     `;
   }
 
-  onFocus(e){
+  onFocus(e) {
+
     e.target.closest('.criterion-row').classList.add("focused");
   }
 
@@ -82,8 +83,8 @@ export class SakaiRubricCriterionRatingEdit extends RubricsElement {
       this.classList.add("show-tooltip");
       const popover = $(`#edit_criterion_rating_${this.rating.id}`);
 
-      popover[0].style.top = e.target.offsetTop + 20 + "px";
-      popover[0].style.left = (e.target.offsetLeft - popover.width()/2) + "px";
+      popover[0].style.top = `${e.target.offsetTop + 20  }px`;
+      popover[0].style.left = `${e.target.offsetLeft - popover.width() / 2  }px`;
 
       popover.show();
       const titleinput = this.querySelector('[type="text"]');
@@ -147,7 +148,7 @@ export class SakaiRubricCriterionRatingEdit extends RubricsElement {
   }
 
   openEditWithKeyboard(e) {
-	
+
     if (e.keyCode == 32) {
       this.editRating(e);
     }
