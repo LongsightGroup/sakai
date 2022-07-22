@@ -36,6 +36,4 @@ public class ConversationsRestBean {
     public Settings settings;
     public boolean showGuidelines;
     public List<Tag> tags;
-    public int maxThreadDepth;
-    public boolean disableDiscussions;
 }
