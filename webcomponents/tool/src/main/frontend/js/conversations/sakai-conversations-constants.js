@@ -1,4 +1,3 @@
-export const ALL_TIME = "ALL_TIME";
 export const DISCUSSION = "DISCUSSION";
 export const GROUP = "GROUP";
 export const INSTRUCTORS = "INSTRUCTORS";
@@ -16,4 +15,3 @@ export const SORT_TOPICS_CREATED = "SORT_TOPICS_CREATED";
 export const SORT_POSTS_CREATED = "SORT_POSTS_CREATED";
 export const SORT_TOPICS_VIEWED = "SORT_TOPICS_VIEWED";
 export const SORT_REACTIONS_MADE = "SORT_REACTIONS_MADE";
-export const THIS_WEEK = "THIS_WEEK";

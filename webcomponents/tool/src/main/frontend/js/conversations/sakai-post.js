@@ -392,25 +392,22 @@ export class SakaiPost extends reactionsMixin(SakaiElement) {
             ` : ""}
             ${this.post.locked ? html`
             <div class="topic-status"
-                role="image"
-                title="${this.i18n.post_locked_tooltip}"
-                aria-label="${this.i18n.post_locked_tooltip}">
+                title="${this.i18n["post_locked_tooltip"]}"
+                aria-label="${this.i18n["post_locked_tooltip"]}">
               <sakai-icon type="lock" size="small"></sakai-icon></div>
             </div>
             ` : ""}
             ${this.post.hidden ? html`
             <div class="topic-status"
-                role="image"
-                title="${this.i18n.post_hidden_tooltip}"
-                aria-label="${this.i18n.post_hidden_tooltip}">
+                title="${this.i18n["post_hidden_tooltip"]}"
+                aria-label="${this.i18n["post_hidden_tooltip"]}">
               <sakai-icon type="hidden" size="small"></sakai-icon></div>
             </div>
             ` : ""}
             ${this.post.privatePost ? html`
             <div class="topic-status"
-                role="image"
-                title="${this.i18n.post_private_tooltip}"
-                aria-label="${this.i18n.post_private_tooltip}">
+                title="${this.i18n["post_private_tooltip"]}"
+                aria-label="${this.i18n["post_private_tooltip"]}">
               <sakai-icon type="secret" size="small"></sakai-icon></div>
             </div>
             ` : ""}
@@ -431,12 +428,7 @@ export class SakaiPost extends reactionsMixin(SakaiElement) {
           <div>
             ${this.post.canEdit || this.post.canDelete || this.post.canModerate ? html`
               <options-menu placement="bottom-left">
-                <a slot="trigger"
-                    id="options-menu-link-${this.post.id}"
-                    aria-label="${this.i18n.post_options_menu_tooltip}"
-                    title="${this.i18n.post_options_menu_tooltip}"
-                    aria-haspopup="true"
-                    href="javascript:;">
+                <a slot="trigger" id="options-menu-link-${this.post.id}" href="javascript:;">
                   <div><sakai-icon type="menu" size="small"></sakai-icon></div>
                 </a>
                 <div slot="content" class="options-menu" role="dialog">

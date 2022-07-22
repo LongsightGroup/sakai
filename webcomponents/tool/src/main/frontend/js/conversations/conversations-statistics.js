@@ -2,14 +2,16 @@ import { html } from "../assets/@lion/core/index.js";
 import { SakaiElement } from "../sakai-element.js";
 import "../sakai-icon.js";
 import "../sakai-pager.js";
-import { SORT_NAME, SORT_TOPICS_CREATED, SORT_TOPICS_VIEWED, SORT_POSTS_CREATED, SORT_REACTIONS_MADE, ALL_TIME, THIS_WEEK } from "./sakai-conversations-constants.js";
+import { SORT_NAME, SORT_TOPICS_CREATED, SORT_TOPICS_VIEWED, SORT_POSTS_CREATED, SORT_REACTIONS_MADE } from "./sakai-conversations-constants.js";
 
 export class ConversationsStatistics extends SakaiElement {
 
   static get properties() {
 
     return {
-      statsUrl: { attribute: "stats-url", type: String },
+      siteUrl: { attribute: "site-url", type: String },
+      topicUrl: { attribute: "topic-url", type: String },
+      userUrl: { attribute: "user-url", type: String },
       stats: { attribute: false, type: Object },
     };
   }
@@ -24,24 +26,24 @@ export class ConversationsStatistics extends SakaiElement {
     this.loadTranslations("conversations").then(r => this.i18n = r);
   }
 
-  set statsUrl(value) {
+  set siteUrl(value) {
 
-    this._statsUrl = value;
+    this._siteUrl = value;
     this.loadStatsPage(1);
     this.requestUpdate();
   }
 
-  get statsUrl() { return this._statsUrl; }
+  get siteUrl() { return this._siteUrl; }
 
   loadStatsPage(page) {
 
     const options = {
       page: page,
       sort: this.sort,
-      interval: typeof(this.interval) === "undefined" ? THIS_WEEK : this.interval,
+      interval: typeof(this.interval) === "undefined" ? "THIS_WEEK" : this.interval,
     };
 
-    fetch(`${this.statsUrl}`, {
+    fetch(`${this.siteUrl}`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -51,9 +53,9 @@ export class ConversationsStatistics extends SakaiElement {
 
       if (r.ok) {
         return r.json();
+      } else {
+        throw new Error(`Network error while getting statistics from ${this.siteUrl}`);
       }
-
-      throw new Error(`Network error while getting statistics from ${this.siteUrl}`);
     })
     .then(data => {
 
@@ -130,18 +132,11 @@ export class ConversationsStatistics extends SakaiElement {
 
     return html`
       <div class="add-topic-wrapper">
-        <h1>${this.i18n.statistics}</h1>
+        <h1>Statistics</h1>
         <div id="statistics-timeframe-block">
-          <div>${this.i18n.timeframe}</div>
-          <input type="radio"
-              name="timeframe"
-              value="${THIS_WEEK}"
-              @click=${() => this.interval = THIS_WEEK}
-              checked>${this.i18n.this_week}
-          <input type="radio"
-              name="timeframe"
-              value="${ALL_TIME}"
-              @click=${() => this.interval = ALL_TIME}>${this.i18n.all_time}
+          <div>Timeframe?</div>
+          <input type="radio" name="timeframe" value="THIS_WEEK" checked @click=${() => this.interval = "THIS_WEEK"}>This Week
+          <input type="radio" name="timeframe" value="ALL_TIME" @click=${() => this.interval = "ALL_TIME"}>All Time
         </div>
       </div>
         <sakai-pager count="${this.count}" current="${this.currentPage}" @page-selected=${this.pageClicked}></sakai-pager>
@@ -154,12 +149,7 @@ export class ConversationsStatistics extends SakaiElement {
                     title="${this.i18n["sort_by_author"]}"
                     aria-label="${this.i18n["sort_by_author"]}"
                     @click=${this.toggleSort}>
-                  <div class="header-sort-block">
-                    <div>${this.i18n.name_header}</div>
-                    <div>
-                      <sakai-icon type="${this.sortByNameAscending ? "down" : "up"}" size="small"></sakai-icon>
-                    </div>
-                  </div>
+                  ${this.i18n["name_header"]}
                 </a>
               </th>
               <th>
@@ -168,12 +158,7 @@ export class ConversationsStatistics extends SakaiElement {
                     title="${this.i18n["sort_by_created_topics"]}"
                     aria-label="${this.i18n["sort_by_created_topics"]}"
                     @click=${this.toggleSort}>
-                  <div class="header-sort-block">
-                    <div>${this.i18n.topics_created_header}</div>
-                    <div>
-                      <sakai-icon type="${this.sortByTopicsCreatedAscending ? "down" : "up"}" size="small"></sakai-icon>
-                    </div>
-                  </div>
+                  ${this.i18n["topics_created_header"]}
                 </a>
               </th>
               <th>
@@ -182,12 +167,7 @@ export class ConversationsStatistics extends SakaiElement {
                     title="${this.i18n["sort_by_viewed_topics"]}"
                     aria-label="${this.i18n["sort_by_viewed_topics"]}"
                     @click=${this.toggleSort}>
-                  <div class="header-sort-block">
-                    <div>${this.i18n.topics_read_header}</div>
-                    <div>
-                      <sakai-icon type="${this.sortByTopicsViewedAscending ? "down" : "up"}" size="small"></sakai-icon>
-                    </div>
-                  </div>
+                  ${this.i18n["topics_read_header"]}
                 </a>
               </th>
               <th>
@@ -196,12 +176,7 @@ export class ConversationsStatistics extends SakaiElement {
                     title="${this.i18n["sort_by_reactions_made"]}"
                     aria-label="${this.i18n["sort_by_reactions_made"]}"
                     @click=${this.toggleSort}>
-                  <div class="header-sort-block">
-                    <div>${this.i18n.reactions_header}</div>
-                    <div>
-                      <sakai-icon type="${this.sortByReactionsMadeAscending ? "down" : "up"}" size="small"></sakai-icon>
-                    </div>
-                  </div>
+                  ${this.i18n["reactions_header"]}
                 </a>
               </th>
               <th>
@@ -210,12 +185,7 @@ export class ConversationsStatistics extends SakaiElement {
                     title="${this.i18n["sort_by_created_posts"]}"
                     aria-label="${this.i18n["sort_by_created_posts"]}"
                     @click=${this.toggleSort}>
-                  <div class="header-sort-block">
-                    <div>${this.i18n.posts_header}</div>
-                    <div>
-                      <sakai-icon type="${this.sortByPostsCreatedAscending ? "down" : "up"}" size="small"></sakai-icon>
-                    </div>
-                  </div>
+                  ${this.i18n["posts_header"]}
                 </a>
               </th>
             </tr
