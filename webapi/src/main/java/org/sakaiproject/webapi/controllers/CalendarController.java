@@ -51,6 +51,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.swagger.annotations.ApiOperation;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -102,6 +104,7 @@ public class CalendarController extends AbstractSakaiApiController {
         return bean;
     };
 
+    @ApiOperation(value = "Get a particular user's calendar data")
 	@GetMapping(value = "/users/{userId}/calendar", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CalendarEventRestBean> getUserCalendar(@PathVariable String userId) throws UserNotDefinedException {
 
@@ -120,6 +123,7 @@ public class CalendarController extends AbstractSakaiApiController {
         }).flatMap(Collection::stream).collect(Collectors.toList());
 	}
 
+    @ApiOperation(value = "Get a particular site's calendar data")
 	@GetMapping(value = "/sites/{siteId}/calendar", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CalendarEventRestBean> getSiteCalendar(@PathVariable String siteId) throws UserNotDefinedException {
 

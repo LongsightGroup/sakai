@@ -113,14 +113,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     public UserTask saveUserTask(UserTaskAdapterBean transfer) {
 
-        Optional<UserTask> optionalUserTask = userTaskRepository.findById(transfer.getUserTaskId());
-
-        if (!optionalUserTask.isPresent()) {
-            log.error("No user task for id {}. Returning null ...", transfer.getUserTaskId());
-            return null;
-        }
-
-        UserTask userTask = optionalUserTask.get();
+        UserTask userTask = userTaskRepository.findById(transfer.getUserTaskId());
 
         // Trigger the load of the Task entity
         Task task = userTask.getTask();
@@ -131,7 +124,9 @@ public class TaskServiceImpl implements TaskService {
 
         // Update the user task and merge it back in
         BeanUtils.copyProperties(transfer, userTask);
-        return userTaskRepository.save(userTask);
+        userTaskRepository.save(userTask);
+
+        return userTask;
     }
 
     @Transactional

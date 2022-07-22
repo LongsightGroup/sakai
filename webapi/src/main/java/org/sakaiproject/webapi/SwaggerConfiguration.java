@@ -11,29 +11,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package org.sakaiproject.webapi.beans;
+package org.sakaiproject.webapi;
 
-import java.util.List;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import org.springframework.hateoas.EntityModel;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 
-import org.sakaiproject.conversations.api.model.Settings;
-import org.sakaiproject.conversations.api.model.Tag;
+@Configuration
+@EnableSwagger2
+public class SwaggerConfiguration {
 
-public class ConversationsRestBean {
-
-    public String userId;
-    public String siteId;
-    public List<SimpleGroup> groups;
-    public List<EntityModel> topics;
-    public boolean canCreateTopic;
-    public boolean canUpdatePermissions;
-    public boolean canEditTags;
-    public boolean canViewSiteStatistics;
-    public boolean canPin;
-    public boolean isInstructor;
-    public boolean canViewAnonymous;
-    public Settings settings;
-    public boolean showGuidelines;
-    public List<Tag> tags;
+    @Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+          .select()
+          .apis(RequestHandlerSelectors.any())
+          .paths(PathSelectors.any())
+          .build();
+    }
 }
