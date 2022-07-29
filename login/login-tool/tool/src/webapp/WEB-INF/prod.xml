@@ -158,7 +158,7 @@
                   <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://sts.amc.edu/FederationMetadata/2007-06/FederationMetadata.xml</value>
+                        <value type="java.lang.String">https://login.microsoftonline.com/c04845f0-4224-4637-aed2-9beea8319b5b/federationmetadata/2007-06/federationmetadata.xml?appid=8a09386f-ebd5-4781-bdde-15f895fb498c</value>
                     </constructor-arg>
                     <constructor-arg>
                                 <value type="int">45000</value>
@@ -179,7 +179,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <property name="defaultIDP" value="http://sts.amc.edu/adfs/services/trust"/>
+        <property name="defaultIDP" value="https://sts.windows.net/c04845f0-4224-4637-aed2-9beea8319b5b/"/>
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
