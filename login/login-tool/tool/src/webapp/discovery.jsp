@@ -18,6 +18,12 @@
       </div>
 
       <div class="row mt-4 p-2" style="background-color: black">
+        <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/c393e4db-5d25-427f-a47b-2cddfe1e7af5/">
+          <img src="https://www.dewv.edu/wp-content/uploads/2020/07/DE-Logo.svg" alt="Davis and Elkins" style="height: 60px" />
+        </a>
+      </div>
+
+      <div class="row mt-4 p-2" style="background-color: black">
         <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/1736942c-00b7-40e8-8faa-539d6a168a9e/">
           <img src="https://www.tnwesleyan.edu/wordpress/wp-content/uploads/2016/07/tnw-nav-logo.png" alt="Tennessee Wesleyan" style="height: 60px" />
         </a>
