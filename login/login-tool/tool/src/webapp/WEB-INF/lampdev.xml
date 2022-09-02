@@ -182,7 +182,7 @@
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <value type="java.lang.String">https://login.microsoftonline.com/c393e4db-5d25-427f-a47b-2cddfe1e7af5/federationmetadata/2007-06/federationmetadata.xml?appid=c41ecef1-39d4-46d3-8ee1-744486ffc87d</value>
+                                <value type="java.lang.String">https://login.microsoftonline.com/c393e4db-5d25-427f-a47b-2cddfe1e7af5/federationmetadata/2007-06/federationmetadata.xml?appid=4a7a320a-ac5a-4858-86fd-7a5ee93f795e</value>
                             </constructor-arg>
                             <constructor-arg>
                                 <value type="int">45000</value>
@@ -199,7 +199,6 @@
                     <property name="metadataTrustCheck" value="false"/>
                 </bean>
                 <!-- END Davis and Elkins SAML -->
-
 
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
