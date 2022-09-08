@@ -161,7 +161,7 @@
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                             <constructor-arg>
-                                <value type="java.lang.String">https://login.microsoftonline.com/c393e4db-5d25-427f-a47b-2cddfe1e7af5/federationmetadata/2007-06/federationmetadata.xml?appid=4a7a320a-ac5a-4858-86fd-7a5ee93f795e</value>
+                                <value type="java.lang.String">https://login.microsoftonline.com/c393e4db-5d25-427f-a47b-2cddfe1e7af5/federationmetadata/2007-06/federationmetadata.xml?appid=46600a46-7255-404c-bb7b-28659b821cf7</value>
                             </constructor-arg>
                             <constructor-arg>
                                 <value type="int">45000</value>
