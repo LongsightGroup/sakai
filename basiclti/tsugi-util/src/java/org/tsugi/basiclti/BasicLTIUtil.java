@@ -619,7 +619,7 @@ public class BasicLTIUtil {
 			error_timeout = extra.get(EXTRA_ERROR_TIMEOUT);
 			http_popup = extra.get(EXTRA_HTTP_POPUP);
 		}
-		if ( extra == null ) error_timeout = "Unable to send launch to remote URL: "+endpoint;
+		if ( extra == null ) error_timeout = "This tool is loading slowly, please be patient.";
 		error_timeout += endpoint;
 		text.append("<script type=\"text/javascript\">\n");
 		text.append("var open_in_new_window = false;\n");
