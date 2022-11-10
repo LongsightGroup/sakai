@@ -27,11 +27,11 @@ $(window).load(function () {
 		setCollapsedStatus(header, true);
 	});
 
-  const questionToScrollTo = sessionStorage.getItem('question-submit-return-id');
-  if (questionToScrollTo) {
-    sessionStorage.removeItem('question-submit-return-id');
-    document.getElementById(questionToScrollTo).scrollIntoView(true);
-  }
+	const questionToScrollTo = sessionStorage.getItem('question-submit-return-id');
+	if (questionToScrollTo) {
+		sessionStorage.removeItem('question-submit-return-id');
+		document.getElementById(questionToScrollTo).scrollIntoView(true);
+	}
 
 });
 
@@ -138,13 +138,27 @@ $(document).ready(function() {
 		box.tooltip();
 	});
 
-  // Store the question the student just answered and jump to it on new page load
 	$('.question-submit').click(function (e) {
-    const closestElement = $(this).parent().closest('[id]');
-    if (closestElement) {
-      const closestId = closestElement.prop('id');
-      sessionStorage.setItem('question-submit-return-id', closestId);
-    }
+		// Dont allow empty responses to matching questions
+		$(this).parent().find('option:selected').each(function() {
+			if ($(this).val() == '') {
+				$(this).parent().parent().addClass('alert alert-danger');
+				e.preventDefault();
+				return false;
+			}
+		});
+
+		// Store the question the student just answered and jump to it on new page load
+		const closestElement = $(this).parent().closest('[id]');
+		if (closestElement) {
+			const closestId = closestElement.prop('id');
+			sessionStorage.setItem('question-submit-return-id', closestId);
+		}
+	});
+
+	// Add a blank option at beginning of matching select boxes
+	$('.matchingAnswer select:enabled').each(function () {
+		$(this).prepend("<option hidden disabled selected value>----</option>");
 	});
 
 	$("input[type=checkbox].checklist-checkbox").on("change", function(){
@@ -1469,9 +1483,9 @@ $(document).ready(function() {
 						answerSlot = addMatchingAnswer();
 					}
 					
-					answerSlot.find(".questionMatchingAnswerId").val(qId);
-					answerSlot.find(".questionMatchingPrompt").val(qPrompt);
-					answerSlot.find(".questionMatchingResponse").val(qResponse);
+					answerSlot.find(".question-matching-id").val(qId);
+					answerSlot.find(".question-matching-prompt").val(qPrompt);
+					answerSlot.find(".question-matching-response").val(qResponse);
 				});
 			} else {
 				$("#multipleChoiceSelect").click();
@@ -4162,3 +4176,31 @@ function fixAddBeforeLTI(el) {
 	$(el).attr('href', $(el).attr('href').replace('addBefore=', 'addBefore=' + (addAboveItem === null ? "" : addAboveItem)));
 	return true;
 }
+
+$.widget( "ui.dialog", $.ui.dialog, {
+ /*
+  *  http://bugs.jqueryui.com/ticket/9087#comment:27 - bugfix
+  *  http://bugs.jqueryui.com/ticket/4727#comment:23 - bugfix
+  *  allowInteraction fix to accommodate windowed editors
+  */
+  _allowInteraction: function( event ) {
+    if ( this._super( event ) ) {
+      return true;
+    }
+
+    // address interaction issues with general iframes with the dialog
+    if ( event.target.ownerDocument != this.document[ 0 ] ) {
+      return true;
+    }
+
+    // address interaction issues with dialog window
+    if ( $( event.target ).closest( ".cke_dialog" ).length ) {
+      return true;
+    }
+
+    // address interaction issues with iframe based drop downs in IE
+    if ( $( event.target ).closest( ".cke" ).length ) {
+      return true;
+    }
+  }
+});
