@@ -3293,10 +3293,10 @@ public class AssignmentAction extends PagedResourceActionII {
         try {
             List gradebookAssignments = gradebookService.getAssignments(gradebookUid);
 
-            // filtering out those from Samigo
-            for (Iterator i = gradebookAssignments.iterator(); i.hasNext(); ) {
-                org.sakaiproject.service.gradebook.shared.Assignment gAssignment = (org.sakaiproject.service.gradebook.shared.Assignment) i.next();
-                if (!gAssignment.isExternallyMaintained() || gAssignment.isExternallyMaintained() && gAssignment.getExternalAppName().equals(assignmentService.getToolTitle())) {
+        // filtering out those from Samigo
+        for (Iterator i = gradebookAssignments.iterator(); i.hasNext(); ) {
+            org.sakaiproject.service.gradebook.shared.Assignment gAssignment = (org.sakaiproject.service.gradebook.shared.Assignment) i.next();
+            if (!gAssignment.isExternallyMaintained() || gAssignment.isExternallyMaintained() && gAssignment.getExternalAppName().equals(assignmentService.getToolId())) {
 
                     // gradebook item has been associated or not
                     String gaId = gAssignment.isExternallyMaintained() ? gAssignment.getExternalId() : gAssignment.getName();
@@ -3327,7 +3327,7 @@ public class AssignmentAction extends PagedResourceActionII {
 
             // Items sorted by name
             gradebookAssignmentsLabel = gradebookAssignmentsLabel.entrySet().stream()
-                    .sorted(Entry.comparingByValue())
+                    .sorted(Entry.comparingByValue(Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)))
                     .collect(Collectors.toMap(Entry::getKey, Entry::getValue,
                             (e1, e2) -> e1, LinkedHashMap::new));
 
