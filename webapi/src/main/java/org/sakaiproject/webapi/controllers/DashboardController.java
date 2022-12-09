@@ -22,6 +22,7 @@ import org.sakaiproject.webapi.beans.DashboardRestBean;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
 import org.sakaiproject.announcement.api.AnnouncementMessage;
 import org.sakaiproject.announcement.api.AnnouncementService;
+import org.sakaiproject.announcement.api.ViewableFilter;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.content.api.ContentHostingService;
@@ -159,17 +160,11 @@ public class DashboardController extends AbstractSakaiApiController {
         }
 
         try {
-<<<<<<< HEAD
             List<AnnouncementMessage> motdMessages = announcementService.getMessages(
                 announcementService.getSummarizableReference(null, announcementService.MOTD_TOOL_ID),
                 new ViewableFilter(null, null, maxNumberMotd, announcementService),
                 false,
                 false);
-=======
-            AnnouncementChannel motdChannel
-                = announcementService.getAnnouncementChannel("/announcement/channel/!site/motd");
-            List<AnnouncementMessage> motdMessages = motdChannel.getMessages(null, true);
->>>>>>> 65b1451897a (Revert "SAK-46750 Dashboard: Only show MOTD if viewable by user (#10133)")
 
             StringBuffer sb = new StringBuffer();
             for (AnnouncementMessage motdMessage : motdMessages) {

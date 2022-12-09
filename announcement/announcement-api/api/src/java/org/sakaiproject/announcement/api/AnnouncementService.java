@@ -121,7 +121,8 @@ public interface AnnouncementService extends MessageService
     
     /** Event for updating announcement availability **/
     public static final String EVENT_ANNC_UPDATE_AVAILABILITY = SECURE_ANNC_ROOT + "revise.availability";
-    
+
+    public static final String MOTD_TOOL_ID = "sakai.motd";
     
 	/**
 	 * A (AnnouncementChannel) cover for getChannel() to return a specific announcement channel.
