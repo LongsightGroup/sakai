@@ -3772,7 +3772,6 @@ function prepareQuestionDialog() {
 	} else if ($("#question-text-area-evolved\\:\\:input").val() === '') {
 	    $('#question-error').text(msg("simplepage.missing-question-text"));
 	    $('#question-error-container').show();
-	    // return false;
 	} else if ($("#multipleChoiceSelect").prop("checked") && 
 		   $(".question-multiplechoice-answer").filter(function(index){return $(this).val() !== '';}).length < 2) {
 	    $('#question-error').text(msg("simplepage.question-need-2"));
@@ -3807,6 +3806,8 @@ function resetMultipleChoiceAnswers() {
 	firstMultipleChoice.find(".question-multiplechoice-answer-id").val("-1");
 	firstMultipleChoice.find(".question-multiplechoice-answer").val("");
 	firstMultipleChoice.find(".question-multiplechoice-answer-correct").prop("checked", false);
+  $("#multipleChoiceAnswersBody").empty();
+  $("#multipleChoiceAnswersBody").append(firstMultipleChoice);
 }
 
 // Reset the matching prompts to prevent problems when submitting a shortanswer
@@ -3815,11 +3816,16 @@ function resetMatchingAnswers() {
 	firstMatching.find(".question-matching-id").val("-1");
 	firstMatching.find(".question-matching-prompt").val("");
 	firstMatching.find(".question-matching-response").val("");
+  $("#matchingAnswersBody").empty();
+  $("#matchingAnswersBody").append(firstMatching);
 }
 
 //Reset the shortanswers to prevent problems when submitting a multiple choice
 function resetShortanswers() {
-	$("#copyableShortanswer").find(".question-shortanswer-answer").val("");
+  const firstShortAnswerChoice = $("#copyableShortanswer");
+  firstShortAnswerChoice.find(".question-shortanswer-answer").val("");
+  $("#shortAnswersTableBody").empty();
+  $("#shortAnswersTableBody").append(firstShortAnswerChoice);
 }
 
 
