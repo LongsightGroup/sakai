@@ -27,6 +27,13 @@ $(window).load(function () {
 		setCollapsedStatus(header, true);
 	    });
 
+  // Scroll the last-answered question into view
+  const questionToScrollTo = sessionStorage.getItem('question-submit-return-id');
+  if (questionToScrollTo) {
+    sessionStorage.removeItem('question-submit-return-id');
+    document.getElementById(questionToScrollTo).scrollIntoView(true);
+  }
+
 });
 
 function msg(s) {
@@ -131,6 +138,14 @@ $(document).ready(function() {
 		box.attr('title', $(this).children().nextAll('.tooltip-content').html())
 		box.tooltip();
 	});
+
+  document.querySelectorAll('.question-submit').forEach(el => {
+    el.addEventListener("click", e => {
+      // Store the question the student just answered and jump to it on new page load
+      const qEl = e.target.parentElement.closest('[id]');
+      qEl && sessionStorage.setItem('question-submit-return-id', qEl.id);
+    });
+  });
 
 	$("input[type=checkbox].checklist-checkbox").on("change", function(){
 		$(this).next("span").addClass("savingChecklistItem");
@@ -3693,11 +3708,16 @@ function resetMultipleChoiceAnswers() {
 	firstMultipleChoice.find(".question-multiplechoice-answer-id").val("-1");
 	firstMultipleChoice.find(".question-multiplechoice-answer").val("");
 	firstMultipleChoice.find(".question-multiplechoice-answer-correct").prop("checked", false);
+  $("#multipleChoiceAnswersBody").empty();
+  $("#multipleChoiceAnswersBody").append(firstMultipleChoice);
 }
 
 //Reset the shortanswers to prevent problems when submitting a multiple choice
 function resetShortanswers() {
-	$("#copyableShortanswer").find(".question-shortanswer-answer").val("");
+  var firstShortAnswerChoice = $("#copyableShortanswer");
+  firstShortAnswerChoice.find(".question-shortanswer-answer").val("");
+  $("#shortAnswersTableBody").empty();
+  $("#shortAnswersTableBody").append(firstShortAnswerChoice);
 }
 
 
