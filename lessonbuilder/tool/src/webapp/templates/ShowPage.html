@@ -976,6 +976,21 @@
                                     </form>
                                 </div>
 
+                                <div class="hotspotDiv" rsf:id="hotspotDiv">
+                                    <form action="#" rsf:id="hotspotForm" class="hotspotForm">
+                                        <input type="hidden" rsf:id="csrf6" />
+                                        <input type="hidden" rsf:id="hotspotId" />
+                                        <span rsf:id="hotspotSelect:"></span>
+                                        <div rsf:id="hotspotAnswer:" class="hotspotAnswer">
+                                            <label rsf:id="hotspotAnswerPrompt" class="hotspotAnswerPrompt"/>
+                                            <textarea rsf:id="hotspotAnswerResponse" name="hotspotAnswerResponse">
+                                            </textarea>
+                                        </div>
+                                        <input class="question-submit" type="submit" value="Answer!" rsf:id="answerHotspot" />
+                                        <input class="showPollGraph question-submit" type="submit" rsf:id="showPollGraph" onclick="return false;"/>
+                                    </form>
+                                </div>
+
                                 <div class="matchingDiv" rsf:id="matchingDiv">
                                     <form action="#" rsf:id="matchingForm" class="matchingForm">
                                         <input type="hidden" rsf:id="csrf6" />

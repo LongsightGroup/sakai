@@ -1019,6 +1019,20 @@ public class LessonsEntityProvider extends AbstractEntityProvider implements Ent
 								item.getAttribute("questionIncorrectText"),
 								item.getAttribute("questionGraded"),
 								item.getAttribute("questionAnswer"));
+					} else if ("matching".equals(item.getAttribute("questionType"))) {
+						lesson = new DecoratedShortAnswerQuestion(item,
+								item.getAttribute("questionText"),
+								item.getAttribute("questionCorrectText"),
+								item.getAttribute("questionIncorrectText"),
+								item.getAttribute("questionGraded"),
+								item.getAttribute("questionAnswer"));
+					} else if ("hotspot".equals(item.getAttribute("questionType"))) {
+						lesson = new DecoratedShortAnswerQuestion(item,
+								item.getAttribute("questionText"),
+								item.getAttribute("questionCorrectText"),
+								item.getAttribute("questionIncorrectText"),
+								item.getAttribute("questionGraded"),
+								item.getAttribute("questionAnswer"));
 					}
 					break;
 				case SimplePageItem.PAGE:

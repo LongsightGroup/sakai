@@ -252,6 +252,8 @@ public interface SimplePageToolDao {
 
     public Long maxQuestionAnswer(SimplePageItem question);
 
+    public Long addHotspotQuestionAnswer(SimplePageItem item, Long answerId, String areaName, String areaCoordinates);
+
     public Long addMultipleChoiceQuestionAnswer(SimplePageItem question, Long id, String text, Boolean isCorrect);
 
     public Long addMatchingQuestionAnswer(SimplePageItem item, Long answerId, String prompt, String response);

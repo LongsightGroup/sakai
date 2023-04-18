@@ -1171,6 +1171,38 @@ public class SimplePageToolDaoImpl extends HibernateDaoSupport implements Simple
 		return max;
 	}
 
+	public Long addHotspotQuestionAnswer(SimplePageItem question, Long id, String areaName, String areaCoordinates) {
+		// no need to check security. that happens when item is saved
+
+		List answers = (List)question.getJsonAttribute("answers");
+		if (answers == null) {
+			answers = new JSONArray();
+			question.setJsonAttribute("answers", answers);
+			if (id <= 0L) {
+				id = 1L;
+			}
+		} else if (id <= 0L) {
+			Long max = 0L;
+			for (Object a: answers) {
+				Map answer = (Map) a;
+				Long i = (Long)answer.get("id");
+				if (i > max) {
+					max = i;
+				}
+			}
+			id = max + 1;
+		}
+
+		// create and add the json form of the answer
+		Map newAnswer = new JSONObject();
+		newAnswer.put("id", id);
+		newAnswer.put("prompt", areaName);
+		newAnswer.put("response", areaCoordinates);
+		answers.add(newAnswer);
+
+		return id;
+	}
+
 	public Long addMultipleChoiceQuestionAnswer(SimplePageItem question, Long id, String text, Boolean isCorrect) {
 		// no need to check security. that happens when item is saved
 		

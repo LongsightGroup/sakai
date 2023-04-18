@@ -1503,9 +1503,9 @@ $(document).ready(function() {
         $("#hotspotSelect").click();
 
         row.find(".questionHotspot").each(function(index, el) {
-          const qId = $(el).find(".questionMatchingAnswerId").text();
-          const qPrompt = $(el).find(".questionMatchingPrompt").text();
-          const qResponse = $(el).find(".questionMatchingResponse").text();
+          const qId = $(el).find(".questionHotspotAnswerId").text();
+          const qPrompt = $(el).find(".questionHotspotPrompt").text();
+          const qResponse = $(el).find(".questionHotspotResponse").text();
 
           let answerSlot;
           if (index === 0) {
@@ -1514,9 +1514,9 @@ $(document).ready(function() {
             answerSlot = addHotspot();
           }
 
-          answerSlot.find(".question-matching-id").val(qId);
-          answerSlot.find(".question-matching-prompt").val(qPrompt);
-          answerSlot.find(".question-matching-response").val(qResponse);
+          answerSlot.find(".question-hotspot-id").val(qId);
+          answerSlot.find(".question-hotspot-prompt").val(qPrompt);
+          answerSlot.find(".question-hotspot-response").val(qResponse);
         });
 			} else {
 				$("#multipleChoiceSelect").click();
@@ -3776,7 +3776,7 @@ function hotspotWriteCoordinates (event, id, areas) {
   $("input.question-hotspot-response").each(function() {
     const area = areas[x];
     if (area && area.x) {
-      $(this).val(Math.round(area.x) + ":" + Math.round(area.y) + " " + Math.round(area.width) + "x" + Math.round(area.height));
+      $(this).val(Math.round(area.x) + "x" + Math.round(area.y) + " " + Math.round(area.width) + "x" + Math.round(area.height));
     }
     x++;
   });
@@ -3842,7 +3842,7 @@ function updateHotspotAnswers() {
 		const prompt = $(el).parent().find(".question-hotspot-prompt").val();
 		const resp = $(el).parent().find(".question-hotspot-response").val();
 		
-		$(el).val(index + "||" + id + "||" + prompt + "|| + resp);
+		$(el).val(index + ":" + id + ":" + prompt + ":" + resp);
 	});
 }
 

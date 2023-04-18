@@ -3247,6 +3247,51 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								answerButton.decorate(new UIDisabledDecorator());
 							}
 						}
+					} else if ("hotspot".equals(i.getAttribute("questionType"))) {
+						answers = simplePageToolDao.findAnswerChoices(i);
+						UIOutput.make(tableRow, "hotspotDiv");
+						UIForm questionForm = UIForm.make(tableRow, "hotspotForm");
+						makeCsrf(questionForm, "csrf6");
+						String[] userResponses = StringUtils.split(response != null ? response.getOriginalText() : "", "||");
+
+						UIInput.make(questionForm, "hotspotId", "#{simplePageBean.questionId}", String.valueOf(i.getId()));
+
+						List<String> possibleResponseArray = answers
+								.stream()
+								.map(possibleAnswer -> possibleAnswer.getResponse())
+								.collect(Collectors.toList());
+
+						String[] possibleResponses = possibleResponseArray.toArray(new String[0]);
+
+						for (int j = 0; j < answers.size(); j++) {
+							final String initValue = userResponses.length > j ? j + "||" + userResponses[j] : null;
+							final String optionPrefix = j + "||";
+							final String[] possibleResponseValues = possibleResponseArray.stream()
+									.map(s -> optionPrefix + s)
+									.toArray(String[]::new);
+
+							UIBranchContainer answerContainer = UIBranchContainer.make(questionForm, "hotspotAnswer:", String.valueOf(j));
+							UISelect hotspotInput = UISelect.make(answerContainer, "hotspotAnswerResponse", possibleResponseValues, possibleResponses, "#{simplePageBean.hotspotQuestionResponse}", initValue);
+							hotspotInput.decorate(new UIFreeAttributeDecorator("id", hotspotInput.getFullID()));
+							UIOutput.make(answerContainer, "hotspotAnswerPrompt", answers.get(j).getPrompt());
+
+							if (!isAvailable || response != null) {
+								if (canSeeAll) {
+									fakeDisableLink(hotspotInput, messageLocator);
+								} else {
+									hotspotInput.decorate(new UIDisabledDecorator());
+								}
+							}
+						}
+
+						UICommand answerButton = UICommand.make(questionForm, "answerHotspot", messageLocator.getMessage("simplepage.answer_question"), "#{simplePageBean.answerHotspotQuestion}");
+						if (!isAvailable || response != null) {
+							if (canSeeAll) {
+								fakeDisableLink(answerButton, messageLocator);
+							} else {
+								answerButton.decorate(new UIDisabledDecorator());
+							}
+						}
 					} else if ("matching".equals(i.getAttribute("questionType"))) {
 						answers = simplePageToolDao.findAnswerChoices(i);
 						UIOutput.make(tableRow, "matchingDiv");
@@ -3404,6 +3449,17 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 								UIOutput.make(answerContainer, "questionMatchingAnswerId", String.valueOf(answers.get(j).getId()));
 								UIOutput.make(answerContainer, "questionMatchingPrompt", answers.get(j).getPrompt());
 								UIOutput.make(answerContainer, "questionMatchingResponse", answers.get(j).getResponse());
+								//SAK-46296
+								UIInput.make(answerContainer, "raw-questionAnswer-text",  null, answers.get(j).getText());
+							}
+						} else if("hotspot".equals(i.getAttribute("questionType"))) {
+							UIOutput.make(tableRow, "questionType", "hotspot");
+
+							for (int j = 0; j < answers.size(); j++) {
+								UIBranchContainer answerContainer = UIBranchContainer.make(tableRow, "questionHotspotAnswer:", String.valueOf(j));
+								UIOutput.make(answerContainer, "questionHotspotAnswerId", String.valueOf(answers.get(j).getId()));
+								UIOutput.make(answerContainer, "questionHotspotPrompt", answers.get(j).getPrompt());
+								UIOutput.make(answerContainer, "questionHotspotResponse", answers.get(j).getResponse());
 								//SAK-46296
 								UIInput.make(answerContainer, "raw-questionAnswer-text",  null, answers.get(j).getText());
 							}

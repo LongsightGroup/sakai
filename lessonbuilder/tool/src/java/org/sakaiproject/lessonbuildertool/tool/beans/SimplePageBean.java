@@ -7563,14 +7563,13 @@ public class SimplePageBean {
 					simplePageToolDao.addMatchingQuestionAnswer(item, answerId, prompt, response);
 				}
 			}
-      // TODO finish this
 		} else if(questionType.equals("hotspot")) {
 			Long max = simplePageToolDao.maxQuestionAnswer(item);
 			simplePageToolDao.clearQuestionAnswers(item);
 
 			for (String data : questionAnswers.values()) {
 				// split the data into the actual fields
-				String[] fields = data.split("||", 3);
+				String[] fields = data.split(":", 3);
 				Long answerId = -1L;
 				if (StringUtils.isNotBlank(fields[0])) {
 					answerId = Long.valueOf(fields[0]);
@@ -7579,10 +7578,10 @@ public class SimplePageBean {
 				if (answerId <= 0L) {
 					answerId = ++max;
 				}
-				String prompt = fields[1];
-				String response = fields[2];
-				if (StringUtils.isNotBlank(prompt)) {
-					simplePageToolDao.addMatchingQuestionAnswer(item, answerId, prompt, response);
+				String imageAreaName = fields[1];
+				String imageAreaCoordinates = fields[2];
+				if (StringUtils.isNotBlank(imageAreaName)) {
+					simplePageToolDao.addHotspotQuestionAnswer(item, answerId, imageAreaName, imageAreaCoordinates);
 				}
 			}
 		}
@@ -7736,6 +7735,26 @@ public class SimplePageBean {
 				gradebookPoints = null;
 			}
 		}else if(question.getAttribute("questionType") != null && question.getAttribute("questionType").equals("matching")) {
+			double wrongResponses = 0;
+			double correctResponses = 0;
+
+			for (SimplePageQuestionAnswer answer : simplePageToolDao.findAnswerChoices(question)) {
+				final String p = answer.getPrompt();
+				final String r = answer.getResponse();
+				final String s = response.getUserResponses().remove(0);
+
+				if (StringUtils.equalsIgnoreCase(r, s)) {
+					correctResponses++;
+				} else {
+					wrongResponses++;
+				}
+			}
+
+			correct = wrongResponses == 0 && correctResponses > 0;
+			double percentageCorrect = correctResponses / (correctResponses + wrongResponses);
+			gradebookPoints = Math.round( (percentageCorrect * (gradebookPoints != null ? gradebookPoints : 0) * 100.0) ) / 100.0;
+    // TODO hotspot scoring
+		}else if(question.getAttribute("questionType") != null && question.getAttribute("questionType").equals("hotspot")) {
 			double wrongResponses = 0;
 			double correctResponses = 0;
 
