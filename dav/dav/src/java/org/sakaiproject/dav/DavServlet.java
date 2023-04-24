@@ -176,7 +176,6 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.AuthenticationManager;
-import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ExternalTrustedEvidence;
 import org.sakaiproject.util.IdPwEvidence;
 import org.sakaiproject.util.RequestFilter;
