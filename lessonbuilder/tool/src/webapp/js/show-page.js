@@ -3674,14 +3674,13 @@ function prepareQuestionDialog() {
 	    $('#question-error').text(intError(safeParseInt($("#question-max").val())));
 	    $('#question-error-container').show();
 	    return false;
-	} else if($("#question-graded").prop("checked") && $("#question-gradebook-title").val() === '') {
+	} else if ($("#question-graded").prop("checked") && $("#question-gradebook-title").val() === '') {
 	    $('#question-error').text(msg("simplepage.gbname-expected"));
 	    $('#question-error-container').show();
 	    return false;
 	} else if ($("#question-text-area-evolved\\:\\:input").val() === '') {
 	    $('#question-error').text(msg("simplepage.missing-question-text"));
 	    $('#question-error-container').show();
-	    return false;
 	} else if ($("#multipleChoiceSelect").prop("checked") && 
 		   $(".question-multiplechoice-answer").filter(function(index){return $(this).val() !== '';}).length < 2) {
 	    $('#question-error').text(msg("simplepage.question-need-2"));
@@ -3704,7 +3703,7 @@ function prepareQuestionDialog() {
 
 // Reset the multiple choice answers to prevent problems when submitting a shortanswer
 function resetMultipleChoiceAnswers() {
-	var firstMultipleChoice = $("#copyableMultipleChoiceAnswer");
+	const firstMultipleChoice = $("#copyableMultipleChoiceAnswer");
 	firstMultipleChoice.find(".question-multiplechoice-answer-id").val("-1");
 	firstMultipleChoice.find(".question-multiplechoice-answer").val("");
 	firstMultipleChoice.find(".question-multiplechoice-answer-correct").prop("checked", false);
@@ -3714,7 +3713,7 @@ function resetMultipleChoiceAnswers() {
 
 //Reset the shortanswers to prevent problems when submitting a multiple choice
 function resetShortanswers() {
-  var firstShortAnswerChoice = $("#copyableShortanswer");
+  const firstShortAnswerChoice = $("#copyableShortanswer");
   firstShortAnswerChoice.find(".question-shortanswer-answer").val("");
   $("#shortAnswersTableBody").empty();
   $("#shortAnswersTableBody").append(firstShortAnswerChoice);
