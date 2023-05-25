@@ -39,6 +39,7 @@
     --topNav-text-color: hsl(220, 4%, 83%);
 }
 $skin-name: "wellesley" !default;
+$top-header-text-display: block;
 
 a#loginLink1:hover {
    color: #c7d5dd;
@@ -46,4 +47,8 @@ a#loginLink1:hover {
 
 a#loginLink2:hover {
    color: #c7d5dd;
+}
+
+.navIntraTool li span a[title="Transfer Files"] {
+    display: none;
 }

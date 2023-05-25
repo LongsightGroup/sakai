@@ -1,0 +1,59 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 340, 59%, 34%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/amc.svg);
+    --logo-height: 53px;
+    --logo-width: 213px;
+
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    //Sites Nav
+    //--sites-nav-background: hsl(0, 0%, 60%);
+    //--sites-nav-menu-item-background: hsl(199, 94%, 31%);
+    //--sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    //--sites-nav-menu-item-hover-background: hsl(199, 52%, 45%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(340, 34%, 47%);
+    --sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(340, 34%, 47%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(340, 34%, 47%);
+    --tool-menu-item-selected-hover-text-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 0%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-icon-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+
+    //Link colors
+    //--link-color: hsl(0, 0%, 0%);
+    //--link-active-color: var(--sakai-brand);
+    //--link-hover-color: var(--sakai-brand);
+    //--link-background-color: transparent;
+    //--link-active-background-color: transparent;
+    //--link-hover-background-color: transparent;
+}
+
+:root.sakaiUserTheme-dark {
+//    --topNav-text-color: hsl(220, 4%, 83%);
+//    --logo: url(#{$skin-path}images/amc-dark.png);
+}
+
+$skin-name: "amc" !default;
+$banner-height: 55px;

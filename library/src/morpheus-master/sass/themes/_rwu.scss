@@ -1,0 +1,119 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 207, 100%, 17%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/rwu.svg);
+    --logo-height: 50px;
+    --logo-width: 111px;
+
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+    --become-user-primary: var(--sakai-brand);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(206, 40%, 33%);
+    --sites-nav-menu-item-hover-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-icon-background: hsl(206, 40%, 33%);
+
+    --sites-nav-menu-item-selected-background: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-hover-background: hsl(0, 0%, 95%);
+    --sites-nav-menu-item-selected-hover-color: var(--sakai-brand);
+    --sites-nav-menu-item-selected-hover-icon-background: hsl(0, 0%, 95%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-text-color: var(--sakai-brand);
+    --tool-menu-item-selected-icon-color: var(--sakai-brand);
+    --tool-menu-item-selected-hover-background-color: hsl(0, 0%, 95%);
+    --tool-menu-item-selected-hover-text-color: var(--sakai-brand);
+    --tool-menu-item-selected-hover-icon-color: var(--sakai-brand);
+
+    //Buttons
+    // Default (non-primary) button design:
+    --button-text-color: var(--sakai-brand);
+    --button-background: hsl(0, 0%, 100%);
+    --button-border-color: var(--sakai-brand);
+    --button-shadow: none;
+    // hover and focus states:
+    --button-hover-text-color: var(--sakai-brand);
+    --button-hover-background: hsl(200, 23%, 97%);
+    --button-hover-border-color: var(--sakai-brand);
+    --button-hover-shadow: none;
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-icon-color: hsl(0, 0%, 40%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+
+    //Link colors
+    //--link-color: hsl(0, 0%, 0%);
+    //--link-active-color: var(--sakai-brand);
+    //--link-hover-color: var(--sakai-brand);
+    //--link-background-color: transparent;
+    //--link-active-background-color: transparent;
+    //--link-hover-background-color: transparent;
+}
+
+:root.sakaiUserTheme-dark {
+//    --topNav-text-color: hsl(220, 4%, 83%);
+//    --logo: url(#{$skin-path}images/rwu-dark.png);
+}
+
+$skin-name: "rwu" !default;
+$banner-height: 55px;
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+	color: #FFF !important;
+    }
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: var(--link-color) !important;
+    }
+    body.toolsNav--displayed #toolMenu, body.toolsNav--displayed #subSites {
+        background-color: #ffffff !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
+        background-color: #ffffff !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link {
+        background: #76818d !important;
+    }
+    #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon, #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+        color: #fff !important;
+    }
+    #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--title, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--title, #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--title, #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--title {
+        color: #FFF;
+    }
+}
+
+.Mrphs-sitesNav__menuitem.view-all-sites-btn a:after {
+    content: "My Courses";
+}
+
+
+.lastcol {
+    margin-right: 4px !important;
+}
+
+a[label="bridgeshelp"] {
+    margin-right: 294px;
+}
+a[label="loginhelp"] {
+    margin-right: 261px;
+}
+
+#Mrphs-xlogin fieldset input[type="submit"], #Mrphs-choice fieldset input[type="submit"] {
+    margin: 0px 20px 1em 0px;
+    background: #003057;
+    color: white;
+}

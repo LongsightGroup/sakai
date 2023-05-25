@@ -1,0 +1,88 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 0, 100%, 25%);
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/virtues.png);
+    --logo-height: 85px;
+    --logo-width: 148px;
+
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(0, 50%, 40%);
+    --sites-nav-menu-item-hover-icon-background: hsl(0, 50%, 40%);
+    // --sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(0, 0%, 11%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(0, 0%, 29%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+
+    --sites-nav-submenu-item-selected-hover-color: hsl(0, 0%, 100%);
+    --sites-nav-submenu-item-selected-hover-icon-color: hsl(0, 0%, 100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(0, 50%, 40%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "virtues" !default;
+$banner-height: 85px;
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color:var(--sakai-brand) !important;
+    }
+
+    .Mrphs-siteHierarchy a {
+	color: hsl(0,0%,100%) !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+	color: hsl(0, 0%, 100%) !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li .Mrphs-toolsNav__menuitem--link {
+	background-color: hsl(0, 0%, 100%) !important;
+    }
+    body.toolsNav--displayed #toolMenu, body.toolsNav--displayed #subSites {
+	background-color: hsl(0, 0%, 100%) !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link {
+	background: var(--sakai-brand) !important;
+    }
+
+    //.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    //    width: 200px !important;
+    //    background-size: 200px 40px !important;
+    //}
+
+    //#mastLogin {
+    //    width: calc(100% - 200px) !important;
+    //}
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid hsl(0, 0%, 100%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid hsl(0, 0%, 11%);
+}

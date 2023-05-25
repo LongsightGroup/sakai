@@ -1,0 +1,796 @@
+/* Light Theme */
+
+:root {
+
+  // Primary Color
+  @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
+
+  // Logo and Defaults
+  --logo: url(#{$skin-path}images/questromtools-logo.svg);
+  --logo-height: 75px;
+  --logo-width: 385px;
+
+  --top-header-background: hsl(0, 0%, 100%);
+  --topNav-text-color: hsl(0, 0%, 0%);
+
+  //Tab Colors
+  --tool-tab-background-color: hsl(0, 0%, 100%);
+  --tool-tab-active-text-color: hsl(351, 62%, 41%);
+  --tool-tab-active-highlight-color: hsl(351, 62%, 41%);
+
+  --lessons-item-border-top-color: hsl(0, 0%, 96%);
+
+  //Sites Nav
+  --sites-nav-background: hsl(0, 0%, 94%);
+  --sites-nav-menu-item-background: hsl(0, 0%, 94%);
+  --sites-nav-menu-item-color: var(--sakai-brand);
+  --sites-nav-menu-item-hover-background: hsl(0, 0%, 100%);
+  --sites-nav-menu-item-hover-icon-background: hsl(0, 0%, 100%);
+  //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+  --sites-nav-menu-item-selected-background: hsl(203, 81%, 52%);
+  --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+  --sites-nav-menu-item-selected-hover-background: hsl(203, 81%, 71%);
+  --sites-nav-menu-item-selected-hover-color: var(--sakai-brand);
+  --sites-nav-menu-item-selected-hover-icon-background: hsl(203, 81%, 71%);
+
+  //Tool Menu
+  --tool-menu-background-color: hsl(0, 0%, 7%);
+
+  --tool-menu-item-background-color: hsl(0, 0%, 7%);
+  --tool-menu-item-text-color: hsl(0, 0%, 100%);
+  --tool-menu-item-icon-color: hsl(0, 0%, 100%);
+  --tool-menu-item-hover-background-color: hsl(180, 100%, 25%);
+  --tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+  --tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+
+  --tool-menu-item-selected-background-color: hsl(180, 100%, 25%);
+  --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+  --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+  --tool-menu-item-selected-hover-background-color: hsl(180, 100%, 25%);
+  --tool-menu-item-selected-hover-text-color: hsl(0, 0%, 100%);
+  --tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 100%);
+
+  //Link colors
+  --link-color: hsl(203, 76%, 25%);
+  --link-active-color: hsl(203, 38%, 40%);
+  --link-hover-color: hsl(203, 38%, 40%);
+  --link-background-color: transparent;
+  --link-active-background-color: transparent;
+  --link-hover-background-color: transparent;
+
+  // Button Colors
+  --button-text-color: var(--sakai-brand);
+  --button-background: hsl(0, 0%, 100%);
+  --button-border-color: var(--sakai-brand);
+
+  --button-hover-background: hsl(200, 23%, 97%);
+  --button-hover-border-color: var(--sakai-brand);
+
+}
+
+:root.sakaiUserTheme-dark {
+  //    --topNav-text-color: hsl(220, 4%, 83%);
+  --logo: url(#{$skin-path}images/qst-dark.png);
+}
+
+$skin-name: "questrom" !default;
+$banner-height: 80px;
+
+// CUSTOM CSS
+
+li.Mrphs-sitesNav__menuitem {
+  border: 1px solid hsl(0, 0%, 0%);
+}
+
+li.Mrphs-sitesNav__menuitem.is-selected {
+  border: none !important;
+}
+
+li.Mrphs-sitesNav__menuitem {
+  font-weight: bold;
+}
+
+li.Mrphs-userNav__submenuitem.Mrphs-userData {
+  background: #e5e5e5 !important;
+}
+
+@media only screen and (max-width: 800px) {
+  .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    width: 250px !important;
+    background-size: 250px 35px !important;
+  }
+
+  #mastLogin {
+    width: calc(100% - 250px) !important;
+  }
+}
+
+// QST Provided CSS Properties
+a {
+  outline: none;
+}
+
+a:active,
+a:focus,
+select:active,
+select:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button,
+button:hover,
+button:active,
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+#mastLogin #loginLinks ul li a {
+  transition: all 0.3s;
+}
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+  background-size: contain !important;
+}
+
+
+/* LIGHT THEME FIXES: made by Alessio 8th April 2022 */
+
+/* Header Containing Home and Courses Buttons */
+#topnav_container {
+  background-color: var(--top-header-background) !important;
+}
+
+#topnav a,
+#topnav span,
+#topnav a:hover,
+#topnav span:hover,
+#topnav a:active,
+#topnav span:active,
+#topnav a:focus,
+#topnav span:focus {
+  border: none !important;
+  background: none !important;
+}
+
+input,
+input:focus,
+input:active {
+  box-shadow: none !important;
+}
+
+input[type=submit].active,
+input[type=button].active,
+button.active,
+input[value="Save settings"] {
+  background-color: var(--tool-menu-item-selected-background-color);
+  color: #fff;
+}
+
+input[type=submit].active:hover,
+input[type=button].active:hover,
+button.active:hover,
+input[value="Save settings"]:hover {
+  background-color: var(--sakai-color-teal--lighter-3);
+}
+
+#topnav li.is-selected,
+#topnav li.is-selected ul {
+  background-color: var(--tool-menu-item-selected-background-color) !important;
+}
+
+#topnav li.is-selected a {
+  border-color: var(--tool-menu-item-selected-background-color) !important;
+  color: #fff !important;
+}
+
+#topnav li.is-selected ul li a,
+#topnav li.is-selected ul li a span span::before {
+  color: black !important;
+}
+
+#topnav li.dropdown-is-visible ul li a:hover {
+  background-color: #fff !important;
+}
+
+#topnav li.is-selected.dropdown-is-visible ul li a:hover {
+  background-color: var(--sakai-color-teal--lighter-3) !important;
+}
+
+#topnav li.is-selected.dropdown-is-visible ul li a:hover span span,
+#topnav li.is-selected.dropdown-is-visible ul li a span span {
+  color: #fff !important;
+}
+
+/* Courses Next To Home Button */
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__favbtn:hover,
+#linkNav ul li.Mrphs-sitesNav__menuitem .link-container {
+  border: none;
+  color: var(--sakai-brand);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .link-container {
+  border: none;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .link-container:hover,
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:hover,
+#linkNav ul li.Mrphs-sitesNav__menuitem:active a {
+  border: none;
+  background-color: rgb(255, 255, 255);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem:active {
+  background-color: rgb(255, 255, 255);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown,
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown.is-clicked,
+#linkNav ul li.Mrphs-sitesNav__menuitem.dropdown-is-visible .link-container,
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__favbtn,
+#linkNav ul li.Mrphs-sitesNav__menuitem.dropdown-is-visible .Mrphs-sitesNav__favbtn {
+  border: none;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem:hover,
+#linkNav ul li.Mrphs-sitesNav__menuitem:hover a
+ {
+  box-shadow: none;
+  background-color: var(--sakai-color-teal--lighter-3);
+  border-color: #000;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem:active,
+#linkNav ul li.Mrphs-sitesNav__menuitem:active a {
+  background-color: var(--sites-nav-menu-item-background) !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__submenu {
+  background-color: var(--sites-nav-menu-item-background) !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__submenu .Mrphs-sitesNav__submenuitem .Mrphs-sitesNav__submenuitem-link:active {
+  background-color: rgb(255, 255, 255);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:hover,
+#linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:focus {
+  color: rgb(0, 0, 0);
+}
+
+
+/* Sidebar */
+#toolMenuWrap,
+#toolMenu ul li.Mrphs-collapseTools {
+  background: #fff !important;
+}
+
+#toolMenu ul li.Mrphs-collapseTools:hover {
+  background: #fff !important;
+}
+
+#toolMenu ul li.Mrphs-collapseTools span {
+  color: black !important;
+}
+
+#toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link,
+#toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link:active,
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link:hover {
+  background-color: var(--sakai-color-teal--lighter-3) !important;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link,
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link.is-invisible {
+  background: #fff !important;
+  color: black !important;
+}
+
+#toolMenu ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+  color: black !important;
+}
+
+/* Calendars */
+.ui-datepicker .ui-datepicker-calendar .ui-state-default.ui-state-active {
+  background: black;
+  color: white;
+}
+
+.Mrphs-html .ui-widget.ui-slider {
+  background: #dedede;
+}
+
+#calendar-permissions-table tr td:hover,
+#calendar-permissions-table.checkGrid td.active,
+#calendar-permissions-table .rowHover {
+  background-color: #fff;
+}
+
+#calendar-permissions-table th.rowHover {
+  background-color: var(--sakai-background-color-2);
+}
+
+/* Email Permission Hover Fix */
+#mailtool-permissions-table tr td:hover,
+#mailtool-permissions-table.checkGrid td.active,
+#mailtool-permissions-table .rowHover {
+  background-color: #fff;
+}
+
+#mailtool-permissions-table th.rowHover {
+  background-color: var(--sakai-background-color-2);
+}
+
+/* Roster Permission Hover Fix */
+#roster-permissions-table tr td:hover,
+#roster-permissions-table.checkGrid td.active,
+#roster-permissions-table .rowHover {
+  background-color: #fff;
+}
+
+#roster-permissions-table th.rowHover {
+  background-color: var(--sakai-background-color-2);
+}
+
+/* Permissions Hover Fix */
+#asn-permissions-table tr td:hover,
+#asn-permissions-table.checkGrid td.active,
+#asn-permissions-table .rowHover {
+  background-color: #fff;
+}
+
+#asn-permissions-table th.rowHover {
+  background-color: var(--sakai-background-color-2);
+}
+
+
+/* DARK THEME FIXES: made by Alessio 4th April 2022 */
+.sakaiUserTheme-dark:root {
+  --top-header-background: #121212;
+  --topNav-text-color: #fff;
+  --tool-menu-background-color: #121212;
+  --lighter-green: #4ca6a6;
+  --logo: url(/library/skin/questrom/images/qst-dark.png);
+}
+
+.sakaiUserTheme-dark input[type='checkbox']:focus {
+  box-shadow: none;
+}
+
+.sakaiUserTheme-dark input[type='checkbox']:checked {
+  background-color: hsl(180, 100%, 25%);
+}
+
+.sakaiUserTheme-dark #jumptotop.jumptotop.visible {
+  opacity: 50% !important;
+  background-color: #fff !important;
+}
+
+.sakaiUserTheme-dark #toolMenu ul li .Mrphs-toolsNav__menuitem--link:focus {
+  color: white !important;
+}
+
+.sakaiUserTheme-dark #portal-bullhorn-no-alerts {
+  color: black;
+}
+
+/* Dark Mode Error Message */
+.sakaiUserTheme-dark .sak-banner-error {
+  /* color: #ee675c; */
+  /* color: #ffbdb9; */
+  color: #fff;
+  background-color: rgba(255, 99, 71, 0.4);
+}
+
+/* Dark Mode Warning Message */
+.sakaiUserTheme-dark .sak-banner-warn {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+/* Dark Mode Info Message */
+.sakaiUserTheme-dark .text-info,
+.sakaiUserTheme-dark .sak-banner-info,
+.sakaiUserTheme-dark .Mrphs-sakai-siteinfo h4.toggleAnchor {
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(2, 136, 209, 0.5) !important;
+}
+
+/* Dark Mode Success Message */
+.sakaiUserTheme-dark .sak-banner-success {
+  background-color: #00887B;
+  color: #fff;
+}
+
+
+/* User Preferences Shortcut */
+.sakaiUserTheme-dark #otherSitesMenu .fa-times {
+  color: white;
+}
+
+.sakaiUserTheme-dark #selectSite ul li,
+.sakaiUserTheme-dark #selectSite ul li span {
+  transition: all 0.5s;
+}
+
+.sakaiUserTheme-dark .tab-bar li span,
+.sakaiUserTheme-dark #selectSite .tab-bar .tab-btn {
+  color: black;
+}
+
+.sakaiUserTheme-dark .tab-bar li.active span,
+.sakaiUserTheme-dark #selectSite .tab-bar .active {
+  color: #dedede;
+}
+
+.sakaiUserTheme-dark #selectSite .tab-bar .tab-btn:hover {
+  background-color: #dedede;
+}
+
+.sakaiUserTheme-dark #selectSite .tab-bar .tab-btn.active:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sakaiUserTheme-dark #favorite-settings-pane button {
+  background: var(--all-sites-background-color);
+}
+
+.sakaiUserTheme-dark #favorite-settings-pane button[aria-checked='false'] :first-child {
+  background: var(--tool-menu-item-selected-background-color);
+}
+
+.sakaiUserTheme-dark #favorite-settings-pane button[aria-checked='true'] :last-child {
+  background: var(--tool-menu-item-selected-background-color);
+}
+
+/* User Profile (on Top Right) */
+.sakaiUserTheme-dark #mastLogin #loginLinks ul {
+  background-color: rgb(0, 0, 0);
+}
+
+.sakaiUserTheme-dark #mastLogin #loginLinks ul .Mrphs-userData {
+  background-color: rgb(0, 0, 0) !important;
+}
+
+.sakaiUserTheme-dark #mastLogin #loginLinks ul .Mrphs-userNav__submenuitem-indented {
+  background-color: rgb(0, 0, 0);
+}
+
+/* Header Containing Home and Courses Buttons */
+.sakaiUserTheme-dark #topnav_container {
+  background-color: var(--top-header-background);
+}
+
+.sakaiUserTheme-dark #topnav a,
+.sakaiUserTheme-dark #topnav span,
+.sakaiUserTheme-dark #topnav a:hover,
+.sakaiUserTheme-dark #topnav span:hover,
+.sakaiUserTheme-dark #topnav a:active,
+.sakaiUserTheme-dark #topnav span:active,
+.sakaiUserTheme-dark #topnav a:focus,
+.sakaiUserTheme-dark #topnav span:focus {
+  border: none;
+  background: none !important;
+}
+
+.sakaiUserTheme-dark input,
+input:focus,
+input:active {
+  box-shadow: none !important;
+}
+
+.sakaiUserTheme-dark input[type='submit'].active,
+.sakaiUserTheme-dark input[type='button'].active,
+.sakaiUserTheme-dark button.active,
+.sakaiUserTheme-dark input[value='Save settings'] {
+  background-color: var(--tool-menu-item-selected-background-color);
+  color: #fff;
+}
+
+.sakaiUserTheme-dark input[type='submit'].active:hover,
+.sakaiUserTheme-dark input[type='button'].active:hover,
+.sakaiUserTheme-dark button.active:hover,
+.sakaiUserTheme-dark input[value='Save settings']:hover {
+  background-color: var(--lighter-green);
+}
+
+.sakaiUserTheme-dark #topnav li.is-selected,
+.sakaiUserTheme-dark #topnav li.is-selected ul {
+  background-color: var(--tool-menu-item-selected-background-color) !important;
+}
+
+.sakaiUserTheme-dark #topnav li.is-selected a {
+  border-color: var(--tool-menu-item-selected-background-color) !important;
+  color: #fff !important;
+}
+
+.sakaiUserTheme-dark #topnav li.dropdown-is-visible ul li a:hover {
+  background-color: #fff !important;
+}
+
+.sakaiUserTheme-dark #topnav li.is-selected.dropdown-is-visible ul li a:hover {
+  background-color: var(--lighter-green) !important;
+}
+
+.sakaiUserTheme-dark #topnav li.is-selected.dropdown-is-visible ul li a:hover span span,
+.sakaiUserTheme-dark #topnav li.is-selected.dropdown-is-visible ul li a span span {
+  color: #fff !important;
+}
+
+/* Courses Next To Home Button */
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__favbtn:hover,
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .link-container {
+  color: var(--sakai-brand);
+}
+
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .link-container {
+  border: none;
+}
+
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .link-container:hover,
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:hover,
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem:active a {
+  border: none;
+  background-color: rgb(255, 255, 255);
+  color: black !important;
+}
+
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem:active,
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem:active a {
+  background-color: rgb(255, 255, 255);
+}
+
+.sakaiUserTheme-dark #topnav li.is-selected ul li a,
+.sakaiUserTheme-dark #topnav li.is-selected ul li a span span::before {
+  color: #fff !important;
+}
+
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__submenu .Mrphs-sitesNav__submenuitem .Mrphs-sitesNav__submenuitem-link:active {
+  background-color: rgb(255, 255, 255);
+}
+
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:hover,
+.sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem .Mrphs-sitesNav__dropdown:focus {
+  color: rgb(0, 0, 0);
+}
+// .sakaiUserTheme-dark #linkNav ul li.Mrphs-sitesNav__menuitem:hover {
+//   background-color: var(--sites-nav-menu-item-background);
+// }
+
+
+/* Sidebar */
+.sakaiUserTheme-dark #toolMenuWrap,
+.sakaiUserTheme-dark #toolMenu ul li.Mrphs-collapseTools {
+  background-color: var(--top-header-background) !important;
+}
+
+.sakaiUserTheme-dark #toolMenu ul li .Mrphs-toolsNav__menuitem--link {
+  background-color: var(--tool-menu-item-background-color) !important;
+  color: var(--tool-menu-item-text-color) !important;
+}
+
+.sakaiUserTheme-dark #toolMenu ul li .Mrphs-toolsNav__menuitem--link .Mrphs-toolsNav__menuitem--icon {
+  color: var(--tool-menu-item-text-color) !important;
+}
+
+.sakaiUserTheme-dark #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link {
+  background-color: var(--tool-menu-item-selected-background-color) !important;
+}
+
+.sakaiUserTheme-dark #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link:active {
+  background-color: var(--lighter-green);
+}
+
+.sakaiUserTheme-dark #toolMenu ul li .Mrphs-toolsNav__menuitem--link:hover,
+.sakaiUserTheme-dark #toolMenu ul li .Mrphs-toolsNav__menuitem--link:focus {
+  background-color: var(--lighter-green) !important;
+  color: white !important;
+}
+
+/* Calendar Section */
+.sakaiUserTheme-dark #ui-datepicker-div button {
+  transition: all 0.3s;
+}
+
+.sakaiUserTheme-dark #ui-datepicker-div .ui-state-active {
+  color: white;
+  background-color: hsl(180, 100%, 25%);
+}
+
+.sakaiUserTheme-dark #ui-datepicker-div .ui-state-hover {
+  color: white;
+  background-color: hsl(180, 100%, 25%);
+}
+
+/* Resources Section */
+.sakaiUserTheme-dark #showForm .fa {
+  color: white;
+}
+
+.sakaiUserTheme-dark #showForm a,
+.sakaiUserTheme-dark #showForm li {
+  color: white;
+}
+
+.sakaiUserTheme-dark #showForm a:hover,
+.sakaiUserTheme-dark #showForm li:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.sakaiUserTheme-dark #showForm .close-button {
+  color: white;
+}
+
+.sakaiUserTheme-dark .permissions-table.listHier tr td:hover,
+.sakaiUserTheme-dark .permissions-table.listHier .rowHover {
+  background-color: rgb(31, 34, 37);
+}
+
+/* Assignments Section */
+.sakaiUserTheme-dark .Mrphs-sakai-assignment-grades .discTria>a {
+  text-decoration: underline;
+  color: black;
+}
+
+/* Assignments - Private Notes */
+.sakaiUserTheme-dark .ui-icon-closethick {
+  color: #fff;
+  background-color: rgb(0, 0, 0);
+}
+
+/* Profile Section */
+.sakaiUserTheme-dark #id4f .profileSayItActionBar input {
+  background-color: rgba(0, 128, 128, 1);
+  border: none;
+}
+
+.sakaiUserTheme-dark #id4f .profileSayItActionBar input:hover {
+  background-color: rgba(0, 128, 128, 0.6);
+}
+
+.sakaiUserTheme-dark #id86 input {
+  background-color: rgba(0, 128, 128, 1);
+  color: white;
+}
+
+.sakaiUserTheme-dark #id86 input:hover {
+  background-color: rgba(0, 128, 128, 0.6);
+}
+
+.sakaiUserTheme-dark #id93 .pageFormButtons input {
+  background-color: rgba(0, 128, 128, 1);
+  color: white;
+}
+
+.sakaiUserTheme-dark #id93 .pageFormButtons input:hover {
+  background-color: rgba(0, 128, 128, 0.6);
+}
+
+/* Preferences Section */
+.sakaiUserTheme-dark input,
+.sakaiUserTheme-dark input:focus,
+.sakaiUserTheme-dark input:hover,
+.sakaiUserTheme-dark input:active {
+  transition: all 0.3s;
+}
+
+.sakaiUserTheme-dark input[type='radio']:checked {
+  background: var(--tool-menu-item-selected-background-color);
+  box-shadow: 0 0 3px 3px rgb(0, 128, 128);
+}
+
+.sakaiUserTheme-dark .navIntraTool li span a,
+.sakaiUserTheme-dark #options_form .navIntraTool a {
+  color: black;
+}
+
+.sakaiUserTheme-dark .navIntraTool li span a:hover,
+.sakaiUserTheme-dark #options_form .navIntraTool a:hover {
+  background-color: #dedede;
+  color: black;
+}
+
+.sakaiUserTheme-dark #sitesByTerm .term-section span {
+  color: black;
+}
+
+.sakaiUserTheme-dark .manage-hidden-entry.site-entry.entry-hidden {
+  background-color: #dedede;
+}
+
+.sakaiUserTheme-dark #options_form .act input:first-child {
+  background-color: rgba(0, 128, 128, 1);
+}
+
+.sakaiUserTheme-dark #options_form .act input:first-child:hover {
+  background-color: rgba(0, 128, 128, 0.6);
+}
+
+/* Announcements Section */
+.sakaiUserTheme-dark .checkGrid td.active {
+  background-color: rgb(31, 34, 37);
+}
+
+.sakaiUserTheme-dark .ui_tpicker_hour .ui-slider-handle,
+.sakaiUserTheme-dark .ui_tpicker_minute .ui-slider-handle {
+  background-color: var(--tool-menu-item-selected-background-color);
+}
+
+.sakaiUserTheme-dark span[role='toolbar'] button {
+  background-color: var(--tool-menu-item-selected-background-color);
+}
+
+.sakaiUserTheme-dark span[role='toolbar'] button:hover,
+.sakaiUserTheme-dark span[role='toolbar'] button:active,
+.sakaiUserTheme-dark span[role='toolbar'] button:focus {
+  background-color: var(--tool-menu-item-selected-background-color);
+}
+
+/* Gradebook */
+.sakaiUserTheme-dark .gb-toggle-grade-items-panel ul a {
+  color: white;
+}
+
+.sakaiUserTheme-dark .dropdown-menu>li>a {
+  color: #fff;
+}
+
+.sakaiUserTheme-dark .dropdown-menu>li>a:hover {
+  background-color: var(--sakai-background-color-2);
+}
+
+/* Gradebook - Grade Summary  */
+.sakaiUserTheme-dark #_wicket_window_1 .nav.nav-tabs>li>a {
+  color: black;
+}
+
+.sakaiUserTheme-dark #_wicket_window_1 .nav.nav-tabs>li.active>a {
+  color: white;
+}
+
+/* Email*/
+.sakaiUserTheme-dark #mailtool-permissions-table tr td:hover,
+.sakaiUserTheme-dark #mailtool-permissions-table .rowHover {
+  background-color: rgb(31, 34, 37);
+}
+
+/* Email Archive */
+.sakaiUserTheme-dark #mail-permissions-table tr td:hover,
+.sakaiUserTheme-dark #mail-permissions-table .rowHover {
+  background-color: rgb(31, 34, 37);
+}
+
+/* Site Info - Tool Order */
+.sakaiUserTheme-dark #reorder-list li {
+  border: none;
+}
+
+.sakaiUserTheme-dark #reorder-list li div a {
+  transition: all 0.3s;
+}
+
+.sakaiUserTheme-dark #reorder-list li div a:hover {
+  background-color: rgb(31, 34, 37);
+  border-color: rgb(31, 34, 37);
+}
+
+/* Roster - Permissions */
+.sakaiUserTheme-dark #roster-permissions-table tr td:hover,
+.sakaiUserTheme-dark #roster-permissions-table .rowHover {
+  background-color: rgb(31, 34, 37);
+}
+
+/* Test and Quizzies */
+.sakaiUserTheme-dark #jqueryui-accordion h3 {
+  background-color: rgb(31, 34, 37);
+}
+
+.sakaiUserTheme-dark #jqueryui-accordion h3 a {
+  color: #ddd;
+}
+
+/* Message Bundle */
+.sakaiUserTheme-dark .Mrphs-breadcrumb--toolNameText {
+  color: #ddd;
+}

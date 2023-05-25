@@ -55,3 +55,18 @@ $skin-name: 'luc';
     }
 }
 */
+a#lti-import-link {
+    display: none;
+}
+
+input#createTask {
+    display: none;
+}
+
+label[for="createTask"] {
+    display: none;
+}
+
+.Mrphs-toolTitleNav sakai-maximise-button {
+    display: none !important;
+}
