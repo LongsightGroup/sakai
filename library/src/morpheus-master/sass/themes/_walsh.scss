@@ -35,6 +35,8 @@
     --tool-menu-item-selected-hover-text-color: hsl(0, 0%, 100%);
     --tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 100%);
 
+    --tool-lessons-toplevel-menu-expanded-selected-color: hsl(0,0%,0%);
+
     //--tool-menu-item-background-color: hsl(206, 16%, 39%);
     //--tool-menu-item-text-color: hsl(0, 0%, 40%);
     //--tool-menu-item-icon-color: hsl(0, 0%, 40%);
@@ -64,9 +66,9 @@
         width: 106px !important;
         background-size: 106px 40px !important;
     }
-    #mastLogin {
-        width: calc(100% - 106px) !important;
-    }
+//    #mastLogin {
+//        width: calc(100% - 106px) !important;
+//    }
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
 	color: var(--link-color) !important;
     }

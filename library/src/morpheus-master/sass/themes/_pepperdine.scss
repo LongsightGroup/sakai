@@ -1,0 +1,213 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 219, 100%, 18%);
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+    --tool-tab-active-highlight-color: var(--sakai-brand);
+    --tool-tab-active-text-color: var(--sakai-brand);
+    --tool-border-color: hsl(0,0%, 100%);
+    --infoBanner-color: hsl(210, 2%, 20%);
+    --sakai-calendar-today-bg: hsl(0, 1%, 45%);
+    --all-sites-button-selected-background-color: hsl(209, 100%, 93%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/pepperdine-logo.svg);
+    --logo-height: 42px;
+    --logo-width: 200px;
+
+    //Sites Nav
+    //--sites-nav-background: hsl(0, 0%, 95%);
+    //--sites-nav-menu-item-background: hsl(0, 0%, 48%);
+    //--sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    //--sites-nav-menu-item-hover-background: hsl(0, 0%, 58%);
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(199, 100%, 35%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(199, 58%, 48%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 58%);
+
+    --sites-nav-submenu-item-selected-hover-background: hsl(204, 69%, 76%);
+    --sites-nav-submenu-item-selected-hover-color: hsl(219, 100%, 12%);
+    --sites-nav-submenu-item-selected-hover-icon-color: hsl(219, 100%, 12%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(199, 100%, 35%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(199, 58%, 48%);
+    //--tool-menu-item-selected-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-selected-hover-icon-color: hsl(0, 0%, 100%);
+
+    //--tool-menu-item-background-color: hsl(0, 0%, 95%);
+    --tool-menu-item-text-color: hsl(0, 0%, 27%);
+    --tool-menu-item-icon-color: hsl(0, 0%, 27%);
+    //--tool-menu-item-hover-background-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-text-color: hsl(14, 87%, 54%);
+    //--tool-menu-item-hover-icon-color: hsl(14, 87%, 54%);
+
+}
+
+$skin-name: 'pepperdine';
+$sakai-custom-icons: (
+    sakai-sharespring : ( extend : fa-archive ) ,
+    sakai-gsbm-syllabus : ( extend : fa-archive ) ,
+    sakai-automagic : ( extend : fa-binoculars ) ,
+    sakai-livetext : ( extend : fa-database ) ,
+    sakai-zoom : ( extend : fa-handshake-o ) ,
+    sakai-portfolium : ( extend : fa-cloud-upload ) ,
+    sakai-zoompro : ( extend : fa-handshake-o ) ,
+    sakai-panopto : ( extend : fa-video-camera ) ,
+    sakai-proctor : ( extend : fa-asterisk ),
+    sakai-lessonbuildertool : ( extend : fa-leanpub ),
+    sakai-blogwow : ( extend : fa-commenting),
+    );
+
+// Custom CSS
+@media only screen and (max-width: 800px) {
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+	color: hsl(219, 100%, 18%) !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites ul li.is-current .Mrphs-toolsNav__menuitem--link, body.toolsNav--displayed #subSites #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--link {
+	background: hsl(199, 100%, 35%) !important;
+    }
+    #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--title:after {
+	top: 6px !important;
+    }
+    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+        width: 130px !important;
+        background-size: 130px 27px !important;
+    }
+    #mastLogin {
+        width: calc(100% - 130px) !important;
+    }
+} 
+
+@media only screen and (min-width: 801px) {
+   .Mrphs-toolMenu-collapsed:not(.tool-maximised) #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after{
+        content: '\25c9';
+        position: absolute;
+        right: 4px;
+        top: 0px;
+        color: #FFF;
+        font-size: 25px;
+        display:block;
+    }
+}
+
+// Selected indicator in left tool menu
+.Mrphs-toolMenu-collapsed:not(.tool-maximised) #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after {
+        display:none;
+    }
+
+#toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after {
+    content: '\25c9';
+    position: absolute;
+    right: 4px;
+    top: 0px;
+    color: #FFF;
+    font-size: 25px;
+    display:block;
+}
+
+.fa-lock:before {
+    margin-right:8px;
+}
+
+.fa-eye-slash:before {
+    margin-right:8px;
+}
+
+#toolMenu li.has-lessons-sub-pages ul.lessons-sub-page-menu li.is-current:after {
+    content: '\25c9';
+    position: absolute;
+    right: 12px;
+    top: 0px;
+    color: #FFF;
+    font-size: 25px;
+    display: block;
+}
+// End selected indicator
+
+// Customization for always highlighed SiteInfo tool
+
+nav#toolMenu ul li a[title='Site Info'] {
+    background-color: #c25700 !important;
+    color: #FFF !important;
+}
+
+nav#toolMenu ul li a[title='Site Info - For displaying and managing information and settings about the site']:hover {
+    background-color: #c25700 !important;
+    color: #FFF !important;
+}
+
+nav#toolMenu ul li a[title='Site Info - For displaying and managing information and settings about the site'] {
+    background-color: #c25700 !important;
+    color: #FFF !important;
+}
+
+.Mrphs-toolsNav__menuitem--icon.icon-sakai--sakai-siteinfo.icon-active {
+    color: #FFF !important;
+}
+
+.Mrphs-toolsNav__menuitem--icon.icon-sakai--sakai-siteinfo {
+    color: #282828 !important;
+}
+
+// End always highlighted
+
+// Customization to disable two items from the lessons drop down menu
+#addContentDiv a[title='Add Learning App'] {
+   display: none;
+}
+
+#addContentDiv a[title='Add item from external service that supports the IMS LTI standard. Ask your campus support staff to find out what tools are supported by your campus.'] {
+   display: none;
+}
+// End disable links for lessons
+
+// Hover Login link
+a#loginLink1:hover {
+   color: #FAFAFA;
+}
+
+a#loginLink2:hover {
+   color: #FAFAFA;
+}
+//END Hover Login link
+
+// Change hover color for logout dropdown profile image hover
+#mastLogin .has-avatar .Mrphs-userNav__pic-changer:hover:after, #mastLogin .has-avatar .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span .Mrphs-userNav__pic-changer.paginate_button.current:after, .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span #mastLogin .has-avatar .Mrphs-userNav__pic-changer.paginate_button.current:after, #mastLogin .has-avatar .Mrphs-userNav__pic-changer:active:after, #mastLogin .has-avatar .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span .Mrphs-userNav__pic-changer.paginate_button.current:after, .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span #mastLogin .has-avatar .Mrphs-userNav__pic-changer.paginate_button.current:after {
+    background: #00205c !important;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem, #linkNav #selectQuickLink li.Mrphs-sitesNav__menuitem {
+    margin: 0 10px 10px 0 !important;
+}
+
+.Mrphs-calendarSynoptic .calDay .calToday {
+    background-color: #757373 !important;
+    color: #FFF !important;
+}
+
+span[title="This tool has import options. Click to see them."] {
+    display: none;
+}
+
+.sakai-search-input {
+    display: none !important;
+}
+
+
+.checklistDiv {
+    background-color: #daedff !important;
+}
+
+.Mrphs-sakai-lessonbuildertool .questionDiv .contentCol, .Mrphs-sakai-lessonbuildertool .checklistDiv {
+    background-color: #daedff !important;
+}
+
+.Mrphs-sitesNav__menuitem.view-all-sites-btn a:after {
+    content: "Sites";
+}

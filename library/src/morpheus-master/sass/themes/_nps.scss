@@ -49,6 +49,10 @@ $banner-height: 75px;
     width: var(--logo-width) !important;
 }
 
+a[title="My Official Course Enrollments"] {
+    display: none !important;
+}
+
 @media only screen and (max-width: 800px) {
     .Mrphs-siteHierarchy a {
 	color: hsl(40, 100%, 70%) !important;
