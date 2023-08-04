@@ -75,13 +75,13 @@ $sakai-custom-icons: (
     #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--title:after, #toolMenu #selectQuickLink li.is-current .Mrphs-toolsNav__menuitem--title:after {
 	top: 6px !important;
     }
-    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
-        width: 130px !important;
-        background-size: 130px 27px !important;
-    }
-    #mastLogin {
-        width: calc(100% - 130px) !important;
-    }
+//    .Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+//        width: 130px !important;
+//        background-size: 130px 27px !important;
+//    }
+//    #mastLogin {
+//        width: calc(100% - 130px) !important;
+//    }
 } 
 
 @media only screen and (min-width: 801px) {
