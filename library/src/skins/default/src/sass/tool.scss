@@ -194,8 +194,7 @@ $jumbotron-heading-font-size: $h4-font-size;
 @import "modules/tool/theme-switcher/base";
 @import "modules/tool/multiselect/base";
 @import "modules/tool/sakai-options-menu/sakai-options-menu";
-@import "modules/tool/access";
-
+@import "customization-main.scss";
 
 
 
@@ -271,7 +270,6 @@ iframe[type="application/pdf"] {
     font-weight: bolder;
     font-size: x-large;
 }
-
 .si-info-circle {
     color: var(--sakai-text-color-1);
 }
