@@ -211,3 +211,14 @@ span[title="This tool has import options. Click to see them."] {
 .Mrphs-sitesNav__menuitem.view-all-sites-btn a:after {
     content: "Sites";
 }
+
+i.fa.fa-th.fa-external-link-square:after {
+    content: "Links";
+    margin-left: 5px;
+    font-size: 13pt;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+i.fa.fa-th.fa-external-link-square {
+    padding: 5px 55px 0px 0px;
+}
