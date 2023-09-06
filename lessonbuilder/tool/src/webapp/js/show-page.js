@@ -1365,6 +1365,7 @@ $(document).ready(function() {
 			$('#question-error-container').hide();
 			$("#questionEditId").val("-1");
 			$("#question-text-area-evolved\\:\\:input").val("");
+			CKEDITOR.instances["question-text-area-evolved::input"].setData("");
 			$("#question-answer-input").val("");
 			$("#question-graded").prop("checked", false);
 			$("#question-gradebook-title").val("");
