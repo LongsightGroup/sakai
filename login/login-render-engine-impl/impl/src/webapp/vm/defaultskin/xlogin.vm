@@ -17,7 +17,7 @@
             #if (${notify})
         		<div class="alertMessage" role="alert">${notify}</div>
         	#end
-    		<fieldset style="visibility: hidden">	
+    		<fieldset>	
     			<label for="eid">${loginEidWording}</label>
     			<input name="eid" id="eid" value="${eid}" type="text" autocomplete="username" size="15"/>
     			<label for="pw">${loginPwWording}</label>
