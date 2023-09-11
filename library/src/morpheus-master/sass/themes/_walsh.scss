@@ -75,6 +75,21 @@
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
 	color: var(--link-color) !important;
     }
+    #toolMenuWrap #toolMenu {
+	background: #FFF !important;
+    }
+    a.Mrphs-toolsNav__menuitem--link {
+        color: #FFF !important;
+    }
+    .Mrphs-toolsNav__menuitem--icon {
+        color: #FFF !important;
+    }
+    body.toolsNav--displayed #toolMenu ul li.is-current .Mrphs-toolsNav__menuitem--link {
+        color: #000 !important;
+    }
+    li.is-current .Mrphs-toolsNav__menuitem--icon {
+        color: #000 !important;
+    }
 }
 
 $skin-name: "walsh" !default;

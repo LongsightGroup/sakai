@@ -3,7 +3,7 @@
 :root{
 
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 186, 27%, 59%);
+    @include defineColorHSL(--sakai-brand, 184, 100%, 29%);
 
     // Logo and Defaults
     --logo: url(#{$skin-path}images/ndeo.jpg);
@@ -45,15 +45,15 @@ $banner-height: 52px;
 // Custom CSS
 @media only screen and (max-width: 800px) {
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
-	color: hsl(186, 27%, 59%) !important;
+	color: var(--sakai-brand) !important;
     }
 
     .Mrphs-siteHierarchy a {
-	color: hsl(186, 27%, 59%) !important;
+	color: var(--sakai-brand) !important;
     }
 
     .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
-	color: hsl(186, 27%, 59%) !important;
+	color: var(--sakai-brand) !important;
     }
 }
 
@@ -62,5 +62,5 @@ $banner-height: 52px;
 }
 
 #linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
-    border: 1px solid hsl(186, 27%, 59%);
+    border: 1px solid var(--sakai-brand);
 }
