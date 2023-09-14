@@ -4002,3 +4002,31 @@ function fixStatus(here,itemId) {
 	return;
     };
 }
+
+$.widget( "ui.dialog", $.ui.dialog, {
+ /*
+  *  http://bugs.jqueryui.com/ticket/9087#comment:27 - bugfix
+  *  http://bugs.jqueryui.com/ticket/4727#comment:23 - bugfix
+  *  allowInteraction fix to accommodate windowed editors
+  */
+  _allowInteraction: function( event ) {
+    if ( this._super( event ) ) {
+      return true;
+    }
+
+    // address interaction issues with general iframes with the dialog
+    if ( event.target.ownerDocument != this.document[ 0 ] ) {
+      return true;
+    }
+
+    // address interaction issues with dialog window
+    if ( $( event.target ).closest( ".cke_dialog" ).length ) {
+      return true;
+    }
+
+    // address interaction issues with iframe based drop downs in IE
+    if ( $( event.target ).closest( ".cke" ).length ) {
+      return true;
+    }
+  }
+});
