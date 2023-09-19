@@ -16,7 +16,7 @@ a{
     color: var(--sakai-text-color-1);
     text-decoration: none;
   }
-  &[href] {  // This means a[href]. Do not make this selector more specific.
+  &[href] {  // This means a[href]
     color: var(--link-color);
     &:focus{
       outline: $sakai-focus-outline;
@@ -33,7 +33,7 @@ a{
       background-color: var(--link-active-background-color);
       outline: 0;   // no focus outline on click
     }
-    &.btn{ // Extend the Bootstrap button style to links
+    &.btn{
       @extend .btn;
     }
     &.btn-primary{
