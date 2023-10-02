@@ -9,3 +9,9 @@
     --logo-width: 149px;
 }
 $skin-name: 'johnson';
+
+:root.sakaiUserTheme-dark {
+    input[type="radio"]:checked {
+	background: radial-gradient(circle at center, #fff 0%, #FFF 48%, #FFF 58%);
+    }
+}

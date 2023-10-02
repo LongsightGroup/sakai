@@ -42,6 +42,11 @@
 $skin-name: "joy_restart" !default;
 $banner-height: 77px;
 
+// Dark Mode
+:root.sakaiUserTheme-dark {
+    --topNav-text-color: hsl(0, 0%, 100%);
+}
+
 // Custom CSS
 //@media only screen and (max-width: 800px) {
  //   .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
