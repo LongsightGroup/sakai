@@ -1,18 +1,5 @@
 <div id="loginLinksImage" class="mx-2">
 
-    #if (${loginHasImage1})
-
-        <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="btn btn-dark btn-outline-light mb-1 p-3 my-1" role="button" data-warning="${logoutWarningMessage}"><img src="${loginImage1}" alt="${loginMessage}"></a>
-
-    #else
-
-        <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="btn btn-dark btn-outline-light mb-1 p-3 my-1" role="button" data-warning="${logoutWarningMessage}">
-            <i class="login-Icon"></i>
-            <span>${loginMessage}</span>
-        </a>
-
-    #end ## END of IF (${loginHasImage1})
-
     #if (${loginHasLogInOutUrl2})
 
         #if (${loginHasImage2})
@@ -29,5 +16,18 @@
         #end ## END of IF (${loginHasImage2})
 
    #end ## END of IF (${loginHasLogInOutUrl2})
+
+    #if (${loginHasImage1})
+
+        <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="btn btn-dark btn-outline-light mb-1 p-3 my-1" role="button" data-warning="${logoutWarningMessage}"><img src="${loginImage1}" alt="${loginMessage}"></a>
+
+    #else
+
+        <a href="${loginLogInOutUrl}" title="${loginMessage}" id="loginLink1" class="btn btn-dark btn-outline-light mb-1 p-3 my-1" role="button" data-warning="${logoutWarningMessage}">
+            <i class="login-Icon"></i>
+            <span>${loginMessage}</span>
+        </a>
+
+    #end ## END of IF (${loginHasImage1})
 
 </div>
