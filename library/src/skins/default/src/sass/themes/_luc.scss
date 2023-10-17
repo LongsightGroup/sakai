@@ -3,7 +3,7 @@
 :root{
     @include defineColorHSL(--sakai-brand, 337, 67%, 36%);
     --top-header-background: var(--sakai-brand);
-    --bs-primary-rgb: var(--sakai-brand);
+    --bs-primary-rgb: 153, 30, 77;
     --topNav-text-color: hsl(0, 0%, 100%);
     --sakai-offcanvas-header-bg: var(--sakai-brand);
 
@@ -38,9 +38,25 @@
 $skin-name: 'luc';
 
 // Logo
-#logoWrapper img { 
-    visibility: hidden;
+//#logoWrapper img { 
+//    visibility: hidden;
+//}
+//#logoWrapper button.btn-logo-button {
+//    background: url("/library/skin/images/luc.svg") no-repeat no-repeat;
+//}
+
+a#loginLink1 {
+    color: #FFF;
 }
-#logoWrapper button.btn-logo-button {
-    background: url("/library/skin/images/luc.svg") no-repeat no-repeat;
+
+a#loginLink2 {
+    color: #FFF;
+}
+
+a#loginLink1:hover {
+    color: #000;
+}
+
+a#loginLink2:hover {
+    color: #000;
 }

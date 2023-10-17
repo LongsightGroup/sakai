@@ -168,7 +168,7 @@
 #sakai-system-indicators {
 
   button {
-    color: #fff;
+    color: var(--topNav-text-color);
     margin: 0px 3px;
     i {
       font-size: 22px;
@@ -334,7 +334,7 @@
 
   > span {
     font-size: 28px;
-    color: white;
+    color: var(--topNav-text-color);
   }
 }
 
@@ -405,7 +405,7 @@
         background-color: var(--site-nav-btn-hover-bg);
         color: var(--site-nav-btn-current-hover-color);
         .si-pin, a, button {
-          color: var(--sakai-text-color-1);
+          color: var(--site-nav-btn-hover-color);
         }
       }
     }
@@ -537,7 +537,7 @@
   &.portal-nav-sidebar-desktop {
     background-color: var(--sakai-background-color-3);
     .site-list-item-collapse {
-      background-color: var(--sakai-background-color-2);
+      background-color: var(--site-nav-bg);
     }
   }
 
