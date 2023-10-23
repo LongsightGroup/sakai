@@ -25,6 +25,8 @@ public class EppnSamlFilter implements SAMLUserDetailsService {
         @Override
         public Object loadUserBySAML(SAMLCredential cred) throws UsernameNotFoundException {
                 // https://www.incommon.org/federation/attributesummary.html
-                return cred.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.6");
+                String x = cred.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.6");
+                String y = cred.getAttributeAsString("eduPersonPrincipalName");
+                return (x != null && !x.isEmpty()) ? x : (y != null && !y.isEmpty()) ? y : "";
         }
 }
