@@ -40,3 +40,23 @@ $skin-name: "wjeff";
 ul.other-sites-category-list li.is-selected a {
     color: #FFF;
 }
+
+div#loginLinksImage a {
+    color: #FAFAFA;
+}
+
+
+a#loginLink1:hover {
+    background: var(--sakai-brand);
+}
+
+
+a#loginLink2:hover {
+    background: var(--sakai-brand);
+}
+
+@media only screen and (max-width: 800px) {
+    div#loginLinksImage {
+        display: contents;
+    }
+}
