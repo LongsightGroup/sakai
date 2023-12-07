@@ -1,0 +1,81 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 204, 27%, 36%); 
+
+    // Logo and Defaults
+    --logo: url(#{$skin-path}images/launchx.png);
+    --logo-height: 80px;
+    --logo-width: 63px;
+
+    --top-header-background: hsl(0, 0%, 98%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: transparent;
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(204, 16%, 49%);
+    --sites-nav-menu-item-hover-icon-background: hsl(204, 16%, 49%);
+
+    //--sites-nav-menu-item-hover-color: hsl(40, 100%, 70%);
+
+    --sites-nav-menu-item-selected-background: hsl(16, 81%, 56%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(16, 81%, 65%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+    // --sites-nav-submenu-item-selected-hover-color: hsl(0,0%,100%);
+    // --sites-nav-submenu-item-selected-hover-icon-color: hsl(0,0%,100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(16, 81%, 56%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(16, 81%, 65%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+
+$skin-name: "launchx" !default;
+$banner-height: 80px;
+
+// Dark Mode
+:root.sakaiUserTheme-dark {
+    --topNav-text-color: hsl(0, 0%, 100%);
+}
+
+
+// Custom CSS
+//@media only screen and (max-width: 800px) {
+//    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--worksite a {
+//	color: hsl(0, 0%, 100%) !important;
+//    }
+
+//    .Mrphs-siteHierarchy a {
+//	color: hsl(0, 0%, 100%) !important;
+//    }
+
+//    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+//	color: hsl(0, 0%, 26%) !important;
+//    }
+
+    //.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    //    width: 200px !important;
+    //    background-size: 200px 40px !important;
+    //}
+
+    //#mastLogin {
+    //    width: calc(100% - 200px) !important;
+    //}
+//}
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    margin-left: 10px;
+}
