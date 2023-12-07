@@ -1,0 +1,46 @@
+/* Light Theme */
+
+:root{
+
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 207, 48%, 50%);
+
+    // Logo and Defaults
+    --logo-height: 75px;
+    --logo-width: 75px;
+
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    //Sites Nav
+    --sites-nav-background:  hsl(0, 0%, 100%);
+    --sites-nav-menu-item-background:  hsl(0, 0%, 100%);
+    --sites-nav-menu-item-color: var(--sakai-brand);
+
+    --sites-nav-menu-item-selected-background: var(--sakai-brand);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-selected-hover-background: hsl(207, 48%, 39%);
+    --sites-nav-submenu-item-selected-hover-color: hsl(0,0%,100%);
+    --sites-nav-submenu-item-selected-hover-icon-color: hsl(0,0%,100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: var(--sakai-brand);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 100%);
+    --tool-menu-item-selected-hover-background-color: hsl(207, 48%, 39%);
+
+}
+
+$skin-name: "dodlearn";
+$banner-height: 80px;
+
+
+// Custom CSS
+
+.Mrphs-mainHeader .Mrphs-headerLogo .Mrphs-headerLogo--institution {
+    margin-left: 10px;
+}
+
+li.Mrphs-sitesNav__menuitem {
+    border: 1px solid var(--sakai-brand);
+}
