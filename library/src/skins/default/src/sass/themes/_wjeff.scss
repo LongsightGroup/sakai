@@ -32,7 +32,12 @@
 
     --site-nav-btn-hover-bg: var(--sakai-brand);
     --site-nav-btn-hover-color: hsl(0,0%,100%);
+}
 
+:root.sakaiUserTheme-dark {
+   --site-nav-bg: #31353b;
+   --site-nav-list-item-bg: #31353b;
+   --sticky-footer-bg: #31353b;
 }
 // Custom CSS
 $skin-name: "wjeff";
