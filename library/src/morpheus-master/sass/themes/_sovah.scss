@@ -1,0 +1,65 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 230, 100%, 36%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/sovah.png);
+    --logo-height: 80px;
+    --logo-width: 231px;
+
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+
+    //Sites Nav
+    --sites-nav-background: var(--sakai-brand);
+    --sites-nav-menu-item-background: var(--sakai-brand);
+    --sites-nav-menu-item-color: hsl(0, 0%, 100%);
+    --sites-nav-menu-item-hover-background: hsl(230, 59%, 49%);
+    --sites-nav-menu-item-hover-icon-background: hsl(230, 59%, 49%);
+    --sites-nav-menu-item-hover-color: hsl(0, 0%, 100%);
+
+    --sites-nav-menu-item-selected-background: hsl(100, 100%, 41%);
+    --sites-nav-menu-item-selected-color: hsl(0, 0%, 0%);
+    --sites-nav-menu-item-selected-hover-background: hsl(100, 69%, 53%);
+    //--sites-nav-menu-item-selected-hover-color: hsl(0, 0%, 0%);
+    // --sites-nav-submenu-item-selected-hover-color: hsl(0,0%,100%);
+    // --sites-nav-submenu-item-selected-hover-icon-color: hsl(0,0%,100%);
+
+    //Tool Menu
+    --tool-menu-item-selected-background-color: hsl(100, 100%, 41%);
+    --tool-menu-item-selected-text-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-icon-color: hsl(0, 0%, 0%);
+    --tool-menu-item-selected-hover-background-color: hsl(100, 69%, 53%);
+
+    //--tool-menu-item-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-text-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-icon-color: hsl(40, 100%, 70%);
+    //--tool-menu-item-hover-background-color: hsl(206, 16%, 39%);
+    //--tool-menu-item-hover-text-color: hsl(0, 0%, 100%);
+    //--tool-menu-item-hover-icon-color: hsl(0, 0%, 100%);
+}
+$skin-name: 'sovah';
+$banner-height: 85px;
+
+// Custom CSS
+#linkNav ul li.Mrphs-sitesNav__menuitem {
+    border: 1px solid #FFF;
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #47D000;
+}
+
+:root.sakaiUserTheme-dark {
+}
+
+@media only screen and (max-width: 800px) {
+    .Mrphs-siteHierarchy a {
+      color: hsl(0, 0%, 100%) !important;
+    }
+
+    .Mrphs-skipNav__menu li.Mrphs-skipNav__menuitem.Mrphs-skipNav__menuitem--tools a {
+      color: var(--sakai-brand) !important;
+    }
+}

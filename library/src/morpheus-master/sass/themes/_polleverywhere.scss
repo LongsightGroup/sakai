@@ -1,0 +1,14 @@
+/* Light Theme */
+
+:root{
+    @include defineColorHSL(--sakai-brand, 204, 100%, 40%);
+
+    // Logo
+    --logo: url(#{$skin-path}images/polleverywhere.png);
+    --logo-height: 55px;
+    --logo-width: 272px;
+}
+$skin-name: 'polleverywhere';
+
+:root.sakaiUserTheme-dark {
+}
