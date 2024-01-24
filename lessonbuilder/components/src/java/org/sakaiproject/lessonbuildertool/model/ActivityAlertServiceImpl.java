@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.sakaiproject.api.app.scheduler.DelayedInvocation;
@@ -280,7 +280,7 @@ public class ActivityAlertServiceImpl implements ActivityAlertService {
 		sb.append(MIME_ADVISORY);
 		sb.append(BOUNDARY_LINE);
 		sb.append(PLAIN_TEXT_HEADERS);
-		sb.append(StringEscapeUtils.escapeHtml(message));
+		sb.append(StringEscapeUtils.escapeHtml4(message));
 		sb.append(BOUNDARY_LINE);
 		sb.append(HTML_HEADERS);
 		sb.append(htmlPreamble(subject));
