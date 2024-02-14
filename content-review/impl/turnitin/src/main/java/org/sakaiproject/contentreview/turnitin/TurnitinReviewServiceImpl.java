@@ -1535,7 +1535,11 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 				String externalId = ((CharacterData) (root.getElementsByTagName("objectID").item(0).getFirstChild()))
 						.getData().trim();
 				if (externalId != null && externalId.length() > 0) {
-					log.debug("Submission successful");
+					log.debug("Submission successful: externalId {}", externalId);
+					if ("0".equals(externalId)) {
+						log.warn("Missing external id for submission: {}", item.getId());
+					}
+
 					item.setExternalId(externalId);
 					item.setStatus(ContentReviewConstants.CONTENT_REVIEW_SUBMITTED_AWAITING_REPORT_CODE);
 					item.setRetryCount(Long.valueOf(0));
@@ -1545,7 +1549,7 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 					success++;
 					crqs.update(item);
 				} else {
-					log.warn("invalid external id");
+					log.warn("invalid external id: {}", externalId);
 					setLastError(item, doc->createFormattedMessageXML(doc, "submission.no.external.id"));
 					item.setStatus(ContentReviewConstants.CONTENT_REVIEW_SUBMISSION_ERROR_RETRY_CODE);
 					errors++;
@@ -1676,7 +1680,15 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 		List<ContentReviewItem> awaitingReport = crqs.getAwaitingReports(getProviderId());
 
 		Iterator<ContentReviewItem> listIterator = awaitingReport.iterator();
+
+		// Map of objectId to result
 		HashMap<String, Integer> reportTable = new HashMap<String, Integer>();
+
+		// Map of siteId:eid:submissiondate to objectId
+		HashMap<String, String> fuzzyReportTable = new HashMap<>();
+
+		// Map of siteId
+		Set<String> siteTable = new HashSet<>();
 
 		log.debug("There are " + awaitingReport.size() + " submissions awaiting reports");
 
@@ -1684,9 +1696,12 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 		while (listIterator.hasNext()) {
 			currentItem = (ContentReviewItem) listIterator.next();
 
+			log.debug("Fetch report for item: {} externalId {}", currentItem.getId(), currentItem.getExternalId());
+
 			// has the item reached its next retry time?
-			if (currentItem.getNextRetryTime() == null)
+			if (currentItem.getNextRetryTime() == null) {
 				currentItem.setNextRetryTime(new Date());
+			}
 
 			if (currentItem.getNextRetryTime().after(new Date())) {
 				// we haven't reached the next retry time
@@ -1718,10 +1733,12 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 				continue;
 			}
 
-			if (!reportTable.containsKey(currentItem.getExternalId())) {
-				// get the list from turnitin and see if the review is available
+			if (!siteTable.contains(currentItem.getSiteId())) {
+				// get the list from turnitin for this site and see if the review is available
 
 				log.debug("Attempting to update hashtable with reports for site " + currentItem.getSiteId());
+
+				siteTable.add(currentItem.getSiteId());
 
 				String fcmd = "2";
 				String fid = "10";
@@ -1827,18 +1844,38 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 				Element root = document.getDocumentElement();
 				if (((CharacterData) (root.getElementsByTagName("rcode").item(0).getFirstChild())).getData().trim()
 						.compareTo("72") == 0) {
-					log.debug("Report list returned successfully");
+					log.debug("Report list returned successfully for site {}", currentItem.getSiteId());
 
 					NodeList objects = root.getElementsByTagName("object");
 					String objectId;
 					String similarityScore;
 					String overlap = "";
-					log.debug(objects.getLength() + " objects in the returned list");
+					String title = "";
+					String date_submitted = "";
+
+					log.debug("{} objects in the returned list", objects.getLength());
 					for (int i = 0; i < objects.getLength(); i++) {
+
+						// <title>wtstri002:7_Feb_2024_Thesis_Turn_it_in_report.docx</title>
+						// <date_submitted>2024-02-06 20:50:03+0200</date_submitted>
+
 						similarityScore = ((CharacterData) (((Element) (objects.item(i)))
 								.getElementsByTagName("similarityScore").item(0).getFirstChild())).getData().trim();
 						objectId = ((CharacterData) (((Element) (objects.item(i))).getElementsByTagName("objectID")
 								.item(0).getFirstChild())).getData().trim();
+
+						title = ((CharacterData) (((Element) (objects.item(i))).getElementsByTagName("title")
+								.item(0).getFirstChild())).getData().trim();
+
+						date_submitted = ((CharacterData) (((Element) (objects.item(i))).getElementsByTagName("date_submitted")
+								.item(0).getFirstChild())).getData().trim();
+
+						// fuzzy match
+						final String eid = title.substring(0, title.indexOf(':'));
+						final String fuzzyKey = currentItem.getSiteId() + ";" + eid + ";" + date_submitted.substring(0,16);
+						log.debug("fuzzyKey: {}, objectId: {}", fuzzyKey, objectId);
+						fuzzyReportTable.put(fuzzyKey, objectId);
+
 						if (similarityScore.compareTo("-1") != 0) {
 							overlap = ((CharacterData) (((Element) (objects.item(i))).getElementsByTagName("overlap")
 									.item(0).getFirstChild())).getData().trim();
@@ -1850,10 +1887,12 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 						log.debug("objectId: " + objectId + " similarity: " + similarityScore + " overlap: " + overlap);
 					}
 				} else {
-					log.debug("Report list request not successful");
+					log.debug("Report list request not successful for site {}", currentItem.getSiteId());
 					log.debug(document.getTextContent());
 
 				}
+			} else {
+				log.debug("Skipping site result check for siteid {}: already fetched this run", currentItem.getSiteId());
 			}
 
 			int reportVal;
@@ -1869,6 +1908,44 @@ public class TurnitinReviewServiceImpl extends BaseContentReviewService {
 					crqs.update(currentItem);
 					log.debug("new report received: " + currentItem.getExternalId() + " -> "
 							+ currentItem.getReviewScore());
+				}
+			} else {
+				log.debug("Id {} ObjectId {} not found in reportTable", currentItem.getId(), currentItem.getExternalId());
+
+				// Try a fuzzy match 
+				String currentEid = "";
+				try {
+					currentEid = userDirectoryService.getUserEid(currentItem.getUserId());
+				} catch (UserNotDefinedException e) {
+					currentEid = "unknown";
+			}
+
+				// format date to 2024-02-06 20:50:03+0200
+				// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss+0200");
+				final String date_submitted = dform.format(currentItem.getDateSubmitted()) + "+0000";
+				final String fuzzyKey = currentItem.getSiteId() + ";" + currentEid + ";" + date_submitted.substring(0,16);
+
+				log.debug("Looking for match for key: {}", fuzzyKey);
+
+				if (fuzzyReportTable.containsKey(fuzzyKey)) {
+					final String objectId = (String) fuzzyReportTable.get(fuzzyKey);
+					log.debug("Match successful for {} = {}", fuzzyKey, objectId);
+
+					// get the actual report
+
+					reportVal = ((Integer) (reportTable.get(objectId))).intValue();
+					log.debug("reportVal for {}: {}", objectId, reportVal);
+					if (reportVal != -1) {
+
+						currentItem.setReviewScore(reportVal);
+						currentItem.setStatus(ContentReviewConstants.CONTENT_REVIEW_SUBMITTED_REPORT_AVAILABLE_CODE);
+						currentItem.setDateReportReceived(new Date());
+						currentItem.setExternalId(objectId);
+						crqs.update(currentItem);
+
+						log.debug("new report received via fuzzy match: {} -> {}",
+								currentItem.getExternalId(), currentItem.getReviewScore());
+					}
 				}
 			}
 		}
