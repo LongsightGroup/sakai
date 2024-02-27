@@ -12,7 +12,7 @@
     </head>
     <body class="portalBody Mrphs-portalBody">
     	<form id="Mrphs-xlogin" method="post" action="${action}" #if (${notify}) class="with-errors" #end>
-            <h1>${loginRequired}</h1>
+            <h1>Bridges Guest Login</h1>
             <aside class="logo"></aside>
             #if (${xloginChoice})
                 <div class="xloginMessage">${xloginChoice}&nbsp;<a href="${loginContainerUrl}">${containerText}</a></div>
@@ -36,12 +36,10 @@
     				<input name="submit" type="submit" id="submit" value="Log In"/>
     			#end
     			</p>
-    			#if (${passwordResetUrl})
- 			<p>
-                                <a label="loginhelp" href="https://rogerwilliamsuniversity.freshservice.com/support/solutions/articles/18000020218" target="_blank">Forgot Password?</a><br />
-                                <a label="bridgeshelp" href="https://www.rwu.edu/academics/academic-affairs/center-scholarship-assessment-learning-teaching-technology/instructional-development/bridges" target="_blank">Bridges Help</a>
-                       </p>
-    			#end
+    				<p style="text-align: left">
+    					<a href="https://rogerwilliamsuniversity.freshservice.com/support/solutions/articles/18000020218" target="_blank">Forgot Password?</a></br>
+    					<a href="https://www.rwu.edu/academics/academic-affairs/center-scholarship-assessment-learning-teaching-technology/instructional-development/bridges" target="_blank">Bridges Help</a>
+    				</p>
     		</fieldset>
     	</form>
     	#set ( $d = "$")
