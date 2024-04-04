@@ -232,7 +232,7 @@
 }
 @include media-breakpoint-up(md) {
   .portal-header-logo {
-    width: var(--portal-nav-sidebar-width);
+    max-width: var(--portal-nav-sidebar-width);
   }
 }
 .portal-header-logo img {
