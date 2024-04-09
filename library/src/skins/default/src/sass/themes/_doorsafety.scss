@@ -37,3 +37,16 @@
 }
 // Custom CSS
 $skin-name: "doorsaafety";
+
+button.btn.icon-button.btn-logo-button {
+    display: none !important;
+}
+
+button#sidebar-collapse-button {
+    visibility: hidden !important;
+}
+
+div#logoWrapper {
+    background: url(/library/skin/doorsafety/images/sakaiLogo.png) no-repeat center;
+    background-size: 139px 61px;
+}
