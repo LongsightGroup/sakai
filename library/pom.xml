@@ -403,6 +403,7 @@
 									</resources>
 								</configuration>
 							</execution>
+              <!--
 							<execution>
 								<id>copy-fonts</id>
 								<phase>generate-resources</phase>
@@ -439,6 +440,7 @@
 									</resources>
 								</configuration>
 							</execution>
+              -->
 							<execution>
 								<id>copy-skin</id>
 								<phase>process-classes</phase>
@@ -736,6 +738,7 @@
 	<build>
 		<plugins>
 			<!-- This unpacks the webjars into the webapp -->
+      <!--
 			<plugin>
 				<groupId>org.sakaiproject.maven.plugins</groupId>
 				<artifactId>webjars-maven-plugin</artifactId>
@@ -750,6 +753,7 @@
 					</execution>
 				</executions>
 			</plugin>
+      -->
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
