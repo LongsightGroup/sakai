@@ -56,7 +56,7 @@
 }
 .portal-header {
   grid-area: header;
-  background-color: var(--top-header-background);
+  background-color: var(--sakai-brand);
 }
 
 .portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
@@ -190,7 +190,7 @@
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-  color: var(--sakak-breadcrumb-color);
+  color: var(--sakai-breadcrumb-color);
 }
 
 .search-result-link {
@@ -227,12 +227,23 @@
 .portal-jump-links a {
   color: #fff;
 }
+#xlogin-logo {
+  background-color: var(--sakai-brand);
+}
 .portal-header-logo {
   height: var(--portal-header-height);
+  background-color: var(--sakai-brand);
+  a.btn {
+    padding: 0 !important;
+  }
+  img {
+    height: 3rem;
+  }
 }
 @include media-breakpoint-up(md) {
   .portal-header-logo {
     width: var(--portal-nav-sidebar-width);
+    background-color: var(--sakai-brand);
   }
 }
 .portal-header-logo img {

@@ -1,0 +1,16 @@
+/* Light Theme */
+
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 206, 16%, 39%);
+    @include defineColorHSL(--sakai-active-color-3, 40, 100%, 70%);
+    @include defineColorHSL(--nps-modal-bg-color, 203, 18%, 25%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected, #linkNav #selectQuickLink li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #fff;
+}
+
+a[title="My Official Course Enrollments"] {
+    display: none !important;
+}

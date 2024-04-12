@@ -40,7 +40,7 @@
     /////////////////////////////////////////////////////////////
 
     // Logo
-    --logo: url(library/skin/images/sakaiLogo.png);
+    --logo: url(library/skin/images/nps.svg);
     --logo-height: 36px;
     --logo-width: 126px;
     --logo-opacity: 1;
@@ -603,17 +603,17 @@
     --progress-bar-bg: var(--sakai-color-blue--lighter-6);
     --progress-bar-empty-bg: transparent;
 
-    --sakai-modal-header-bg: #003a6b;
+    --sakai-modal-header-bg: var(--nps-modal-bg-color);
     --sakai-modal-header-color: #fff;
     --sakai-modal-close-btn-bg: #fff;
     --sakai-modal-content-bg: var(--sakai-background-color-2);
-    --sakai-offcanvas-header-bg: #003a6b;
+    --sakai-offcanvas-header-bg: var(--nps-modal-bg-color);
     --sakai-offcanvas-header-color: #fff;
     --sakai-offcanvas-close-btn-bg: #000;
 
     --sakai-pin-hover-color: black;
 
-    --sakai-selected-page-bg-color: var(--sakai-color-blue--darker-4);
+    --sakai-selected-page-bg-color: var(--nps-modal-bg-color);
     --sakai-selected-page-color: white;
 }
 
