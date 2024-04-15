@@ -240,6 +240,15 @@
     height: 3rem;
   }
 }
+#loginLinksImage a.btn {
+  background-color: var(--sakai-selected-page-bg-color);
+  border-color: var(--sakai-selected-page-bg-color);
+  color: var(--sakai-selected-page-color);
+  &:focus, &:hover {
+    text-decoration: none;
+    border-color: var(--tool-tab-active-highlight-color);
+  }
+}
 @include media-breakpoint-up(md) {
   .portal-header-logo {
     width: var(--portal-nav-sidebar-width);
@@ -575,4 +584,8 @@
 .toast-body {
   color: var(--sakai-text-color-1);
   background-color: var(--sakai-background-color-2);
+}
+
+a[title="My Official Course Enrollments"] {
+  display: none !important;
 }
