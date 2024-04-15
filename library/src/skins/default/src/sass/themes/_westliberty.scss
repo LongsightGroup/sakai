@@ -1,0 +1,58 @@
+/* Light Theme */
+
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
+    $westlib-yellow: hsl(45, 100%, 60%);
+
+    --top-header-background: var(--sakai-brand);
+    --bs-primary-rgb: 0, 0, 0;
+    --topNav-text-color: hsl(0, 0%, 100%);
+
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: hsl(0, 0%, 100%);
+    // Tabs
+    --tool-tab-active-highlight-color: var(--sakai-brand);
+    --tool-tab-active-text-color: var(--sakai-brand);
+
+    //Sites Nav
+    --sakai-selected-page-bg-color: var(--sakai-brand);
+    --site-nav-btn-hover-bg: lighten($westlib-yellow, 50%);
+    --site-nav-btn-hover-color: hsl(0, 0%, 100%);
+    --site-nav-btn-current-hover-color: hsl(45, 100%, 60%);
+    --all-sites-button-text-color: hsl(0, 0%, 0%);
+    --all-sites-button-selected-text-color: hsl(0, 0%, 100%);
+    --all-sites-button-hover-text-color:  hsl(0, 0%, 0%);
+
+    // Modal Window Header
+    --sakai-offcanvas-header-bg: hsl(45, 100%, 60%);
+    --sakai-offcanvas-header-color: hsl(0, 0%, 0%);
+    --sakai-modal-header-bg: hsl(45, 100%, 60%);
+    --sakai-modal-header-color: hsl(0, 0%, 0%);
+
+}
+
+:root.sakaiUserTheme-dark {
+    --topNav-text-color: hsl(220, 4%, 83%);
+}
+
+$skin-name: "westliberty";
+
+.Mrphs-toolTitleNav sakai-maximise-button {
+    display: none;
+}
+
+$primary-theme-color: hsl(0, 0%, 0%);
+$westlib-yellow: hsl(45, 100%, 60%);
+
+#loginLinksImage .btn {
+  background-color: lighten($primary-theme-color, 15%);
+  border: 1px solid darken($westlib-yellow, 20%);
+  color: $westlib-yellow;
+  
+  transition: background-color .3s, color .3s;
+
+  &:hover {
+    background-color: lighten($primary-theme-color, 25%); // Fallback hover effect
+  }
+}
