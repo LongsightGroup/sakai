@@ -1,0 +1,12 @@
+/* Light Theme */
+
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 207, 48%, 50%);
+    // Top tip of tool tabs
+    @include defineColorHSL(--nps-modal-bg-color, 207, 48%, 50%);
+}
+
+#linkNav ul li.Mrphs-sitesNav__menuitem.is-selected, #linkNav #selectQuickLink li.Mrphs-sitesNav__menuitem.is-selected {
+    border: 1px solid #fff;
+}
