@@ -57,6 +57,12 @@
 .portal-header {
   grid-area: header;
   background-color: var(--top-header-background);
+  #logoWrapper.bg-primary, #xlogin-logo.bg-primary {
+    background-color: var(--top-header-background) !important;
+  }
+}
+#xlogin-logo.bg-primary {
+  background-color: var(--top-header-background) !important;
 }
 
 .portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
@@ -571,4 +577,19 @@
 .toast-body {
   color: var(--sakai-text-color-1);
   background-color: var(--sakai-background-color-2);
+}
+
+#loginLinksImage .btn {
+  background-color: var(--all-sites-button-background-color);
+  border: 1px solid var(--all-sites-button-border-color);
+  color: var(--all-sites-button-text-color);
+  img {
+    display: none;
+  }
+
+  transition: background-color .3s, color .3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }

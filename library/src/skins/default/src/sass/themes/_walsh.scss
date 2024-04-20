@@ -1,59 +1,13 @@
 /* Light Theme */
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 342, 98%, 24%);
-    $walsh-gold: hsl(38, 42%, 56%);
+    //include defineColorHSL(--sakai-brand, 342, 98%, 24%);
+    @include defineColorHSL(--sakai-brand, 335, 100%, 17.64%);
+    @include defineColorHSL(--walsh-gold, 45, 100%, 60%);
 
-    // Logo
-    --logo: url(library/skin/images/walsh.png);
-    --topNav-text-color: hsl(0, 0%, 100%);
-
-    --bs-primary-rgb: 121, 1, 37;
-
+    // Top header and logo wrapper
     --top-header-background: var(--sakai-brand);
-    --sakai-modal-header-bg: var(--sakai-brand);
-    --tool-tab-active-highlight-color: var(--sakai-brand);
-    --tool-tab-active-text-color: var(--sakai-brand);
 
-
-    --sakai-selected-page-bg-color: var(--sakai-brand);
-    //Sites Nav
-    --site-nav-btn-current-hover-color: hsl(0, 0%, 100%);
-    --site-nav-bg: hsl(0, 0%, 100%);
-    --site-nav-list-item-bg: hsl(0, 0%, 100%);
-
-    // All Sites
-    --sakai-offcanvas-header-bg: var(--sakai-brand);
-    //--all-sites-button-selected-background-color: hsl(214, 41%, 78%);
-    //--all-sites-button-selected-border-color: hsl(214, 41%, 78%);
-    --all-sites-button-selected-text-color: hsl(0, 0%, 100%);
-    --all-sites-button-hover-text-color: hsl(0, 0%, 100%);
-    --all-sites-button-hover-star-full-color: hsl(0, 0%, 100%);
-    //--all-sites-button-hover-star-empty-color: hsl(0, 0%, 0%);
-   --sticky-footer-bg: hsl(0,0%,100%);
-
-    --site-nav-btn-hover-bg: var(--sakai-brand);
-    --site-nav-btn-hover-color: hsl(0,0%,100%);
-
-}
-// Custom CSS
-//$skin-name: "walsh";
-
-//ul.other-sites-category-list li.is-selected a {
-//    color: #FFF;
-//}
-
-$primary-theme-color: hsl(0, 0%, 0%);
-$walsh-gold: hsl(45, 100%, 60%);
-
-#loginLinksImage .btn {
-  background-color: lighten($primary-theme-color, 15%);
-  border: 1px solid darken($walsh-gold, 20%);
-  color: $walsh-gold;
-  
-  transition: background-color .3s, color .3s;
-
-  &:hover {
-    background-color: lighten($primary-theme-color, 25%); // Fallback hover effect
-  }
+    // This is hover on site nav buttons
+    --sakai-brand--lighter-6: #ece0ca;
 }

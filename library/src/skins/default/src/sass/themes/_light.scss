@@ -29,7 +29,7 @@
     // predefined with gray, blue, teal, gold, green, orange,
     // purple, and red palettes available for you to use.
     // More info about defineColorHSL in sass/themes/_base.scss
-    @include defineColorHSL(--sakai-brand, 203, 76%, 25%);
+    //@include defineColorHSL(--sakai-brand, 335, 100%, 17.64%);
     /////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@
     /////////////////////////////////////////////////////////////
 
     // Logo
-    --logo: url(library/skin/images/sakaiLogo.png);
+    --logo: url(library/skin/images/logo.svg);
     --logo-height: 36px;
     --logo-width: 126px;
     --logo-opacity: 1;
@@ -603,18 +603,21 @@
     --progress-bar-bg: var(--sakai-color-blue--lighter-6);
     --progress-bar-empty-bg: transparent;
 
-    --sakai-modal-header-bg: #003a6b;
+    --sakai-modal-header-bg: var(--sakai-brand);
     --sakai-modal-header-color: #fff;
     --sakai-modal-close-btn-bg: #fff;
     --sakai-modal-content-bg: var(--sakai-background-color-2);
-    --sakai-offcanvas-header-bg: #003a6b;
+    --sakai-offcanvas-header-bg: var(--sakai-brand);
     --sakai-offcanvas-header-color: #fff;
     --sakai-offcanvas-close-btn-bg: #000;
 
     --sakai-pin-hover-color: black;
 
-    --sakai-selected-page-bg-color: var(--sakai-color-blue--darker-4);
-    --sakai-selected-page-color: white;
+    --sakai-selected-page-bg-color: var(--sakai-brand);
+    --sakai-selected-page-color: var(--sakai-text-color-inverted);
+
+    --sakai-thumbnail-background-color: var(--sakai-background-color-1);
+    --sakai-thumbnail-border-color: var(--sakai-border-color);
 }
 
 // Tables

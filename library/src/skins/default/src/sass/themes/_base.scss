@@ -176,7 +176,7 @@ $theme-color-interval: 9 !default;
   --sakai-color-white: hsl(0, 0%, 100%);
   --sakai-color-black: hsl(0, 0%, 0%);
   @include defineColorHSL(--sakai-color-gray, 214, 3%, 55%);
-  @include defineColorHSL(--sakai-color-blue, 203, 76%, 52%);
+  @include defineColorHSL(--sakai-color-blue, 222, 100%, 21%);
   @include defineColorHSL(--sakai-color-teal, 180, 100%, 30%);
   @include defineColorHSL(--sakai-color-gold, 50, 99%, 43%);
   @include defineColorHSL(--sakai-color-green, 147, 92%, 34%);
