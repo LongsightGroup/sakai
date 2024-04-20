@@ -2,6 +2,8 @@
 :root{
     // Primary Color
     @include defineColorHSL(--sakai-brand, 342, 98%, 24%);
+    $walsh-gold: hsl(38, 42%, 56%);
+
     // Logo
     --logo: url(library/skin/images/walsh.png);
     --topNav-text-color: hsl(0, 0%, 100%);
@@ -35,8 +37,23 @@
 
 }
 // Custom CSS
-$skin-name: "walsh";
+//$skin-name: "walsh";
 
 //ul.other-sites-category-list li.is-selected a {
 //    color: #FFF;
 //}
+
+$primary-theme-color: hsl(0, 0%, 0%);
+$walsh-gold: hsl(45, 100%, 60%);
+
+#loginLinksImage .btn {
+  background-color: lighten($primary-theme-color, 15%);
+  border: 1px solid darken($walsh-gold, 20%);
+  color: $walsh-gold;
+  
+  transition: background-color .3s, color .3s;
+
+  &:hover {
+    background-color: lighten($primary-theme-color, 25%); // Fallback hover effect
+  }
+}
