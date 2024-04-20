@@ -18,7 +18,7 @@
     //Sites Nav
     --sakai-selected-page-bg-color: var(--sakai-brand);
     --site-nav-btn-hover-bg: lighten($westlib-yellow, 50%);
-    --site-nav-btn-hover-color: hsl(0, 0%, 100%);
+    --site-nav-btn-hover-color: $westlib-yellow;
     --site-nav-btn-current-hover-color: hsl(45, 100%, 60%);
     --all-sites-button-text-color: hsl(0, 0%, 0%);
     --all-sites-button-selected-text-color: hsl(0, 0%, 100%);
@@ -30,6 +30,8 @@
     --sakai-modal-header-bg: hsl(45, 100%, 60%);
     --sakai-modal-header-color: hsl(0, 0%, 0%);
 
+    // No lines between Lessons items
+    --lessons-item-border-top-color: transparent;
 }
 
 :root.sakaiUserTheme-dark {
