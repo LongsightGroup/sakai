@@ -1,0 +1,12 @@
+/* Light Theme */
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 0, 0%, 100%);
+    @include defineColorHSL(--sakai-color-blue, 240, 54%, 25%);
+
+    // Top header and logo wrapper
+    --top-header-background: var(--sakai-color-blue);
+
+    // This is hover on site nav buttons
+    --sakai-brand--lighter-6: #e5f8f9;
+}
