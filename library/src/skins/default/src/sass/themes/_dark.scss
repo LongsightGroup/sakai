@@ -221,6 +221,8 @@
     --jumbotron-bg: var(--sakai-color-blue--darker-5);
     --jumbotron-color: var(--sakai-text-color-1);
 
+    --sakai-thumbnail-background-color: var(--sakai-background-color-2);
+
     --sakai-modal-header-bg: var(--sakai-background-color-3);
     --sakai-modal-header-color: var(--sakai-text-color-1);
     --sakai-modal-close-btn-bg: var(--sakai-text-color-1);
@@ -298,6 +300,7 @@
     .list-group {
       --bs-list-group-bg: var(--sakai-background-color-3);
       --bs-list-group-color: var(--sakai-text-color-1);
+      --bs-list-group-action-color: var(--sakai-text-color-2);
     }
 
     .popover {
@@ -307,9 +310,5 @@
 
     .paginate_button {
       --bs-pagination-disabled-bg: var(--sakai-passive-color-1);
-      --bs-pagination-bg: var(--sakai-background-color-2);
-      --bs-pagination-color: var(--link-color);
-      --bs-pagination-hover-color: var(--sakai-text-color-1);
-      --bs-pagination-hover-bg: var(--sakai-active-color-2);
     }
 }

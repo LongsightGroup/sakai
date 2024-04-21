@@ -57,6 +57,12 @@
 .portal-header {
   grid-area: header;
   background-color: var(--top-header-background);
+  #logoWrapper.bg-primary, #xlogin-logo.bg-primary {
+    background-color: var(--top-header-background) !important;
+  }
+}
+#xlogin-logo.bg-primary {
+  background-color: var(--top-header-background) !important;
 }
 
 .portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
@@ -133,7 +139,7 @@
 #sakai-system-indicators {
 
   button {
-    color: #fff;
+    color: var(--topNav-text-color);
     margin: 0px 3px;
     i {
       font-size: 22px;
@@ -232,7 +238,7 @@
 }
 @include media-breakpoint-up(md) {
   .portal-header-logo {
-    width: var(--portal-nav-sidebar-width);
+    max-width: var(--portal-nav-sidebar-width);
   }
 }
 .portal-header-logo img {
@@ -306,7 +312,7 @@
 
   > span {
     font-size: 28px;
-    color: white;
+    color: var(--topNav-text-color);
   }
 }
 
@@ -377,7 +383,7 @@
         background-color: var(--site-nav-btn-hover-bg);
         color: var(--site-nav-btn-current-hover-color);
         .si-pin, a, button {
-          color: var(--sakai-text-color-1);
+          color: var(--site-nav-btn-hover-color);
         }
       }
     }
@@ -509,7 +515,7 @@
   &.portal-nav-sidebar-desktop {
     background-color: var(--sakai-background-color-3);
     .site-list-item-collapse {
-      background-color: var(--sakai-background-color-2);
+      background-color: var(--site-nav-bg);
     }
   }
 
@@ -571,4 +577,19 @@
 .toast-body {
   color: var(--sakai-text-color-1);
   background-color: var(--sakai-background-color-2);
+}
+
+#loginLinksImage .btn {
+  background-color: var(--all-sites-button-background-color);
+  border: 1px solid var(--all-sites-button-border-color);
+  color: var(--all-sites-button-text-color);
+  img {
+    display: none;
+  }
+
+  transition: background-color .3s, color .3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
