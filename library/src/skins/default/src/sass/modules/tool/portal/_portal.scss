@@ -786,3 +786,18 @@
   color: var(--sakai-text-color-1);
   background-color: var(--sakai-background-color-2);
 }
+
+#loginLinksImage .btn {
+  background-color: var(--all-sites-button-background-color);
+  border: 1px solid var(--all-sites-button-border-color);
+  color: var(--all-sites-button-text-color);
+  img {
+    display: none;
+  }
+
+  transition: background-color .3s, color .3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
