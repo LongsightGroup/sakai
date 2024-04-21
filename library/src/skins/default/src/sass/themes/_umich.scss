@@ -1,0 +1,26 @@
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 216, 73%, 22%);
+
+    --top-header-background: var(--sakai-brand);
+    --bs-primary-rgb: 15, 47, 95;
+    --sakai-selected-page-bg-color: var(--sakai-brand);
+    --site-nav-btn-hover-bg: var(--sakai-brand);
+    --site-nav-btn-hover-color: hsl(0, 0%, 100%);
+    --site-nav-btn-current-hover-color: hsl(0, 0%, 100%);
+    --all-sites-button-selected-text-color: hsl(0, 0%, 100%);
+    --all-sites-button-hover-text-color:  hsl(0, 0%, 100%);
+}
+
+:root.sakaiUserTheme-dark {
+    --link-color: hsl(210, 4%, 89%);
+}
+$skin-name: "umich";
+
+.portal-header-logo img {
+    margin: 0 0 0 13px;
+}
+
+.cke_1 .cke_button_on {
+    background-color: #fff !important;
+}
