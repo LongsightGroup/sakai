@@ -55,7 +55,9 @@ jobs:
           cd ..
           mvn --batch-mode -DskipTests install sakai:deploy-exploded -Dmaven.tomcat.home=$TOMCAT_DIR
           cd library
-          for file in src/skins/default/src/sass/themes/_*.scss; do
+          scss_dir="src/skins/default/src/sass/themes"
+          images_dir="src/skins/default/images"
+          while IFS= read -r file; do
             theme=${file##*/}               # Extract the full filename
             theme=${theme#_}                # Remove leading underscore
             theme=${theme%.scss}            # Remove file extension
@@ -65,8 +67,8 @@ jobs:
               cp "src/skins/default/images/${theme}.png" "src/skins/default/images/sakaiLogo.png"
             fi
             mvn --batch-mode -o -DskipTests -Dmaven.tomcat.home=$TOMCAT_DIR install sakai:deploy-exploded -Dsakai.skin.target=$theme
-            
-          done
+            echo "skin.default=$theme" >> $TOMCAT_DIR/sakai/local.properties
+          done < <(find "$scss_dir" -name '_*.scss' -printf "%T@ %p\n" | sort -n | cut -d' ' -f2-)
           cd $TOMCAT_DIR
           bin/catalina.sh start
       - name: Upload Artifact
