@@ -27,7 +27,7 @@
 		<ckeditor-a11y-extra-plugins></ckeditor-a11y-extra-plugins>
 		<sakai.skin.source>default</sakai.skin.source>
 		<sakai.skin.target>default-skin</sakai.skin.target>
-		<sakai.skin.customization.file>src/skins/${sakai.skin.source}/src/sass/examples/_empty.scss</sakai.skin.customization.file>
+		<sakai.skin.customization.file>src/skins/${sakai.skin.source}/src/sass/themes/_${sakai.skin.target}.scss</sakai.skin.customization.file>
 		<sakai.skin.customization.scss.lib>src/skins/${sakai.skin.source}/src/sass/examples/_empty.scss</sakai.skin.customization.scss.lib>
 		<!-- Overwrite with with -Dsakai.skin.customization.file -->
 		<sakai.skin.customization.scss.main>${sakai.skin.customization.file}</sakai.skin.customization.scss.main>
