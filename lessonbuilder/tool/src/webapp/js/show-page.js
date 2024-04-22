@@ -1116,6 +1116,7 @@ $(document).ready(function () {
       $('#question-error-container').hide();
       $("#questionEditId").val("-1");
       $("#question-text-area-evolved\\:\\:input").val("");
+			CKEDITOR.instances["question-text-area-evolved::input"].setData("");
       $("#question-answer-input").val("");
       $("#question-graded").prop("checked", false);
       $("#question-gradebook-title").val("");
@@ -3378,7 +3379,7 @@ function prepareQuestionDialog() {
 
 // Reset the multiple choice answers to prevent problems when submitting a shortanswer
 function resetMultipleChoiceAnswers() {
-  var firstMultipleChoice = $("#copyableMultipleChoiceAnswer");
+  const firstMultipleChoice = $("#copyableMultipleChoiceAnswer");
   firstMultipleChoice.find(".question-multiplechoice-answer-id").val("-1");
   firstMultipleChoice.find(".question-multiplechoice-answer").val("");
   firstMultipleChoice.find(".question-multiplechoice-answer-correct").prop("checked", false);
@@ -3388,7 +3389,7 @@ function resetMultipleChoiceAnswers() {
 
 //Reset the shortanswers to prevent problems when submitting a multiple choice
 function resetShortanswers() {
-  var firstShortAnswerChoice = $("#copyableShortanswer");
+  const firstShortAnswerChoice = $("#copyableShortanswer");
   firstShortAnswerChoice.find(".question-shortanswer-answer").val("");
   $("#shortAnswersTableBody").empty();
   $("#shortAnswersTableBody").append(firstShortAnswerChoice);
