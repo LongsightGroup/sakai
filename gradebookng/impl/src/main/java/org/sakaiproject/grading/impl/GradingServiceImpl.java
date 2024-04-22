@@ -4702,7 +4702,7 @@ public class GradingServiceImpl implements GradingService {
             log.info("Added Grade Mapping " + gradingScale.getUid());
             gradingScales.add(gradingScale);
         }
-        setDefaultGradingScale("LetterGradePlusMinusMapping");
+        setDefaultGradingScale("LetterGradeMapping");
         return gradingScales;
     }
 
