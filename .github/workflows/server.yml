@@ -38,7 +38,8 @@ jobs:
           export TOMCAT_DIR=$PWD/tomcat
           mkdir $TOMCAT_DIR
           cd $TOMCAT_DIR
-          curl -s -o tomcat.tar.gz https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.88/bin/apache-tomcat-9.0.88.tar.gz
+          export TOMCAT_VER=`curl --silent http://mirror.vorboss.net/apache/tomcat/tomcat-9/ | grep v9 | awk '{split($5,c,">v") ; split(c[2],d,"/") ; print d[1]}'`
+          curl -s -o tomcat.tar.gz "https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VER}/bin/apache-tomcat-${TOMCAT_VER}.tar.gz"
           tar --strip-components=1 -xzf tomcat.tar.gz
           git clone https://github.com/sakaiproject/nightly-config.git sakai
           cp sakai/master.properties sakai/sakai.properties
