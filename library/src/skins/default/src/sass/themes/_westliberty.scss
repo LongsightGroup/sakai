@@ -2,43 +2,33 @@
 
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
     $westlib-yellow: hsl(45, 100%, 60%);
+    @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
+    @include defineColorHSL(--sakai-color-gold, 45, 100%, 60%);
+    @include defineColorHSL(--sakai-color-blue, 197, 100%, 47%);
+    @include defineColorHSL(--sakai-color-red, 16, 86%, 37%);
 
     --top-header-background: var(--sakai-brand);
-    --bs-primary-rgb: 0, 0, 0;
-    --topNav-text-color: hsl(0, 0%, 100%);
-
-    --top-header-background: var(--sakai-brand);
-    --topNav-text-color: hsl(0, 0%, 100%);
-    // Tabs
-    --tool-tab-active-highlight-color: var(--sakai-brand);
-    --tool-tab-active-text-color: var(--sakai-brand);
-
-    //Sites Nav
-    --sakai-selected-page-bg-color: var(--sakai-brand);
-    --site-nav-btn-hover-bg: lighten($westlib-yellow, 50%);
-    --site-nav-btn-hover-color: $westlib-yellow;
-    --site-nav-btn-current-hover-color: hsl(45, 100%, 60%);
-    --all-sites-button-text-color: hsl(0, 0%, 0%);
-    --all-sites-button-selected-text-color: hsl(0, 0%, 100%);
-    --all-sites-button-hover-text-color:  hsl(0, 0%, 0%);
 
     // Modal Window Header
     --sakai-offcanvas-header-bg: hsl(45, 100%, 60%);
-    --sakai-offcanvas-header-color: hsl(0, 0%, 0%);
+    --sakai-offcanvas-header-color: var(--sakai-black);
     --sakai-modal-header-bg: hsl(45, 100%, 60%);
-    --sakai-modal-header-color: hsl(0, 0%, 0%);
+    --sakai-modal-header-color: var(--sakai-black);
 
+
+    // This is hover on site nav buttons
+    --sakai-brand--lighter-6: var(--sakai-color-gold--lighter-3);
+
+    // Specific WestLib customizations
     // No lines between Lessons items
     --lessons-item-border-top-color: transparent;
+    --link-color: #0000ff;
 }
 
 :root.sakaiUserTheme-dark {
     --topNav-text-color: hsl(220, 4%, 83%);
 }
-
-$skin-name: "westliberty";
 
 .Mrphs-toolTitleNav sakai-maximise-button {
     display: none;
