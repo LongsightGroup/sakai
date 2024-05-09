@@ -1762,11 +1762,11 @@
                 </form>
                 <!-- just a message, so will display when it should not-->
               </li>
-                    <li>
-                      <a href="#" role="menuitem" rsf:id="add-alert" id="add-alert"><span rsf:id="msg=simplepage.add-alert"></span></a>
-                      <!-- just a message, so will display when it should not-->
-                      <div rsf:id="msg=simplepage.add-alert-descrip"></div>
-                    </li>
+              <li class="list-group-item m-1">
+                <a href="#" rsf:id="add-alert" id="add-alert" role="button" data-bs-toggle="modal" data-bs-target="#add-alert-dialog" aria-controls="add-alert-dialog" aria-expanded="false">
+                  <span rsf:id="msg=simplepage.add-alert"></span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -1910,6 +1910,110 @@
                   <input type="submit" rsf:id="mm-cancel" data-bs-dismiss="modal" />
                 </p>
                 <p id="import-cc-loading" rsf:id="msg=simplepage.loading" style="display: none;" class="mt-1"></p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="add-alert-dialog" rsf:id="add-alert-dialog" class="modal fade" data-bs-backdrop="static" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="inactivityAlertLabel" rsf:id="msg=simplepage.add-alert-title">simplepage.add-alert-title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger" role="alert" id="add-alert-error-container" style="display:none">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <strong rsf:id="msg=simplepage.error_colon"></strong><span id="add-alert-error"></span>
+            </div>
+
+            <form action="#" rsf:id="add-alert-form" method="post" enctype="multipart/form-data" class="controlPanel">
+              <input type="hidden" rsf:id="csrf23" />
+                <div id="roleHolderInactivityAlert">
+                  <label rsf:id="msg=simplepage.add-alert.select" id="add-alert-select-label">Select the roles that should receive the notification</label>
+                  <div class="ms-3">
+                    <!-- Select All -->
+                    <input type="checkbox" id="add-alert-all-roles" class="form-check-ignoreme-input" />
+                    <label rsf:id="msg=simplepage.add-alert-all-roles" for="add-alert-all-roles" id="add-alert-all-roles-label" class="form-check-label">All Roles</label>
+                    <hr class="mt-0" /> 
+                    <div rsf:id="addAlertRoleSelect"></div>
+                    <div rsf:id="role:" role="listitem" class="form-check">
+                      <input rsf:id="roleOption" class="form-check-ignoreme-input add-alert-role" type="checkbox" />
+                      <label rsf:id="roleOptionLabel" class="form-check-label">Role 1</label>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="mt-2">
+                  <span rsf:id="msg=simplepage.add-alert.recurrence" id="simplepage.add-alert.recurrence">Choose the frequency this alert should occur</span>
+                  <div class="ms-3">
+                    <div class="form-check">
+                      <input class="form-check-ignoreme-input" type="radio" name="addAlertRecurrenceGroup" rsf:id="addAlertRecurrenceNone" id="addAlertRecurrenceNone" onchange="toggleEndDateInput(this)" />
+                      <label class="form-check-label" for="addAlertRecurrenceNone" rsf:id="msg=simplepage.add-alert.none"></label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-ignoreme-input" type="radio" name="addAlertRecurrenceGroup" rsf:id="addAlertRecurrenceDaily" id="addAlertRecurrenceDaily" />
+                      <label class="form-check-label" for="addAlertRecurrenceDaily" rsf:id="msg=simplepage.add-alert.daily"></label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-ignoreme-input" type="radio" name="addAlertRecurrenceGroup" rsf:id="addAlertRecurrenceWeekly" id="addAlertRecurrenceWeekly" />
+                      <label class="form-check-label" for="addAlertRecurrenceWeekly" rsf:id="msg=simplepage.add-alert.weekly"></label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-2">
+                  <label rsf:id="msg=simplepage.add-alert.specify-dates" id="add-alert.specify-dates-label">Choose when the alert notification should be sent by specifying the date(s)</label>
+                  <br/>
+                  <span rsf:id="msg=simplepage.add-alert.beginning" id="simplepage.add-alert.beginning" style="margin-left: 20px">Beginning</span>:&nbsp;
+                  <input id="addAlertBeginDateInput" type="text" />
+                  <input rsf:id="addAlertBeginDate" id="addAlertBeginDate" type="hidden" />
+                  <script type="text/javascript">
+                      localDatePicker({
+                        input: '#addAlertBeginDateInput',
+                        useTime: 1,
+                        parseFormat: 'YYYY-MM-DD HH:mm:ss',
+                        val: $("#addAlertBeginDate").val(),
+                        ashidden: { iso8601: 'addAlertBeginDate' }
+                      });
+                  </script>
+                  <span class="addAlertEndDateInputSpan mb-2">
+                    <span rsf:id="msg=simplepage.add-alert.ending" id="simplepage.add-alert.ending" style="margin-left: 20px">Ending</span>:&nbsp;
+                    <input id="addAlertEndDateInput" type="text" />
+                    <input rsf:id="addAlertEndDate" id="addAlertEndDate" type="hidden" />
+                    <script type="text/javascript">
+                      localDatePicker({
+                          input: '#addAlertEndDateInput',
+                          useTime: 1,
+                          parseFormat: 'YYYY-MM-DD HH:mm:ss',
+                          val: $("#addAlertEndDate").val(),
+                          ashidden: { iso8601: 'addAlertEndDate' },
+                        minDate: new Date($("#addAlertBeginDate").val())
+                      });
+                    </script>
+                  </span>
+                </div>
+            
+                <div class="mt-2">
+                  <label for="add-alert-student-message"><span rsf:id="msg=simplepage.add-alert-student-message-label"></span>:</label>
+                  <div>
+                    <textarea rsf:id="add-alert-student-message" id="add-alert-student-message" rows="4" columns="50" style="width: 100%"></textarea>
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <label for="add-alert-other-message"><span rsf:id="msg=simplepage.add-alert-other-message-label"></span>:</label>
+                  <div>
+                    <textarea rsf:id="add-alert-other-message" id="add-alert-other-message" placeholder="msg=simplepage.add-alert-message-default" rows="4" columns="50" style="width: 100%"></textarea>
+                  </div>
+                </div>
+
+              <div class="modal-footer">
+                <input class="bold" type="submit" onclick="return prepareAddAlertDialog();" id="add-alert-submit" rsf:id="add-alert-submit" />
+                <input type="submit" rsf:id="add-alert-remove" />
+                <button type="button" class="btn btn-link" data-bs-dismiss="modal" rsf:id="add-alert-cancel"></button>
               </div>
             </form>
           </div>
