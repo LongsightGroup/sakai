@@ -434,17 +434,8 @@ $(document).ready(function () {
       return false;
     });
 
-		$('#add-alert').click(function(){
-			oldloc = $(".dropdown a");
-			closeDropdowns();
-			$('#add-alert-dialog').dialog('open');
-			setupdialog($('#add-alert-dialog'));
-			$("#add-alert-error-container").hide();
-			return false;
-		});
-
 		$('#add-alert-all-roles').click(function(){
-			var selected = $(this).prop("checked");
+			let selected = $(this).prop("checked");
 			$(".add-alert-role").each(function(){
 				$(this).prop('checked', selected);
 			});
@@ -3398,23 +3389,23 @@ function prepareQuestionDialog() {
 }
 
 function prepareAddAlertDialog(){
-	if($("input.add-alert-role:checkbox:checked").length == 0){
-		$('#add-alert-error').text(msg("simplepage.add-alert-need-role"));
-	    $('#add-alert-error-container').show();
-	    $('#add-alert-dialog').scrollTop(0);
-		return false;
-	}else if(!$("#addAlertBeginDate").val()){
-		$('#add-alert-error').text(msg("simplepage.add-alert-need-begin-date"));
-	    $('#add-alert-error-container').show();
-	    $('#add-alert-dialog').scrollTop(0);
-		return false;
-	}else if(!$("#addAlertEndDate").val() && !$("#addAlertRecurrenceNone").is(':checked')){
-		$('#add-alert-error').text(msg("simplepage.add-alert-need-end-date"));
-	    $('#add-alert-error-container').show();
-	    $('#add-alert-dialog').scrollTop(0);
-		return false;
-	}
-	return true;
+  if($("input.add-alert-role:checkbox:checked").length == 0){
+    $('#add-alert-error').text(msg("simplepage.add-alert-need-role"));
+    $('#add-alert-error-container').show();
+    return false;
+  }else if(!$("#addAlertBeginDate").val()){
+    $('#add-alert-error').text(msg("simplepage.add-alert-need-begin-date"));
+    $('#add-alert-error-container').show();
+    return false;
+  }else if(!$("#addAlertEndDate").val() && !$("#addAlertRecurrenceNone").is(':checked')){
+    $('#add-alert-error').text(msg("simplepage.add-alert-need-end-date"));
+    $('#add-alert-error-container').show();
+    return false;
+  }
+
+  let activityAlertModal = bootstrap.Modal.getInstance(document.getElementById('add-alert-dialog'));
+  activityAlertModal.hide();
+  return true;
 }
 
 // Reset the multiple choice answers to prevent problems when submitting a shortanswer
