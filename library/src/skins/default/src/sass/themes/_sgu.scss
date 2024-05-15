@@ -23,3 +23,7 @@
 #logoWrapper .btn {
   padding: 0 !important;
 }
+
+.portal-header .portal-header-breadcrumb-separator, .portal-header .portal-header-breadcrumb-item > a {
+  color: var(--sakai-black) !important;
+}
