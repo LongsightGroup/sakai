@@ -275,10 +275,7 @@ public class FeedbackTool extends HttpServlet {
     private void addRecipients(Site site, Map<String, String> emailRecipients, Map<String, String> siteUpdaters, String serviceName) {
         String siteContact = site.getProperties().getProperty(Site.PROP_SITE_CONTACT_NAME);
         String siteEmail = site.getProperties().getProperty(Site.PROP_SITE_CONTACT_EMAIL);
-        if (siteEmail!=null && !siteEmail.isEmpty()){
-            emailRecipients.put(siteEmail, siteContact + " (site contact)");
-        }
-        else if (siteUpdaters.isEmpty()){
+        if (siteUpdaters.isEmpty()){
             String serviceContactName = rb.getFormattedMessage("technical_team_name", new String[]{serviceName});
             String serviceContactEmail = sakaiProxy.getConfigString(Constants.PROP_TECHNICAL_ADDRESS, null);
             emailRecipients.put(serviceContactEmail, serviceContactName);
