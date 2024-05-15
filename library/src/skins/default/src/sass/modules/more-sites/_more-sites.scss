@@ -275,6 +275,8 @@ div.fav-title-myworkspace {
     height: $all-sites-button-height;
     line-height: 29px;
     text-decoration: none !important;
+    text-overflow: ellipsis;
+    overflow: hidden;
     vertical-align: middle;
 
     .fullTitle {
