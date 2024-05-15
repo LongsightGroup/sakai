@@ -67,8 +67,10 @@ jobs:
               cp "src/skins/default/images/${theme}.png" "src/skins/default/images/sakaiLogo.png"
             fi
             mvn --batch-mode -o -DskipTests -Dmaven.tomcat.home=$TOMCAT_DIR install sakai:deploy-exploded -Dsakai.skin.target=$theme
-            echo "skin.default=$theme" >> $TOMCAT_DIR/sakai/local.properties
           done < <(find "$scss_dir" -name '_*.scss' -printf "%T@ %p\n" | sort -n | cut -d' ' -f2-)
+          # Most recent theme for testing
+          recent_theme=$(basename "$(git log -1 --format= --name-only --diff-filter=AM -- "library/src/skins/default/src/sass/themes/_*.scss")" .scss | sed 's/^_//')
+          echo "skin.default=$recent_theme" >> $TOMCAT_DIR/sakai/local.properties
           cd $TOMCAT_DIR
           bin/catalina.sh start
       - name: Upload Artifact
