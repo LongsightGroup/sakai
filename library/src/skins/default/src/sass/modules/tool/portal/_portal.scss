@@ -124,7 +124,6 @@
 // Responsive header for mobile
 @media (max-width: 767px) {
   .portal-header {
-    background-color: rgba(var(--bs-primary-rgb), 1.0) !important;
     justify-content: space-between !important;
   }
 }
@@ -591,5 +590,11 @@
 
   &:hover {
     opacity: 0.8;
+  }
+}
+
+@media (max-width: 767px) {
+  #loginLinksImage .btn {
+    padding: 2px !important;
   }
 }
