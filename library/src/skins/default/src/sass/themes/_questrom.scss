@@ -11,9 +11,15 @@
 }
 
 :root.sakaiUserTheme-dark {
-//    --link-color: hsl(210, 4%, 89%);
-//    --tool-tab-active-highlight-color: hsl(0, 0%, 100%);
-//   --tool-tab-active-text-color: hsl(0, 0%, 100%);
+    .portal-header-logo img { display: none }
+    #logoWrapper button.btn-logo-button { 
+      width: 186px; 
+      height: 26px; 
+      background-image: url(/library/skin/questrom/images/qst-dark.png); 
+      background-size: contain; 
+      background-position: left center; 
+      background-repeat: no-repeat; 
+    }
 }
     
 .portal-header {
