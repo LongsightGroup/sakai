@@ -7,6 +7,10 @@
     @include defineColorHSL(--sakai-color-orange, 15, 88%, 54%);
 
     --top-header-background: var(--sakai-brand);
-
+    --sakai-offcanvas-header-bg: var(--sakai-color-yellow);
     --sakai-brand--lighter-6: var(--sakai-color-yellow--lighter-3);
+}
+
+.portal-header-logo img {
+    width: 300px;
 }
