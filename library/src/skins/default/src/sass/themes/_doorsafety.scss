@@ -8,18 +8,20 @@
     --top-header-background: hsl(0, 0%, 95%);
     --topNav-text-color: hsl(0, 0%, 0%);
 
-    --sakai-brand--lighter-6: var(--sakai-color-red--lighter-6);
-}
-
-button.btn.icon-button.btn-logo-button {
-    display: none !important;
+    --sakai-brand--lighter-6: var(--sakai-color-red--lighter-3);
 }
 
 button#sidebar-collapse-button {
     visibility: hidden !important;
 }
 
-div#logoWrapper {
-    background: url(/library/skin/doorsafety/images/sakaiLogo.png) no-repeat center;
-    background-size: 139px 61px;
+button.btn.icon-button.btn-logo-button, div#logoWrapper a.btn {
+  padding: 0 !important;
+}
+.portal-header-logo img {
+  max-height: 3rem;
+  width: 20rem;
+}
+.portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
+  color: --sakai-brand;
 }
