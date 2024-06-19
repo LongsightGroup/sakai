@@ -65,10 +65,10 @@
         <constructor-arg type="java.lang.String" value="changeit"/>
         <constructor-arg>
             <map>
-                <entry key="npsdevkey" value="changeit"/>
+                <entry key="npsprodkey" value="changeit"/>
             </map>
         </constructor-arg>
-        <constructor-arg type="java.lang.String" value="npsdevkey"/>
+        <constructor-arg type="java.lang.String" value="npsprodkey"/>
     </bean>
 
     <!-- Entry point to initialize authentication, default values taken from properties file -->
@@ -89,7 +89,7 @@
     <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
         <constructor-arg>
             <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                <property name="entityId" value="https://nps-dev.saml.longsight.com/samlauth" />
+                <property name="entityId" value="https://nps-prod.saml.nps.edu/samlauth" />
                 <!-- <property name="includeDiscoveryExtension" value="true"/> -->
                 <!-- <property name="extendedMetadata">
                     <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
@@ -137,8 +137,8 @@
 			               <property name="sslSecurityProfile" value="pkix"/>
 			               <property name="sslHostnameVerification" value="default"/>
 			               <property name="signMetadata" value="false"/>
-			               <property name="signingKey" value="npsdevkey"/>
-			               <property name="encryptionKey" value="npsdevkey"/>
+			               <property name="signingKey" value="npsprodkey"/>
+			               <property name="encryptionKey" value="npsprodkey"/>
 			               <property name="requireArtifactResolveSigned" value="false"/>
 			               <property name="requireLogoutRequestSigned" value="false"/>
 			               <property name="requireLogoutResponseSigned" value="false"/>
@@ -175,7 +175,7 @@
                   <constructor-arg>
                 <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
                     <constructor-arg>
-                        <value type="java.lang.String">https://login.microsoftonline.com/6d936231-a517-40ea-9199-f7578963378e/federationmetadata/2007-06/federationmetadata.xml?appid=ed3e574f-259c-4b60-b42a-cbded54f199d</value>
+                        <value type="java.lang.String">https://login.microsoftonline.com/6d936231-a517-40ea-9199-f7578963378e/federationmetadata/2007-06/federationmetadata.xml?appid=87a1ec6c-fa3e-40d3-8658-36c3b5f567b5</value>
                     </constructor-arg>
                     <constructor-arg>
                         <value type="int">60000</value>
