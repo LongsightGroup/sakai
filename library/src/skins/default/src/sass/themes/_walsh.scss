@@ -12,3 +12,15 @@
     // This is hover on site nav buttons
     --sakai-brand--lighter-6: #ece0ca;
 }
+
+.fav-title span.walshUnpublishedSite {
+    width: 100%;
+    height: 30px;
+    line-height: 29px;
+    vertical-align: middle;
+    opacity: 60%;
+    padding-left: 2px;
+}
+li:has(.walshUnpublishedSite) > button.site-favorite-btn {
+    display: none;
+}
