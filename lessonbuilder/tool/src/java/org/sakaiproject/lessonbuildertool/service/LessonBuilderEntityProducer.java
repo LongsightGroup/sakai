@@ -1238,6 +1238,7 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 			     log.error("merge: ConflictingAssignmentNameException for title {}.", title);
 			   }
 		     }
+		     log.debug("merge: oldPageId: {}, newPageId: {}.", oldPageId, page.getPageId());
 		     pageMap.put(oldPageId, page.getPageId());
 		 }
 	     }
@@ -1362,7 +1363,12 @@ public class LessonBuilderEntityProducer extends AbstractEntityProvider
 			     }
 
 			     // fix up the new copy of the page to be top level
-			     SimplePage simplePage = simplePageToolDao.getPage(pageMap.get(Long.valueOf(pageId)));
+			     Long pageKey = pageMap.get(Long.valueOf(pageId));
+			     if (pageKey == null) {
+				 log.error("No entry in pageMap for pageId: " + pageId);
+				 continue;
+			     }
+			     SimplePage simplePage = simplePageToolDao.getPage(pageKey);
 			     if (simplePage == null) {
 				 log.error("can't find new copy of top level page");
 				 continue;
