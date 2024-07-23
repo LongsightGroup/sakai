@@ -48,3 +48,13 @@ $westlib-yellow: hsl(45, 100%, 60%);
     background-color: lighten($primary-theme-color, 25%); // Fallback hover effect
   }
 }
+
+@media (min-width: 576px) {
+  #course-dashboard-l2-header-block {
+    flex: 1;
+  }
+
+  #course-dashboard-l2-overview-block {
+    flex: 3;
+  }
+}
