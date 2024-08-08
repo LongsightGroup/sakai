@@ -29,11 +29,6 @@
         </a>
       </div>
 
-      <div class="row mt-4 p-2" style="background-color: #0e2d52">
-        <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/ea0ad8b2-8750-4f9a-a9bd-290c49ba022f/">
-          <img src="https://johnsonu.edu/wp-content/themes/ju2019/images/logo-johnson-university-white.png" alt="Johnson University" style="height: 60px" />
-        </a>
-      </div>
       <div class="row mt-4 p-2" style="background-color: black">
         <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/c4c66dc5-8cad-4eb3-859b-896a7304a50a/">
           <img src="https://brevard.edu/wp-content/uploads/2018/10/Brevard-College-Text-Logo-White-900px.png" alt="Brevard College" style="height: 60px" />

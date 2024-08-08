@@ -180,30 +180,6 @@
 		<!-- END Davis and Elkins SAML -->
 
 
-		<!-- Johnson SAML -->
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                    <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
-                            <constructor-arg>
-                                <value type="java.lang.String">https://login.microsoftonline.com/ea0ad8b2-8750-4f9a-a9bd-290c49ba022f/federationmetadata/2007-06/federationmetadata.xml?appid=266a044a-47f3-4fd8-8094-ddceb9e4acd2</value>
-                            </constructor-arg>
-                            <constructor-arg>
-                                <value type="int">45000</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                                <value type="java.lang.String">sakai/saml/idp-johnsonu.xml</value>
-                            </constructor-arg>
-                            <property name="parserPool" ref="parserPool"/>
-                        </bean>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                    </constructor-arg>
-                    <property name="metadataTrustCheck" value="false"/>
-                </bean>
-		<!-- END Johnson SAML -->
-
-
 		<!-- Bevard SAML -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
@@ -256,7 +232,7 @@
         <!-- OPTIONAL used when one of the metadata files contains information about this service provider -->
         <!-- <property name="hostedSPName" value=""/> -->
         <!-- OPTIONAL property: can tell the system which IDP should be used for authenticating user by default. -->
-        <!-- property name="defaultIDP" value="http://adfs.johnsonu.edu/adfs/services/trust"/-->
+        <!-- property name="defaultIDP" value="http://adfs.example.edu/adfs/services/trust"/-->
     </bean>
 
     <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
