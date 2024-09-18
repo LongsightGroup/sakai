@@ -143,7 +143,8 @@
 	}
 	//legacy blue
 	.colblue, .colblue-trans {
-		@extend .sakai-colorize--sakai-color-blue--lighter-6;
+		color: #0b2b3f;
+    background-color: #cce7f8;
 		border: 1px solid var(--sakai-color-blue--lighter-5);
 	}
 	.colblue .commentDiv, .colblue .studentContentTable, .colblue .questionDiv .contentCol, .colblue .forumSummaryHeaderDiv, .colblue .announcementsHeaderDiv, .colblue-trans .commentDiv, .colblue-trans .studentContentTable, .colblue-trans .questionDiv .contentCol {
