@@ -45,7 +45,7 @@ should be included in file importing DeliveryMessages
         styleClass="icon-sakai--check feedBackCheck" >
       </h:panelGroup>
       <h:panelGroup id="ximage"
-        rendered="#{!matching.isCorrect}"
+        rendered="#{matching.isCorrect eq 'false'}"
         styleClass="icon-sakai--delete feedBackCross" >
       </h:panelGroup>
       <h:graphicImage id="image2"
