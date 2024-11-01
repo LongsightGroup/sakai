@@ -17,3 +17,16 @@
 #logoWrapper .btn {
   padding: 0 !important;
 }
+.si-com-sonicfoundry-mediasite-catalog::before,
+.si-com-sonicfoundry-mediasite-lti:before,
+.si-com-sonicfoundry-mediasite-mymediasite:before
+{
+    content: "\f2cb";
+}
+.si-amc-deans-letter:before,
+.si-amc-grade-report:before,
+.si-amc-student-evals:before,
+.si-amc-patient-logs:before
+{
+    content: "\f194";
+}
