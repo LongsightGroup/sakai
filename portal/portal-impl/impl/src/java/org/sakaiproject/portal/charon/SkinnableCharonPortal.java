@@ -235,7 +235,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	private SiteHandler siteHandler;
 	private PlusHandler plusHandler;
 
-	private String portalContext;
+    private String portalContext;
 
 	private String PROP_PARENT_ID = SiteService.PROP_PARENT_ID;
 	// 2.3 back port
