@@ -9,16 +9,36 @@
     --top-header-background: var(--sakai-color-gold);
 
     // LUC Custom
-    --topNav-text-color: var(--sakai-text-color);
+    --topNav-text-color: var(--sakai-color-black);
     --all-sites-button-selected-background-color: var(--sakai-color-gold);
+    --site-nav-btn-current-hover-color: hsl(0, 0%, 57%);
+    --sakai-text-color-inverted: hsl(0, 0%, 100%);
+
+    #portal-nav-sidebar .btn-nav.selected-page {
+      background-color: hsl(0, 0%, 36%) !important;
+      border-color: hsl(0, 0%, 36%) !important;
+      opacity: 1 !important;
+    }
+    #portal-nav-sidebar .btn-nav:hover, #portal-nav-sidebar li.site-list-item .site-list-item-head:hover {
+      background-color: hsl(0, 0%, 57%) !important;
+      color: hsl(0, 0%, 100%) !important;
+    }
+    #portal-nav-sidebar li.site-list-item .site-list-item-head a:hover, #portal-nav-sidebar li.site-list-item .site-list-item-head:hover a {
+      color: hsl(0, 0%, 100%) !important;
+    }
+    .portal-header .portal-header-breadcrumb-separator, .portal-header .portal-header-breadcrumb-item > a {
+      color: hsl(0, 0%, 0%) !important;
+    }
 
     // This is hover on site nav buttons
     // --sakai-brand--lighter-6: #facfbd;
 }
 
-#portal-header a {
-    color: var(--sakai-text-color);
+:root.sakaiUserTheme-dark {
+  --sakai-selected-page-bg-color: hsl(51, 29%, 53%);
+  --sakai-text-color-inverted: hsl(0, 0%, 100%);
 }
+
 
 .portal-header-logo img {
   width: 300px;
