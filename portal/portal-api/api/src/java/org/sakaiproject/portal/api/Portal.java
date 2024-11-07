@@ -252,7 +252,7 @@ public interface Portal
 
 	/**
 	 * work out the type of the site based on the site id.
-	 * 
+	 *
 	 * @param siteId
 	 * @return
 	 */
@@ -274,7 +274,7 @@ public interface Portal
 	 * @param tool
 	 * @param req
 	 * @param res
-	 * @param siteTool
+	 * @param placement
 	 * @param skin
 	 * @param toolContextPath
 	 * @param toolPathInfo
@@ -365,7 +365,7 @@ public interface Portal
 	 * @return
 	 */
 	PageFilter getPageFilter();
-	
+
 	/**
 	 * Set page Filter
 	 *
@@ -378,11 +378,6 @@ public interface Portal
 	PortalSiteHelper getSiteHelper();
 
 	/**
-	 * @return
-	 */
-	SiteNeighbourhoodService getSiteNeighbourhoodService();
-
-	/**
          * Indicate if a placement is a JSR-168 placement
 	 * @return
 	 */
@@ -390,7 +385,7 @@ public interface Portal
 
         /**
          * Find a cookie by this name from the request
-         * 
+         *
          * @param req
          *        The servlet request.
          * @param name
