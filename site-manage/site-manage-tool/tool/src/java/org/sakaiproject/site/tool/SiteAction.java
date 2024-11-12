@@ -10228,6 +10228,7 @@ private Map<String, List<MyTool>> getTools(SessionState state, String type, Site
 										}
 
 										// save again
+										site.setPublished(false);
 										siteService.save(site);
 										state.setAttribute(STATE_DUPE_SITE_STATUS_ID, site.getId());
 										state.setAttribute(STATE_DUPE_SITE_URL, site.getUrl());
