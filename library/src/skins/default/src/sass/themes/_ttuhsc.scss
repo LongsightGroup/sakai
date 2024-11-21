@@ -1,0 +1,21 @@
+/* Light Theme */
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 0, 0%, 0%);
+    @include defineColorHSL(--sakai-color-gold, 37, 38%, 63%);
+    @include defineColorHSL(--sakai-color-red, 0, 100%, 40%);
+    @include defineColorHSL(--sakai-color-gray, 225, 3%, 81%);
+
+    // Top header is black so color is white
+    --top-header-background: var(--sakai-brand);
+    --topNav-text-color: var(--sakai-color-white);
+
+    // This is hover on site nav buttons
+    --sakai-selected-page-bg-color: #99281E;
+    -site-nav-btn-current-color: #C4A97C;
+    -site-nav-btn-current-hover-color: #EAE0C6;
+    // --sakai-brand--lighter-6: #facfbd;
+
+    --all-sites-button-background-color: #C4A97C;
+    --all-sites-button-selected-background-color: #EAE0C6;
+}
