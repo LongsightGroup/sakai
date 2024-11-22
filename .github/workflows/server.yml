@@ -53,7 +53,7 @@ jobs:
           echo "hibernate.dialect=org.hibernate.dialect.MySQL57InnoDBDialect"  >> sakai/local.properties
           echo "log.config=DEBUG.org.mariadb.jdbc" >> sakai/local.properties
           cd ..
-          mvn --batch-mode -DskipTests install sakai:deploy-exploded -Dmaven.tomcat.home=$TOMCAT_DIR
+          mvn --batch-mode -DskipTests install sakai:deploy-exploded -Dmaven.tomcat.home=$TOMCAT_DIR -Denforcer.skip -Dmaven.source.skip
           cd library
           scss_dir="src/skins/default/src/sass/themes"
           images_dir="src/skins/default/images"
@@ -61,16 +61,21 @@ jobs:
             theme=${file##*/}               # Extract the full filename
             theme=${theme#_}                # Remove leading underscore
             theme=${theme%.scss}            # Remove file extension
+
+            # Only want the custom Longsight themes
+            if [[ "$theme" == "dark" || "$theme" == "base" || "$theme" == "light" ]]; then
+              continue
+            fi
+
             # Check if the theme image file exists
             if [[ -f "src/skins/default/images/${theme}.png" ]]; then
               # Copy it to the sakaiLogo.png
               cp "src/skins/default/images/${theme}.png" "src/skins/default/images/sakaiLogo.png"
             fi
-            mvn --batch-mode -o -DskipTests -Dmaven.tomcat.home=$TOMCAT_DIR install sakai:deploy-exploded -Dsakai.skin.target=$theme
+            mvn --batch-mode -o -DskipTests -Dmaven.tomcat.home=$TOMCAT_DIR install sakai:deploy-exploded -Dsakai.skin.target=$theme -Denforcer.skip -Dmaven.source.skip
           done < <(find "$scss_dir" -name '_*.scss' -printf "%T@ %p\n" | sort -n | cut -d' ' -f2-)
           # Most recent theme for testing
-          recent_theme=$(basename "$(git log -1 --format= --name-only --diff-filter=AM -- "library/src/skins/default/src/sass/themes/_*.scss")" .scss | sed 's/^_//')
-          echo "skin.default=$recent_theme" >> $TOMCAT_DIR/sakai/local.properties
+          echo "skin.default=ttuhsc" >> $TOMCAT_DIR/sakai/local.properties
           cd $TOMCAT_DIR
           bin/catalina.sh start
       - name: Upload Artifact
