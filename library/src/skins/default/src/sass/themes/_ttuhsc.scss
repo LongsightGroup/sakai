@@ -18,6 +18,14 @@
     -site-nav-btn-current-hover-color: #EAE0C6;
     // --sakai-brand--lighter-6: #facfbd;
 
-    --all-sites-button-background-color: #C4A97C;
-    --all-sites-button-selected-background-color: #EAE0C6;
+    --all-sites-button-selected-background-color: #C4A97C;
+    --all-sites-button-background-color: #EAE0C6;
+}
+
+:root.sakaiUserTheme-dark {
+    --all-sites-button-background-color: #99281E;
+}
+
+#logoWrapper .btn {
+    padding: 0 !important;
 }
