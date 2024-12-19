@@ -77,10 +77,6 @@ public class HelpJsfTool extends JsfTool
 	       }
 	       String extUrl = EXTERNAL_WEBAPP_URL;
 	       
-	       if (docId != null && !"".equals(docId)) {
-	    	   extUrl += "/tags?tag=" + docId; // format to use if EXTERNAL_WEBAPP_URL = associated ScreenSteps home
-	       }
-	    	
 	       res.sendRedirect(extUrl);
 		   return;
 	    }
