@@ -29,12 +29,6 @@
 					</a>
 					<p class="siteimport-method-info">$tlang.getString("sitinfimp.migrate.info")</p>
 				</li>
-				#<li>
-				#	<a href="#toolLink("SiteAction" "doMenu_siteInfo_import_user")" class="siteimport-method-link" title ="$tlang.getString('sitinfimp.import.user')">
-				#		$tlang.getString("sitinfimp.import.user")
-				#	</a>
-				#	<p class="siteimport-method-info">$tlang.getString("sitinfimp.import.user.info")</p>
-				#</li>
 			</ul>
 		#else
 			## show "no site available warning"
