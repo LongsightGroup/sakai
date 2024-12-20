@@ -73,6 +73,7 @@ export class SakaiUserPhoto extends SakaiElement {
         new bootstrap.Popover(el, {
           content: sakaiProfile,
           html: true,
+          trigger: "focus",
         });
         el.addEventListener("show.bs.popover", () => {
           sakaiProfile.fetchProfileData(); // Trigger the JSON load for this user
@@ -94,8 +95,11 @@ export class SakaiUserPhoto extends SakaiElement {
           data-user-id="${this.userId}"
           class="sakai-user-photo ${this.classes}"
           data-bs-toggle="popover"
+          data-bs-trigger="focus"
           aria-label="${ifDefined(this.label)}"
           title="${ifDefined(this.label)}"
+          tabindex="0"
+          role="button"
           style="background-image:url(${this.url}) ${this.profilePopup === SakaiUserPhoto.OFF ? "" : ";cursor: pointer;"}">
         ${this.online ? html`
         <span></span>
