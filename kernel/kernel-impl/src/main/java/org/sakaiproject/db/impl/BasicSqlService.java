@@ -1303,7 +1303,7 @@ public abstract class BasicSqlService implements SqlService
 				//If failQuiet is 1 then print this, otherwise it's in ddl mode so just ignore
 				if (failQuiet == 1) {
 					log.warn("Sql.dbWrite(): recordAlreadyExists: " +  recordAlreadyExists + ", failQuiet: " + failQuiet + ", : error code: " 
-					+ e.getErrorCode() + ", " + "sql: " + sql + ", binds: " + debugFields(fields) + ", error: " + e.toString());
+					+ e.getErrorCode() + ", " + "sql: " + sql + ", binds: " + debugFields(fields) + ", error: " + e.toString(), e);
 				}
 				return -1;
 			}
