@@ -4378,32 +4378,36 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                             ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID);
 
                         if (fromCalendarEventId != null) {
-                            String fromCalendarId
-                                = calendarService.calendarReference(
-                                    oAssignment.getContext(), SiteService.MAIN_CONTAINER);
-                            Calendar fromCalendar = calendarService.getCalendar(fromCalendarId);
-                            CalendarEvent fromEvent = fromCalendar.getEvent(fromCalendarEventId);
-                            String toCalendarId
-                                = calendarService.calendarReference(
-                                    nAssignment.getContext(), SiteService.MAIN_CONTAINER);
-                            Calendar toCalendar = null;
                             try {
-                                toCalendar = calendarService.getCalendar(toCalendarId);
-                            } catch (IdUnusedException iue) {
-                                calendarService.commitCalendar(calendarService.addCalendar(toCalendarId));
-                                toCalendar = calendarService.getCalendar(toCalendarId);
-                            }
+                                String fromCalendarId
+                                    = calendarService.calendarReference(
+                                        oAssignment.getContext(), SiteService.MAIN_CONTAINER);
+                                Calendar fromCalendar = calendarService.getCalendar(fromCalendarId);
+                                CalendarEvent fromEvent = fromCalendar.getEvent(fromCalendarEventId);
+                                String toCalendarId
+                                    = calendarService.calendarReference(
+                                        nAssignment.getContext(), SiteService.MAIN_CONTAINER);
+                                Calendar toCalendar = null;
+                                try {
+                                    toCalendar = calendarService.getCalendar(toCalendarId);
+                                } catch (IdUnusedException iue) {
+                                    calendarService.commitCalendar(calendarService.addCalendar(toCalendarId));
+                                    toCalendar = calendarService.getCalendar(toCalendarId);
+                                }
 
-                            String fromDisplayName = fromEvent.getDisplayName();
-                            CalendarEvent toCalendarEvent
-                                = toCalendar.addEvent(fromEvent.getRange(), fromEvent.getDisplayName()
-                                    , fromEvent.getDescription(), fromEvent.getType()
-                                    , fromEvent.getLocation(), fromEvent.getAccess()
-                                    , fromEvent.getGroups(), fromEvent.getAttachments());
-                            nProperties.put(
-                                ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID, toCalendarEvent.getId());
-                            nProperties.put(AssignmentConstants.NEW_ASSIGNMENT_DUE_DATE_SCHEDULED, Boolean.TRUE.toString());
-                            nProperties.put(ResourceProperties.NEW_ASSIGNMENT_CHECK_ADD_DUE_DATE, Boolean.TRUE.toString());
+                                String fromDisplayName = fromEvent.getDisplayName();
+                                CalendarEvent toCalendarEvent
+                                    = toCalendar.addEvent(fromEvent.getRange(), fromEvent.getDisplayName()
+                                        , fromEvent.getDescription(), fromEvent.getType()
+                                        , fromEvent.getLocation(), fromEvent.getAccess()
+                                        , fromEvent.getGroups(), fromEvent.getAttachments());
+                                nProperties.put(
+                                    ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID, toCalendarEvent.getId());
+                                nProperties.put(AssignmentConstants.NEW_ASSIGNMENT_DUE_DATE_SCHEDULED, Boolean.TRUE.toString());
+                                nProperties.put(ResourceProperties.NEW_ASSIGNMENT_CHECK_ADD_DUE_DATE, Boolean.TRUE.toString());
+                            } catch (Exception e) {
+                                log.warn("Failed to copy calendar event from assignment: {}", e);
+                            }
                         }
                     }
 
@@ -4607,7 +4611,7 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                         assignmentSupplementItemService.saveAllPurposeItem(nAllPurposeItem);
                     }
                 } catch (Exception e) {
-                    log.error("{} oAssignmentId={} nAssignmentId={}", e.toString(), oAssignmentId, nAssignmentId);
+                    log.error("{} oAssignmentId={} nAssignmentId={}", e.toString(), oAssignmentId, nAssignmentId, e);
                 }
             }
         }
