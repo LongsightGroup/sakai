@@ -416,9 +416,7 @@ export class SakaiNotifications extends SakaiElement {
           <ol class="mt-2">
             <li>${this._i18n.push_setup_failure_info_1.replace("{0}", getServiceName())}</li>
             <li>${this._i18n.push_setup_failure_info_2}</li>
-            <li>${this._i18n.push_setup_failure_info_3}</li>
           </ol>
-          <div class="fw-bold">${this._i18n.push_setup_failure_info_4.replaceAll("{}", getServiceName())}</div>
         </div>
       ` : nothing}
 
