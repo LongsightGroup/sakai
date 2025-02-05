@@ -1489,6 +1489,10 @@ public class LTI13Servlet extends HttpServlet {
 				jo.put("lis_person_sourcedid", user.getEid());
 
 				if (Boolean.TRUE.equals(tool.sendname)) {
+				  // LUC CUSTOM
+				  log.debug("LUC custom properties in namesandroles {}", user.getProperties());
+				  jo.put("custom_lid", user.getProperties().getProperty("employeeNumber"));
+
 					jo.put("name", user.getDisplayName());
 					jo.put("given_name", user.getFirstName());
 					jo.put("family_name", user.getLastName());
