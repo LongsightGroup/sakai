@@ -150,24 +150,26 @@ public class AssignmentPeerAssessmentServiceImpl extends HibernateDaoSupport imp
                     if (submissionIdMap.containsKey(p.getId().getSubmissionId())) {
                         //first, add this assessment to the AssignedAssessmentsMap
                         AssignmentSubmission s = submissionIdMap.get(p.getId().getSubmissionId());
-                        Optional<AssignmentSubmissionSubmitter> ass = assignmentService.getSubmissionSubmittee(s);//Next, increment the count for studentAssessorsMap
-                        Integer count = ass.isPresent() ?studentAssessorsMap.get(ass.get().getSubmitter()) : 0;
-
-                        //check if the count is less than num of reviews before added another one,
-                        //otherwise, we need to delete this one (if it's empty)
-                        if (count < numOfReviews || p.getScore() != null || p.getComment() != null) {
-                            count++;
-                            studentAssessorsMap.put(ass.get().getSubmitter(), count);
-                            Map<String, PeerAssessmentItem> peerAssessments = assignedAssessmentsMap.get(p.getId().getAssessorUserId());
-                            if (peerAssessments == null) {
-                                //probably not possible, but just check
-                                peerAssessments = new HashMap<String, PeerAssessmentItem>();
+                        Optional<AssignmentSubmissionSubmitter> ass = assignmentService.getSubmissionSubmittee(s);
+                        if (ass.isPresent()) {
+                            //Next, increment the count for studentAssessorsMap
+                            Integer count = studentAssessorsMap.get(ass.get().getSubmitter());
+                            //check if the count is less than num of reviews before added another one,
+                            //otherwise, we need to delete this one (if it's empty)
+                            if (count < numOfReviews || p.getScore() != null || p.getComment() != null) {
+                                count++;
+                                studentAssessorsMap.put(ass.get().getSubmitter(), count);
+                                Map<String, PeerAssessmentItem> peerAssessments = assignedAssessmentsMap.get(p.getId().getAssessorUserId());
+                                if (peerAssessments == null) {
+                                    //probably not possible, but just check
+                                    peerAssessments = new HashMap<String, PeerAssessmentItem>();
+                                }
+                                peerAssessments.put(p.getId().getSubmissionId(), p);
+                                assignedAssessmentsMap.put(p.getId().getAssessorUserId(), peerAssessments);
+                            } else {
+                                //this shoudln't happen since the code above removes all empty assessments, but just in case:
+                                getHibernateTemplate().delete(p);
                             }
-                            peerAssessments.put(p.getId().getSubmissionId(), p);
-                            assignedAssessmentsMap.put(p.getId().getAssessorUserId(), peerAssessments);
-                        } else {
-                            //this shoudln't happen since the code above removes all empty assessments, but just in case:
-                            getHibernateTemplate().delete(p);
                         }
                     } else {
                         //this isn't realy possible since we looked up the peer assessments by submission id
