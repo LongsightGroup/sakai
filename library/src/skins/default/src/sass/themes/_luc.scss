@@ -46,31 +46,34 @@
 #logoWrapper .btn {
   padding: 0 !important;
 }
-.si-com-sonicfoundry-mediasite-catalog::before,
-.si-com-sonicfoundry-mediasite-lti:before,
-.si-com-sonicfoundry-mediasite-mymediasite:before
+i.si-com-sonicfoundry-mediasite-catalog::before,
+i.si-com-sonicfoundry-mediasite-lti:before,
+i.si-com-sonicfoundry-mediasite-mymediasite:before
 {
     content: "\f2cb";
 }
-.si-sakai-panopto:before,
-.si-sakai-atomiclearning:before,
-.si-sakai-voicethread:before
+i.si-sakai-panopto:before,
+i.si-sakai-atomiclearning:before,
+i.si-sakai-voicethread:before
 {
     content: "\f829";
 }
-.si-sakai-zoompro:before {
+i.si-sakai-zoompro:before {
     font-family: 'FontAwesome' !important;
     content: "\f0c0";
 }
-.si-sakai-piazza:before {
+i.si-sakai-piazza:before {
     font-family: 'FontAwesome' !important;
     content: "\f288";
 }
-.si-sakai-smartevals:before {
+i.si-sakai-smartevals:before {
     font-family: 'FontAwesome' !important;
     content: "\f29c";
 }
-.si-sakai-follett:before {
+i.si-sakai-follett:before {
     font-family: 'FontAwesome' !important;
     content: "\f187";
+}
+i.si-sakai-digication:before {
+    content: "\f3ee";
 }
