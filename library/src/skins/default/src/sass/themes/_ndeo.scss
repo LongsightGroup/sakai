@@ -1,0 +1,14 @@
+/* Light Theme */
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, #184, 100%, 29%);
+
+    --top-header-background: white;
+
+    --sakai-selected-page-bg-color: var(--sakai-brand);
+    --sakai-selected-page-color: white;
+}
+
+#logoWrapper .btn {
+    padding: 0 !important;
+}
