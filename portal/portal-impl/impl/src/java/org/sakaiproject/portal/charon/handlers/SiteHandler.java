@@ -933,7 +933,7 @@ public class SiteHandler extends WorksiteHandler
 						rcontext.put("roleUrlValue", svRolesFinal.get(0));
 					}
 					// We'll show the swap role snippet if the current user role is not in "studentview.roles"
-					roleswapcheck = userRole == null || !svRolesFinal.contains(userRole.getId());
+					roleswapcheck = userRole == null || "Teaching Assistant".equals(userRole.getId()) || !svRolesFinal.contains(userRole.getId());
 					rcontext.put("siteRoles", svRolesFinal);
 					rcontext.put("switchRoleUrl", switchRoleUrl);
 				}
