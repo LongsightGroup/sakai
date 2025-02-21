@@ -1,9 +1,9 @@
 /* Light Theme */
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 340, 86%, 19);
+    @include defineColorHSL(--sakai-brand, 340, 86%, 19%);
     @include defineColorHSL(--sakai-color-gold, 44, 100%, 46%);
-    @include defineColorHSL(--sakai-color-red, 340, 86%, 19);
+    @include defineColorHSL(--sakai-color-red, 340, 86%, 19%);
 
     // Top header and logo wrapper
     --top-header-background: var(--sakai-color-gold);
