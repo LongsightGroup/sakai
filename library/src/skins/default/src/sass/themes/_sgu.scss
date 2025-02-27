@@ -16,6 +16,10 @@
     --sakai-offcanvas-header-bg: var(--sakai-color-blue);
     --sakai-modal-header-bg: var(--sakai-color-blue);
 }
+:root.sakaiUserTheme-dark {
+    --top-header-background: var(--sakai-color-black);
+    --topNav-text-color: var(--sakai-color-white);
+}
 
 .portal-header-logo img {
   width: 300px;
