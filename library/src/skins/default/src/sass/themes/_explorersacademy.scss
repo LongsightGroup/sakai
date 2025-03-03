@@ -1,0 +1,17 @@
+/* Light Theme */
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 0, 0, 0%);
+    @include defineColorHSL(--sakai-color-yellow, 49, 100%, 50%);
+
+    --top-header-background: black;
+    --topNav-text-color: var(--sakai-color-yellow);
+    --sakai-text-color-inverted: var(--sakai-color-yellow);
+
+    --sakai-selected-page-bg-color: var(--sakai-color-black);
+    --sakai-selected-page-color: var(--sakai-color-yellow);
+}
+:root.sakaiUserTheme-dark {
+    --topNav-text-color: var(--sakai-color-yellow);
+    --sakai-text-color-inverted: var(--sakai-color-yellow);
+}
