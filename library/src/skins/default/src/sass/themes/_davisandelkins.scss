@@ -1,12 +1,17 @@
 /* Light Theme */
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 184, 100%, 29%);
-    @include defineColorHSL(--sakai-color-blue, 184, 100%, 29%);
+    @include defineColorHSL(--sakai-brand, 354, 100%, 47%);
+    @include defineColorHSL(--sakai-color-red, 354, 100%, 47%);
 
     --top-header-background: var(--sakai-color-white);
     --topNav-text-color: var(--sakai-color-black);
+
 }
 :root.sakaiUserTheme-dark {
     --top-header-background: var(--sakai-color-gray--darker-2);
+}
+
+#logoWrapper .btn {
+    padding: 0 2px !important;
 }
