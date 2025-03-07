@@ -6,3 +6,9 @@
 
     --top-header-background: var(--sakai-brand);
 }
+
+@media (min-width: 992px) {
+    .portal-header #logoWrapper a.btn {
+      padding-right: 5rem !important;
+    }
+  }

@@ -11,3 +11,9 @@
     --sakai-selected-page-color: var(--sakai-color-navy);
 
 }
+
+@media (min-width: 992px) {
+    .portal-header #logoWrapper a.btn {
+      padding-right: 6rem !important;
+    }
+  }
