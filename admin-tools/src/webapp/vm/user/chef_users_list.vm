@@ -1,7 +1,65 @@
 ## $Header: /cvs/sakai2/legacy/tools/src/webapp/vm/admin/chef_users_list.vm,v 1.2 2005/05/19 19:53:01 gsilver.umich.edu Exp $
 #javascript("/library/js/spinner.js")
+${includeLatestJQuery}
+## Add DataTables CSS and JS
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<style>
+.dataTables_info {
+    padding-top: 0.5em !important;
+    margin-bottom: 1em;
+}
+.dataTables_filter {
+    margin-bottom: 1em;
+}
+.user-count-display {
+    margin-bottom: 1em;
+    font-weight: bold;
+}
+</style>
 <script type="text/javascript">
 	focus_path = ["search"];
+	$(document).ready(function() {
+		var table = $('#userTable').DataTable({
+			"paging": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"responsive": true,
+			"pageLength": 100,
+			"lengthChange": false,
+			"language": {
+				"search": "Filter:",
+				"paginate": {
+					"first": "First",
+					"last": "Last",
+					"next": "Next",
+					"previous": "Previous"
+				},
+				"info": "Showing _START_ to _END_ of _TOTAL_ users",
+				"infoFiltered": "(filtered from _MAX_ total users)",
+				"zeroRecords": "No matching users found",
+				"emptyTable": "No users available"
+			},
+			"drawCallback": function(settings) {
+				// Update the custom counter
+				var api = this.api();
+				var totalUsers = api.page.info().recordsTotal;
+				var filteredUsers = api.page.info().recordsDisplay;
+				
+				if (totalUsers === filteredUsers) {
+					$('#userCountDisplay').html('Total: ' + totalUsers + ' users');
+				} else {
+					$('#userCountDisplay').html('Showing ' + filteredUsers + ' of ' + totalUsers + ' users');
+				}
+			}
+		});
+		
+		// Initial count display
+		var totalUsers = table.page.info().recordsTotal;
+		$('#userCountDisplay').html('Total: ' + totalUsers + ' users');
+	});
 </script>
 <div class="portletBody">
 #if($menu)
@@ -13,12 +71,12 @@
 
 		#if ($alertMessage)<div class="sak-banner-error">$tlang.getString("useconrem.alert") $formattedText.escapeHtml($alertMessage)</div>#end
 		#if ($successMessage)<div class="sak-banner-success">$formattedText.escapeHtml($successMessage)</div>#end
-		<div class="instruction">
+		<div class="instruction d-none">
 			$tlang.getString("uselis.theare")
 		</div>
 		
 		##paging widget
-		<div class="listNav">
+		<div class="listNav d-none">
 						#if($totalNumber>0)
 						<div class="instruction" id="pagingHeader">
 						$tlang.getFormattedMessage("uselis.list.youare_of_results", $params)
@@ -76,34 +134,41 @@
 				
 
 #if ($users.size() > 0)
-			<table class="table table-hover table-striped table-bordered" summary ="$tlang.getString("uselis.lisof")">
-				<tr>
-					<th id="Eid">$tlang.getString("useconrem.useid")</th>
-					<th id="Name">$tlang.getString("useconrem.nam")</th>
-					<th id="Email">$tlang.getString("useconrem.ema")</th>
-					<th id="Type" class="d-none d-sm-table-cell">$tlang.getString("usecre.typ")</th>
-					<th id="Status" class="d-none d-sm-table-cell">$tlang.getString("usecre.status")</th>
-					<th id="Id" class="d-none d-sm-table-cell">$tlang.getString("useconrem.useuid")</th>
-				</tr>
+			<div class="user-count-display" id="userCountDisplay"></div>
+			<table id="userTable" class="table table-hover table-striped table-bordered" summary ="$tlang.getString("uselis.lisof")">
+				<thead>
+					<tr>
+						<th id="Eid">$tlang.getString("useconrem.useid")</th>
+						<th id="Name">$tlang.getString("useconrem.nam")</th>
+						<th id="Email">$tlang.getString("useconrem.ema")</th>
+						<th id="Type" class="d-none d-sm-table-cell">$tlang.getString("usecre.typ")</th>
+						<th id="Status" class="d-none d-sm-table-cell">$tlang.getString("usecre.status")</th>
+						<th id="LastLogin" class="d-none d-sm-table-cell">Last Login</th>
+						<th id="Id" class="d-none d-sm-table-cell">$tlang.getString("useconrem.useuid")</th>
+					</tr>
+				</thead>
+				<tbody>
 	#foreach ($user in $users)
-				<tr>
-					<td headers="Eid">
+					<tr>
+						<td headers="Eid">
 		#if ($service.allowUpdateUser($user.Id))
-						<a href="#toolLinkParam("$action" "doEdit" "id=$formattedText.escapeUrl($user.Id)")">
-							$formattedText.escapeHtml($user.Eid)
-						</a>
+							<a href="#toolLinkParam("$action" "doEdit" "id=$formattedText.escapeUrl($user.Id)")">
+								$formattedText.escapeHtml($user.Eid)
+							</a>
 		#else
-						$formattedText.escapeHtml($user.Eid)
+							$formattedText.escapeHtml($user.Eid)
 		#end
-					</td>
-					<td headers="Name">$formattedText.escapeHtml($user.SortName)</td>
-					<td headers="Email">$formattedText.escapeHtml($user.Email)</td>
-					<td headers="Type" class="d-none d-sm-table-cell">$formattedText.escapeHtml($user.Type)</td>
-					<td headers="Status" class="d-none d-sm-table-cell">#if($!user.Properties.getProperty("disabled")) $tlang.getString("disabled") #else $tlang.getString("enabled") #end</td>
-					<td headers="Id" class="d-none d-sm-table-cell">$formattedText.escapeHtml($user.Id)
-					</td>
-				</tr>
+						</td>
+						<td headers="Name">$formattedText.escapeHtml($user.SortName)</td>
+						<td headers="Email">$formattedText.escapeHtml($user.Email)</td>
+						<td headers="Type" class="d-none d-sm-table-cell">$formattedText.escapeHtml($user.Type)</td>
+						<td headers="Status" class="d-none d-sm-table-cell">#if($!user.Properties.getProperty("disabled")) $tlang.getString("disabled") #else $tlang.getString("enabled") #end</td>
+						<td headers="LastLogin" class="d-none d-sm-table-cell">$!user.Properties.getProperty("LastLogin")</td>
+						<td headers="Id" class="d-none d-sm-table-cell">$formattedText.escapeHtml($user.Id)
+						</td>
+					</tr>
 	#end
+				</tbody>
 			</table>
 #else
 		<div class="instruction">
