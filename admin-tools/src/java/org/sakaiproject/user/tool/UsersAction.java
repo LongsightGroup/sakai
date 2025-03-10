@@ -24,6 +24,9 @@ package org.sakaiproject.user.tool;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -95,6 +98,7 @@ import org.sakaiproject.util.RequestFilter;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.api.PasswordFactory;
+import org.sakaiproject.db.api.SqlService;
 
 import com.opencsv.CSVReader;
 
@@ -163,6 +167,7 @@ public class UsersAction extends PagedResourceActionII
 	private ThreadLocalManager threadLocalManager;
 	private UserTimeService userTimeService;
 	private PasswordFactory passwordFactory;
+	private SqlService sqlService;
 	
 	public UsersAction() {
 		super();
@@ -176,6 +181,7 @@ public class UsersAction extends PagedResourceActionII
 		threadLocalManager = ComponentManager.get(ThreadLocalManager.class);
 		userTimeService = (UserTimeService)ComponentManager.get(UserTimeService.class);
 		passwordFactory = ComponentManager.get(PasswordFactory.class);
+		sqlService = ComponentManager.get(SqlService.class);
 	}
 
 	/**
@@ -185,13 +191,33 @@ public class UsersAction extends PagedResourceActionII
 	{
 		// search?
 		String search = StringUtils.trimToNull((String) state.getAttribute(STATE_SEARCH));
-
+		
+		// Get the current user's lamp_inst value
+		Integer currentUserLampInst = getCurrentUserLampInst();
+		
+		List<User> users;
 		if (search != null)
 		{
-			return userDirectoryService.searchUsers(search, first, last);
+			users = userDirectoryService.searchUsers(search, first, last);
 		}
-
-		return userDirectoryService.getUsers(first, last);
+		else
+		{
+			users = userDirectoryService.getUsers(first, last);
+		}
+		
+		// If we have a lamp_inst value for the current user, filter the results
+		if (currentUserLampInst != null) {
+			List<User> filteredUsers = new ArrayList<>();
+			for (User user : users) {
+				Integer userLampInst = getUserLampInst(user.getId());
+				if (userLampInst != null && userLampInst.equals(currentUserLampInst)) {
+					filteredUsers.add(user);
+				}
+			}
+			return filteredUsers;
+		}
+		
+		return users;
 	}
 
 	/**
@@ -201,13 +227,89 @@ public class UsersAction extends PagedResourceActionII
 	{
 		// search?
 		String search = StringUtils.trimToNull((String) state.getAttribute(STATE_SEARCH));
-
+		
+		// Get the current user's lamp_inst value
+		Integer currentUserLampInst = getCurrentUserLampInst();
+		
+		// If we don't have a lamp_inst value, return the total count
+		if (currentUserLampInst == null) {
+			if (search != null)
+			{
+				return userDirectoryService.countSearchUsers(search);
+			}
+			return userDirectoryService.countUsers();
+		}
+		
+		// Otherwise, we need to count the filtered users
+		List<User> users;
 		if (search != null)
 		{
-			return userDirectoryService.countSearchUsers(search);
+			users = userDirectoryService.searchUsers(search, 1, Integer.MAX_VALUE);
 		}
-
-		return userDirectoryService.countUsers();
+		else
+		{
+			users = userDirectoryService.getUsers(1, Integer.MAX_VALUE);
+		}
+		
+		int count = 0;
+		for (User user : users) {
+			Integer userLampInst = getUserLampInst(user.getId());
+			if (userLampInst != null && userLampInst.equals(currentUserLampInst)) {
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
+	/**
+	 * Get the lamp_inst value for the current user
+	 * @return The lamp_inst value as an Integer, or null if not found
+	 */
+	private Integer getCurrentUserLampInst() {
+		try {
+			User currentUser = userDirectoryService.getCurrentUser();
+			if (currentUser != null) {
+				return getUserLampInst(currentUser.getId());
+			}
+		} catch (Exception e) {
+			log.error("Error getting current user's lamp_inst value", e);
+		}
+		return null;
+	}
+	
+	/**
+	 * Get the lamp_inst value for a user from the sakai_user_id_map table
+	 * @param userId The user's ID
+	 * @return The lamp_inst value as an Integer, or null if not found
+	 */
+	private Integer getUserLampInst(String userId) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			connection = sqlService.borrowConnection();
+			statement = connection.prepareStatement("SELECT lamp_inst FROM sakai_user_id_map WHERE user_id = ?");
+			statement.setString(1, userId);
+			resultSet = statement.executeQuery();
+			
+			if (resultSet.next()) {
+				return resultSet.getInt("lamp_inst");
+			}
+		} catch (Exception e) {
+			log.error("Error getting lamp_inst value for user " + userId, e);
+		} finally {
+			try {
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) sqlService.returnConnection(connection);
+			} catch (Exception e) {
+				log.error("Error closing database resources", e);
+			}
+		}
+		
+		return null;
 	}
 
 	/**
