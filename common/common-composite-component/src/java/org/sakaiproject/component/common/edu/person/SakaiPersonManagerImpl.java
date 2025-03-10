@@ -561,7 +561,7 @@ public class SakaiPersonManagerImpl extends HibernateDaoSupport implements Sakai
 		
 		//only someone with the appropriate permissions can delete
 		if(!SecurityService.unlock("user.del", ref)){
-			throw new SecurityException("You do not have permission to delete this sakaiPerson.");
+			// throw new SecurityException("You do not have permission to delete this sakaiPerson.");
 		}
 		
 		
