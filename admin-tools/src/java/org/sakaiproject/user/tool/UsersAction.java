@@ -29,8 +29,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -149,6 +151,9 @@ public class UsersAction extends PagedResourceActionII
 
 	private static final String USER_TEMPLATE_PREFIX = "!user.template.";
 
+	// Add a constant for the permission
+	private static final String PERMISSION_USER_UPDATE_ANY = "user.upd.any";
+
 	/*Kernel api */
 	private AuthzGroupService authzGroupService;
 
@@ -189,35 +194,64 @@ public class UsersAction extends PagedResourceActionII
 	 */
 	protected List<User> readResourcesPage(SessionState state, int first, int last)
 	{
-		// search?
-		String search = StringUtils.trimToNull((String) state.getAttribute(STATE_SEARCH));
-		
 		// Get the current user's lamp_inst value
 		Integer currentUserLampInst = getCurrentUserLampInst();
 		
-		List<User> users;
-		if (search != null)
-		{
-			users = userDirectoryService.searchUsers(search, first, last);
-		}
-		else
-		{
-			users = userDirectoryService.getUsers(first, last);
+		// If the current user doesn't have a lamp_inst value, return an empty list
+		if (currentUserLampInst == null) {
+			return new ArrayList<>();
 		}
 		
-		// If we have a lamp_inst value for the current user, filter the results
-		if (currentUserLampInst != null) {
-			List<User> filteredUsers = new ArrayList<>();
-			for (User user : users) {
-				Integer userLampInst = getUserLampInst(user.getId());
-				if (userLampInst != null && userLampInst.equals(currentUserLampInst)) {
-					filteredUsers.add(user);
-				}
+		// Get all user IDs with the same lamp_inst value
+		List<String> userIds = getUserIdsByLampInst(currentUserLampInst);
+		
+		// If no users found with this lamp_inst, return an empty list
+		if (userIds.isEmpty()) {
+			return new ArrayList<>();
+		}
+		
+		// Get all users at once using the user IDs
+		try {
+			return userDirectoryService.getUsers(userIds);
+		} catch (Exception e) {
+			log.error("Error getting users by IDs", e);
+			return new ArrayList<>();
+		}
+	}
+	
+	/**
+	 * Get all user IDs with a specific lamp_inst value
+	 * @param lampInst The lamp_inst value to search for
+	 * @return List of user IDs with the specified lamp_inst
+	 */
+	private List<String> getUserIdsByLampInst(Integer lampInst) {
+		List<String> userIds = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			connection = sqlService.borrowConnection();
+			statement = connection.prepareStatement("SELECT map.user_id FROM sakai_user_id_map map JOIN sakai_user su ON map.user_id=su.user_id WHERE map.lamp_inst = ?");
+			statement.setInt(1, lampInst);
+			resultSet = statement.executeQuery();
+			
+			while (resultSet.next()) {
+				userIds.add(resultSet.getString("user_id"));
 			}
-			return filteredUsers;
+		} catch (Exception e) {
+			log.error("Error getting user IDs by lamp_inst", e);
+		} finally {
+			try {
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) sqlService.returnConnection(connection);
+			} catch (Exception e) {
+				log.error("Error closing database resources", e);
+			}
 		}
 		
-		return users;
+		return userIds;
 	}
 
 	/**
@@ -225,43 +259,52 @@ public class UsersAction extends PagedResourceActionII
 	 */
 	protected int sizeResources(SessionState state)
 	{
-		// search?
-		String search = StringUtils.trimToNull((String) state.getAttribute(STATE_SEARCH));
-		
 		// Get the current user's lamp_inst value
 		Integer currentUserLampInst = getCurrentUserLampInst();
 		
-		// If we don't have a lamp_inst value, return the total count
+		// If the current user doesn't have a lamp_inst value, return 0
 		if (currentUserLampInst == null) {
-			if (search != null)
-			{
-				return userDirectoryService.countSearchUsers(search);
-			}
-			return userDirectoryService.countUsers();
+			return 0;
 		}
 		
-		// Otherwise, we need to count the filtered users
-		List<User> users;
-		if (search != null)
-		{
-			users = userDirectoryService.searchUsers(search, 1, Integer.MAX_VALUE);
-		}
-		else
-		{
-			users = userDirectoryService.getUsers(1, Integer.MAX_VALUE);
-		}
-		
-		int count = 0;
-		for (User user : users) {
-			Integer userLampInst = getUserLampInst(user.getId());
-			if (userLampInst != null && userLampInst.equals(currentUserLampInst)) {
-				count++;
-			}
-		}
-		
-		return count;
+		// Count users with the same lamp_inst value
+		return countUsersByLampInst(currentUserLampInst);
 	}
 	
+	/**
+	 * Count the number of users with a specific lamp_inst value
+	 * @param lampInst The lamp_inst value to count
+	 * @return The number of users with the specified lamp_inst
+	 */
+	private int countUsersByLampInst(Integer lampInst) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			connection = sqlService.borrowConnection();
+			statement = connection.prepareStatement("SELECT COUNT(*) FROM sakai_user_id_map map JOIN sakai_user su ON map.user_id=su.user_id WHERE map.lamp_inst = ?");
+			statement.setInt(1, lampInst);
+			resultSet = statement.executeQuery();
+			
+			if (resultSet.next()) {
+				return resultSet.getInt(1);
+			}
+		} catch (Exception e) {
+			log.error("Error counting users by lamp_inst", e);
+		} finally {
+			try {
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) sqlService.returnConnection(connection);
+			} catch (Exception e) {
+				log.error("Error closing database resources", e);
+			}
+		}
+		
+		return 0;
+	}
+
 	/**
 	 * Get the lamp_inst value for the current user
 	 * @return The lamp_inst value as an Integer, or null if not found
@@ -405,7 +448,7 @@ public class UsersAction extends PagedResourceActionII
 
 
 		// if not logged in as the super user, we won't do anything
-		if ((!singleUser) && (!createUser) && (!securityService.isSuperUser()))
+		if ((!singleUser) && (!createUser) && (!hasUpdateAnyPermission()))
 		{
 			context.put("tlang",rb);
 			return (String) getContext(rundata).get("template") + "_noaccess";
@@ -501,10 +544,45 @@ public class UsersAction extends PagedResourceActionII
 		// put the service in the context
 		context.put("service", userDirectoryService);
 
-		// put all (internal) users into the context
-		context.put("users", prepPage(state));
+		// Get the current user's lamp_inst value
+		Integer currentUserLampInst = getCurrentUserLampInst();
+		
+		// If the current user doesn't have a lamp_inst value, return an empty list
+		List<User> users = new ArrayList<>();
+		if (currentUserLampInst != null) {
+			// Get all user IDs with the same lamp_inst value
+			List<String> userIds = getUserIdsByLampInst(currentUserLampInst);
+			
+			// Get all users at once using the user IDs
+			try {
+				users = userDirectoryService.getUsers(userIds);
+			} catch (Exception e) {
+				log.error("Error getting users by IDs", e);
+			}
+		}
+		
+		// Get last login information for all users at once
+		List<String> userIds = new ArrayList<>();
+		for (User user : users) {
+			userIds.add(user.getId());
+		}
+		
+		// Get last login information for all users at once
+		Map<String, String> lastLoginMap = getLastLoginForUsers(userIds);
+		
+		// Add last login information to each user
+		for (User user : users) {
+			String lastLogin = lastLoginMap.get(user.getId());
+			if (lastLogin != null) {
+				((UserEdit)user).getPropertiesEdit().addProperty("LastLogin", lastLogin);
+			}
+		}
+
+		// put all users into the context
+		context.put("users", users);
 
 		// build the menu
+		
 		Menu bar = new MenuImpl();
 		if (userDirectoryService.allowAddUser())
 		{
@@ -512,42 +590,16 @@ public class UsersAction extends PagedResourceActionII
 			bar.add(new MenuEntry(rb.getString("import.user.file"), null, true, MenuItem.CHECKED_NA, "doImport"));
 		}
 
-		// add the paging commands
-		int pageSize = Integer.valueOf(state.getAttribute(STATE_PAGESIZE).toString()).intValue();
-		int currentPageNumber = Integer.valueOf(state.getAttribute(STATE_CURRENT_PAGE).toString()).intValue();
-		int startNumber = state.getAttribute(STATE_TOP_PAGE_MESSAGE) != null ? ((Integer) state.getAttribute(STATE_TOP_PAGE_MESSAGE)).intValue() + 1 : pageSize * (currentPageNumber - 1);
-		int endNumber = pageSize * currentPageNumber;
-
-		int totalNumber = 0;
-		Object[] params;
-		ArrayList<Integer[]> list = new ArrayList<>();
-		list.add(new Integer[]{Integer.valueOf(5)});
-		list.add(new Integer[]{Integer.valueOf(10)});
-		list.add(new Integer[]{Integer.valueOf(20)});
-		list.add(new Integer[]{Integer.valueOf(50)});
-		list.add(new Integer[]{Integer.valueOf(100)});
-		list.add(new Integer[]{Integer.valueOf(200)});
-
-		try
-		{
-			totalNumber = Integer.valueOf(state.getAttribute(STATE_NUM_MESSAGES).toString()).intValue();
-		}
-		catch (java.lang.NullPointerException ignore) {}
-		catch (java.lang.NumberFormatException ignore) {}
-
-		if (totalNumber < endNumber) endNumber = totalNumber;
-
-		params = new Object[]{startNumber, endNumber, totalNumber};
-
-		context.put("startNumber", Integer.valueOf(startNumber));
-		context.put("endNumber", Integer.valueOf(endNumber));
+		// Set total count for display
+		int totalNumber = users.size();
 		context.put("totalNumber", Integer.valueOf(totalNumber));
-		context.put("params", params);
-		context.put("list", list);
-		pagingInfoToContext(state, context);
-
-		// add the search commands
-		addSearchMenus(bar, state, rb.getString("useact.search"));
+		
+		// Disable paging - show all users
+		context.put("startNumber", Integer.valueOf(1));
+		context.put("endNumber", Integer.valueOf(totalNumber));
+		
+		// Add the search commands
+		//addSearchMenus(bar, state, rb.getString("useact.search"));
 
 		if (bar.size() > 0)
 		{
@@ -583,7 +635,7 @@ public class UsersAction extends PagedResourceActionII
 
 		context.put("incType", Boolean.valueOf(true));
 
-    context.put("superUser", Boolean.valueOf(securityService.isSuperUser()));
+    context.put("superUser", Boolean.valueOf(hasUpdateAnyPermission()));
 
 		String value = (String) state.getAttribute("valueEid");
 		if (value != null) context.put("valueEid", value);
@@ -680,7 +732,7 @@ public class UsersAction extends PagedResourceActionII
 		context.put("user", user);
 		
 		// is super user/admin user?
-		context.put("superUser", Boolean.valueOf(securityService.isSuperUser()));
+		context.put("superUser", Boolean.valueOf(hasUpdateAnyPermission()));
 
 		// include the password fields?
 		context.put("incPw", state.getAttribute("include-password"));
@@ -1305,7 +1357,7 @@ public class UsersAction extends PagedResourceActionII
 	 * @return true if password is valid or if current user is admin
 	 */
 	private boolean validatePassword(String pw, User user, SessionState state) {
-		if (pw != null && !securityService.isSuperUser() && pwHelper.validatePassword(pw, user) == PasswordRating.FAILED) {
+		if (pw != null && !hasUpdateAnyPermission() && pwHelper.validatePassword(pw, user) == PasswordRating.FAILED) {
 			addAlert(state, rb.getString(MSG_KEY_PASSWORD_WEAK) + " " + rb.getString(MSG_KEY_PW_STRENGTH_INFO));
 			return false;
 		}
@@ -1542,7 +1594,7 @@ public class UsersAction extends PagedResourceActionII
 				// (the added might be "anon", and anon has add but not update permission)
 				
 				//SAK-18209 only an admin user should be able to specify a ID
-				if (!securityService.isSuperUser()) {
+				if (!hasUpdateAnyPermission()) {
 					id = null;
 				}
 				User newUser;
@@ -1558,7 +1610,7 @@ public class UsersAction extends PagedResourceActionII
 				{
 					newUser = userDirectoryService.addUser(id, eid, firstName, lastName, email, pw, type, properties);
 
-					if (securityService.isSuperUser()) {
+					if (hasUpdateAnyPermission()) {
 						if(disabled == 1){
 							try {
 								UserEdit editUser = userDirectoryService.editUser(newUser.getId());
@@ -1634,7 +1686,7 @@ public class UsersAction extends PagedResourceActionII
 
                   // Still needs super user to change super user password
                   // If the current user isn't a super user but is trying to change the password or email of a super user print an error
-			if (!securityService.isSuperUser() && securityService.isSuperUser(user.getId())) {
+			if (!hasUpdateAnyPermission() && hasUpdateAnyPermission(user.getId())) {
 			    addAlert(state, rb.getString("useact.youdonot4"));
 			    return false;
 			}
@@ -1650,7 +1702,7 @@ public class UsersAction extends PagedResourceActionII
 			//add in the updated props
 			user.getPropertiesEdit().addAll(properties);
 			
-			if (securityService.isSuperUser()) {
+			if (hasUpdateAnyPermission()) {
 				if(disabled == 1){
 					user.getProperties().addProperty("disabled", "true");
 				}else{
@@ -1662,7 +1714,7 @@ public class UsersAction extends PagedResourceActionII
 			if (!isProvidedType(user.getType())) {
 			
 				// make sure the old password matches, but don't check for super users
-				if (!securityService.isSuperUser()) {
+				if (!hasUpdateAnyPermission()) {
 					if (!user.checkPassword(pwcur)) {
 						addAlert(state, rb.getString("usecre.curpass"));
 						return false;
@@ -2073,7 +2125,7 @@ public class UsersAction extends PagedResourceActionII
 	private boolean isValidatedWithAccountValidator(SessionState state)
 	{
 		boolean isGatewayTool = (boolean) state.getAttribute("create-user");
-		if (isGatewayTool && !securityService.isSuperUser())
+		if (isGatewayTool && !hasUpdateAnyPermission())
 		{
 			return (boolean) state.getAttribute(CONFIG_VALIDATE_THROUGH_EMAIL);
 		}
@@ -2082,7 +2134,7 @@ public class UsersAction extends PagedResourceActionII
 
 	private boolean isEidEditable(SessionState state)
 	{
-		if (securityService.isSuperUser())
+		if (hasUpdateAnyPermission())
 		{
 			return true;
 		}
@@ -2114,4 +2166,98 @@ public class UsersAction extends PagedResourceActionII
         }
         return userTypes;
     }
+
+	/**
+	 * Get the last login timestamp for multiple users from the database in a single query
+	 * 
+	 * @param userIds List of user IDs
+	 * @return Map of user IDs to formatted last login date/time
+	 */
+	private Map<String, String> getLastLoginForUsers(List<String> userIds) {
+		Map<String, String> lastLoginMap = new HashMap<>();
+		if (userIds == null || userIds.isEmpty()) {
+			return lastLoginMap;
+		}
+		
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		try {
+			connection = sqlService.borrowConnection();
+			
+			// Build the IN clause for the SQL query
+			StringBuilder placeholders = new StringBuilder();
+			for (int i = 0; i < userIds.size(); i++) {
+				if (i > 0) {
+					placeholders.append(",");
+				}
+				placeholders.append("?");
+			}
+			
+			String sql = "SELECT user_id, last_login FROM sakai_user_id_map WHERE user_id IN (" + placeholders.toString() + ")";
+			statement = connection.prepareStatement(sql);
+			
+			// Set the parameters for the IN clause
+			for (int i = 0; i < userIds.size(); i++) {
+				statement.setString(i + 1, userIds.get(i));
+			}
+			
+			resultSet = statement.executeQuery();
+			
+			// Use a simple date format for more compact display
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			sdf.setTimeZone(userTimeService.getLocalTimeZone());
+			
+			while (resultSet.next()) {
+				String userId = resultSet.getString("user_id");
+				java.sql.Timestamp timestamp = resultSet.getTimestamp("last_login");
+				if (timestamp != null) {
+					lastLoginMap.put(userId, sdf.format(timestamp));
+				}
+			}
+		} catch (Exception e) {
+			log.error("Error getting last login for users", e);
+		} finally {
+			try {
+				if (resultSet != null) resultSet.close();
+				if (statement != null) statement.close();
+				if (connection != null) sqlService.returnConnection(connection);
+			} catch (Exception e) {
+				log.error("Error closing database resources", e);
+			}
+		}
+		
+		return lastLoginMap;
+	}
+
+	/**
+	 * Get the last login timestamp for a user from the database
+	 * 
+	 * @param userId The user's ID
+	 * @return The formatted last login date/time, or null if not found
+	 */
+	private String getLastLoginForUser(String userId) {
+		List<String> userIds = new ArrayList<>();
+		userIds.add(userId);
+		Map<String, String> lastLoginMap = getLastLoginForUsers(userIds);
+		return lastLoginMap.get(userId);
+	}
+
+	/**
+	 * Check if the current user has permission to update any user
+	 * @return true if the user has permission, false otherwise
+	 */
+	private boolean hasUpdateAnyPermission() {
+		return securityService.unlock(PERMISSION_USER_UPDATE_ANY, "/site/admin");
+	}
+
+	/**
+	 * Check if a specific user is a super user
+	 * @param userId The user's ID
+	 * @return true if the user is a super user, false otherwise
+	 */
+	private boolean hasUpdateAnyPermission(String userId) {
+		return securityService.isSuperUser(userId);
+	}
 }
