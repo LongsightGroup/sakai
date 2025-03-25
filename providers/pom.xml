@@ -39,7 +39,7 @@
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-unboundid-provider</artifactId>
+        <artifactId>sakai-jldap-provider</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
