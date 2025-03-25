@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/library/webjars/bootstrap/5.2.0/css/bootstrap.css" />
 
     <title>Institution Selection</title>
   </head>
@@ -15,6 +15,12 @@
     <div class="container">
       <div class="row mt-4" style="border-bottom: 2px dotted grey">
         <h1>Institution Selection</h1>
+      </div>
+
+      <div class="row mt-4 p-2" style="background-color: #4e224a">
+        <a href="/sakai-login-tool/container/saml/login?idp=populi.co">
+          <img src="https://www.kuyper.edu/wp-content/themes/kuyper-college/public/svg/logo-white.svg" alt="Kuyper" style="height: 60px" />
+        </a>
       </div>
 
       <div class="row mt-4 p-2" style="background-color: #0033a0">
@@ -32,6 +38,6 @@
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/library/webjars/bootstrap/5.2.0/js/bootstrap.min.js"></script>
   </body>
 </html>

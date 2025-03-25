@@ -179,6 +179,8 @@
                 </bean>
                 <!-- END Davis and Elkins SAML -->
 
+
+		<!-- Bevard SAML -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
@@ -199,7 +201,10 @@
                     </constructor-arg>
                     <property name="metadataTrustCheck" value="false"/>
                 </bean>
+		<!-- END Brevard SAML -->
 
+
+		<!-- TN Wesleyan SAML -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>
                         <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
@@ -211,14 +216,26 @@
                             </constructor-arg>
                             <constructor-arg>
                                 <value type="java.lang.String">sakai/saml/idp-tnwesleyan.xml</value>
-                                </constructor-arg>
-                                <property name="parserPool" ref="parserPool"/>
+                            </constructor-arg>
+                            <property name="parserPool" ref="parserPool"/>
                         </bean>
                     </constructor-arg>
                     <constructor-arg>
                         <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
                     </constructor-arg>
                     <property name="metadataTrustCheck" value="false"/>
+                </bean>
+		<!-- END TN Weleyan SAML -->
+
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                    <constructor-arg>
+                        <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                            <constructor-arg>
+                                <value type="java.io.File">sakai/saml/idp-kuyper.xml</value>
+                            </constructor-arg>
+                            <property name="parserPool" ref="parserPool"/>
+                        </bean>
+                    </constructor-arg>
                 </bean>
 
             </list>
@@ -290,7 +307,7 @@
 
     <!-- SAML 2.0 WebSSO Assertion Consumer -->
     <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl">
-        <property name="maxAuthenticationAge" value="31536000" />
+        <property name="maxAuthenticationAge" value="126144000" />
     </bean>
 
     <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
