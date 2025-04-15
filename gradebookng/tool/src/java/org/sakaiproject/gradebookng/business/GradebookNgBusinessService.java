@@ -3058,7 +3058,7 @@ public class GradebookNgBusinessService {
 	}
 
 	public String getDefaultIconClass() {
-		return ICON_SAKAI + "default-tool fa fa-globe";
+		return ICON_SAKAI + "default-tool bi bi-globe-americas";
 	}
 
 	private String getAssignmentsIconClass() {
