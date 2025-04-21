@@ -1642,6 +1642,8 @@ public class AssignmentAction extends PagedResourceActionII {
             assignment.getAttachments().forEach(r -> assignmentAttachmentReferences.put(r, entityManager.newReference(r)));
             context.put("assignmentAttachmentReferences", assignmentAttachmentReferences);
 
+            context.put("content_review_acceptedMimeTypes", getContentReviewAcceptedMimeTypes()); // TTUHSC custom
+
             if (assignment.getContentReview()) {
                 Map<String, String> properties = assignment.getProperties();
 
@@ -1673,7 +1675,6 @@ public class AssignmentAction extends PagedResourceActionII {
                     // SAK-31649 commenting this out to remove file picker filters, as the results vary depending on OS and browser.
                     // If in the future browser support for the 'accept' attribute on a file picker becomes more robust and
                     // ubiquitous across browsers, we can re-enable this feature.
-                    //context.put("content_review_acceptedMimeTypes", getContentReviewAcceptedMimeTypes());
                 }
                 try {
                     if (Boolean.valueOf(properties.get(AssignmentConstants.NEW_ASSIGNMENT_REVIEW_SERVICE_STUDENT_PREVIEW))) {
@@ -1700,6 +1701,11 @@ public class AssignmentAction extends PagedResourceActionII {
 	                		context.put("name_check_plagiarism_eula_agreement", AssignmentConstants.SUBMISSION_REVIEW_CHECK_SERVICE_EULA_AGREEMENT);
 	                	}
                 }
+            } else { // CUSTOM FOR TTUHSC
+                    state.setAttribute("plagiarismFileTypes", rb.getFormattedMessage("gen.onlythefoll", getContentReviewAcceptedFileTypesMessage()));
+                    context.put("plagiarismFileTypes", state.getAttribute("plagiarismFileTypes"));
+                    state.setAttribute("plagiarismNote", "Assignment uploads are restricted to approved file types only. Please ensure your submission is in one of the permitted formats before proceeding.");
+                    context.put("plagiarismNote", state.getAttribute("plagiarismNote"));
             }
             if (assignment.getTypeOfSubmission() == Assignment.SubmissionType.NON_ELECTRONIC_ASSIGNMENT_SUBMISSION) {
                 context.put("nonElectronicType", Boolean.TRUE);
@@ -2060,15 +2066,7 @@ public class AssignmentAction extends PagedResourceActionII {
         }
 
         StringBuilder mimeTypes = new StringBuilder();
-        Collection<SortedSet<String>> mimeTypesCollection = contentReviewService.getAcceptableExtensionsToMimeTypes().values();
-        String delimiter = "";
-        for (SortedSet<String> mimeTypesList : mimeTypesCollection) {
-            for (String mimeType : mimeTypesList) {
-                mimeTypes.append(delimiter).append(mimeType);
-                delimiter = ",";
-            }
-        }
-        return mimeTypes.toString();
+        return String.join(",", contentReviewService.getAcceptableExtensionsToMimeTypes().keySet());
     }
 
     /**
@@ -14775,7 +14773,7 @@ public class AssignmentAction extends PagedResourceActionII {
                         if (!inPeerReviewMode && assignmentService.allowReviewService(s)) {
                             String assignmentReference = (String) state.getAttribute(VIEW_SUBMISSION_ASSIGNMENT_REFERENCE);
                             Assignment a = getAssignment(assignmentReference, "doAttachUpload", state);
-                            if (a.getContentReview()) {
+                            if (1==1 || a.getContentReview()) { // TTUHSC CUSTOM
                                 if (!contentReviewService.isAcceptableContent(attachment)) {
                                     List<String> parameters = new ArrayList<>();
                                     parameters.add(contentReviewService.getServiceName());
