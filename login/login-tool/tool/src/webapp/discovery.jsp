@@ -17,6 +17,12 @@
         <h1>Institution Selection</h1>
       </div>
 
+      <div class="row mt-4 p-2" style="background-color: #4e224a">
+        <a href="/sakai-login-tool/container/saml/login?idp=populi.co">
+          <img src="https://www.kuyper.edu/wp-content/themes/kuyper-college/public/svg/logo-white.svg" alt="Kuyper" style="height: 60px" />
+        </a>
+      </div>
+
       <div class="row mt-4 p-2" style="background-color: #0033a0">
         <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/1736942c-00b7-40e8-8faa-539d6a168a9e/">
           <img src="https://www.tnwesleyan.edu/wp-content/uploads/2023/11/newtwulogobluehorizontal-webwhite.png" alt="Tennessee Wesleyan" style="height: 60px" />
