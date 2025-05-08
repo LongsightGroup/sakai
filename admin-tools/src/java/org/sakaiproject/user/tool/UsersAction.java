@@ -194,19 +194,6 @@ public class UsersAction extends PagedResourceActionII
 	 */
 	protected List<User> readResourcesPage(SessionState state, int first, int last)
 	{
-
-		if (hasUpdateAnyPermission()) {
-			// search?
-			String search = StringUtils.trimToNull((String) state.getAttribute(STATE_SEARCH));
-
-			if (search != null)
-			{
-				return userDirectoryService.searchUsers(search, first, last);
-			}
-
-			return userDirectoryService.getUsers(first, last);
-		}
-
 		// Get the current user's lamp_inst value
 		Integer currentUserLampInst = getCurrentUserLampInst();
 		
