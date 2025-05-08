@@ -694,4 +694,7 @@
     width: 1em;
     text-align: center;
   }
+  #addSubmissionForm .bg-primary {
+    background-color: var(--sakai-background-color-1) !important;
+  }
 }
