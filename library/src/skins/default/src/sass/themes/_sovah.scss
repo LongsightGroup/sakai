@@ -15,3 +15,8 @@
 #logoWrapper .btn {
     padding: 0 !important;
 }
+.portal-header #logoWrapper.bg-primary, .portal-header #xlogin-logo.bg-primary {
+    background-color: white !important;
+    padding-left: 20px;
+    margin-left: 20px;
+}
