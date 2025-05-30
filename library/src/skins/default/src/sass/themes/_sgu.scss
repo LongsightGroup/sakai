@@ -8,7 +8,7 @@
 
     // Top header and logo wrapper
     --top-header-background: var(--sakai-color-white);
-    --topNav-text-color: var(--sakai-color-black);
+    --top-header-text-color: var(--sakai-color-black);
 
     // This is hover on site nav buttons
     --sakai-brand--lighter-6: #b2ebee;
@@ -18,7 +18,7 @@
 }
 :root.sakaiUserTheme-dark {
     --top-header-background: var(--sakai-color-black);
-    --topNav-text-color: var(--sakai-color-white);
+    --top-header-text-color: var(--sakai-color-white);
 }
 
 .portal-header-logo img {

@@ -67,6 +67,9 @@
   border-color: var(--top-header-text-color);
   color: var(--top-header-text-color);
 }
+#xlogin-logo.bg-primary {
+  background-color: var(--top-header-background) !important;
+}
 
 @include media-breakpoint-up(md) {
   .portal-header .portal-header-breadcrumb {
@@ -673,25 +676,6 @@
     padding-left: calc(var(--bs-offcanvas-padding-x) - 1rem);
     padding-top: calc(var(--bs-offcanvas-padding-y) - 1rem);
     padding-bottom: calc(var(--bs-offcanvas-padding-y) - 1rem);
-  }
-}
-
-@include media-breakpoint-up(md) {
-
-  .offcanvas {
-    margin: 1.5rem 2.5rem 1rem 1rem;
-    border-radius: 6px 6px 4px 4px;
-  }
-
-  .offcanvas-header {
-    border-radius: 4px 4px 0 0;
-  }
-
-  .offcanvas-body {
-    border-bottom: solid 1px var(--sakai-border-color);
-    border-left: solid 1px var(--sakai-border-color);
-    border-right: solid 1px var(--sakai-border-color);
-    border-radius: 0 0 4px 4px;
   }
 }
 

@@ -1,5 +1,6 @@
 /* Light Theme */
 :root{
+    --logo: url(./images/luc.svg) !important;
     // Primary Color
     @include defineColorHSL(--sakai-brand, 340, 86%, 19%);
     @include defineColorHSL(--sakai-color-gold, 44, 100%, 46%);
@@ -9,7 +10,7 @@
     --top-header-background: var(--sakai-color-gold);
 
     // LUC Custom
-    --topNav-text-color: var(--sakai-color-black);
+    --top-header-text-color: var(--sakai-color-black);
     --all-sites-button-selected-background-color: var(--sakai-color-gold);
     --site-nav-btn-current-hover-color: hsl(0, 0%, 57%);
     --sakai-text-color-inverted: hsl(0, 0%, 100%);

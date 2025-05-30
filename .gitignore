@@ -39,3 +39,5 @@ scormplayer/scorm-tool/contentPackages
 
 **/.claude/settings.local.json
 .mcp.json
+library/src/webapp/skin/**
+library/src/skins/default/src/sass/_customization-main.scss

@@ -7,11 +7,11 @@
     @include defineColorHSL(--sakai-color-black, 204, 27%, 36%);
 
     --top-header-background: var(--sakai-color-white);
-    --topNav-text-color: var(--sakai-color-black);
+    --top-header-text-color: var(--sakai-color-black);
     --sakai-text-color-inverted: var(--sakai-color-black);
 }
 :root.sakaiUserTheme-dark {
     --top-header-background: var(--sakai-color-black);
-    --topNav-text-color: var(--sakai-color-white);
+    --top-header-text-color: var(--sakai-color-white);
     --sakai-text-color-inverted: var(--sakai-color-white);
 }

@@ -5,7 +5,7 @@
     @include defineColorHSL(--sakai-color-red, 354, 100%, 47%);
 
     --top-header-background: var(--sakai-color-white);
-    --topNav-text-color: var(--sakai-color-black);
+    --top-header-text-color: var(--sakai-color-black);
 
 }
 :root.sakaiUserTheme-dark {

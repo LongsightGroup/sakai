@@ -40,7 +40,7 @@
     /////////////////////////////////////////////////////////////
 
     // Logo
-    --logo: url(./images/sakaiLogoBlack.png);
+    --logo: url(./images/sakaiLogo.png);
     --logo-height: 30px;
     --logo-width: 103px;
     --logo-opacity: 1;
@@ -304,8 +304,8 @@
     /* Admin Become User view */
     --become-user-primary: var(--sakai-color-purple--darker-1);
 
-    --topNav-text-color: var(--sakai-text-color-inverted); // used for links and text in the topNav
-    --topNav-border-color: var(--sakai-border-color); // used for topNav spacers
+    --top-header-text-color: var(--sakai-text-color-inverted); // used for links and text in the top-header
+    --top-header-border-color: var(--sakai-border-color); // used for top-header spacers
 
     /* Favorites */
     --sites-nav-background: var(--sakai-background-color-1);
