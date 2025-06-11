@@ -1,0 +1,8 @@
+/* Light Theme */
+:root{
+    // Primary Color
+    @include defineColorHSL(--sakai-brand, 241, 38%, 26%);
+    @include defineColorHSL(--sakai-color-blue, 241, 38%, 26%);
+
+    --top-header-background: var(--sakai-brand);
+}

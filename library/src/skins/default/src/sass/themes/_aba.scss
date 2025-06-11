@@ -1,0 +1,5 @@
+:root{
+    @include defineColorHSL(--sakai-brand, 255, 31%, 40%);
+    --top-header-background: hsl(0, 0%, 100%);
+    --topNav-text-color: hsl(0, 0%, 0%);
+}
