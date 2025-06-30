@@ -49,11 +49,6 @@
       </dependency>
       <dependency>
         <groupId>org.sakaiproject</groupId>
-        <artifactId>sakai-kerberos-provider</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.sakaiproject</groupId>
         <artifactId>sakai-imsent-provider</artifactId>
         <version>${project.version}</version>
       </dependency>
