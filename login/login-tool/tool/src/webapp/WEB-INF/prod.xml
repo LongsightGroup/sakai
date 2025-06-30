@@ -156,54 +156,6 @@
                                 </constructor-arg>
                             </bean>
 
-		<!-- Davis and Elkins SAML -->
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                    <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
-                            <constructor-arg>
-                                <value type="java.lang.String">https://login.microsoftonline.com/c393e4db-5d25-427f-a47b-2cddfe1e7af5/federationmetadata/2007-06/federationmetadata.xml?appid=46600a46-7255-404c-bb7b-28659b821cf7</value>
-                            </constructor-arg>
-                            <constructor-arg>
-                                <value type="int">45000</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                                <value type="java.lang.String">sakai/saml/idp-davisandelkins.xml</value>
-                            </constructor-arg>
-                            <property name="parserPool" ref="parserPool"/>
-                        </bean>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                    </constructor-arg>
-                    <property name="metadataTrustCheck" value="false"/>
-                </bean>
-		<!-- END Davis and Elkins SAML -->
-
-
-		<!-- Bevard SAML -->
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                    <constructor-arg>
-                        <bean class="org.opensaml.saml2.metadata.provider.FileBackedHTTPMetadataProvider">
-                            <constructor-arg>
-                                <value type="java.lang.String">https://login.microsoftonline.com/c4c66dc5-8cad-4eb3-859b-896a7304a50a/federationmetadata/2007-06/federationmetadata.xml?appid=6426d0e6-53ba-4f45-8cd8-1612b6a9e262</value>
-                            </constructor-arg>
-                            <constructor-arg>
-                                <value type="int">45000</value>
-                    </constructor-arg>
-                    <constructor-arg>
-                                <value type="java.lang.String">sakai/saml/idp-brevard.xml</value>
-                            </constructor-arg>
-                            <property name="parserPool" ref="parserPool"/>
-                        </bean>
-                    </constructor-arg>
-                    <constructor-arg>
-                        <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                    </constructor-arg>
-                    <property name="metadataTrustCheck" value="false"/>
-                </bean>
-		<!-- END Brevard SAML -->
-
-
 		<!-- TN Wesleyan SAML -->
                 <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
                     <constructor-arg>

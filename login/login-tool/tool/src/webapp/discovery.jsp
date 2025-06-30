@@ -28,12 +28,6 @@
           <img src="https://www.tnwesleyan.edu/wp-content/uploads/2023/11/newtwulogobluehorizontal-webwhite.png" alt="Tennessee Wesleyan" style="height: 60px" />
         </a>
       </div>
-
-      <div class="row mt-4 p-2" style="background-color: #CCC">
-        <a href="/sakai-login-tool/container/saml/login?idp=https://sts.windows.net/c393e4db-5d25-427f-a47b-2cddfe1e7af5/">
-          <img src="https://www.dewv.edu/wp-content/uploads/2020/07/DE-Logo.svg" alt="Davis and Elkins" style="height: 60px" />
-        </a>
-      </div>
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
