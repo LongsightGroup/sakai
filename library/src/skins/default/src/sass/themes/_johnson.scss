@@ -1,12 +1,15 @@
 /* Light Theme */
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 213, 71%, 19%);
+    @include defineColorHSL(--sakai-brand, 241, 100%, 11%);
     @include defineColorHSL(--sakai-color-orange, 23, 100%, 53%);
 
     --top-header-background: var(--sakai-brand);
 
-    --sakai-selected-page-bg-color: var(--sakai-color-orange);
+    --sakai-selected-page-bg-color: #c6ced7;
     --sakai-selected-page-color: var(--sakai-brand);
 
+    #portal-nav-sidebar .site-page-list .selected-page {
+        opacity: 1 !important;
+    }
 }
