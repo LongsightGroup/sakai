@@ -1,0 +1,13 @@
+/* Light Theme */
+:root{
+    @include defineColorHSL(--sakai-brand, 210, 68%, 22%);
+    @include defineColorHSL(--sakai-color-red, 3, 79%, 24%);
+    @include defineColorHSL(--sakai-color-blue, 210, 68%, 22%);
+
+    // Top header and logo wrapper
+    --top-header-background: var(--sakai-brand);
+}
+
+.Mrphs-sakai-lessonbuildertool .bottomButtons a.button {
+    margin-bottom: 40px;
+}
