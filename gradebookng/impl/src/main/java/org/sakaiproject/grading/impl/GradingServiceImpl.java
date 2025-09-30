@@ -113,6 +113,7 @@ import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.plus.api.PlusService;
 import org.sakaiproject.grading.api.GradingAuthz;
+import org.sakaiproject.util.NumberUtil;
 import org.sakaiproject.util.ResourceLoader;
 
 import org.springframework.lang.Nullable;
@@ -2796,7 +2797,6 @@ public class GradingServiceImpl implements GradingService {
      *
      * @param doubleAsString
      * @return a locale-aware Double value representation of the given String
-     * @throws ParseException
      */
     private Double convertStringToDouble(final String doubleAsString) {
 
@@ -2804,15 +2804,12 @@ public class GradingServiceImpl implements GradingService {
             return null;
         }
 
-        Double scoreAsDouble = null;
-        try {
-            NumberFormat numberFormat = NumberFormat.getInstance(resourceLoader.getLocale());
-            Number numericScore = numberFormat.parse(doubleAsString.trim());
-            return numericScore.doubleValue();
-        } catch (final ParseException e) {
-            log.error("Failed to convert {}: {}", doubleAsString, e.toString());
+        final Double scoreAsDouble = NumberUtil.parseLocaleDouble(doubleAsString, resourceLoader.getLocale());
+        if (scoreAsDouble == null || !Double.isFinite(scoreAsDouble)) {
+            log.warn("Failed to convert score for locale {}: '{}'", resourceLoader.getLocale(), doubleAsString);
             return null;
         }
+        return scoreAsDouble;
     }
 
     /**

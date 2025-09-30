@@ -24,12 +24,14 @@
 package org.sakaiproject.lessonbuildertool.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.sakaiproject.grading.api.ConflictingAssignmentNameException;
 import org.sakaiproject.grading.api.GradingService;
+import org.sakaiproject.util.NumberUtil;
 
 /**
  * Interface to Gradebook
@@ -82,9 +84,9 @@ public class GradebookIfc {
     }
 
     public boolean updateExternalAssessmentScore(final String gradebookUid, final String externalId,
-						 final String studentUid, final String points) {
+					 final String studentUid, final String points) {
 	try {
-	    gradingService.updateExternalAssessmentScore(gradebookUid, externalId, studentUid, points);
+	    gradingService.updateExternalAssessmentScore(gradebookUid, externalId, studentUid, NumberUtil.normalizeLocaleDouble(points));
 	} catch (Exception e) {
 	    return false;
 	}
@@ -95,7 +97,12 @@ public class GradebookIfc {
     public boolean updateExternalAssessmentScores(final String gradebookUid, final String externalId, final Map studentUidsToScores) {
 	
 	try {
-	    gradingService.updateExternalAssessmentScoresString(gradebookUid, externalId, studentUidsToScores);
+	    Map<String, String> normalizedScores = new HashMap<>();
+	    for (Object key : studentUidsToScores.keySet()) {
+		Object value = studentUidsToScores.get(key);
+		normalizedScores.put((String) key, NumberUtil.normalizeLocaleDouble((String) value));
+	    }
+	    gradingService.updateExternalAssessmentScoresString(gradebookUid, externalId, normalizedScores);
 	} catch (Exception e) {
 	    return false;
 	}
