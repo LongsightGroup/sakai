@@ -1014,6 +1014,9 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 		if(StringUtils.equals(pattern, "ALL_IN_ONE")) {
 			filename = 	basepath + File.separator + userEid + ".jpg";
 		}
+		else if(StringUtils.equals(pattern, "NWSTATE")) {
+			filename = basepath + File.separator + userEid.toUpperCase() + ".jpg";
+		}
 		else if(StringUtils.equals(pattern, "ONE_DEEP")) {
 			String firstLetter = userEid.substring(0,1);
 			filename = basepath + File.separator + firstLetter + File.separator + userEid + ".jpg";
