@@ -149,7 +149,7 @@
 		          </h:panelGroup>  
 			      <h:outputText value=" / "/>
 			      <h:outputText value="#{mfStatisticsBean.selectedSiteUser}" />
-			    <f:verbatim></div></f:verbatim>
+			    <f:verbatim></h3></f:verbatim>
           </h:panelGroup>
           <h:panelGroup styleClass="itemNav specialLink">	
 				<h:commandButton action="#{mfStatisticsBean.processDisplayPreviousParticipant}" value="#{msgs.stat_forum_prev_participant}"  
