@@ -152,7 +152,12 @@ public interface SecureDeliveryModuleIfc {
 	 * @param phase
 	 * @return phase status
 	 */
-	public PhaseStatus executePreDeliveryPhase(AssessmentIfc assessment, PublishedAssessmentIfc publishedAssessment,
-			HttpServletRequest request, PreDeliveryPhase phase);
+	default PhaseStatus executePreDeliveryPhase(AssessmentIfc assessment, PublishedAssessmentIfc publishedAssessment,
+			HttpServletRequest request, PreDeliveryPhase phase) {
+		// Legacy modules (e.g. closed-source Respondus plugin) may not override this method.
+		// Returning SUCCESS preserves backward compatibility while allowing newer modules
+		// (like SEB/Proctorio) to hook into pre-delivery phases when implemented.
+		return PhaseStatus.SUCCESS;
+	}
 
 }
