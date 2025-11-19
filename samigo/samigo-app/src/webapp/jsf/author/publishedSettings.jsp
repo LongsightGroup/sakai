@@ -428,11 +428,12 @@
       <h:panelGroup styleClass="form-group row" layout="block">
         <h:outputLabel for="secureDeliveryModule" value="#{assessmentSettingsMessages.require_secure_delivery}" styleClass="col-md-2 form-label" />
         <div class="col-md-10">
-          <h:selectOneRadio id="secureDeliveryModule" disabled="true" value="#{publishedSettings.secureDeliveryModule}" layout="pageDirection" onclick="setBlockDivs();">
+          <h:selectOneRadio id="secureDeliveryModule" value="#{publishedSettings.secureDeliveryModule}" layout="pageDirection" onclick="setBlockDivs();">
               <f:selectItems value="#{publishedSettings.secureDeliveryModuleSelections}" />
           </h:selectOneRadio>
         </div>
       </h:panelGroup>
+      <h:panelGroup rendered="#{publishedSettings.secureDeliveryModule == 'Safe Exam Browser'}">
       <h:panelGroup styleClass="form-group row" layout="block">
         <h:outputLabel for="sebConfigMode" value="#{assessmentSettingsMessages.seb_config_mode}" styleClass="col-md-2 form-label" />
         <div class="col-md-10">
@@ -530,6 +531,7 @@
           </label>
         </div>
       </h:panelGroup>
+      </h:panelGroup> <!-- END the custom SEB -->
     </h:panelGroup>
 </samigo:hideDivision><!-- END the Security and Proctoring category -->
 
