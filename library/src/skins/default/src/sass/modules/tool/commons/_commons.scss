@@ -197,6 +197,7 @@
     .navIntraTool {
       li span.current a {
         background: unset;
+        color: var(--tool-tab-active-text-color);
       }
     }
 }
