@@ -66,7 +66,6 @@ import org.sakaiproject.content.api.ContentEntity;
 import org.sakaiproject.content.api.ContentFilterService;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.api.ContentResource;
-import org.sakaiproject.entity.api.Entity;
 import org.sakaiproject.entity.api.EntityAccessOverloadException;
 import org.sakaiproject.entity.api.EntityCopyrightException;
 import org.sakaiproject.entity.api.EntityNotDefinedException;
@@ -1426,17 +1425,11 @@ public class LessonBuilderAccessService {
 		return isAllowed;
 	}
 
-	private boolean isCollection(String entityId) {
-		return (entityId != null && entityId.endsWith(Entity.SEPARATOR));
-	}
-
         // check release dates, both resource and collection. assumes it is called with advisor in place
         // NOTE: does not enforce hidden
         protected boolean isAvailable(ContentEntity entity) {
-	    if (! entity.isAvailable() && ! isCollection(entity.getId()))
-		return false;
-	    Instant now = Instant.now();
-	    Instant releaseDate = entity.getReleaseInstant();
+        Instant now = Instant.now();
+        Instant releaseDate = entity.getReleaseInstant();
 	    if (releaseDate != null && ! releaseDate.isBefore(now))
 		return false;
 	    Instant retractDate = entity.getRetractInstant();
