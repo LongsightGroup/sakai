@@ -454,7 +454,7 @@
         <h:outputLabel for="secureDeliveryModuleExitPassword" value="#{assessmentSettingsMessages.secure_delivery_exit_pwd}"
             styleClass="col-md-2 form-label" />
         <div class="col-md-10">
-            <h:inputText id="secureDeliveryModuleExitPassword" disabled="true" size="14" value="#{publishedSettings.secureDeliveryModuleExitPassword}"
+            <h:inputText id="secureDeliveryModuleExitPassword" size="14" value="#{publishedSettings.secureDeliveryModuleExitPassword}"
                 maxlength="14" styleClass="form-control" />
         </div>
       </h:panelGroup>
