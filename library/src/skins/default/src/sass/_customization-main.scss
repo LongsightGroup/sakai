@@ -1,80 +1,37 @@
 /* Light Theme */
 :root{
-    --logo: url(./images/luc.svg) !important;
+    --logo: url(./images/nwstate.svg);
+    --logo-width: 124px;
+    --logo-height: 36px;
+
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 340, 86%, 19%);
-    @include defineColorHSL(--sakai-color-gold, 44, 100%, 46%);
-    @include defineColorHSL(--sakai-color-red, 340, 86%, 19%);
+    @include defineColorHSL(--sakai-brand, 136, 90%, 12%);
+    @include defineColorHSL(--sakai-color-blue, 226, 90%, 12%);
 
     // Top header and logo wrapper
-    --top-header-background: var(--sakai-color-gold);
-
-    // LUC Custom
-    --top-header-text-color: var(--sakai-color-black);
-    --all-sites-button-selected-background-color: var(--sakai-color-gold);
-    --site-nav-btn-current-hover-color: hsl(0, 0%, 57%);
-    --sakai-text-color-inverted: hsl(0, 0%, 100%);
-
-    #portal-nav-sidebar .btn-nav.selected-page {
-      background-color: hsl(0, 0%, 36%) !important;
-      border-color: hsl(0, 0%, 36%) !important;
-      opacity: 1 !important;
-    }
-    #portal-nav-sidebar .btn-nav:hover, #portal-nav-sidebar li.site-list-item .site-list-item-head:hover {
-      background-color: hsl(0, 0%, 57%) !important;
-      color: hsl(0, 0%, 100%) !important;
-    }
-    #portal-nav-sidebar li.site-list-item .site-list-item-head a:hover, #portal-nav-sidebar li.site-list-item .site-list-item-head:hover a {
-      color: hsl(0, 0%, 100%) !important;
-    }
-    .portal-header .portal-header-breadcrumb-separator, .portal-header .portal-header-breadcrumb-item > a {
-      color: hsl(0, 0%, 0%) !important;
-    }
+    --top-header-background: var(--sakai-brand);
+    --top-header-text-color: var(--sakai-color-white);
 
     // This is hover on site nav buttons
-    // --sakai-brand--lighter-6: #facfbd;
+    --sakai-brand--lighter-6: #dcc379;
 }
 
 :root.sakaiUserTheme-dark {
-  --sakai-selected-page-bg-color: hsl(51, 29%, 53%);
-  --sakai-text-color-inverted: hsl(0, 0%, 100%);
+    --logo: url(./images/nwstate.svg);
+    --logo-width: 124px;
+    --logo-height: 36px;
+    --top-header-text-color: var(--sakai-color-white);
 }
 
+.portal-header .portal-header-breadcrumb-separator,
+.portal-header .portal-header-breadcrumb-item > a {
+  color: var(--top-header-text-color) !important;
+}
+
+body.is-logged-out #topnav_container {
+  background-color: transparent;
+}
 
 .portal-header-logo img {
   width: 300px;
-}
-#logoWrapper .btn {
-  padding: 0 !important;
-}
-i.si-com-sonicfoundry-mediasite-catalog::before,
-i.si-com-sonicfoundry-mediasite-lti:before,
-i.si-com-sonicfoundry-mediasite-mymediasite:before
-{
-    content: "\f2cb";
-}
-i.si-sakai-panopto:before,
-i.si-sakai-atomiclearning:before,
-i.si-sakai-voicethread:before
-{
-    content: "\f829";
-}
-i.si-sakai-zoompro:before {
-    font-family: 'FontAwesome' !important;
-    content: "\f0c0";
-}
-i.si-sakai-piazza:before {
-    font-family: 'FontAwesome' !important;
-    content: "\f288";
-}
-i.si-sakai-smartevals:before {
-    font-family: 'FontAwesome' !important;
-    content: "\f29c";
-}
-i.si-sakai-follett:before {
-    font-family: 'FontAwesome' !important;
-    content: "\f187";
-}
-i.si-sakai-digication:before {
-    content: "\f3ee";
 }
