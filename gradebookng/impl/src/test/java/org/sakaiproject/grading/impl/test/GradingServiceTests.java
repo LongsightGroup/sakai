@@ -304,8 +304,8 @@ public class GradingServiceTests extends AbstractTransactionalJUnit4SpringContex
 
         switchToInstructor();
 
-        gradingService.addExternalAssessment(gradebook.getUid(), gradebook.getUid(), externalId, externalUrl,
-                "Locale External", 10.0D, null, "test", null, false, null, null);
+        gradingService.addExternalAssessment(gradebook.getUid(), externalId, externalUrl,
+                "Locale External", 10.0D, null, "test", null, false);
 
         Assignment assignment = gradingService.getExternalAssignment(gradebook.getUid(), externalId);
         assertNotNull(assignment);
@@ -316,12 +316,12 @@ public class GradingServiceTests extends AbstractTransactionalJUnit4SpringContex
         ((GradingServiceImpl) AopTestUtils.getTargetObject(gradingService)).setResourceLoader(spanishLoader);
 
         try {
-            gradingService.updateExternalAssessmentScore(gradebook.getUid(), siteId, externalId, user1, "4,5");
+            gradingService.updateExternalAssessmentScore(gradebook.getUid(), externalId, user1, "4,5");
         } finally {
             ((GradingServiceImpl) AopTestUtils.getTargetObject(gradingService)).setResourceLoader(originalLoader);
         }
 
-        assertEquals("4.5", gradingService.getAssignmentScoreString(gradebook.getUid(), siteId, assignment.getId(), user1));
+        assertEquals("4.5", gradingService.getAssignmentScoreString(gradebook.getUid(), assignment.getId(), user1));
     }
 
     @Test
@@ -333,8 +333,8 @@ public class GradingServiceTests extends AbstractTransactionalJUnit4SpringContex
 
         switchToInstructor();
 
-        gradingService.addExternalAssessment(gradebook.getUid(), gradebook.getUid(), externalId, externalUrl,
-                "Locale External Many", 10.0D, null, "test", null, false, null, null);
+        gradingService.addExternalAssessment(gradebook.getUid(), externalId, externalUrl,
+                "Locale External Many", 10.0D, null, "test", null, false);
 
         Assignment assignment = gradingService.getExternalAssignment(gradebook.getUid(), externalId);
         assertNotNull(assignment);
@@ -348,12 +348,12 @@ public class GradingServiceTests extends AbstractTransactionalJUnit4SpringContex
         ((GradingServiceImpl) AopTestUtils.getTargetObject(gradingService)).setResourceLoader(spanishLoader);
 
         try {
-            gradingService.updateExternalAssessmentScoresString(gradebook.getUid(), siteId, externalId, scores);
+            gradingService.updateExternalAssessmentScoresString(gradebook.getUid(), externalId, scores);
         } finally {
             ((GradingServiceImpl) AopTestUtils.getTargetObject(gradingService)).setResourceLoader(originalLoader);
         }
 
-        assertEquals("7.25", gradingService.getAssignmentScoreString(gradebook.getUid(), siteId, assignment.getId(), user1));
+        assertEquals("7.25", gradingService.getAssignmentScoreString(gradebook.getUid(), assignment.getId(), user1));
     }
 
     @Test
