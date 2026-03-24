@@ -97,11 +97,27 @@
 }
 
 .portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
-  color: var(--sakai-text-color-2) !important;
+  color: var(--portal-header-breadcrumb-color, var(--sakai-text-color-2)) !important;
   text-decoration: none;
   font-weight: 600;
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.portal-header-breadcrumb .manage-overview-link {
+  color: var(--portal-header-manage-overview-color, var(--portal-header-breadcrumb-color, var(--sakai-text-color-2))) !important;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover,
+  &:focus {
+    color: var(--portal-header-manage-overview-color, var(--portal-header-breadcrumb-color, var(--sakai-text-color-2))) !important;
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: var(--portal-header-manage-overview-color, var(--portal-header-breadcrumb-color, var(--sakai-text-color-2))) !important;
   }
 }
 

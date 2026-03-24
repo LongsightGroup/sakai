@@ -448,8 +448,8 @@
 								<configuration>
 									<target>
 										<!-- Copy and rename files -->
-										<copy file="${sakai.skin.customization.scss.lib}" tofile="${basedir}/src/skins/${sakai.skin.source}/src/sass/_customization-lib.scss" />
-										<copy file="${sakai.skin.customization.scss.main}" tofile="${basedir}/src/skins/${sakai.skin.source}/src/sass/_customization-main.scss" />
+										<copy file="${sakai.skin.customization.scss.lib}" tofile="${basedir}/src/skins/${sakai.skin.source}/src/sass/_customization-lib.scss" overwrite="true" />
+										<copy file="${sakai.skin.customization.scss.main}" tofile="${basedir}/src/skins/${sakai.skin.source}/src/sass/_customization-main.scss" overwrite="true" />
 									</target>
 								</configuration>
 							</execution>

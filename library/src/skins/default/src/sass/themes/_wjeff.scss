@@ -8,6 +8,9 @@
     @include defineColorHSL(--sakai-color-gold, 49, 100%, 47%);
 
     --top-header-background: var(--sakai-brand);
+    --top-header-text-color: var(--sakai-color-white);
+    --portal-header-breadcrumb-color: var(--top-header-text-color);
+    --portal-header-manage-overview-color: var(--sakai-brand--lighter-6);
 
     // This is hover on site nav buttons
     --sakai-brand--lighter-6: var(--sakai-color-gold--lighter-2);

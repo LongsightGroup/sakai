@@ -11,6 +11,8 @@
     // Top header and logo wrapper
     --top-header-background: var(--sakai-brand);
     --top-header-text-color: var(--sakai-color-white);
+    --portal-header-breadcrumb-color: var(--top-header-text-color);
+    --portal-header-manage-overview-color: var(--sakai-brand--lighter-6);
 
     // This is hover on site nav buttons
     --sakai-brand--lighter-6: #dcc379;
@@ -21,11 +23,6 @@
     --logo-width: 124px;
     --logo-height: 36px;
     --top-header-text-color: var(--sakai-color-white);
-}
-
-.portal-header .portal-header-breadcrumb-separator,
-.portal-header .portal-header-breadcrumb-item > a {
-  color: var(--top-header-text-color) !important;
 }
 
 body.is-logged-out #topnav_container {

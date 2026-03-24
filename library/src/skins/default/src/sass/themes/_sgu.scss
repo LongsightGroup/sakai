@@ -9,6 +9,7 @@
     // Top header and logo wrapper
     --top-header-background: var(--sakai-color-white);
     --top-header-text-color: var(--sakai-color-black);
+    --portal-header-breadcrumb-color: var(--top-header-text-color);
 
     // This is hover on site nav buttons
     --sakai-brand--lighter-6: #b2ebee;
@@ -26,8 +27,4 @@
 }
 #logoWrapper .btn {
   padding: 0 !important;
-}
-
-.portal-header .portal-header-breadcrumb-separator, .portal-header .portal-header-breadcrumb-item > a {
-  color: var(--sakai-black) !important;
 }

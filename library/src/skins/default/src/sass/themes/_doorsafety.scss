@@ -7,6 +7,7 @@
 
     --top-header-background: hsl(0, 0%, 95%);
     --top-header-text-color: hsl(0, 0%, 0%);
+    --portal-header-breadcrumb-color: var(--top-header-text-color);
 
     --sakai-brand--lighter-6: var(--sakai-color-red--lighter-3);
 }
@@ -21,7 +22,4 @@ button.btn.icon-button.btn-logo-button, div#logoWrapper a.btn {
 .portal-header-logo img {
   max-height: 3rem;
   width: 20rem;
-}
-.portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
-  color: --sakai-brand;
 }
