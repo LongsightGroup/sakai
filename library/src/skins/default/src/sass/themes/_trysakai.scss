@@ -7,6 +7,8 @@
     @include defineColorHSL(--sakai-color-yellow, 38, 53%, 81%);
 
     --top-header-background: var(--sakai-brand);
+    --top-header-text-color: var(--sakai-text-color-inverted);
+    --portal-header-breadcrumb-color: var(--top-header-text-color);
 
     --sakai-brand--lighter-6: var(--sakai-color-yellow--lighter-2);
 }

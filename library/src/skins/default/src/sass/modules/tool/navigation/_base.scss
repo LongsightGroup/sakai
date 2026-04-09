@@ -369,6 +369,10 @@ body.is-logged-out{
 	transition:var(--sak-theme-switch-ease);
 }
 
+body.is-logged-out #topnav_container {
+    background-color: transparent;
+}
+
 #linkNav{
 	ul{
 		@include display-flex;

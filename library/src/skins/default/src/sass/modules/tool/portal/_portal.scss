@@ -73,6 +73,8 @@
 
 @include media-breakpoint-up(md) {
   .portal-header .portal-header-breadcrumb {
+      --portal-breadcrumb-effective-color: var(--portal-header-breadcrumb-color, var(--top-header-text-color, var(--sakai-text-color-2)));
+      --portal-manage-overview-effective-color: var(--portal-header-manage-overview-color, var(--portal-breadcrumb-effective-color));
       display: flex !important;
       margin: 0 1rem;
   }
@@ -86,6 +88,8 @@
       display: none !important;
   }
   .portal-main-content .portal-header-breadcrumb {
+      --portal-breadcrumb-effective-color: var(--portal-main-breadcrumb-color, var(--sakai-text-color-2));
+      --portal-manage-overview-effective-color: var(--portal-main-manage-overview-color, var(--portal-breadcrumb-effective-color));
       display: flex !important;
       margin-bottom: 1.5rem !important;
   }
@@ -97,7 +101,7 @@
 }
 
 .portal-header-breadcrumb-separator, .portal-header-breadcrumb-item > a {
-  color: var(--portal-header-breadcrumb-color, var(--sakai-text-color-2)) !important;
+  color: var(--portal-breadcrumb-effective-color, var(--sakai-text-color-2)) !important;
   text-decoration: none;
   font-weight: 600;
   &:hover {
@@ -106,18 +110,18 @@
 }
 
 .portal-header-breadcrumb .manage-overview-link {
-  color: var(--portal-header-manage-overview-color, var(--portal-header-breadcrumb-color, var(--sakai-text-color-2))) !important;
+  color: var(--portal-manage-overview-effective-color, var(--portal-breadcrumb-effective-color, var(--sakai-text-color-2))) !important;
   text-decoration: none;
   font-weight: 600;
 
   &:hover,
   &:focus {
-    color: var(--portal-header-manage-overview-color, var(--portal-header-breadcrumb-color, var(--sakai-text-color-2))) !important;
+    color: var(--portal-manage-overview-effective-color, var(--portal-breadcrumb-effective-color, var(--sakai-text-color-2))) !important;
     text-decoration: underline;
   }
 
   &:visited {
-    color: var(--portal-header-manage-overview-color, var(--portal-header-breadcrumb-color, var(--sakai-text-color-2))) !important;
+    color: var(--portal-manage-overview-effective-color, var(--portal-breadcrumb-effective-color, var(--sakai-text-color-2))) !important;
   }
 }
 
