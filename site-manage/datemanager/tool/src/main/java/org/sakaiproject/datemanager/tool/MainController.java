@@ -28,6 +28,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ import org.sakaiproject.datemanager.api.DateManagerConstants;
 import org.sakaiproject.datemanager.api.DateManagerService;
 import org.sakaiproject.datemanager.api.model.DateManagerError;
 import org.sakaiproject.datemanager.api.model.DateManagerValidation;
+import org.sakaiproject.time.api.UserTimeService;
 
 /**
  * MainController
@@ -55,6 +57,10 @@ public class MainController {
 
     @Inject private DateManagerService dateManagerService;
 
+    @Autowired
+    @Qualifier("org.sakaiproject.time.api.UserTimeService")
+    private UserTimeService userTimeService;
+
     @GetMapping(value = {"/", "/index"})
     public String showIndex(@RequestParam(required=false) String code, Model model, HttpServletRequest request, HttpServletResponse response) {
 
@@ -67,6 +73,7 @@ public class MainController {
 		model.addAttribute("userCountry", loc.getCountry());
 		model.addAttribute("userLanguage", loc.getLanguage());
 		model.addAttribute("userLocale", loc.toString());
+		model.addAttribute("userTimeZone", userTimeService.getLocalTimeZone().getID());
 
 		if (dateManagerService.currentSiteContainsTool(DateManagerConstants.COMMON_ID_ASSIGNMENTS)) {
 			JSONArray assignmentsJson = dateManagerService.getAssignmentsForContext(siteId);
