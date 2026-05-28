@@ -5,9 +5,8 @@ import org.opensaml.xml.security.BasicSecurityConfiguration;
 import org.opensaml.xml.signature.SignatureConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.security.saml.*;
 
-public final class CustomADFSSAMLBootstrap extends SAMLBootstrap {
+public final class CustomADFSSAMLBootstrap extends SakaiSAMLBootstrap {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         super.postProcessBeanFactory(beanFactory);
