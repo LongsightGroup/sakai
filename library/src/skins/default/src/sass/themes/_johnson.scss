@@ -1,12 +1,19 @@
 /* Light Theme */
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 213, 71%, 19%);
+    @include defineColorHSL(--sakai-brand, 241.11, 100%, 10.59%);
     @include defineColorHSL(--sakai-color-orange, 23, 100%, 53%);
+    @include defineColorHSL(--sakai-color-grey, 211.76, 17.53%, 80.98%);
 
     --top-header-background: var(--sakai-brand);
 
-    --sakai-selected-page-bg-color: var(--sakai-color-orange);
-    --sakai-selected-page-color: var(--sakai-brand);
+    --sakai-selected-page-bg-color: var(--sakai-color-grey);
+    --sakai-selected-page-color: var(--sakai-color-black);
+    --sakai-current-site-color: var(--sakai-color-black);
+}
 
+:root.sakaiUserTheme-dark {
+    --sakai-selected-page-bg-color: var(--sakai-color-grey);
+    --sakai-selected-page-color: var(--sakai-color-black);
+    --sakai-current-site-color: var(--sakai-color-white);
 }
