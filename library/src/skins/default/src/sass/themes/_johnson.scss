@@ -17,3 +17,7 @@
     --sakai-selected-page-color: var(--sakai-color-black);
     --sakai-current-site-color: var(--sakai-color-white);
 }
+
+.Mrphs-sakai-lessonbuildertool .collapsibleSectionHeader:hover, .Mrphs-sakai-lessonbuildertool .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span .collapsibleSectionHeader.paginate_button.current, .Mrphs-sakai-samigo .dataTables_wrapper .dataTables_paginate span .Mrphs-sakai-lessonbuildertool .collapsibleSectionHeader.paginate_button.current {
+  background-color: #010036 !important;
+}
