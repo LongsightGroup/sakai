@@ -1,6 +1,5 @@
 (function () {
     const launchers = [];
-    // Blocking fetch via Atomics.wait is not permitted on the main thread; always fall back to synchronous XHR.
 
     async function bootstrap() {
         const nodes = document.querySelectorAll('.scorm-rest-launcher[data-content-package-id]');
@@ -46,6 +45,7 @@
             activeScoId: null,
             pendingScoId: null,
             runtimeInstalled: false,
+            perScoRuntimeValues: {},
         };
 
         root.dataset.initialized = 'true';
@@ -434,6 +434,24 @@
                 payload.scoId = scoId;
             }
 
+            if (method === 'SetValue' && args.length >= 2 && scoId) {
+                const elem = args[0];
+                if (elem === 'cmi.score.scaled' || elem === 'cmi.completion_status' || elem === 'cmi.success_status') {
+                    if (!state.perScoRuntimeValues[scoId]) {
+                        state.perScoRuntimeValues[scoId] = {};
+                    }
+                    state.perScoRuntimeValues[scoId][elem] = args[1];
+                }
+            }
+
+            if (method === 'Terminate' && scoId) {
+                const v = state.perScoRuntimeValues[scoId] || {};
+                if (v['cmi.score.scaled'] != null)      payload.hintScoreScaled      = v['cmi.score.scaled'];
+                if (v['cmi.completion_status'] != null)  payload.hintCompletionStatus = v['cmi.completion_status'];
+                if (v['cmi.success_status'] != null)     payload.hintSuccessStatus    = v['cmi.success_status'];
+                delete state.perScoRuntimeValues[scoId];
+            }
+
             const request = createRuntimeRequest(payload);
             console.debug('[SCORM REST] runtime request', payload);
 
@@ -478,6 +496,7 @@
             processRuntimeResponse(method, response, scoId);
             return typeof response.value === 'string' ? response.value : '';
         }
+
 
         function resolveRuntimeScoId(method) {
             if (method === 'Initialize') {
@@ -637,6 +656,20 @@
         adjustFrameHeight();
         window.addEventListener('resize', adjustFrameHeight, { passive: true });
 
+        // Firefox suppresses beforeunload on non-localhost popup close, so invoke the SCO's
+        // unload handler explicitly to ensure score/completion are submitted before the window goes.
+        window.addEventListener('pagehide', function(event) {
+            if (event.persisted) return;
+            if (state.sessionId && state.activeScoId) {
+                const iframeWin = frame?.contentWindow;
+                try {
+                    if (typeof iframeWin?.finishTracking === 'function') iframeWin.finishTracking();
+                    else if (typeof iframeWin?.onbeforeunload === 'function') iframeWin.onbeforeunload();
+                } catch (_) {} // SCO may throw on pagehide — window is closing anyway, ignore
+            }
+            if (window.opener && !window.opener.closed) window.opener.location.reload();
+        });
+
         launchers.push({ root, state, adjustFrameHeight });
     }
 
@@ -652,12 +685,4 @@
         bootstrap,
         active: launchers,
     };
-
-    // Refresh parent window when this popup closes (handles both normal exit and force-close)
-    // Using pagehide event with persisted check to avoid triggering on bfcache navigations
-    window.addEventListener('pagehide', function(event) {
-        if (!event.persisted && window.opener && !window.opener.closed) {
-            window.opener.location.reload();
-        }
-    });
 })();

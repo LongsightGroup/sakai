@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.Locale;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +52,6 @@ import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
-import org.sakaiproject.util.NumberUtil;
 import org.sakaiproject.util.api.LocaleService;
 import org.springframework.context.annotation.DeferredImportSelector.Group.Entry;
 /**
@@ -89,7 +87,36 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
     */
     public void removeExternalAssessment(String gradebookUId, String publishedAssessmentId, GradingService g)
         throws Exception {
-        g.removeExternalAssignment(null, publishedAssessmentId, getAppName());
+        if (gradebookUId == null) {
+            throw new AssessmentNotFoundException("Cannot remove external assessment without a gradebook uid");
+        }
+
+        List<String> gradebookUids = new ArrayList<>(List.of(gradebookUId));
+
+        if (g.isGradebookGroupEnabled(gradebookUId)) {
+            for (String groupGradebookUid : g.getGradebookGroupInstancesIds(gradebookUId)) {
+                if (!gradebookUids.contains(groupGradebookUid)) {
+                    gradebookUids.add(groupGradebookUid);
+                }
+            }
+        }
+
+        AssessmentNotFoundException lastNotFound = null;
+        boolean removed = false;
+
+        for (String uid : gradebookUids) {
+            try {
+                g.removeExternalAssignment(uid, publishedAssessmentId, getAppName());
+                removed = true;
+            } catch (AssessmentNotFoundException e) {
+                lastNotFound = e;
+                log.debug("No external assessment id={} in gradebook uid={}", publishedAssessmentId, uid);
+            }
+        }
+
+        if (!removed && lastNotFound != null) {
+            throw lastNotFound;
+        }
     }
 
   public boolean isAssignmentDefined(String assessmentTitle,
@@ -348,9 +375,7 @@ public class GradebookServiceHelperImpl implements GradebookServiceHelper
 	}
 
   private String getFormattedScore(Double score, String siteId) {
-    String userId = AgentFacade.getAgentString();
-    Locale locale = localeService.getLocaleForSiteAndUser(siteId, userId);
-    return NumberUtil.normalizeLocaleDouble(score.toString(), locale);
+    return localeService.formatDouble(score, siteId, AgentFacade.getAgentString());
   }
 
   public List<String> getGradebookList(boolean isGradebookGroupEnabled, String[] groupsAuthorized) {

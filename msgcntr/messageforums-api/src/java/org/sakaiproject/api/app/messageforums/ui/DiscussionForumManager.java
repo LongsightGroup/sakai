@@ -436,15 +436,15 @@ public interface DiscussionForumManager
    * @param message
    * @param readStatus TODO
    */
-  public void markMessageAs(Message message, boolean readStatus);
+  public void markMessageAsNoRead(Message message, boolean readStatus);
   
   /**
-   * Mark the read status for a given message for a given user
+   * Mark the not read status for a given message for a given user
    * @param message
    * @param readStatus
    * @param userId
    */
-  public void markMessageReadStatusForUser(Message message, boolean readStatus, String userId);
+  public void markMessageNotReadStatusForUser(Message message, boolean readStatus, String userId);
 
    
   /**
@@ -676,4 +676,28 @@ public interface DiscussionForumManager
   public Optional<LRS_Statement> getStatementForGrade(String studentUid, String forumTitle, double score);
 
   void setUiPermissionsManager(UIPermissionsManager uiPermissionsManager);
+
+  /**
+   * Restrict access to a topic to the named groups only.
+   * Contributor-level role and group items are set to None; items for the specified groups are set
+   * to Contributor. Owner items are never modified. Passing null or an empty set are treated
+   * identically and restore role items to Contributor and group items to None (open to site).
+   * If the site or any group ID cannot be resolved, the operation is aborted and no changes are saved.
+   *
+   * @param topicId  the id of the DiscussionTopic
+   * @param groupIds site group IDs; null or empty means "open to site"
+   */
+  void setTopicGroupRestrictions(Long topicId, Set<String> groupIds);
+
+  /**
+   * Restrict access to a forum to the named groups only.
+   * Contributor-level role and group items are set to None; items for the specified groups are set
+   * to Contributor. Owner items are never modified. Passing null or an empty set are treated
+   * identically and restore role items to Contributor and group items to None (open to site).
+   * If the site or any group ID cannot be resolved, the operation is aborted and no changes are saved.
+   *
+   * @param forumId  the id of the DiscussionForum
+   * @param groupIds site group IDs; null or empty means "open to site"
+   */
+  void setForumGroupRestrictions(Long forumId, Set<String> groupIds);
 }

@@ -58,13 +58,14 @@ ${includeLatestJQuery}
 
                 },
                 // Default sort
-                sortList : [ [ 4,0] ],
+                sortList : [ [ 0,0] ],
                 headers: {
-                    // special configuration for this column (we start counting zero)
-                    2: {
+#if ($toolSiteActionSorterColumn >= 0)
+                    $toolSiteActionSorterColumn: {
                         // disable it by setting the property sorter to false
                         sorter: false
                     }
+#end
                 }
             })
 
@@ -133,6 +134,9 @@ ${includeLatestJQuery}
                     <thead>
                         <tr>
                             <th id="site_id" data-placeholder="$tlang.getString('search.siteid')">$tlang.getString("bl_site")</th>
+#if ($showDeploymentGroup)
+                            <th id="deployment_group" data-placeholder="$tlang.getString('tool.site.search.deployment_group')">$tlang.getString("tool.site.table.deployment_group")</th>
+#end
                             <th id="site_notes" data-placeholder="$tlang.getString('search.notes')">$tlang.getString("bl_notes")</th>
                             #if ($isAdmin) <th id="action" class="filter-false">$tlang.getString("bl_action")</th>#end
                         </tr>
@@ -143,16 +147,19 @@ ${includeLatestJQuery}
                             <tr>
                                 <td headers="site_id">
                                     #set($siteId="<span style='display:none;'>Nothing here</span>")
-                                    #set($siteId=$toolSite.get("SITE_ID"))
+                                    #set($siteId=$toolSite.siteId)
                                     $!siteId
                                 </td>
-                                <td headers="site_notes">$formattedText.escapeHtml($toolSite.get("notes"))</td>
+#if ($showDeploymentGroup)
+                                <td headers="deployment_group">$formattedText.escapeHtml($!toolSite.deploymentGroup)</td>
+#end
+                                <td headers="site_notes">$formattedText.escapeHtml($toolSite.notes)</td>
 
                                 #if ($isAdmin)
                                     <td headers="action">
                                         <ul style="list-style: none;">
-                                            <li style="display:inline"><a href="$sakai_ActionURL.setPanel("ToolSiteEdit")&id=$toolSite.get("id")">$tlang.getString("gen.edit")</a></li>
-                                            <li style="display:inline"><span aria-hidden="true"> / </span> <a href="$sakai_ActionURL.setPanel("ToolSiteDelete")&id=$toolSite.get("id")">$tlang.getString("gen.delete")</a> </li>
+                                            <li style="display:inline"><a href="$sakai_ActionURL.setPanel("ToolSiteEdit")&id=$toolSite.id">$tlang.getString("gen.edit")</a></li>
+                                            <li style="display:inline"><span aria-hidden="true"> / </span> <a href="$sakai_ActionURL.setPanel("ToolSiteDelete")&id=$toolSite.id">$tlang.getString("gen.delete")</a> </li>
                                         </ul>
                                     </td>
                                 #end

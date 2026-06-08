@@ -66,7 +66,6 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 	private SessionManager sessionManager;
 	private IdManager idManager;
 	private MessageForumsTypeManager typeManager;
-	private AreaManager areaManager;
 	private PlatformTransactionManager transactionManager;
 	private TransactionTemplate transactionTemplate;
 	
@@ -533,8 +532,8 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
     		return permissionLevel.getDeleteAny();
     	else if (customPermName.equals(PermissionLevel.DELETE_OWN))
     		return permissionLevel.getDeleteOwn();
-    	else if (customPermName.equals(PermissionLevel.MARK_AS_READ))
-    		return permissionLevel.getMarkAsRead();
+    	else if (customPermName.equals(PermissionLevel.MARK_AS_NOT_READ))
+    		return permissionLevel.getMarkAsNotRead();
     	else if (customPermName.equals(PermissionLevel.MODERATE_POSTINGS))
     		return permissionLevel.getModeratePostings();
     	else if (customPermName.equals(PermissionLevel.IDENTIFY_ANON_AUTHORS))
@@ -563,7 +562,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		customPerms.add(PermissionLevel.NEW_TOPIC);
 		customPerms.add(PermissionLevel.DELETE_ANY);
 		customPerms.add(PermissionLevel.DELETE_OWN);
-		customPerms.add(PermissionLevel.MARK_AS_READ);
+		customPerms.add(PermissionLevel.MARK_AS_NOT_READ);
 		customPerms.add(PermissionLevel.MODERATE_POSTINGS);
 		customPerms.add(PermissionLevel.IDENTIFY_ANON_AUTHORS);
 		customPerms.add(PermissionLevel.MOVE_POSTING);
@@ -597,10 +596,6 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 
 	public void setSessionManager(SessionManager sessionManager) {
 		this.sessionManager = sessionManager;
-	}
-
-	public void setAreaManager(AreaManager areaManager) {
-		this.areaManager = areaManager;
 	}
 
     public List getAllMembershipItemsForForumsForSite(final Long areaId) {
@@ -774,7 +769,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		  mask.put(PermissionLevel.CHANGE_SETTINGS,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.POST_TO_GRADEBOOK, Boolean.valueOf(true));
 		  mask.put(PermissionLevel.READ, Boolean.valueOf(true));
-		  mask.put(PermissionLevel.MARK_AS_READ,Boolean.valueOf(true));
+		  mask.put(PermissionLevel.MARK_AS_NOT_READ,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.MODERATE_POSTINGS, Boolean.valueOf(true));
 		  mask.put(PermissionLevel.IDENTIFY_ANON_AUTHORS, Boolean.valueOf(true));
 		  mask.put(PermissionLevel.DELETE_OWN, Boolean.valueOf(false));
@@ -795,7 +790,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		  mask.put(PermissionLevel.CHANGE_SETTINGS,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.POST_TO_GRADEBOOK, Boolean.valueOf(true));
 		  mask.put(PermissionLevel.READ, Boolean.valueOf(true));
-		  mask.put(PermissionLevel.MARK_AS_READ,Boolean.valueOf(true));
+		  mask.put(PermissionLevel.MARK_AS_NOT_READ,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.MODERATE_POSTINGS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.IDENTIFY_ANON_AUTHORS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.DELETE_OWN, Boolean.valueOf(true));
@@ -816,7 +811,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		  mask.put(PermissionLevel.CHANGE_SETTINGS,Boolean.valueOf(false));
 		  mask.put(PermissionLevel.POST_TO_GRADEBOOK, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.READ, Boolean.valueOf(true));
-		  mask.put(PermissionLevel.MARK_AS_READ,Boolean.valueOf(true));
+		  mask.put(PermissionLevel.MARK_AS_NOT_READ,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.MODERATE_POSTINGS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.IDENTIFY_ANON_AUTHORS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.DELETE_OWN, Boolean.valueOf(false));
@@ -837,7 +832,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		  mask.put(PermissionLevel.CHANGE_SETTINGS,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.POST_TO_GRADEBOOK, Boolean.valueOf(true));
 		  mask.put(PermissionLevel.READ, Boolean.valueOf(true));
-		  mask.put(PermissionLevel.MARK_AS_READ,Boolean.valueOf(true));
+		  mask.put(PermissionLevel.MARK_AS_NOT_READ,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.MODERATE_POSTINGS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.IDENTIFY_ANON_AUTHORS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.DELETE_OWN, Boolean.valueOf(false));
@@ -858,7 +853,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		  mask.put(PermissionLevel.CHANGE_SETTINGS,Boolean.valueOf(false));
 		  mask.put(PermissionLevel.POST_TO_GRADEBOOK, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.READ, Boolean.valueOf(false));
-		  mask.put(PermissionLevel.MARK_AS_READ,Boolean.valueOf(false));
+		  mask.put(PermissionLevel.MARK_AS_NOT_READ,Boolean.valueOf(false));
 		  mask.put(PermissionLevel.MODERATE_POSTINGS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.IDENTIFY_ANON_AUTHORS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.DELETE_OWN, Boolean.valueOf(false));
@@ -879,7 +874,7 @@ public class PermissionLevelManagerImpl extends HibernateDaoSupport implements P
 		  mask.put(PermissionLevel.CHANGE_SETTINGS,Boolean.valueOf(false));
 		  mask.put(PermissionLevel.POST_TO_GRADEBOOK, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.READ, Boolean.valueOf(true));
-		  mask.put(PermissionLevel.MARK_AS_READ,Boolean.valueOf(true));
+		  mask.put(PermissionLevel.MARK_AS_NOT_READ,Boolean.valueOf(true));
 		  mask.put(PermissionLevel.MODERATE_POSTINGS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.IDENTIFY_ANON_AUTHORS, Boolean.valueOf(false));
 		  mask.put(PermissionLevel.DELETE_OWN, Boolean.valueOf(false));

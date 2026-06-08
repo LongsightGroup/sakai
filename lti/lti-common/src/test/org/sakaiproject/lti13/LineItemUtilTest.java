@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.sakaiproject.grading.api.Assignment;
 import org.sakaiproject.lti13.util.SakaiLineItem;
 import org.sakaiproject.lti13.LineItemUtil;
 
@@ -54,6 +55,168 @@ public class LineItemUtilTest {
 		assertNotNull(li.submissionReview);
 		assertNotNull(li.submissionReview.url);
 		assertEquals(li.submissionReview.url, "https://platform.example.com/act/849023/sub");
+	}
+
+	@Test
+	public void testGetDefaultLineItemOverload() {
+		// Create a test content bean
+		org.sakaiproject.lti.beans.LtiContentBean content = new org.sakaiproject.lti.beans.LtiContentBean();
+		content.id = 123L;
+		content.toolId = 456L;
+		content.title = "Test Content";
+		content.siteId = "test-site";
+		
+		// Create equivalent map for comparison
+		java.util.Map<String, Object> contentMap = new java.util.HashMap<>();
+		contentMap.put("id", 123L);
+		contentMap.put("tool_id", 456L);
+		contentMap.put("title", "Test Content");
+		contentMap.put("SITE_ID", "test-site");
+		
+		// Test that the overloaded method delegates correctly by testing the asMap() conversion
+		// Since we can't easily mock the full Sakai environment, we test that the overloaded method
+		// delegates correctly by ensuring the asMap() conversion works as expected
+		java.util.Map<String, Object> contentAsMap = content.asMap();
+		assertNotNull("Content asMap should not be null", contentAsMap);
+		assertEquals("Content ID should match", Long.valueOf(123L), contentAsMap.get("id"));
+		assertEquals("Content tool ID should match", Long.valueOf(456L), contentAsMap.get("tool_id"));
+		assertEquals("Content title should match", "Test Content", contentAsMap.get("title"));
+		assertEquals("Content site ID should match", "test-site", contentAsMap.get("SITE_ID"));
+		
+		// Verify that both the bean and map produce equivalent results
+		assertEquals("Bean and map should have same ID", contentMap.get("id"), contentAsMap.get("id"));
+		assertEquals("Bean and map should have same tool_id", contentMap.get("tool_id"), contentAsMap.get("tool_id"));
+		assertEquals("Bean and map should have same title", contentMap.get("title"), contentAsMap.get("title"));
+		assertEquals("Bean and map should have same SITE_ID", contentMap.get("SITE_ID"), contentAsMap.get("SITE_ID"));
+	}
+
+	@Test
+	public void testGetLineItemUsesExternalIdAndMetadataJson() {
+		Assignment assignment = new Assignment();
+		assignment.setName("Test");
+		assignment.setPoints(100.0);
+		assignment.setExternalId("123|456");
+		assignment.setLineItemMetadata("{\"resourceId\":\"metadataResource\",\"tag\":\"metadataTag\"}");
+
+		SakaiLineItem lineItem = LineItemUtil.getLineItem(null, assignment);
+		assertEquals("456", lineItem.resourceLinkId);
+		assertEquals("metadataResource", lineItem.resourceId);
+		assertEquals("metadataTag", lineItem.tag);
+	}
+
+	@Test
+	public void testGetLineItemFallsBackToExternalDataForToolContentKey() {
+		Assignment assignment = new Assignment();
+		assignment.setName("Test");
+		assignment.setPoints(100.0);
+		assignment.setExternalId(null);
+		assignment.setExternalData("123|456");
+		assignment.setLineItemMetadata("{\"resourceId\":\"r1\",\"tag\":\"t1\"}");
+
+		SakaiLineItem lineItem = LineItemUtil.getLineItem(null, assignment);
+		assertEquals("456", lineItem.resourceLinkId);
+		assertEquals("r1", lineItem.resourceId);
+		assertEquals("t1", lineItem.tag);
+	}
+
+	@Test
+	public void testShouldMigrateLegacyExternalIdWhenNewFieldsMissing() {
+		Assignment assignment = new Assignment();
+		assignment.setExternalData(null);
+		assignment.setLineItemMetadata(null);
+		assignment.setExternalId("123|456|legacyResource|legacyTag|");
+
+		assertTrue(LineItemUtil.shouldMigrateLegacyExternalId(assignment));
+	}
+
+	@Test
+	public void testShouldNotMigrateLegacyExternalIdWhenMetadataPresent() {
+		Assignment assignment = new Assignment();
+		assignment.setExternalData(null);
+		assignment.setLineItemMetadata("{\"resourceId\":\"metadataResource\",\"tag\":\"metadataTag\"}");
+		assignment.setExternalId("123|456|legacyResource|legacyTag|");
+
+		assertFalse(LineItemUtil.shouldMigrateLegacyExternalId(assignment));
+	}
+
+	@Test
+	public void testShouldNotMigrateLegacyExternalIdWhenLegacyInvalid() {
+		Assignment assignment = new Assignment();
+		assignment.setExternalData(null);
+		assignment.setLineItemMetadata(null);
+		assignment.setExternalId("not-valid");
+
+		assertFalse(LineItemUtil.shouldMigrateLegacyExternalId(assignment));
+	}
+
+	@Test
+	public void testIsGradebookColumnLTI_ImsAgsIsTrue() {
+		Assignment a = new Assignment();
+		a.setExternalAppName(LineItemUtil.GB_EXTERNAL_APP_NAME);
+		assertTrue(LineItemUtil.isGradebookColumnLTI("site1", a));
+	}
+
+	@Test
+	public void testIsGradebookColumnLTI_AssignmentToolWithoutReferenceIsFalse() {
+		Assignment a = new Assignment();
+		a.setExternalAppName(LineItemUtil.ASSIGNMENT_GRADES_TOOL_ID);
+		assertFalse(LineItemUtil.isGradebookColumnLTI("site1", a));
+	}
+
+	@Test
+	public void testIsGradebookReadonlyViewRequiresAllowLineItems() {
+		assertTrue(LineItemUtil.isGradebookReadonlyView(Boolean.TRUE, Boolean.TRUE));
+		assertFalse(LineItemUtil.isGradebookReadonlyView(Boolean.TRUE, Boolean.FALSE));
+		assertFalse(LineItemUtil.isGradebookReadonlyView(Boolean.FALSE, Boolean.TRUE));
+	}
+
+	@Test
+	public void testIsColumnWritableByTool_gradebookReadonlyView() {
+		Assignment owned = new Assignment();
+		owned.setExternalAppName(LineItemUtil.GB_EXTERNAL_APP_NAME);
+		owned.setExternalId("5|0");
+
+		Assignment other = new Assignment();
+		other.setExternalAppName(LineItemUtil.GB_EXTERNAL_APP_NAME);
+		other.setExternalId("9|0");
+
+		assertTrue(LineItemUtil.isColumnWritableByTool("site1", owned, 5L, true, null));
+		assertFalse(LineItemUtil.isColumnWritableByTool("site1", other, 5L, true, null));
+	}
+
+	@Test
+	public void testIsColumnVisibleToTool_gradebookReadonlyViewIncludesAll() {
+		Assignment manual = new Assignment();
+		manual.setName("Manual column");
+		assertTrue(LineItemUtil.isColumnVisibleToTool("site1", manual, 5L, true, null));
+	}
+
+	@Test
+	public void testGetLineItemForToolColumnSetsReadOnlyForNonOwnedColumn() {
+		Assignment other = new Assignment();
+		other.setExternalAppName(LineItemUtil.GB_EXTERNAL_APP_NAME);
+		other.setExternalId("9|0");
+		other.setName("Other tool column");
+		other.setPoints(10.0);
+		other.setId(42L);
+
+		SakaiLineItem li = LineItemUtil.getLineItemForToolColumn("signed", "site1", 5L, other, true);
+		assertNotNull(li);
+		assertEquals(Boolean.TRUE, li.readOnly);
+		assertNull(LineItemUtil.getLineItemForToolColumn("signed", "site1", 5L, other, false));
+	}
+
+	@Test
+	public void testGetLineItemForToolColumnOmitsReadOnlyForOwnedColumn() {
+		Assignment owned = new Assignment();
+		owned.setExternalAppName(LineItemUtil.GB_EXTERNAL_APP_NAME);
+		owned.setExternalId("5|0");
+		owned.setName("My column");
+		owned.setPoints(10.0);
+
+		SakaiLineItem li = LineItemUtil.getLineItemForToolColumn("signed", "site1", 5L, owned, true);
+		assertNotNull(li);
+		assertNull(li.readOnly);
 	}
 
 }

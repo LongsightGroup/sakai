@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.format.FormatStyle;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,6 +73,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.sakaiproject.announcement.api.AnnouncementChannel;
+import org.sakaiproject.announcement.api.AnnouncementMessageEdit;
+import org.sakaiproject.announcement.api.AnnouncementMessageHeaderEdit;
 import org.sakaiproject.announcement.api.AnnouncementService;
 import org.sakaiproject.assignment.api.AssignmentConstants;
 import org.sakaiproject.assignment.api.AssignmentConstants.SubmissionStatus;
@@ -255,6 +258,9 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
     private boolean allowSubmitByInstructor;
     private boolean exposeContentReviewErrorsToUI;
     private boolean createGroupsOnImport;
+
+    private static final String ASSIGNMENT_REFERENCE_PROPERTY = "assignmentReference";
+    private static final String ANNOUNCEMENT_NOTIFICATION_INVOKEE = "org.sakaiproject.announcement.impl.SiteEmailNotificationAnnc";
 
     private static ResourceLoader rb = new ResourceLoader("assignment");
 
@@ -3671,17 +3677,46 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         String channelId = serverConfigurationService.getString(announcementService.ANNOUNCEMENT_CHANNEL_PROPERTY, null);
         if (channelId == null) {
             channelId = announcementService.channelReference(contextId, siteService.MAIN_CONTAINER);
-            try {
-                channel = announcementService.getAnnouncementChannel(channelId);
-            } catch (IdUnusedException e) {
-                log.warn("No announcement channel found with id = {}", channelId);
-                channel = null;
-            } catch (PermissionException e) {
-                log.warn("Current user not authorized to delete announcement with id = {}", channelId, e);
-                channel = null;
-            }
+        }
+        try {
+            channel = announcementService.getAnnouncementChannel(channelId);
+        } catch (IdUnusedException e) {
+            log.warn("No announcement channel found with id = {}", channelId);
+            channel = null;
+        } catch (PermissionException e) {
+            log.warn("Current user not authorized to access announcement with id = {}", channelId, e);
+            channel = null;
         }
         return channel;
+    }
+
+    private AnnouncementChannel getOrCreateAnnouncementChannel(String contextId) {
+
+        String channelId = serverConfigurationService.getString(announcementService.ANNOUNCEMENT_CHANNEL_PROPERTY, null);
+        if (channelId == null) {
+            channelId = announcementService.channelReference(contextId, siteService.MAIN_CONTAINER);
+        }
+
+        try {
+            return announcementService.getAnnouncementChannel(channelId);
+        } catch (IdUnusedException e) {
+            try {
+                announcementService.commitChannel(announcementService.addAnnouncementChannel(channelId));
+                return announcementService.getAnnouncementChannel(channelId);
+            } catch (IdUsedException ex) {
+                try {
+                    return announcementService.getAnnouncementChannel(channelId);
+                } catch (IdUnusedException | PermissionException retryEx) {
+                    log.warn("Failed getting/creating announcement channel {} for site {}", channelId, contextId, retryEx);
+                }
+            } catch (IdInvalidException | IdUnusedException | PermissionException ex) {
+                log.warn("Failed getting/creating announcement channel {} for site {}", channelId, contextId, ex);
+            }
+        } catch (PermissionException e) {
+            log.warn("Current user not authorized to access announcement with id = {}", channelId, e);
+        }
+
+        return null;
     }
 
     private void removeAssociatedAnnouncementItem(AnnouncementChannel channel, Assignment assignment) {
@@ -4641,7 +4676,6 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     Map<String, String> nProperties = nAssignment.getProperties();
                     nProperties.putAll(oAssignment.getProperties());
                     // remove the link btw assignment and announcement item. One can announce the open date afterwards
-                    nProperties.remove(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE);
                     nProperties.remove(AssignmentConstants.NEW_ASSIGNMENT_OPEN_DATE_ANNOUNCED);
                     nProperties.remove(ResourceProperties.PROP_ASSIGNMENT_OPENDATE_ANNOUNCEMENT_MESSAGE_ID);
 
@@ -4649,48 +4683,13 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     nProperties.remove(AssignmentConstants.NEW_ASSIGNMENT_DUE_DATE_SCHEDULED);
                     nProperties.remove(ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID);
 
-                    if (!nAssignment.getDraft()) {
-                        Map<String, String> oProperties = oAssignment.getProperties();
-
-                        String fromCalendarEventId = oProperties.get(
-                            ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID);
-
-                        if (fromCalendarEventId != null) {
-                            String fromCalendarId
-                                = calendarService.calendarReference(
-                                    oAssignment.getContext(), SiteService.MAIN_CONTAINER);
-                            Calendar fromCalendar = calendarService.getCalendar(fromCalendarId);
-                            CalendarEvent fromEvent = fromCalendar.getEvent(fromCalendarEventId);
-                            String toCalendarId
-                                = calendarService.calendarReference(
-                                    nAssignment.getContext(), SiteService.MAIN_CONTAINER);
-                            Calendar toCalendar = null;
-                            try {
-                                toCalendar = calendarService.getCalendar(toCalendarId);
-                            } catch (IdUnusedException iue) {
-                                calendarService.commitCalendar(calendarService.addCalendar(toCalendarId));
-                                toCalendar = calendarService.getCalendar(toCalendarId);
-                            }
-
-                            String fromDisplayName = fromEvent.getDisplayName();
-                            CalendarEvent toCalendarEvent
-                                = toCalendar.addEvent(fromEvent.getRange(), fromEvent.getDisplayName()
-                                    , fromEvent.getDescription(), fromEvent.getType()
-                                    , fromEvent.getLocation(), fromEvent.getAccess()
-                                    , fromEvent.getGroups(), fromEvent.getAttachments());
-                            nProperties.put(
-                                ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID, toCalendarEvent.getId());
-                            nProperties.put(AssignmentConstants.NEW_ASSIGNMENT_DUE_DATE_SCHEDULED, Boolean.TRUE.toString());
-                            nProperties.put(ResourceProperties.NEW_ASSIGNMENT_CHECK_ADD_DUE_DATE, Boolean.TRUE.toString());
-                        }
-                    }
-
                     // gradebook-integration link
                     final String associatedGradebookAssignment = nProperties.get(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
                     // always clear the old assignments gradebook link
                     nProperties.remove(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
                     final String assignmentAddToGradebookChoice = nProperties.get(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK);
                     final String nAssignmentRef = AssignmentReferenceReckoner.reckoner().assignment(nAssignment).reckon().getReference();
+                    boolean categoryCreatedFromGradebookAssignment = false;
 
                     switch (assignmentAddToGradebookChoice) {
                         case GRADEBOOK_INTEGRATION_ADD, GRADEBOOK_INTEGRATION_ASSOCIATE -> {
@@ -4698,7 +4697,9 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                             org.sakaiproject.grading.api.Assignment newGbAssignment = null;
 
                             boolean isOriginalAssignmentExternal = gradingService.isExternalAssignmentDefined(oAssignment.getContext(), associatedGradebookAssignment);
-                            if (!isOriginalAssignmentExternal) {
+                            if (isOriginalAssignmentExternal) {
+                                originalGBAssignment = gradingService.getExternalAssignment(oAssignment.getContext(), associatedGradebookAssignment);
+                            } else if (StringUtils.isNotBlank(associatedGradebookAssignment)) {
                                 // load the assignment for internal gb link
                                 try {
                                     originalGBAssignment = gradingService.getAssignmentByNameOrId(
@@ -4722,19 +4723,26 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                         log.debug("Assignment {} not found in gradebook for site {}", originalGBAssignment.getName(), nAssignment.getContext(), anfe);
                                     }
                                 }
-                            } else {
-                                originalGBAssignment = gradingService.getExternalAssignment(oAssignment.getContext(), associatedGradebookAssignment);
                             }
 
                             if (nAssignment.getDraft()) {
                                 // assignment is in the draft state
-                                if (isOriginalAssignmentExternal) {
+                                if (isOriginalAssignmentExternal || GRADEBOOK_INTEGRATION_ADD.equals(assignmentAddToGradebookChoice)) {
                                     // if this is an external defined assignments will create when publishing
                                     nProperties.remove(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
                                     nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ADD);
+                                    if (isOriginalAssignmentExternal && originalGBAssignment != null) {
+                                        Optional<Long> categoryId = createCategoryForGbAssignmentIfNecessary(originalGBAssignment, oAssignment.getContext(), nAssignment.getContext());
+                                        if (categoryId.isPresent()) {
+                                            nProperties.put(NEW_ASSIGNMENT_CATEGORY, categoryId.get().toString());
+                                            categoryCreatedFromGradebookAssignment = true;
+                                        }
+                                    }
                                 } else {
                                     if (newGbAssignment != null) {
-                                        nProperties.put(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, newGbAssignment.getId().toString());
+                                        if (StringUtils.isNotBlank(newGbAssignment.getId().toString())) {
+                                            nProperties.put(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, newGbAssignment.getId().toString());
+                                        }
                                         nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ASSOCIATE);
                                     } else {
                                         nProperties.remove(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
@@ -4751,21 +4759,39 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                                 .orElse(null);
                                     }
 
-                                    gradingService.addExternalAssessment(
-                                            nAssignment.getContext(),
-                                            nAssignment.getContext(),
-                                            nAssignmentRef,
-                                            null,
-                                            nAssignment.getTitle(),
-                                            nAssignment.getMaxGradePoint() / (double) nAssignment.getScaleFactor(),
-                                            Date.from(nAssignment.getDueDate()),
-                                            this.getToolId(),
-                                            null,
-                                            false,
-                                            categoryId,
-                                            null);
-                                    nProperties.put(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, nAssignmentRef);
-                                    nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ASSOCIATE);
+                                    try {
+                                        gradingService.addExternalAssessment(
+                                                nAssignment.getContext(),
+                                                nAssignment.getContext(),
+                                                nAssignmentRef,
+                                                null,
+                                                nAssignment.getTitle(),
+                                                nAssignment.getMaxGradePoint() / (double) nAssignment.getScaleFactor(),
+                                                Date.from(nAssignment.getDueDate()),
+                                                this.getToolId(),
+                                                null,
+                                                false,
+                                                categoryId,
+                                                null);
+                                        if (StringUtils.isNotBlank(nAssignmentRef)) {
+                                            nProperties.put(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, nAssignmentRef);
+                                        }
+                                        nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ASSOCIATE);
+                                    } catch (org.sakaiproject.grading.api.ConflictingAssignmentNameException e) {
+                                        // Draft assignments must not be added to the gradebook;
+                                        log.warn("Assignment '{}' conflicts with existing gradebook item in site {}. Renaming and setting to draft. oAssignmentId={} nAssignmentId={}",
+                                                nAssignment.getTitle(), nAssignment.getContext(), oAssignmentId, nAssignmentId);
+
+                                        String uniqueTitle = generateUniqueAssignmentTitle(nAssignment.getTitle(), nAssignment.getContext());
+                                        nAssignment.setTitle(uniqueTitle);
+                                        nAssignment.setDraft(true);
+
+                                        nProperties.remove(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT);
+                                        nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ADD);
+                                        nAssignment.setModifier(sessionManager.getCurrentSessionUserId());
+                                        assignmentRepository.merge(nAssignment);
+                                        log.info("Renamed duplicate assignment to '{}' and set to draft in site {}. Will be added to GB on publish.", uniqueTitle, nAssignment.getContext());
+                                    }
                                 } else {
                                     // internal gradebook items should have already been created and are linked using a Long or a title
                                     if (newGbAssignment == null) {
@@ -4775,7 +4801,9 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                                         nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_NO);
                                     } else {
                                         // gb item found just link it
-                                        nProperties.put(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, newGbAssignment.getId().toString());
+                                        if (StringUtils.isNotBlank(newGbAssignment.getId().toString())) {
+                                            nProperties.put(PROP_ASSIGNMENT_ASSOCIATE_GRADEBOOK_ASSIGNMENT, newGbAssignment.getId().toString());
+                                        }
                                         nProperties.put(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK, GRADEBOOK_INTEGRATION_ASSOCIATE);
                                     }
                                 }
@@ -4793,7 +4821,13 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                         }
                     }
 
-                    updateAssignment(nAssignment);
+                    if (GRADEBOOK_INTEGRATION_ADD.equals(nProperties.get(NEW_ASSIGNMENT_ADD_TO_GRADEBOOK))) {
+                        if (!categoryCreatedFromGradebookAssignment) {
+                            remapImportedAssignmentCategoryProperty(nProperties, fromContext, toContext);
+                        }
+                    } else {
+                        nProperties.remove(NEW_ASSIGNMENT_CATEGORY);
+                    }
 
                     // review service
                     if (oAssignment.getContentReview()) {
@@ -4802,9 +4836,16 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                         if (StringUtils.isNotBlank(errorMsg)) {
                             log.warn("Error while copying old assignments and creating content review link: {}", errorMsg);
                             nAssignment.setDraft(true);
-                            updateAssignment(nAssignment);
                         }
                     }
+
+                    updateAssignment(nAssignment);
+
+                    if (!nAssignment.getDraft()) {
+                        addImportedDueDateCalendarEvent(oAssignment, nAssignment, nProperties);
+                    }
+                    addImportedOpenDateAnnouncement(oAssignment, nAssignment, nProperties);
+                    assignmentRepository.merge(nAssignment);
 
                     transversalMap.put("assignment/" + oAssignmentId, "assignment/" + nAssignmentId);
                     log.info("Old assignment id: {} - new assignment id: {}", oAssignmentId, nAssignmentId);
@@ -4825,15 +4866,17 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
                     if (oModelAnswerItem != null) {
                         AssignmentModelAnswerItem nModelAnswerItem = assignmentSupplementItemService.newModelAnswer();
                         nModelAnswerItem.setAssignmentId(nAssignmentId);
-                        assignmentSupplementItemService.saveModelAnswer(nModelAnswerItem);
                         nModelAnswerItem.setText(oModelAnswerItem.getText());
                         nModelAnswerItem.setShowTo(oModelAnswerItem.getShowTo());
-                        Set<AssignmentSupplementItemAttachment> oModelAnswerItemAttachments = oModelAnswerItem.getAttachmentSet();
+                        assignmentSupplementItemService.saveModelAnswer(nModelAnswerItem);
                         Set<AssignmentSupplementItemAttachment> nModelAnswerItemAttachments = new HashSet<>();
-                        for (AssignmentSupplementItemAttachment oAttachment : oModelAnswerItemAttachments) {
+                        List<String> attachmentIDs = assignmentSupplementItemService.getAttachmentListForSupplementItem(oModelAnswerItem);
+                        for (String attachmentID : attachmentIDs) {
                             AssignmentSupplementItemAttachment nAttachment = assignmentSupplementItemService.newAttachment();
                             // New attachment creation
-                            String nAttachmentId = transferAttachment(fromContext, toContext, oAttachment.getAttachmentId(), null);
+                            Reference oRef = entityManager.newReference(attachmentID);
+                            String cleanResourceId = oRef.getId(); 
+                            String nAttachmentId = transferAttachment(fromContext, toContext, cleanResourceId, null);
                             if (StringUtils.isNotEmpty(nAttachmentId)) {
                                 nAttachment.setAssignmentSupplementItemWithAttachment(nModelAnswerItem);
                                 nAttachment.setAttachmentId(nAttachmentId);
@@ -4906,6 +4949,251 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
             }
         }
         return transversalMap;
+    }
+
+    private void addImportedDueDateCalendarEvent(Assignment sourceAssignment, Assignment importedAssignment,
+            Map<String, String> importedProperties) {
+
+        Map<String, String> sourceProperties = sourceAssignment.getProperties();
+        if (!BooleanUtils.toBoolean(sourceProperties.get(ResourceProperties.NEW_ASSIGNMENT_CHECK_ADD_DUE_DATE))
+                || Boolean.TRUE.equals(importedAssignment.getHideDueDate())) {
+            return;
+        }
+
+        // Scope imported due-date events to the imported assignment, not the source site's event metadata.
+        CalendarEvent.EventAccess importedEventAccess = importedAssignment.getTypeOfAccess() == GROUP
+            ? CalendarEvent.EventAccess.GROUPED
+            : CalendarEvent.EventAccess.SITE;
+        Collection<Group> importedEventGroups = getImportedAssignmentGroups(importedAssignment);
+        if (importedAssignment.getTypeOfAccess() == GROUP && CollectionUtils.isEmpty(importedEventGroups)) {
+            log.warn("No groups resolved for grouped imported assignment {} in site {}. "
+                    + "Skipping due date calendar event import to avoid creating a no-audience event.",
+                importedAssignment.getId(), importedAssignment.getContext());
+            return;
+        }
+
+        Calendar toCalendar;
+        String toCalendarId = calendarService.calendarReference(importedAssignment.getContext(), SiteService.MAIN_CONTAINER);
+        try {
+            toCalendar = calendarService.getCalendar(toCalendarId);
+        } catch (IdUnusedException iue) {
+            try {
+                calendarService.commitCalendar(calendarService.addCalendar(toCalendarId));
+                toCalendar = calendarService.getCalendar(toCalendarId);
+            } catch (IdUsedException e) {
+                try {
+                    toCalendar = calendarService.getCalendar(toCalendarId);
+                } catch (IdUnusedException | PermissionException retryException) {
+                    log.warn("Failed getting/creating calendar {} while importing assignment {} into {}",
+                        toCalendarId, sourceAssignment.getId(), importedAssignment.getId(), retryException);
+                    return;
+                }
+            } catch (IdInvalidException | IdUnusedException | PermissionException e) {
+                log.warn("Failed getting/creating calendar {} while importing assignment {} into {}",
+                    toCalendarId, sourceAssignment.getId(), importedAssignment.getId(), e);
+                return;
+            }
+        } catch (PermissionException e) {
+            log.warn("No permission to access calendar {} while importing assignment {} into {}",
+                toCalendarId, sourceAssignment.getId(), importedAssignment.getId(), e);
+            return;
+        }
+
+        CalendarEvent importedEvent = null;
+        List<Reference> importedAttachments = Collections.emptyList();
+        String sourceCalendarEventId = StringUtils.trimToNull(
+            sourceProperties.get(ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID));
+        if (sourceCalendarEventId != null) {
+            try {
+                String fromCalendarId = calendarService.calendarReference(sourceAssignment.getContext(), SiteService.MAIN_CONTAINER);
+                Calendar fromCalendar = calendarService.getCalendar(fromCalendarId);
+                CalendarEvent fromEvent = fromCalendar.getEvent(sourceCalendarEventId);
+                // Reuse timing/title/content from the source event while applying destination access/groups.
+                importedAttachments = copyImportedCalendarAttachments(fromEvent.getAttachments(), importedAssignment.getContext());
+                importedEvent = toCalendar.addEvent(fromEvent.getRange(), fromEvent.getDisplayName(),
+                    fromEvent.getDescription(), fromEvent.getType(), fromEvent.getLocation(),
+                    importedEventAccess, importedEventGroups, importedAttachments);
+            } catch (IdUnusedException | PermissionException e) {
+                cleanupImportedCalendarAttachments(importedAttachments);
+                log.warn("Failed copying calendar event {} while importing assignment {} into {}",
+                    sourceCalendarEventId, sourceAssignment.getId(), importedAssignment.getId(), e);
+            }
+        }
+
+        if (importedEvent == null && importedAssignment.getDueDate() != null) {
+            try {
+                String dueTitle = resourceLoader.getString("gen.due");
+                importedEvent = toCalendar.addEvent(
+                    timeService.newTimeRange(importedAssignment.getDueDate().toEpochMilli(), 0),
+                    dueTitle + " " + importedAssignment.getTitle(),
+                    importedAssignment.getTitle(),
+                    "Deadline", "", importedEventAccess, importedEventGroups, null);
+            } catch (PermissionException e) {
+                log.warn("Failed recreating due date calendar event while importing assignment {} into {}",
+                    sourceAssignment.getId(), importedAssignment.getId(), e);
+            }
+        }
+
+        if (importedEvent != null) {
+            importedProperties.put(ResourceProperties.PROP_ASSIGNMENT_DUEDATE_CALENDAR_EVENT_ID, importedEvent.getId());
+            importedProperties.put(AssignmentConstants.NEW_ASSIGNMENT_DUE_DATE_SCHEDULED, Boolean.TRUE.toString());
+            importedProperties.put(ResourceProperties.NEW_ASSIGNMENT_CHECK_ADD_DUE_DATE, Boolean.TRUE.toString());
+        }
+    }
+
+    private List<Reference> copyImportedCalendarAttachments(List<?> sourceAttachments, String toContext) {
+
+        if (CollectionUtils.isEmpty(sourceAttachments)) {
+            return Collections.emptyList();
+        }
+
+        List<Reference> importedAttachments = new ArrayList<>();
+        for (Object attachmentObject : sourceAttachments) {
+            if (!(attachmentObject instanceof Reference attachmentReference)) {
+                continue;
+            }
+
+            String importedAttachmentReference = transferAttachment(null, toContext, attachmentReference.getId(), null);
+            if (StringUtils.isBlank(importedAttachmentReference)) {
+                continue;
+            }
+
+            Reference importedAttachment = entityManager.newReference(importedAttachmentReference);
+            if (importedAttachment != null) {
+                importedAttachments.add(importedAttachment);
+            }
+        }
+
+        return importedAttachments;
+    }
+
+    private void cleanupImportedCalendarAttachments(List<Reference> importedAttachments) {
+
+        if (CollectionUtils.isEmpty(importedAttachments)) {
+            return;
+        }
+
+        for (Reference importedAttachment : importedAttachments) {
+            if (importedAttachment == null || StringUtils.isBlank(importedAttachment.getId())) {
+                continue;
+            }
+
+            try {
+                contentHostingService.removeResource(importedAttachment.getId());
+            } catch (IdUnusedException | InUseException | PermissionException | TypeException e) {
+                log.warn("Failed cleaning up imported calendar attachment {} after calendar event import failure",
+                    importedAttachment.getId(), e);
+            }
+        }
+    }
+
+    private Collection<Group> getImportedAssignmentGroups(Assignment importedAssignment) {
+
+        if (importedAssignment.getTypeOfAccess() != GROUP || CollectionUtils.isEmpty(importedAssignment.getGroups())) {
+            return Collections.emptyList();
+        }
+
+        try {
+            Site site = siteService.getSite(importedAssignment.getContext());
+            Collection<Group> groups = new ArrayList<>();
+            for (String groupRef : importedAssignment.getGroups()) {
+                // Imported assignment groups are already destination refs after transferCopyEntities group remap.
+                Group group = site.getGroup(groupRef);
+                if (group == null) {
+                    log.warn("Failed resolving imported assignment group {} for assignment {} in site {}",
+                        groupRef, importedAssignment.getId(), importedAssignment.getContext());
+                    return Collections.emptyList();
+                }
+                groups.add(group);
+            }
+            return groups;
+        } catch (IdUnusedException e) {
+            log.warn("Failed resolving groups for imported assignment {} in site {}",
+                importedAssignment.getId(), importedAssignment.getContext(), e);
+            return Collections.emptyList();
+        }
+    }
+
+    private boolean shouldImportOpenDateAnnouncement(Map<String, String> sourceProperties, Assignment importedAssignment) {
+
+        return importedAssignment.getOpenDate() != null
+            && (BooleanUtils.toBoolean(sourceProperties.get(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE))
+                || BooleanUtils.toBoolean(sourceProperties.get(AssignmentConstants.NEW_ASSIGNMENT_OPEN_DATE_ANNOUNCED))
+                || StringUtils.isNotBlank(sourceProperties.get(ResourceProperties.PROP_ASSIGNMENT_OPENDATE_ANNOUNCEMENT_MESSAGE_ID)));
+    }
+
+    private void addImportedOpenDateAnnouncement(Assignment sourceAssignment, Assignment importedAssignment,
+            Map<String, String> importedProperties) {
+
+        if (!shouldImportOpenDateAnnouncement(sourceAssignment.getProperties(), importedAssignment)) {
+            return;
+        }
+
+        try {
+            AnnouncementChannel channel = getOrCreateAnnouncementChannel(importedAssignment.getContext());
+            if (channel == null) {
+                return;
+            }
+
+            boolean draftAnnouncement = Boolean.TRUE.equals(importedAssignment.getDraft());
+            AnnouncementMessageEdit message = null;
+            boolean committed = false;
+            try {
+                message = channel.addAnnouncementMessage();
+                AnnouncementMessageHeaderEdit header = message.getAnnouncementHeaderEdit();
+                header.setDraft(draftAnnouncement);
+                header.replaceAttachments(entityManager.newReferenceList());
+                message.getPropertiesEdit().addProperty(ASSIGNMENT_REFERENCE_PROPERTY,
+                    AssignmentReferenceReckoner.reckoner().assignment(importedAssignment).reckon().getReference());
+                String subject = resourceLoader.getFormattedMessage("assig6", importedAssignment.getTitle());
+                if (subject == null) {
+                    subject = importedAssignment.getTitle();
+                }
+                header.setSubject(subject);
+
+                if (importedAssignment.getTypeOfAccess() == GROUP) {
+                    Collection<Group> groups = getImportedAssignmentGroups(importedAssignment);
+                    if (CollectionUtils.isEmpty(groups)) {
+                        log.warn("No groups resolved for grouped imported assignment {} in site {}. "
+                                + "Canceling pending announcement edit to avoid creating a no-audience announcement.",
+                            importedAssignment.getId(), importedAssignment.getContext());
+                        channel.cancelMessage(message);
+                        message = null;
+                        return;
+                    }
+                    header.setGroupAccess(groups);
+                } else {
+                    header.clearGroupAccess();
+                }
+
+                String formattedOpenTime = userTimeService.dateTimeFormat(importedAssignment.getOpenDate(),
+                    FormatStyle.MEDIUM, FormatStyle.LONG);
+                String body = resourceLoader.getFormattedMessage("opedat",
+                    formattedText.convertPlaintextToFormattedText(importedAssignment.getTitle()), formattedOpenTime);
+                if (body == null) {
+                    body = formattedText.convertPlaintextToFormattedText(importedAssignment.getTitle());
+                }
+                message.setBody("<p>" + body + "</p>");
+
+                channel.commitMessage(message, NotificationService.NOTI_NONE, ANNOUNCEMENT_NOTIFICATION_INVOKEE);
+                committed = true;
+
+                importedProperties.put(ResourceProperties.NEW_ASSIGNMENT_CHECK_AUTO_ANNOUNCE, Boolean.TRUE.toString());
+                if (draftAnnouncement) {
+                    importedProperties.remove(AssignmentConstants.NEW_ASSIGNMENT_OPEN_DATE_ANNOUNCED);
+                } else {
+                    importedProperties.put(AssignmentConstants.NEW_ASSIGNMENT_OPEN_DATE_ANNOUNCED, Boolean.TRUE.toString());
+                }
+                importedProperties.put(ResourceProperties.PROP_ASSIGNMENT_OPENDATE_ANNOUNCEMENT_MESSAGE_ID, message.getId());
+            } finally {
+                if (!committed && message != null) {
+                    channel.cancelMessage(message);
+                }
+            }
+        } catch (PermissionException e) {
+            log.warn("Failed recreating open date announcement while importing assignment {} into {}",
+                sourceAssignment.getId(), importedAssignment.getId(), e);
+        }
     }
 
     @Override
@@ -5321,6 +5609,78 @@ public class AssignmentServiceImpl implements AssignmentService, EntityTransferr
         }
 
         return errorMessage;
+    }
+
+    /**
+     * Generates a unique assignment title by appending a suffix (-1, -2, etc.) if a conflict exists.
+     * This is used during assignment import to avoid duplicate assignment names.
+     *
+     * @param originalTitle the original assignment title
+     * @param context the site context
+     * @return a unique title that doesn't conflict with existing assignments
+     */
+    private String generateUniqueAssignmentTitle(String originalTitle, String context) {
+        Collection<Assignment> existingAssignments = getAssignmentsForContext(context);
+        Set<String> existingTitles = existingAssignments.stream()
+                .map(Assignment::getTitle)
+                .collect(java.util.stream.Collectors.toSet());
+
+        String uniqueTitle = originalTitle;
+        int suffix = 1;
+
+        // Keep incrementing suffix until we find a unique title
+        while (existingTitles.contains(uniqueTitle)) {
+            uniqueTitle = originalTitle + "-" + suffix;
+            suffix++;
+        }
+
+        return uniqueTitle;
+    }
+
+    private void remapImportedAssignmentCategoryProperty(Map<String, String> properties, String fromGradebookId, String toGradebookId) {
+
+        String categoryIds = StringUtils.trimToNull(properties.get(NEW_ASSIGNMENT_CATEGORY));
+        if (categoryIds == null) {
+            return;
+        }
+
+        Optional<Long> destinationCategoryId = createCategoryForAssignmentPropertyIfNecessary(categoryIds, fromGradebookId, toGradebookId);
+        if (destinationCategoryId.isPresent()) {
+            properties.put(NEW_ASSIGNMENT_CATEGORY, destinationCategoryId.get().toString());
+        } else {
+            properties.remove(NEW_ASSIGNMENT_CATEGORY);
+        }
+    }
+
+    private Optional<Long> createCategoryForAssignmentPropertyIfNecessary(String categoryIds, String fromGradebookId, String toGradebookId) {
+
+        List<String> selectedCategories = Arrays.stream(categoryIds.split(","))
+                .map(StringUtils::trimToNull)
+                .filter(Objects::nonNull)
+                .filter(categoryId -> !"-1".equals(categoryId))
+                .collect(Collectors.toList());
+
+        if (selectedCategories.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Category ids are gradebook-specific. Resolve the source id to a category name,
+        // then match or create the equivalent category in the destination gradebook.
+        List<CategoryDefinition> categoryDefs = gradingService.getCategoryDefinitions(fromGradebookId, fromGradebookId);
+        if (categoryDefs == null) {
+            categoryDefs = Collections.emptyList();
+        }
+        Optional<CategoryDefinition> sourceCategory = categoryDefs.stream()
+                .filter(category -> category.getId() != null && selectedCategories.contains(category.getId().toString()))
+                .findFirst();
+
+        if (!sourceCategory.isPresent()) {
+            return Optional.empty();
+        }
+
+        org.sakaiproject.grading.api.Assignment sourceAssignment = new org.sakaiproject.grading.api.Assignment();
+        sourceAssignment.setCategoryName(sourceCategory.get().getName());
+        return createCategoryForGbAssignmentIfNecessary(sourceAssignment, fromGradebookId, toGradebookId);
     }
 
     private Optional<Long> createCategoryForGbAssignmentIfNecessary(
