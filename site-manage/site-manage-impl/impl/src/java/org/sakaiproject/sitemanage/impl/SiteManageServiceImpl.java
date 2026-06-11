@@ -167,7 +167,7 @@ public class SiteManageServiceImpl implements SiteManageService {
                 importToolsIntoSite(site, existingTools, importTools, toolItemMap, toolOptions, cleanup);
                 log.info("Finished Site Import for the site {}", id);
             } catch (Exception e) {
-                log.warn("Site Import Task encountered an exception for site {}, {}", id, e.getMessage());
+                log.warn("Site Import Task encountered an exception for site {}, {}", id, e);
             } finally {
                 currentSiteImports.remove(id);
             }
