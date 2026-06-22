@@ -1,29 +1,34 @@
 /* Light Theme */
 :root{
     // Primary Color
-    @include defineColorHSL(--sakai-brand, 357, 52%, 42%);
-    @include defineColorHSL(--sakai-color-red, 357, 52%, 42%);
-    @include defineColorHSL(--sakai-color-blue, 237, 52%, 42%);
-    @include defineColorHSL(--sakai-color-green, 117, 52%, 42%);
-    @include defineColorHSL(--sakai-color-gold, 49, 100%, 47%);
+    @include defineColorHSL(--sakai-brand, 340, 59%, 34%);
+    @include defineColorHSL(--sakai-color-blue, 223, 79%, 22%);
 
+    // Top header and logo wrapper
+    --logo: url(/library/skin/amc/images/amc.svg);
     --top-header-background: var(--sakai-brand);
-    --top-header-text-color: var(--sakai-color-white);
-    --portal-header-breadcrumb-color: var(--top-header-text-color);
-    --portal-header-manage-overview-color: var(--sakai-brand--lighter-6);
 
     // This is hover on site nav buttons
-    --sakai-brand--lighter-6: var(--sakai-color-gold--lighter-2);
+    // --sakai-brand--lighter-6: #facfbd;
 }
 
 :root.sakaiUserTheme-dark {
-   --site-nav-bg: #31353b;
-   --site-nav-list-item-bg: #31353b;
-   --sticky-footer-bg: #31353b;
+    --logo: url(/library/skin/amc/images/amc.svg);
 }
 
-@media only screen and (max-width: 800px) {
-    div#loginLinksImage {
-        display: contents;
-    }
+#logoWrapper .btn {
+  padding: 0 !important;
+}
+i.si-com-sonicfoundry-mediasite-catalog::before,
+i.si-com-sonicfoundry-mediasite-lti:before,
+i.si-com-sonicfoundry-mediasite-mymediasite:before
+{
+    content: "\f2cb";
+}
+i.si-amc-deans-letter:before,
+i.si-amc-grade-report:before,
+i.si-amc-student-evals:before,
+i.si-amc-patient-logs:before
+{
+    content: "\f194";
 }

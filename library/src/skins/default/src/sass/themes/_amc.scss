@@ -5,15 +5,17 @@
     @include defineColorHSL(--sakai-color-blue, 223, 79%, 22%);
 
     // Top header and logo wrapper
+    --logo: url(/library/skin/amc/images/amc.svg);
     --top-header-background: var(--sakai-brand);
 
     // This is hover on site nav buttons
     // --sakai-brand--lighter-6: #facfbd;
 }
 
-.portal-header-logo img {
-  width: 300px;
+:root.sakaiUserTheme-dark {
+    --logo: url(/library/skin/amc/images/amc.svg);
 }
+
 #logoWrapper .btn {
   padding: 0 !important;
 }
