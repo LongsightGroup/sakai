@@ -525,7 +525,9 @@ public class SiteHandler extends WorksiteHandler
 			final String expandedSite = siteNavProps.getProperty(PortalConstants.PROP_EXPANDED_SITE);
 
 			// We need to modify the user's properties. We need to lock the table.
-			if (!StringUtils.equals(currentExpanded, "true") || !StringUtils.equals(expandedSite, siteId)) {
+			boolean currentSiteIsUserSite = siteService.isUserSite(siteId);
+
+			if (!currentSiteIsUserSite && (!StringUtils.equals(currentExpanded, "true") || !StringUtils.equals(expandedSite, siteId))) {
 				String finalSiteId = siteId;
 				preferencesService.applyEditWithAutoCommit(userId, edit -> {
 					ResourcePropertiesEdit props = edit.getPropertiesEdit(org.sakaiproject.user.api.PreferencesService.SITENAV_PREFS_KEY);
@@ -945,7 +947,7 @@ public class SiteHandler extends WorksiteHandler
 				ResourceProperties props = prefs.getProperties(org.sakaiproject.user.api.PreferencesService.SITENAV_PREFS_KEY);
 
 				sidebarCollapsed = props.getBooleanProperty(PortalConstants.PROP_SIDEBAR_COLLAPSED, false);
-				currentExpanded = props.getBooleanProperty(PortalConstants.PROP_CURRENT_EXPANDED, false);
+				currentExpanded = !siteService.isUserSite(siteId) && props.getBooleanProperty(PortalConstants.PROP_CURRENT_EXPANDED, false);
 				expandedSite = props.getProperty(PortalConstants.PROP_EXPANDED_SITE);
 				toolMaximised = props.getBooleanProperty("toolMaximised", false);
 			}
