@@ -2197,7 +2197,6 @@ public class SakaiLTIUtil {
 				ci.auto_create = "true".equals(ltiProps.getProperty("auto_create"));
 				// can_confirm is not there
 				ci.deep_link_return_url = ltiProps.getProperty(LTIConstants.CONTENT_ITEM_RETURN_URL);
-				ci.data = ltiProps.getProperty("data");
 				lj.deep_link = ci;
 			}
 
