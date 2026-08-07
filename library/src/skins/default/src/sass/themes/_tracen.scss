@@ -6,3 +6,7 @@
     // Top header and logo wrapper
     --top-header-background: var(--sakai-brand);
 }
+
+#logoWrapper .btn {
+  padding: 0 !important;
+}
