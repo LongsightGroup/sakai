@@ -304,8 +304,9 @@
     /* Admin Become User view */
     --become-user-primary: var(--sakai-color-purple--darker-1);
 
-    --top-header-text-color: var(--sakai-text-color-inverted); // used for links and text in the top-header
-    --top-header-border-color: var(--sakai-border-color); // used for top-header spacers
+    // Legacy topNav aliases; keep older navigation styles in sync with the top header tokens.
+    --topNav-text-color: var(--top-header-text-color);
+    --topNav-border-color: var(--top-header-border-color);
 
     /* Favorites */
     --sites-nav-background: var(--sakai-background-color-1);

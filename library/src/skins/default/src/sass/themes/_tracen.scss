@@ -5,8 +5,13 @@
 
     // Top header and logo wrapper
     --top-header-background: var(--sakai-brand);
+    --top-header-text-color: var(--sakai-text-color-inverted);
 }
 
 #logoWrapper .btn {
   padding: 0 !important;
+}
+
+#loginForm input.form-control {
+  color: var(--sakai-text-color-1);
 }
