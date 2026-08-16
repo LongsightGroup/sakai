@@ -18,6 +18,7 @@ package org.sakaiproject.util;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -36,12 +37,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.security.Principal;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(ComponentManager.class)
 public class RequestFilterTest {
+
+    private static final String MODERN_CHROME = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36";
 
     @Mock
     private HttpServletRequest request;
@@ -123,6 +129,50 @@ public class RequestFilterTest {
     }
 
     @Test
+    public void testAddCookieSameSiteWithoutHttpOnly() {
+        filter.m_cookieHttpOnly = false;
+        filter.m_cookieSameSite = "none";
+        when(request.getHeader("user-agent")).thenReturn(MODERN_CHROME);
+
+        Cookie cookie = secureCookie();
+        filter.addCookie(request, response, cookie);
+
+        ArgumentCaptor<String> header = ArgumentCaptor.forClass(String.class);
+        verify(response).addHeader(eq("Set-Cookie"), header.capture());
+        assertTrue(header.getValue().contains("SameSite=None"));
+        assertFalse(header.getValue().contains("HttpOnly"));
+        verify(response, never()).addCookie(any(Cookie.class));
+    }
+
+    @Test
+    public void testAddCookieSameSiteWithHttpOnly() {
+        filter.m_cookieHttpOnly = true;
+        filter.m_cookieSameSite = "none";
+        when(request.getHeader("user-agent")).thenReturn(MODERN_CHROME);
+
+        Cookie cookie = secureCookie();
+        filter.addCookie(request, response, cookie);
+
+        ArgumentCaptor<String> header = ArgumentCaptor.forClass(String.class);
+        verify(response).addHeader(eq("Set-Cookie"), header.capture());
+        assertTrue(header.getValue().contains("SameSite=None"));
+        assertTrue(header.getValue().contains("HttpOnly"));
+        verify(response, never()).addCookie(any(Cookie.class));
+    }
+
+    @Test
+    public void testAddCookieWithoutSameSiteOrHttpOnlyUsesServletContainer() {
+        filter.m_cookieHttpOnly = false;
+        filter.m_cookieSameSite = "";
+
+        Cookie cookie = secureCookie();
+        filter.addCookie(request, response, cookie);
+
+        verify(response).addCookie(cookie);
+        verify(response, never()).addHeader(eq("Set-Cookie"), anyString());
+    }
+
+    @Test
     public void testAssureSessionParameterId() {
         // Check we can pass a session ID parameter
         filter.m_sessionParamAllow = true;
@@ -173,6 +223,13 @@ public class RequestFilterTest {
         when (cookie.getValue()).thenReturn("session1.server1");
         when(request.getCookies()).thenReturn(new Cookie[]{cookie});
         when (sessionManager.getSession("session1")).thenReturn(session);
+    }
+
+    private Cookie secureCookie() {
+        Cookie cookie = new Cookie("SAKAIID", "session.server1");
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        return cookie;
     }
 
     private void setupPrincipal() {
