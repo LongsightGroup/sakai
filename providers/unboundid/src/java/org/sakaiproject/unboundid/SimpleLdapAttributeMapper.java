@@ -203,6 +203,13 @@ public class SimpleLdapAttributeMapper implements LdapAttributeMapper {
             mapLdapAttributeOntoUserData(ldapAttribute, userData, logicalAttrNames);
         }
         
+        if (StringUtils.isBlank(userData.getPreferredFirstName())) {
+            String displayName = userData.getProperties().getProperty(UnboundidDirectoryProvider.DISPLAY_NAME_PROPERTY);
+            if (StringUtils.isNotBlank(displayName)) {
+                userData.setPreferredFirstName(StringUtils.split(displayName)[0]);
+            }
+        }
+
         //enforce use of firstNamePreferred if its set
         userData.setFirstName(usePreferredFirstName(userData));
         
