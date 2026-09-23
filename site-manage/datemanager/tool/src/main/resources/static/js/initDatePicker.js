@@ -101,7 +101,7 @@ DTMN.initBulkDatePickers = function() {
       return;
     }
 
-    hidden.addEventListener("change", () => DTMN.validateBulkInputs(), false);
+    $(hidden).on("change", () => DTMN.validateBulkInputs());
 
     localDatePicker({
       input,
@@ -188,12 +188,12 @@ DTMN.hasTime = function(date)
 
 DTMN.setDatePickerValue = function(datepicker, date, useTime)
 {
-  datepicker.value = DTMN.getDatePickerInputValue(date, useTime);
+  $(datepicker).datepicker("setDate", date.toDate());
 
   const td = datepicker.closest("td");
   const hiddenField = td ? td.querySelector("input[type=hidden]") : null;
   if (hiddenField) {
-    hiddenField.value = DTMN.getHiddenDateValue(date, useTime);
+    hiddenField.value = moment($(datepicker).datepicker("getDate")).format();
     hiddenField.dispatchEvent(new Event("change", {bubbles: true}));
   } else {
     datepicker.dispatchEvent(new Event("change", {bubbles: true}));
@@ -546,7 +546,7 @@ DTMN.shiftDates = function (updates, notModified, rootElementId, button, enableB
 
     try {
       // Parse the date string and add days
-      const currentDate = DTMN.parseDatePickerInputValue(dateValue, useTime);
+      const currentDate = moment($(datepicker).datepicker("getDate"));
 
       if (!currentDate.isValid()) {
         console.warn('Invalid date format:', dateValue);
@@ -582,7 +582,7 @@ DTMN.applyBulkDates = function (updates, notModified, rootElementId, button, ena
       return;
     }
 
-    const bulkDate = DTMN.parseDatePickerInputValue(bulkInput.value, true);
+    const bulkDate = moment($(bulkInput).datepicker("getDate"));
 
     if (!bulkDate.isValid()) {
       return;
