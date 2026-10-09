@@ -105,6 +105,8 @@ public class PDFAssessmentBean implements Serializable {
 
 	private int baseFontSize = 5;
 
+	private boolean mathJaxEnabled;
+
 	private String actionString = "";
 	
 
@@ -270,6 +272,7 @@ public class PDFAssessmentBean implements Serializable {
 
 		PrintSettingsBean printSetting = (PrintSettingsBean) ContextUtil.lookupBean("printSettings");
 		setBaseFontSize(printSetting.getFontSize());
+		mathJaxEnabled = deliveryBean.getIsMathJaxEnabled();
 
 		if (printSetting.getShowPartIntros().booleanValue()) {
 			StringBuffer assessmentIntros = new StringBuffer();
@@ -985,6 +988,7 @@ public class PDFAssessmentBean implements Serializable {
 
 			props.put("font_factory", new CustomFontFactory());
 			props.put("img_baseurl", ServerConfigurationService.getServerUrl());
+			props.put(HTMLWorker.MATHJAX_ENABLED, mathJaxEnabled);
 			worker.setInterfaceProps(props);
 
 			//TODO make a real style sheet

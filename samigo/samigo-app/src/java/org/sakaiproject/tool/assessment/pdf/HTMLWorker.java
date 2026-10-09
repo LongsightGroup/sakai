@@ -49,6 +49,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
  public class HTMLWorker extends com.lowagie.text.html.simpleparser.HTMLWorker {
 
+	public static final String MATHJAX_ENABLED = "mathjax_enabled";
+
 	//http://yourhost/access + /content at the time of this writting
 	private static final String ACCESSBASE = ServerConfigurationService.getAccessUrl() +
 	ContentHostingService.REFERENCE_ROOT;
@@ -77,6 +79,9 @@ import lombok.extern.slf4j.Slf4j;
 		worker.setInterfaceProps(interfaceProps);
 		worker.objectList = new ArrayList();
 		worker.parse(reader);
+		if (interfaceProps != null && Boolean.TRUE.equals(interfaceProps.get(MATHJAX_ENABLED))) {
+			LatexPdfRenderer.render(worker.objectList);
+		}
 		return worker.objectList;
 	}
 
