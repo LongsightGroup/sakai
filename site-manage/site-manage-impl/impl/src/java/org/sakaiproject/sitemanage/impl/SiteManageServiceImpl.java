@@ -22,9 +22,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -37,15 +37,13 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.authz.api.AuthzGroup;
 import org.sakaiproject.authz.api.AuthzGroupService;
-import org.sakaiproject.authz.api.GroupNotDefinedException;
 import org.sakaiproject.authz.api.FunctionManager;
+import org.sakaiproject.authz.api.GroupNotDefinedException;
+import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.api.ServerConfigurationService;
@@ -58,6 +56,7 @@ import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.ResourcePropertiesEdit;
 import org.sakaiproject.event.api.EventTrackingService;
+import org.sakaiproject.event.api.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.shortenedurl.api.ShortenedUrlService;
@@ -83,12 +82,15 @@ import org.sakaiproject.util.api.LinkMigrationHelper;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.sakaiproject.event.api.NotificationService;
 import org.tsugi.lti13.LTICustomVars;
-import org.sakaiproject.authz.api.Role;
+
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SiteManageServiceImpl implements SiteManageService {
+
+    private static final String ANNOUNCEMENTS_TOOL_ID = "sakai.announcements";
 
     @Setter private ContentHostingService contentHostingService;
     @Setter private EntityManager entityManager;
@@ -246,7 +248,14 @@ public class SiteManageServiceImpl implements SiteManageService {
                                 // handle Home tool specially, need to update the site infomration display url if needed
                                 String newSiteInfoUrl = resolveImportedSiteInfoUrl(oSiteId, nSiteId, sourceSiteInfoUrl);
                                 site.setInfoUrl(newSiteInfoUrl);
+
+                                String description = site.getDescription();
+                                if (StringUtils.isNotBlank(description) && description.contains(oSiteId)) {
+                                    site.setDescription(rewriteSiteIdInDescription(description, oSiteId, nSiteId));
+                                }
+
                                 saveSite(site);
+                                toolsCopied.add(toolId);
                             } else if (StringUtils.isNotBlank(toolId)) {
                                 // all other tools
                                 if (!toolsCopied.contains(toolId)) {
@@ -485,7 +494,13 @@ public class SiteManageServiceImpl implements SiteManageService {
         try {
             Site fromSite = siteService.getSite(fromSiteId);
             toSite = siteService.getSite(toSiteId);
-            toSite.setDescription(fromSite.getDescription());
+
+            String description = fromSite.getDescription();
+            if (StringUtils.isNotBlank(description) && description.contains(fromSiteId)) {
+                description = rewriteSiteIdInDescription(description, fromSiteId, toSiteId);
+            }
+            toSite.setDescription(description);
+
             String newSiteInfoUrl = resolveImportedSiteInfoUrl(fromSiteId, toSiteId, fromSite.getInfoUrl());
             toSite.setInfoUrl(newSiteInfoUrl);
             saveSite(toSite);
@@ -681,12 +696,34 @@ public class SiteManageServiceImpl implements SiteManageService {
 			}
 		}
 
+		// Now announcements. Assignment-generated announcements are intentionally skipped by
+		// the Announcements import and recreated by Assignments, so Announcements cleanup must
+		// run before Assignments imports published assignments.
+		if (toolIds.contains(ANNOUNCEMENTS_TOOL_ID)) {
+			for (String toolId : toolIds) {
+				if (StringUtils.equalsIgnoreCase(toolId, ANNOUNCEMENTS_TOOL_ID)) {
+					Map<String, List<String>> siteItems = toolItemMap.getOrDefault(toolId, Collections.EMPTY_MAP);
+					Map<String, List<String>> siteOptions = toolOptions.getOrDefault(toolId, Collections.EMPTY_MAP);
+
+					Set<String> sourceSiteIds = new LinkedHashSet<>();
+					sourceSiteIds.addAll(importTools.getOrDefault(toolId, Collections.EMPTY_LIST));
+					sourceSiteIds.addAll(siteItems.keySet());
+					sourceSiteIds.addAll(siteOptions.keySet());
+
+					for (String fromSiteId : sourceSiteIds) {
+						doImport(transversalMap, toolId, siteIds, fromSiteId, toSiteId, siteItems, siteOptions, cleanup, false);
+					}
+				}
+			}
+		}
+
 		// Now import the rest of the tools
 		if (!toolIds.isEmpty()) {
 			for (String toolId : toolIds) {
 				if (!StringUtils.equalsIgnoreCase(toolId, SiteManageConstants.RESOURCES_TOOL_ID)
 						&& !StringUtils.equalsIgnoreCase(toolId, SiteManageConstants.GRADEBOOK_TOOL_ID)
-						&& !StringUtils.equalsIgnoreCase(toolId, SiteManageConstants.CALENDAR_TOOL_ID)) {
+						&& !StringUtils.equalsIgnoreCase(toolId, SiteManageConstants.CALENDAR_TOOL_ID)
+						&& !StringUtils.equalsIgnoreCase(toolId, ANNOUNCEMENTS_TOOL_ID)) {
 
 					Map<String, List<String>> siteItems = toolItemMap.getOrDefault(toolId, Collections.EMPTY_MAP);
 					Map<String, List<String>> siteOptions = toolOptions.getOrDefault(toolId, Collections.EMPTY_MAP);
@@ -1120,4 +1157,15 @@ public class SiteManageServiceImpl implements SiteManageService {
             log.error("Could not copy tool permissions from site {} to site {}", fromSiteId, toSiteId, e);
         }
     }
+
+    /**
+     * Rewrite the site ID in the description links to point to the new site ID.
+     * @param description The description text to rewrite
+     * @param fromSiteId The site ID to replace
+     * @param toSiteId The site ID to replace with
+     **/
+    private String rewriteSiteIdInDescription(String description, String fromSiteId, String toSiteId) {
+        return StringUtils.replace(description, fromSiteId, toSiteId);
+    }
+
 }

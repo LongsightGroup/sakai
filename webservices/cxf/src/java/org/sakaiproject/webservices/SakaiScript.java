@@ -71,6 +71,7 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserEdit;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.userauditservice.api.UserAuditService;
+import org.sakaiproject.userauditservice.api.model.UserAuditEntry;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Xml;
 import org.w3c.dom.Attr;
@@ -1235,8 +1236,10 @@ public class SakaiScript extends AbstractWebService {
             site.addMember(userid, roleid, true, false);
             siteService.saveSiteMembership(site);
 
-            List<String[]> userAuditList = Collections.singletonList(new String[]{siteid,userid,roleid,UserAuditService.USER_AUDIT_ACTION_ADD,userAuditRegistration.getDatabaseSourceKey(),userDirectoryService.getCurrentUser().getId()});
-            userAuditRegistration.addToUserAuditing(userAuditList);
+            List<UserAuditEntry> userAuditList = Collections.singletonList(UserAuditEntry.of(siteid, userid, roleid,
+                    UserAuditService.USER_AUDIT_ACTION_ADD, userAuditRegistration.getDatabaseSourceKey(),
+                    userDirectoryService.getCurrentUser().getId()));
+            userAuditService.addToUserAuditing(userAuditList);
         } catch (Exception e) {
             log.error("WS addMemberToSiteWithRole(): " + e.getClass().getName() + " : " + e.getMessage());
             return e.getClass().getName() + " : " + e.getMessage();
@@ -1275,17 +1278,17 @@ public class SakaiScript extends AbstractWebService {
         try {
             Site site = siteService.getSite(siteid);
             List<String> eidsList = Arrays.asList(eids.split(","));
-            List<String[]> userAuditList = new ArrayList<String[]>();
+            List<UserAuditEntry> userAuditList = new ArrayList<UserAuditEntry>();
             for (String eid : eidsList) {
                 String userid = userDirectoryService.getUserByEid(eid).getId();
                 site.addMember(userid,roleid,true,false);
-                String[] userAuditString = {siteid,userid,roleid,UserAuditService.USER_AUDIT_ACTION_ADD,userAuditRegistration.getDatabaseSourceKey(),userDirectoryService.getCurrentUser().getId()};
-                userAuditList.add(userAuditString);
+                userAuditList.add(UserAuditEntry.of(siteid, userid, roleid, UserAuditService.USER_AUDIT_ACTION_ADD,
+                        userAuditRegistration.getDatabaseSourceKey(), userDirectoryService.getCurrentUser().getId()));
             }
             siteService.save(site);
             if (!userAuditList.isEmpty())
             {
-                userAuditRegistration.addToUserAuditing(userAuditList);
+                userAuditService.addToUserAuditing(userAuditList);
             }
         }
         catch (Exception e) {
@@ -2663,10 +2666,12 @@ public class SakaiScript extends AbstractWebService {
         try {
             Site site = siteService.getSite(siteid);
             String userid = userDirectoryService.getUserByEid(eid).getId();
-            List<String[]> userAuditList = Collections.singletonList(new String[]{siteid,userid,site.getUserRole(userid).getId(),UserAuditService.USER_AUDIT_ACTION_REMOVE,userAuditRegistration.getDatabaseSourceKey(),userDirectoryService.getCurrentUser().getId()});
+            List<UserAuditEntry> userAuditList = Collections.singletonList(UserAuditEntry.of(siteid, userid,
+                    site.getUserRole(userid).getId(), UserAuditService.USER_AUDIT_ACTION_REMOVE,
+                    userAuditRegistration.getDatabaseSourceKey(), userDirectoryService.getCurrentUser().getId()));
             site.removeMember(userid);
             siteService.saveSiteMembership(site);
-            userAuditRegistration.addToUserAuditing(userAuditList);
+            userAuditService.addToUserAuditing(userAuditList);
         } catch (Exception e) {
             log.error("WS removeMemberFromSite(): " + e.getClass().getName() + " : " + e.getMessage());
             return e.getClass().getName() + " : " + e.getMessage();
@@ -2703,15 +2708,17 @@ public class SakaiScript extends AbstractWebService {
         try {
             Site site = siteService.getSite(siteid);
             List<String> eidsList = Arrays.asList(eids.split(","));
-            List<String[]> userAuditList = new ArrayList<String[]>();
+            List<UserAuditEntry> userAuditList = new ArrayList<UserAuditEntry>();
             for (String eid : eidsList) {
                 String userid = userDirectoryService.getUserByEid(eid).getId();
-                String[] userAuditString = {siteid,userid,site.getUserRole(userid).getId(),UserAuditService.USER_AUDIT_ACTION_REMOVE,userAuditRegistration.getDatabaseSourceKey(),userDirectoryService.getCurrentUser().getId()};
+                UserAuditEntry userAuditEntry = UserAuditEntry.of(siteid, userid, site.getUserRole(userid).getId(),
+                        UserAuditService.USER_AUDIT_ACTION_REMOVE, userAuditRegistration.getDatabaseSourceKey(),
+                        userDirectoryService.getCurrentUser().getId());
                 site.removeMember(userid);
-                userAuditList.add(userAuditString);
+                userAuditList.add(userAuditEntry);
             }
             siteService.save(site);
-            userAuditRegistration.addToUserAuditing(userAuditList);
+            userAuditService.addToUserAuditing(userAuditList);
         } catch (Exception e) {
             log.error("WS removeMemberFromSiteBatch(): " + e.getClass().getName() + " : " + e.getMessage());
             return e.getClass().getName() + " : " + e.getMessage();
@@ -3458,7 +3465,7 @@ public class SakaiScript extends AbstractWebService {
                         //check if the origin attribute, if set, is set for web services
                         String origin = (String) existingSession.getAttribute(SESSION_ATTR_NAME_ORIGIN);
                         if (StringUtils.equals(origin, SESSION_ATTR_VALUE_ORIGIN_WS)) {
-                            log.warn("WS getSessionForUser() reusing existing session for: " + eid + ", session=" + existingSession.getId());
+                            log.warn("Reusing existing web service session for user {}", eid);
                             return existingSession.getId();
                         }
                     }
@@ -3482,7 +3489,7 @@ public class SakaiScript extends AbstractWebService {
             //if wsonly, inject the origin attribute
             if (wsonly) {
                 newsession.setAttribute(SESSION_ATTR_NAME_ORIGIN, SESSION_ATTR_VALUE_ORIGIN_WS);
-                log.warn("WS getSessionForUser() set origin attribute on session: " + newsession.getId());
+                log.warn("Set web service session origin for user {}", eid);
             }
 
             //register the session with presence
@@ -3498,7 +3505,7 @@ public class SakaiScript extends AbstractWebService {
                 log.warn("WS getSessionForUser() failed. Unable to establish session for userid=" + eid + ", ipAddress=" + ipAddress);
                 throw new RuntimeException("WS failed. Unable to establish session");
             } else {
-                log.warn("WS getSessionForUser() OK. Established session for userid=" + eid + ", session=" + newsession.getId() + ", ipAddress=" + ipAddress);
+                log.warn("Established web service session for user {} ipAddress={}", eid, ipAddress);
                 return newsession.getId();
             }
         } catch (Exception e) {
@@ -3620,7 +3627,7 @@ public class SakaiScript extends AbstractWebService {
         try {
             return session.getUserId();
         } catch (Exception e) {
-            log.warn("WS getUserId() failed for session: " + sessionid);
+            log.warn("Could not retrieve user ID for web service session");
             return "";
         }
     }
@@ -3846,7 +3853,7 @@ public class SakaiScript extends AbstractWebService {
 
             Map<String, List<String>> toolsToImport = new HashMap<>();
             toolsToImport.put("sakai.resources", Arrays.asList(new String[]{sourcesiteid}));
-            siteManageService.importToolsIntoSiteThread(site, Collections.EMPTY_LIST, toolsToImport, Collections.EMPTY_MAP, Collections.EMPTY_MAP, false);
+            siteManageService.importToolsIntoSiteThread(site, new ArrayList<>(), toolsToImport, new HashMap<>(), new HashMap<>(), false);
 
         } catch (Exception e) {
             log.error("WS copyResources(): " + e.getClass().getName() + " : " + e.getMessage());
@@ -4307,7 +4314,7 @@ public class SakaiScript extends AbstractWebService {
                 }
             }
 
-            siteManageService.importToolsIntoSiteThread(site, Collections.EMPTY_LIST, toolsToImport, Collections.EMPTY_MAP, Collections.EMPTY_MAP, true);
+            siteManageService.importToolsIntoSiteThread(site, new ArrayList<>(), toolsToImport, new HashMap<>(), new HashMap<>(), true);
 
         } catch (Exception e) {
             log.error("WS copySiteContent(): " + e.getClass().getName() + " : " + e.getMessage(), e);
@@ -4352,7 +4359,7 @@ public class SakaiScript extends AbstractWebService {
 
     		Map<String, List<String>> toolsToImport = new HashMap<>();
     		toolsToImport.put(toolid, Arrays.asList(new String[]{sourcesiteid}));
-			siteManageService.importToolsIntoSiteThread(site, Collections.EMPTY_LIST, toolsToImport, Collections.EMPTY_MAP, Collections.EMPTY_MAP, true);
+			siteManageService.importToolsIntoSiteThread(site, new ArrayList<>(), toolsToImport, new HashMap<>(), new HashMap<>(), true);
     	}
     	catch (Exception e)
     	{
@@ -5010,8 +5017,11 @@ public class SakaiScript extends AbstractWebService {
             userMember.setActive(active);
             authzGroupService.save(realmEdit);
 
-            List<String[]> userAuditList = Collections.singletonList(new String[]{siteid,user.getId(),"s",UserAuditService.USER_AUDIT_ACTION_UPDATE,userAuditRegistration.getDatabaseSourceKey(),userDirectoryService.getCurrentUser().getId()});
-            userAuditRegistration.addToUserAuditing(userAuditList);
+            String role = userMember.getRole() != null ? userMember.getRole().getId() : "s";
+            List<UserAuditEntry> userAuditList = Collections.singletonList(UserAuditEntry.of(siteid, user.getId(), role,
+                    UserAuditService.USER_AUDIT_ACTION_UPDATE, userAuditRegistration.getDatabaseSourceKey(),
+                    userDirectoryService.getCurrentUser().getId()));
+            userAuditService.addToUserAuditing(userAuditList);
         } catch (Exception e) {
             log.error("WS changeSiteMemberStatus(): " + e.getClass().getName() + " : " + e.getMessage(), e);
             return e.getClass().getName() + " : " + e.getMessage();

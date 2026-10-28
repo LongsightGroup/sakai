@@ -17,11 +17,13 @@ package org.sakaiproject.scorm.model.api.comparator;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Locale;
+import java.util.Objects;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import org.sakaiproject.scorm.model.api.LearnerExperience;
+import org.sakaiproject.util.comparator.UserSortNameComparator;
 
 /**
  * Custom comparator for LearnerExperience objects; used for sorting data tables.
@@ -38,7 +40,32 @@ public class LearnerExperienceComparator implements Comparator<LearnerExperience
     }
 
     public static final CompType DEFAULT_COMP = CompType.Learner;
+    private static final long serialVersionUID = 1L;
+
     private CompType compType = DEFAULT_COMP;
+    private final Locale locale;
+
+    /*
+     * UserSortNameComparator is not serializable (it holds a java.text.Collator), so it must be kept
+     * out of the byte stream and rebuilt from the locale on demand. This comparator is reachable from
+     * the Wicket page tree in the results UI, which Wicket serializes into the session (SAK-52780).
+     */
+    private transient UserSortNameComparator userSortNameComparator;
+
+    public LearnerExperienceComparator(Locale locale)
+    {
+        this.locale = Objects.requireNonNull(locale);
+    }
+
+    private UserSortNameComparator getUserSortNameComparator()
+    {
+        if (userSortNameComparator == null)
+        {
+            userSortNameComparator = new UserSortNameComparator(locale);
+        }
+
+        return userSortNameComparator;
+    }
 
     /**
      * Sets the comparison type the comparator will use. This determines which field of LearnerExperience is used for comparisons.
@@ -60,33 +87,9 @@ public class LearnerExperienceComparator implements Comparator<LearnerExperience
         {
             case Learner:
             {
-                // Use proper sorting logic similar to UserSortNameComparator
-                String sortName1 = le1.getSortName();
-                String sortName2 = le2.getSortName();
-                
-                if (sortName1 != null && sortName2 != null) {
-                    // Replace spaces to handle sorting scenarios where surname has space
-                    String prop1 = StringUtils.replace(sortName1, " ", "+");
-                    String prop2 = StringUtils.replace(sortName2, " ", "+");
-                    
-                    // Primary comparison on sort name
-                    int result = prop1.compareToIgnoreCase(prop2);
-                    if (result == 0) {
-                        // Secondary comparison on displayId if sort names are identical (matches UserSortNameComparator behavior)
-                        String displayId1 = le1.getDisplayId();
-                        String displayId2 = le2.getDisplayId();
-                        if (displayId1 != null && displayId2 != null) {
-                            result = displayId1.compareToIgnoreCase(displayId2);
-                        } else {
-                            // Fall back to learner name if displayIds are not available
-                            result = le1.getLearnerName().compareToIgnoreCase(le2.getLearnerName());
-                        }
-                    }
-                    return result;
-                }
-                
-                // Fall back to learner name comparison if sort names are not available
-                return le1.getLearnerName().compareToIgnoreCase(le2.getLearnerName());
+                String sortName1 = le1.getSortName() != null ? le1.getSortName() : le1.getLearnerName();
+                String sortName2 = le2.getSortName() != null ? le2.getSortName() : le2.getLearnerName();
+                return getUserSortNameComparator().compareSortNames(sortName1, le1.getDisplayId(), sortName2, le2.getDisplayId());
             }
             case AttemptDate:
             {

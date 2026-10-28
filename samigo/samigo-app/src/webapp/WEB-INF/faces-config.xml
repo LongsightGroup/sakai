@@ -5,6 +5,10 @@
         http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd"
     version="2.3">
 
+ <lifecycle>
+   <phase-listener>org.sakaiproject.tool.assessment.ui.security.SamigoJsfAuthorizationListener</phase-listener>
+ </lifecycle>
+
  <managed-bean>
  	<description>
  	  Dynamic Resource Bundle Loader
@@ -821,7 +825,7 @@
     
     <navigation-case>
       <from-outcome>downloadFileSubmissions</from-outcome>
-      <to-view-id>/jsf/evaluation/downloadFileSubmissions.jsp</to-view-id>
+      <to-view-id>/jsf/evaluation/exportResponses.jsp</to-view-id>
     </navigation-case>
     
     <navigation-case>

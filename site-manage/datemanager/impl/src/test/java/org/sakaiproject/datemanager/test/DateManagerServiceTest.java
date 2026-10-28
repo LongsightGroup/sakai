@@ -18,6 +18,7 @@ package org.sakaiproject.datemanager.test;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,6 +33,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.junit.Assert;
 import org.junit.Before;
@@ -57,6 +59,7 @@ import org.sakaiproject.datemanager.impl.DateManagerServiceImpl;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.grading.api.Assignment;
 import org.sakaiproject.grading.api.GradingService;
+import org.sakaiproject.grading.api.SortType;
 import org.sakaiproject.lessonbuildertool.model.SimplePageToolDao;
 import org.sakaiproject.signup.logic.SignupMeetingService;
 import org.sakaiproject.signup.model.SignupMeeting;
@@ -74,6 +77,8 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
+import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentFeedbackIfc;
+import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueriesAPI;
@@ -182,7 +187,11 @@ public class DateManagerServiceTest {
         String siteId = toolSession.getAttribute(DateManagerService.STATE_SITE_ID).toString();
 
         when(gradingService.currentUserHasEditPerm(siteId)).thenReturn(true);
-        when(userTimeService.getLocalTimeZone()).thenReturn(TimeZone.getDefault());
+        LocalDate expectedDate = LocalDate.parse("2025-05-16");
+        ZoneId serverZone = ZoneId.systemDefault();
+        Instant expectedInstant = expectedDate.atStartOfDay(serverZone).toInstant();
+        ZoneId userZone = getZoneWithDifferentLocalDate(expectedInstant, expectedDate);
+        when(userTimeService.getLocalTimeZone()).thenReturn(TimeZone.getTimeZone(userZone));
 
         Assignment assignment = Mockito.mock(Assignment.class);
         when(gradingService.getAssignment(siteId, siteId, 78L)).thenReturn(assignment);
@@ -192,7 +201,7 @@ public class DateManagerServiceTest {
             Assert.assertEquals(0, validation.getErrors().size());
             Assert.assertEquals(1, validation.getUpdates().size());
             DateManagerUpdate update = validation.getUpdates().get(0);
-            Assert.assertEquals(LocalDateTime.parse("2025-05-16T00:00:00").atZone(ZoneId.systemDefault()).toInstant(), update.getDueDate());
+            Assert.assertEquals(expectedInstant, update.getDueDate());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
@@ -207,17 +216,44 @@ public class DateManagerServiceTest {
             Assert.assertEquals(0, validation.getErrors().size());
             Assert.assertEquals(1, validation.getUpdates().size());
             DateManagerUpdate update = validation.getUpdates().get(0);
-            Assert.assertEquals(LocalDate.parse("2025-05-16").atStartOfDay(ZoneOffset.systemDefault()).toInstant(), update.getDueDate());
+            Assert.assertEquals(expectedInstant, update.getDueDate());
         } catch (Exception e) {
             Assert.fail(e.toString());
         }
     }
 
     @Test
+    public void testGetGradebookItemsForContextUsesServerTimeZone() {
+        String siteId = toolSession.getAttribute(DateManagerService.STATE_SITE_ID).toString();
+        LocalDate expectedDate = LocalDate.parse("2025-05-16");
+        Instant dueDate = expectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        ZoneId userZone = getZoneWithDifferentLocalDate(dueDate, expectedDate);
+        when(userTimeService.getLocalTimeZone()).thenReturn(TimeZone.getTimeZone(userZone));
+        when(gradingService.currentUserHasEditPerm(siteId)).thenReturn(true);
+
+        Assignment assignment = Mockito.mock(Assignment.class);
+        when(assignment.getId()).thenReturn(78L);
+        when(assignment.getName()).thenReturn("Participation");
+        when(assignment.getDueDate()).thenReturn(Date.from(dueDate));
+        when(gradingService.getAssignments(siteId, siteId, SortType.SORT_BY_NONE)).thenReturn(List.of(assignment));
+
+        JSONArray items = dateManagerService.getGradebookItemsForContext(siteId);
+
+        Assert.assertEquals(1, items.size());
+        JSONObject item = (JSONObject) items.get(0);
+        Assert.assertEquals("2025-05-16T00:00:00", item.get(DateManagerConstants.JSON_DUEDATE_PARAM_NAME));
+    }
+
+    @Test
     public void testIsChangedForGradebook() {
         String siteId = toolSession.getAttribute(DateManagerService.STATE_SITE_ID).toString();
+        LocalDate expectedDate = LocalDate.parse("2025-05-16");
+        Instant dueDateInstant = expectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        ZoneId userZone = getZoneWithDifferentLocalDate(dueDateInstant, expectedDate);
+        when(userTimeService.getLocalTimeZone()).thenReturn(TimeZone.getTimeZone(userZone));
+
         Assignment assignment = Mockito.mock(Assignment.class);
-        Date dueDate = Date.from(LocalDate.parse("2025-05-16").atStartOfDay(ZoneOffset.systemDefault()).toInstant());
+        Date dueDate = Date.from(dueDateInstant);
         when(assignment.getDueDate()).thenReturn(dueDate);
         when(gradingService.getAssignment(siteId, siteId, 78L)).thenReturn(assignment);
 
@@ -408,6 +444,48 @@ public class DateManagerServiceTest {
     }
 
     @Test
+    public void validateAssessmentsRejectsFeedbackByDateWithoutFeedbackStart() throws Exception {
+        String siteId = toolSession.getAttribute(DateManagerService.STATE_SITE_ID).toString();
+        String openDate = "2026-06-01";
+        when(userTimeService.parseISODateInUserTimezone(openDate)).thenReturn(Date.from(
+                LocalDate.parse(openDate).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        when(resourceLoader.getString("error.feedback.start.not.found")).thenReturn("Feedback start is required");
+
+        AssessmentAccessControlIfc control = Mockito.mock(AssessmentAccessControlIfc.class);
+        when(control.getLateHandling()).thenReturn(null);
+
+        AssessmentFeedbackIfc feedback = Mockito.mock(AssessmentFeedbackIfc.class);
+        when(feedback.getFeedbackDelivery()).thenReturn(AssessmentFeedbackIfc.FEEDBACK_BY_DATE);
+
+        AssessmentFacade assessment = Mockito.mock(AssessmentFacade.class);
+        when(assessment.getAssessmentAccessControl()).thenReturn(control);
+        when(assessment.getAssessmentFeedback()).thenReturn(feedback);
+
+        AssessmentFacadeQueriesAPI facadeQueries = persistenceService.getAssessmentFacadeQueries();
+        when(facadeQueries.getAssessment(789L)).thenReturn(assessment);
+
+        JSONObject jsonAssessment = new JSONObject();
+        jsonAssessment.put(DateManagerConstants.JSON_ID_PARAM_NAME, 789L);
+        jsonAssessment.put(DateManagerConstants.JSON_IDX_PARAM_NAME, 0);
+        jsonAssessment.put(DateManagerConstants.JSON_OPENDATE_PARAM_NAME, openDate);
+        jsonAssessment.put(DateManagerConstants.JSON_DUEDATE_PARAM_NAME, "");
+        jsonAssessment.put(DateManagerConstants.JSON_ACCEPTUNTIL_PARAM_NAME, "");
+        jsonAssessment.put(DateManagerConstants.JSON_FEEDBACKSTART_PARAM_NAME, "");
+        jsonAssessment.put(DateManagerConstants.JSON_FEEDBACKEND_PARAM_NAME, "");
+        jsonAssessment.put(DateManagerConstants.JSON_ISDRAFT_PARAM_NAME, true);
+
+        JSONArray assessments = new JSONArray();
+        assessments.add(jsonAssessment);
+
+        DateManagerValidation validation = dateManagerService.validateAssessments(siteId, assessments);
+
+        Assert.assertEquals(1, validation.getErrors().size());
+        Assert.assertEquals(DateManagerConstants.JSON_FEEDBACKSTART_PARAM_NAME, validation.getErrors().get(0).field);
+        Assert.assertEquals("Feedback start is required", validation.getErrors().get(0).msg);
+        Assert.assertEquals(0, validation.getUpdates().size());
+    }
+
+    @Test
     public void testIsChangedForPublishedAssessments() {
 
         PublishedAssessmentFacade publishedAssessment = Mockito.mock(PublishedAssessmentFacade.class);
@@ -498,6 +576,20 @@ public class DateManagerServiceTest {
             log.warn("Failed to read file [{}], {}", filePath, e.toString());
         }
         return "";
+    }
+
+    private static ZoneId getZoneWithDifferentLocalDate(Instant instant, LocalDate date) {
+        ZoneId zone = ZoneOffset.ofHours(-12);
+        if (!instant.atZone(zone).toLocalDate().equals(date)) {
+            return zone;
+        }
+
+        zone = ZoneOffset.ofHours(14);
+        if (!instant.atZone(zone).toLocalDate().equals(date)) {
+            return zone;
+        }
+
+        throw new IllegalStateException("Could not find a timezone with a different local date");
     }
 
 }

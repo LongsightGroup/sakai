@@ -279,6 +279,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
             copy.setModified(now);
             copy.setCreatorId(sessionManager.getCurrentSessionUserId());
             copy.setTitle(copy.getTitle() + " " + resourceLoader.getString("copy"));
+            sanitizeRubric(copy);
             return decorateRubricBean(new RubricTransferBean(rubricRepository.save(copy)));
         }).orElseThrow(() -> new IllegalArgumentException("No rubric with id: " + rubricId));
     }
@@ -375,6 +376,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
         clone.setRubric(rubric);
         rubric.getCriteria().add(clone);
         clone.setTitle(clone.getTitle() + " " + resourceLoader.getString("copy"));
+        sanitizeCriterion(clone);
 
         Rubric savedRubric = rubricRepository.save(updateRubricMaxPoints(rubric));
         Criterion newCriterion = savedRubric.getCriteria().stream()
@@ -576,6 +578,8 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
             throw new SecurityException("You must be a rubrics editor to create/edit rubrics");
         }
 
+        sanitizeRubricBean(bean);
+
         Rubric rubric;
         if (bean.getId() == null) {
             rubric = new Rubric();
@@ -675,6 +679,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
         }
 
         if (bean.getId() != null) {
+            sanitizeCriterionBean(bean);
             // we can use getById since a bean with an id should exist
             Criterion criterion = criterionRepository.getById(bean.getId());
             criterion.setTitle(bean.getTitle());
@@ -721,6 +726,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
         }
 
         if (bean.getId() != null) {
+            sanitizeRatingBean(bean);
             Rating rating = ratingRepository.getById(bean.getId());
             rating.setTitle(bean.getTitle());
             rating.setDescription(bean.getDescription());
@@ -787,6 +793,40 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
         }
 
         return criterionRepository.findById(criterionId).map(CriterionTransferBean::new);
+    }
+
+    // Rich text is cleaned before persistence; read paths return stored values unchanged.
+    private void sanitizeRubric(Rubric rubric) {
+
+        if (rubric.getCriteria() != null) {
+            rubric.getCriteria().forEach(this::sanitizeCriterion);
+        }
+    }
+
+    private void sanitizeCriterion(Criterion criterion) {
+
+        criterion.setDescription(sanitizeFormattedText(criterion.getDescription()));
+        if (criterion.getRatings() != null) {
+            criterion.getRatings().forEach(this::sanitizeRating);
+        }
+    }
+
+    private void sanitizeRating(Rating rating) {
+
+        rating.setDescription(sanitizeFormattedText(rating.getDescription()));
+    }
+
+    private void sanitizeEvaluation(Evaluation evaluation) {
+
+        evaluation.setOverallComment(sanitizeFormattedText(evaluation.getOverallComment()));
+        if (evaluation.getCriterionOutcomes() != null) {
+            evaluation.getCriterionOutcomes().forEach(this::sanitizeCriterionOutcome);
+        }
+    }
+
+    private void sanitizeCriterionOutcome(CriterionOutcome outcome) {
+
+        outcome.setComments(sanitizeFormattedText(outcome.getComments()));
     }
 
     @Transactional(readOnly = true)
@@ -863,12 +903,51 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
             .collect(Collectors.toList());
     }
 
+    private void sanitizeRubricBean(RubricTransferBean bean) {
+
+        if (bean.getCriteria() != null) {
+            bean.getCriteria().forEach(this::sanitizeCriterionBean);
+        }
+    }
+
+    private void sanitizeCriterionBean(CriterionTransferBean bean) {
+
+        bean.setDescription(sanitizeFormattedText(bean.getDescription()));
+        if (bean.getRatings() != null) {
+            bean.getRatings().forEach(this::sanitizeRatingBean);
+        }
+    }
+
+    private void sanitizeRatingBean(RatingTransferBean bean) {
+
+        bean.setDescription(sanitizeFormattedText(bean.getDescription()));
+    }
+
+    private void sanitizeEvaluationBean(EvaluationTransferBean bean) {
+
+        bean.setOverallComment(sanitizeFormattedText(bean.getOverallComment()));
+        if (bean.getCriterionOutcomes() != null) {
+            bean.getCriterionOutcomes().forEach(this::sanitizeCriterionOutcomeBean);
+        }
+    }
+
+    private void sanitizeCriterionOutcomeBean(CriterionOutcomeTransferBean bean) {
+
+        bean.setComments(sanitizeFormattedText(bean.getComments()));
+    }
+
+    private String sanitizeFormattedText(String text) {
+        return formattedText.processFormattedText(text, null, FormattedText.Level.HIGH);
+    }
+
 
     public EvaluationTransferBean saveEvaluation(EvaluationTransferBean evaluationBean, String siteId) {
 
         if (!canGrade(evaluationBean, siteId)) {
             throw new SecurityException("You must be an evaluator to evaluate rubrics");
         }
+
+        sanitizeEvaluationBean(evaluationBean);
 
         Evaluation evaluation;
         List<Long> newOutcomesCriterionIds = new ArrayList<>();
@@ -1008,6 +1087,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
                 co.setComments(rco.getComments());
             });
             evaluation.setStatus(EvaluationStatus.RETURNED);
+            sanitizeEvaluation(evaluation);
             return new EvaluationTransferBean(evaluationRepository.save(evaluation));
         } else {
             evaluationRepository.deleteById(draftEvaluationId);
@@ -1409,13 +1489,11 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
                     .filter(outcome -> cri.getId().equals(outcome.getCriterionId())).findAny();
 
                 if (evaluatedPoints.isPresent()) {
-                    if (optCriterionOutcome.isPresent() && optCriterionOutcome.get().getPointsAdjusted()) {
+                    if (adjustedScoreCell.isPresent()) {
 
                         //Get points of the selected rating (not altered) by maching selected rating id's and getting points from matched rating
                         Double selectedRatingOriginalPoints = optCriterionOutcome
-                                .flatMap(outcome -> cri.getRatings().stream()
-                                        .filter(rating -> rating.getId().equals(outcome.getSelectedRatingId())).findAny())
-                                .map(Rating::getPoints)
+                                .flatMap(outcome -> getSelectedRatingPoints(cri, outcome))
                                 .orElse(0D);
 
                         //Instrucor adjusted the rating point value on evaluation
@@ -1523,11 +1601,29 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
             return Optional.empty();
         }
         for(CriterionOutcome outcome: evaluation.getCriterionOutcomes()){
-            if(outcome.getPointsAdjusted() && outcome.getCriterionId().equals(criterion.getId())){
+            if(Boolean.TRUE.equals(outcome.getPointsAdjusted()) && outcome.getCriterionId().equals(criterion.getId())
+                    && getSelectedRatingPoints(criterion, outcome)
+                            .map(points -> Double.compare(points, outcome.getPoints()) != 0)
+                            .orElse(true)) {
                 return Optional.of(outcome.getPoints());
             }
         }
         return Optional.empty();
+    }
+
+    private Optional<Double> getSelectedRatingPoints(Criterion criterion, CriterionOutcome outcome) {
+        if (criterion == null || outcome == null || outcome.getSelectedRatingId() == null) {
+            return Optional.empty();
+        }
+
+        return criterion.getRatings().stream()
+                .filter(rating -> rating.getId().equals(outcome.getSelectedRatingId()))
+                .map(Rating::getPoints)
+                .map(points -> criterion.getRubric().getWeighted()
+                        ? BigDecimal.valueOf(points * (criterion.getWeight() / 100.0D))
+                                .setScale(2, RoundingMode.HALF_UP).doubleValue()
+                        : points)
+                .findAny();
     }
 
     private Optional<String> getCriterionComment(Criterion criterion, Evaluation evaluation){
@@ -1590,6 +1686,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
                     Rubric clone = rubric.clone(toContext);
                     clone.setCreated(Instant.now());
                     clone.setModified(Instant.now());
+                    sanitizeRubric(clone);
                     clone = rubricRepository.save(clone);
                     traversalMap.put(RBCS_PREFIX + rubric.getId(), RBCS_PREFIX + clone.getId());
                 } catch (Exception e) {
@@ -1702,6 +1799,7 @@ public class RubricsServiceImpl implements RubricsService, EntityTransferrer {
                 criterion.getRatings().forEach(r -> r.setCriterion(criterion));
             }
 
+            sanitizeRubric(rubric);
             rubricRepository.save(rubric);
         });
 

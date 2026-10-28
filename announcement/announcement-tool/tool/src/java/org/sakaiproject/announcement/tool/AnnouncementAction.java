@@ -21,21 +21,23 @@
 
 package org.sakaiproject.announcement.tool;
 
+import java.text.Normalizer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,6 +67,8 @@ import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.content.api.FilePickerHelper;
 import org.sakaiproject.content.api.ContentHostingService;
 import org.sakaiproject.content.cover.ContentTypeImageService;
+import org.sakaiproject.entity.api.EntityPropertyNotDefinedException;
+import org.sakaiproject.entity.api.EntityPropertyTypeException;
 import org.sakaiproject.entity.api.Reference;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.entity.api.Entity;
@@ -106,6 +110,7 @@ import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.SortedIterator;
 import org.sakaiproject.util.StringUtil;
 import org.sakaiproject.util.api.FormattedText;
+import org.sakaiproject.util.api.LocaleService;
 import org.sakaiproject.event.api.Event;
 
 /**
@@ -224,6 +229,13 @@ public class AnnouncementAction extends PagedResourceActionII
     private static final String VIEW_MODE_BYGROUP  = "view.bygroup";
     private static final String VIEW_MODE_BYROLE  = "view.byrole";
     private static final String VIEW_MODE_MYGROUPS = "view.mygroups";
+    private static final String VIEW_MODE_DRAFTS   = "view.drafts";
+    private static final String VIEW_MODE_POSTED   = "view.posted";
+    private static final String VIEW_MODE_SCHEDULED = "view.scheduled";
+    private static final String VIEW_MODE_MINE     = "view.mine";
+
+    /** The View filters that narrow the announcement list by state or authorship. */
+    private enum AnnouncementFilter { ALL, DRAFTS, POSTED, SCHEDULED, MINE }
 
     /** The number of days, by default, before retraction. */
     private static final long FUTURE_DAYS = 7;
@@ -256,6 +268,8 @@ public class AnnouncementAction extends PagedResourceActionII
 
     private FormattedText formattedText;
 
+    private LocaleService localeService;
+
     private enum BulkOperation {
 
         DELETE("delete"),
@@ -281,6 +295,11 @@ public class AnnouncementAction extends PagedResourceActionII
         userDirectoryService = ComponentManager.get(UserDirectoryService.class);
         serverConfigurationService = ComponentManager.get(ServerConfigurationService.class);
         formattedText = ComponentManager.get(FormattedText.class);
+        localeService = ComponentManager.get(LocaleService.class);
+    }
+
+    private Locale getLocale() {
+        return localeService.getLocaleForCurrentSiteAndUser();
     }
 
 	public String getCurrentOrder() {
@@ -737,11 +756,30 @@ public class AnnouncementAction extends PagedResourceActionII
 							{
 								messages = getMessagesByRoles(site, channel, null, true, state, portlet);
 							}
+							else if (view.equals(VIEW_MODE_DRAFTS))
+							{
+								messages = filterMessages(getMessages(channel, null, true, state, portlet), AnnouncementFilter.DRAFTS);
+							}
+							else if (view.equals(VIEW_MODE_POSTED))
+							{
+								messages = filterMessages(getMessages(channel, null, true, state, portlet), AnnouncementFilter.POSTED);
+							}
+							else if (view.equals(VIEW_MODE_SCHEDULED))
+							{
+								messages = filterMessages(getMessages(channel, null, true, state, portlet), AnnouncementFilter.SCHEDULED);
+							}
+							else if (view.equals(VIEW_MODE_MINE))
+							{
+								messages = filterMessages(getMessages(channel, null, true, state, portlet), AnnouncementFilter.MINE);
+							}
 						}
 						else
 						{
 							messages = getMessages(channel, null, true, state, portlet);
 						}
+
+						// narrow the list to the active search term, if any
+						messages = filterMessagesBySearch(messages, sstate);
 
 						//readResourcesPage expects messages to be in session, so put the entire messages list in the session
 						sstate.setAttribute("messages", messages);
@@ -954,7 +992,7 @@ public class AnnouncementAction extends PagedResourceActionII
 				//context.put("groups", groups);
 				Collection<Group> sortedGroups = new ArrayList<>();
 
-				for (Iterator<Group> i = new SortedIterator(groups.iterator(), new AnnouncementGroupComparator(AnnouncementGroupComparator.Criteria.TITLE, true)); i.hasNext();)
+				for (Iterator<Group> i = new SortedIterator(groups.iterator(), new AnnouncementGroupComparator(AnnouncementGroupComparator.Criteria.TITLE, true, getLocale())); i.hasNext();)
 					{
 						sortedGroups.add(i.next());
 					}
@@ -967,6 +1005,9 @@ public class AnnouncementAction extends PagedResourceActionII
 			context.put("view", sstate.getAttribute(STATE_SELECTED_VIEW));
 		}
 
+		// the active search term, so the search box can re-render its value
+		context.put("searchString", sstate.getAttribute(STATE_SEARCH));
+
 		return template;
 
 	} // buildMainPanelContext
@@ -977,25 +1018,34 @@ public class AnnouncementAction extends PagedResourceActionII
 		context.put("tlang", rb);
 
 		//SAK-21532: making one list of messages in order to allow uniform sorting
-		Vector<AnnouncementWrapper> messageList = new Vector<>();
-		Vector showMessagesList = new Vector();
-
-		List<AnnouncementWrapper> messages = prepPage(sstate);
-		for (int i = 0; i < messages.size(); i++)
-		{
-			final AnnouncementWrapper m = messages.get(i);
-			messageList.addElement(m);
-		}
-
 		AnnouncementActionState state = (AnnouncementActionState) getState(portlet, rundata, AnnouncementActionState.class);
+
+		// Reorder must operate on every message in the list, regardless of the
+		// current page size. The submitted ordering is otherwise limited to the
+		// visible page and leaves later pages in their previous order.
+		List<AnnouncementWrapper> messages;
+		if (REORDER_STATUS.equals(state.getStatus()))
+		{
+			messages = (List<AnnouncementWrapper>) sstate.getAttribute("messages");
+			if (messages == null)
+			{
+				messages = Collections.emptyList();
+			}
+		}
+		else
+		{
+			messages = prepPage(sstate);
+		}
+		List<AnnouncementWrapper> messageList = new ArrayList<>(messages);
+		List<AnnouncementMessage> showMessagesList = new ArrayList<>();
 
 		SortedIterator<AnnouncementWrapper> sortedMessageIterator;
 		//For Announcement in User's MyWorkspace, the sort order for announcement is by date SAK-22667
 		if (isOnWorkspaceTab()){
-			sortedMessageIterator = new SortedIterator<>(messageList.iterator(), new AnnouncementWrapperComparator(SORT_DATE, state.getCurrentSortAsc()));
+			sortedMessageIterator = new SortedIterator<>(messageList.iterator(), new AnnouncementWrapperComparator(SORT_DATE, state.getCurrentSortAsc(), getLocale()));
 		} else {
 			sortedMessageIterator = new SortedIterator<>(messageList.iterator(), new AnnouncementWrapperComparator(state
-					.getCurrentSortedBy(), state.getCurrentSortAsc()));
+					.getCurrentSortedBy(), state.getCurrentSortAsc(), getLocale()));
 		}
 		
 		while (sortedMessageIterator.hasNext())
@@ -1205,11 +1255,19 @@ public class AnnouncementAction extends PagedResourceActionII
 	{
 		List<AnnouncementWrapper> wrappedMessageList = new ArrayList<>();
 
-        String siteId = ToolManager.getCurrentPlacement().getContext();
+		String siteId = ToolManager.getCurrentPlacement().getContext();
+		String mergedChannelDelimitedList = portlet.getPortletConfig().getInitParameter(getPortletConfigParameterNameForLoadOnly(portlet));
+		List<AnnouncementMessage> messageList;
+		if (isOnWorkspaceTab() || isSynopticTool()) {
+			messageList = announcementService.getChannelMessages(state.getChannelId(), filter, ascending,
+					mergedChannelDelimitedList, isOnWorkspaceTab(), isSynopticTool(), siteId, null);
+		} else {
+			messageList = announcementService.getChannelMessagesForInstructors(state.getChannelId(), filter, ascending,
+					mergedChannelDelimitedList, false, false, siteId, null);
+		}
 
-		List<AnnouncementMessage> messageList = announcementService.getChannelMessages(state.getChannelId(), filter, ascending, portlet.getPortletConfig().getInitParameter(
-								getPortletConfigParameterNameForLoadOnly(portlet)), isOnWorkspaceTab(), isSynopticTool(), siteId, null);
-
+		// The instructor API returns management candidates. This display pass still
+		// preserves the viewer policy for synoptic/workspace and non-revise-any users.
 		messageList = getViewableMessages(messageList, siteId);
 
 		wrappedMessageList.addAll(AnnouncementWrapper.wrapList(messageList, defaultChannel, state.getDisplayOptions()));
@@ -1334,6 +1392,113 @@ public class AnnouncementAction extends PagedResourceActionII
 	} // getMessagesPublic
 
 	/**
+	 * Narrow an already-fetched, viewable announcement list to a single View filter.
+	 * getMessages() has already applied the tool's permission and viewability checks (and
+	 * restricted drafts to those the current user may see), so each case here only narrows by
+	 * message state or authorship. Modeled on AssignmentAction.filterAssignments().
+	 */
+	private List<AnnouncementWrapper> filterMessages(List<AnnouncementWrapper> messageList, AnnouncementFilter filter)
+	{
+		switch (filter)
+		{
+			case ALL:
+				return messageList;
+			case DRAFTS:
+				return messageList.stream()
+						.filter(this::isHidden)
+						.collect(Collectors.toList());
+			case POSTED:
+				return messageList.stream()
+						.filter(m -> !isHidden(m) && announcementService.isMessageViewable(m))
+						.collect(Collectors.toList());
+			case SCHEDULED:
+				return messageList.stream()
+						.filter(m -> !isHidden(m) && isScheduled(m))
+						.collect(Collectors.toList());
+			case MINE:
+				String currentUserId = SessionManager.getCurrentSessionUserId();
+				if (currentUserId == null)
+				{
+					return Collections.emptyList();
+				}
+				return messageList.stream()
+						.filter(m -> m.getAnnouncementHeader().getFrom() != null
+								&& currentUserId.equals(m.getAnnouncementHeader().getFrom().getId()))
+						.collect(Collectors.toList());
+			default:
+				return Collections.emptyList();
+		}
+
+	} // filterMessages
+
+	/**
+	 * Determine if a message has a release date set in the future (i.e. it is scheduled but
+	 * not yet released). Returns false when no release date is set.
+	 */
+	private boolean isScheduled(AnnouncementMessage message)
+	{
+		try
+		{
+			Instant releaseDate = message.getProperties().getInstantProperty(AnnouncementService.RELEASE_DATE);
+			return releaseDate != null && Instant.now().isBefore(releaseDate);
+		}
+		catch (EntityPropertyNotDefinedException | EntityPropertyTypeException e)
+		{
+			// No usable release date set, so it is not scheduled for the future
+			log.debug("No usable release date property for {}", message.getReference(), e);
+			return false;
+		}
+	}
+
+	/**
+	 * Narrow a list of announcements to those matching the active search term (STATE_SEARCH),
+	 * matching case- and accent-insensitively against the subject, author display name, and body.
+	 * When no search term is set the list is returned unchanged. Filtering the full viewable list
+	 * here (before paging/trimming) keeps the counts and pager authoritative across all pages.
+	 */
+	private List<AnnouncementWrapper> filterMessagesBySearch(List<AnnouncementWrapper> messages, SessionState sstate)
+	{
+		String search = StringUtils.trimToNull((String) sstate.getAttribute(STATE_SEARCH));
+		if (search == null)
+		{
+			return messages;
+		}
+
+		String normalizedSearch = normalizeStringForSearch(search);
+		List<AnnouncementWrapper> rv = new ArrayList<>();
+		for (AnnouncementWrapper aMessage : messages)
+		{
+			String author = aMessage.getAnnouncementHeader().getFrom() != null
+					? aMessage.getAnnouncementHeader().getFrom().getDisplayName() : null;
+			// match against the body's visible text, not the stored HTML, so markup (tag and
+			// attribute names, entities) can't produce false matches
+			String body = aMessage.getBody();
+			String bodyText = body != null ? formattedText.convertFormattedTextToPlaintext(body) : null;
+			if (normalizeStringForSearch(aMessage.getAnnouncementHeader().getSubject()).contains(normalizedSearch)
+					|| normalizeStringForSearch(bodyText).contains(normalizedSearch)
+					|| normalizeStringForSearch(author).contains(normalizedSearch))
+			{
+				rv.add(aMessage);
+			}
+		}
+
+		return rv;
+
+	} // filterMessagesBySearch
+
+	/**
+	 * Normalize a string for case- and accent-insensitive search: strip diacritics and lowercase.
+	 * Returns "" for null input so callers can match against nullable fields without a guard.
+	 * Modeled on AssignmentAction.normalizeStringForSearch().
+	 */
+	private String normalizeStringForSearch(String input)
+	{
+		if (input == null) return "";
+		String decomposed = Normalizer.normalize(input, Normalizer.Form.NFD);
+		return decomposed.replaceAll("\\p{InCombiningDiacriticalMarks}+", "").toLowerCase(Locale.ROOT);
+	}
+
+	/**
 	 * This will limit the maximum number of announcements that is shown.
 	 */
 	private List<AnnouncementWrapper> trimListToMaxNumberOfAnnouncements(List<AnnouncementWrapper> messageList, AnnouncementActionState.DisplayOptions options)
@@ -1422,8 +1587,8 @@ public class AnnouncementAction extends PagedResourceActionII
 	}
 	
 	/**
-	 * Determines if use has draft (UI: hidden) permission or site.upd
-	 * If so, they will be able to view messages that are hidden
+	 * Determines if the current user can manage announcements that are hidden
+	 * or outside their normal view window in the full Announcements tool.
 	 */
 	private boolean canViewHidden(AnnouncementMessage msg, String siteId) 
 	{
@@ -1439,7 +1604,8 @@ public class AnnouncementAction extends PagedResourceActionII
 				break;
 		}
 
-		boolean b = m_securityService.unlock(AnnouncementService.SECURE_ANNC_READ_DRAFT, msg.getReference())
+		boolean b = canManageAnnouncement(msg)
+							 || m_securityService.unlock(AnnouncementService.SECURE_ANNC_READ_DRAFT, msg.getReference())
 							 || m_securityService.unlock(SiteService.SECURE_UPDATE_SITE, "/site/"+ siteId);
 		if (roleswap==null)
 		{
@@ -1447,6 +1613,11 @@ public class AnnouncementAction extends PagedResourceActionII
 		} 
 		
 		return b;
+	}
+
+	private boolean canManageAnnouncement(AnnouncementMessage msg)
+	{
+		return m_securityService.unlock(AnnouncementService.SECURE_ANNC_UPDATE_ANY, getChannelIdFromReference(msg.getReference()));
 	}
 	
 	/**
@@ -1696,7 +1867,7 @@ public class AnnouncementAction extends PagedResourceActionII
 				// TODO: this is almost right (see chef_announcements-revise.vm)... ideally, we would let the check groups that they can add to,
 				// and uncheck groups they can remove from... only matters if the user does not have both add and remove -ggolden
 				final boolean own = edit == null ? true : edit.getHeader().getFrom().getId().equals(SessionManager.getCurrentSessionUserId());
-				Collection groups = channel.getGroupsAllowRemoveMessage(own);
+				Collection<Group> groups = channel.getGroupsAllowRemoveMessage(own);
 				context.put("allowedRemoveGroups", groups);
 				
 				// group list which user can add message to
@@ -1705,11 +1876,9 @@ public class AnnouncementAction extends PagedResourceActionII
 				// add to these any groups that the message already has
 				if (edit != null)
 				{
-					final Collection otherGroups = edit.getHeader().getGroupObjects();
-					for (Iterator i = otherGroups.iterator(); i.hasNext();)
+					final Collection<Group> otherGroups = edit.getHeader().getGroupObjects();
+					for (Group g : otherGroups)
 					{
-						Group g = (Group) i.next();
-						
 						if (!groups.contains(g))
 						{
 							groups.add(g);
@@ -1719,11 +1888,9 @@ public class AnnouncementAction extends PagedResourceActionII
 
 				if (groups.size() > 0)
 				{
-					Collection sortedGroups = new Vector();
-					for (Iterator i = new SortedIterator(groups.iterator(), new AnnouncementGroupComparator(AnnouncementGroupComparator.Criteria.TITLE, true)); i.hasNext();)
-					{
-						sortedGroups.add(i.next());
-					}
+					Locale locale = getLocale();
+					List<Group> sortedGroups = new ArrayList<>(groups);
+					sortedGroups.sort(new AnnouncementGroupComparator(AnnouncementGroupComparator.Criteria.TITLE, true, locale));
 					context.put("groups", sortedGroups);
 				}
 			}
@@ -4033,79 +4200,65 @@ public class AnnouncementAction extends PagedResourceActionII
 			String[] messageReferences2 = rundata.getParameters().getStrings("selectedMembers2");
 			if (messageReferences2 != null)
 			{
-				
-				
 				try {
-				//grab all messages before the order changes:	
-				List<AnnouncementMessage> allMessages = announcementService.getChannel(state.getChannelId()).getMessages(null, true);
-				int msgCount =  allMessages.size(); //used to find msg order number
-				//store the updated message ids so we know which ones didn't get updated
-				List<String> updatedMessageIds = new ArrayList<String>();
-				Vector v2 = new Vector();
-				
-				//find starting message index (0 - x) based on number of messages displayed per page
-				int j= allMessages.size();
-				if ((sstate.getAttribute(STATE_TOP_PAGE_MESSAGE) != null) && (sstate.getAttribute(STATE_PAGESIZE) != null))
-				{
-					j = ((Integer) sstate.getAttribute(STATE_TOP_PAGE_MESSAGE)).intValue();
-				}
-				
-				for (int i = 0; i < messageReferences2.length; i++, j++)
-				{
-					// get the updated/reordered message object through service
-					try
+					// Reorder is part of the full Announcements management surface, so it must
+					// operate on the same unfiltered local-channel message set the instructor can manage.
+					AnnouncementChannelEdit channel = (AnnouncementChannelEdit) announcementService.getChannel(state.getChannelId());
+					List<AnnouncementMessage> allMessages = channel.getMessagesForInstructors(null, false);
+					List<String> finalMessageIds = new ArrayList<String>();
+					for (AnnouncementMessage message : allMessages)
 					{
-						// get the channel id throught announcement service
-						AnnouncementChannel channel2 = announcementService.getAnnouncementChannel(this
-								.getChannelIdFromReference(messageReferences2[i]));
-						// get the message object through service
-						AnnouncementMessage message2 = channel2.getAnnouncementMessage(this
-								.getMessageIDFromReference(messageReferences2[i]));
-						AnnouncementMessageEdit msg =(AnnouncementMessageEdit)message2;
-						AnnouncementMessageHeaderEdit header2 = msg.getAnnouncementHeaderEdit();
-						header2.setMessage_order(msgCount - j);
-						channel2.commitMessage_order(msg);
-						updatedMessageIds.add(msg.getId());
-						//v2.addElement(message2);
+						finalMessageIds.add(message.getId());
 					}
-					catch (IdUnusedException e)
+
+					List<String> reorderedMessageIds = new ArrayList<String>();
+					for (String messageReference : messageReferences2)
 					{
-						if (log.isDebugEnabled()) log.debug("{}.doDeleteannouncement()", this, e);
-						// addAlert(sstate, e.toString());
-					}
-					catch (PermissionException e)
-					{
-						if (log.isDebugEnabled()) log.debug("{}.doDeleteannouncement()", this, e);
-						addAlert(sstate, rb.getFormattedMessage("java.alert.youdelann.ref", messageReferences2[i]));
-					}
-				}
-				if(allMessages.size() > messageReferences2.length){
-					//need to update the message order of the remaining untouched messages (only sorts the top 10)
-				
-					//order by message order:
-					Comparator<AnnouncementMessage> comparing = Comparator.comparing(o -> (o.getAnnouncementHeader().getMessage_order()));
-					SortedIterator<AnnouncementMessage> messagesSorted = new SortedIterator<>(allMessages.iterator(), comparing);
-					//start at last message and increment up
-					int messageOrder = 1;
-					while(messagesSorted.hasNext()){
-						Message message = messagesSorted.next();
-						if(!updatedMessageIds.contains(message.getId())){
-							//since this list is ordered, we can assign the message order in order:
-							AnnouncementChannel channel2 = announcementService.getAnnouncementChannel(this
-									.getChannelIdFromReference(message.getReference()));
-							// get the message object through service
-							AnnouncementMessage message2 = channel2.getAnnouncementMessage(this
-									.getMessageIDFromReference(message.getReference()));
-							AnnouncementMessageEdit msg =(AnnouncementMessageEdit)message2;
-							AnnouncementMessageHeaderEdit header2 = msg.getAnnouncementHeaderEdit();
-							header2.setMessage_order(messageOrder);						
-							channel2.commitMessage_order(msg);
+						String messageId = getMessageIDFromReference(messageReference);
+						if (finalMessageIds.contains(messageId) && !reorderedMessageIds.contains(messageId))
+						{
+							reorderedMessageIds.add(messageId);
 						}
-						messageOrder++;
 					}
-				}
-				} catch (PermissionException | IdUnusedException e1) {
-					log.error(e1.getMessage());
+
+					//find starting message index (0 - x) based on number of messages displayed per page
+					int insertAt = finalMessageIds.size();
+					if ((sstate.getAttribute(STATE_TOP_PAGE_MESSAGE) != null) && (sstate.getAttribute(STATE_PAGESIZE) != null))
+					{
+						insertAt = ((Integer) sstate.getAttribute(STATE_TOP_PAGE_MESSAGE)).intValue();
+					}
+					finalMessageIds.removeAll(reorderedMessageIds);
+					insertAt = Math.min(insertAt, finalMessageIds.size());
+					finalMessageIds.addAll(insertAt, reorderedMessageIds);
+
+					int messageOrder = finalMessageIds.size();
+					for (String messageId : finalMessageIds)
+					{
+						try
+						{
+							AnnouncementMessageEdit messageEdit = channel.editAnnouncementMessage(messageId);
+							AnnouncementMessageHeaderEdit headerEdit = messageEdit.getAnnouncementHeaderEdit();
+							headerEdit.setMessage_order(messageOrder--);
+							channel.commitMessage_order(messageEdit);
+						}
+						catch (IdUnusedException e)
+						{
+							log.debug("Unable to reorder announcement message {} because it no longer exists", messageId, e);
+							// addAlert(sstate, e.toString());
+						}
+						catch (PermissionException e)
+						{
+							log.debug("Permission denied while reordering announcement message {}", messageId, e);
+							addAlert(sstate, rb.getFormattedMessage("java.alert.youreorder.ref", messageId));
+						}
+						catch (InUseException e)
+						{
+							log.debug("Unable to reorder announcement message {} because it is being edited", messageId, e);
+							addAlert(sstate, rb.getString("java.alert.thisitem"));
+						}
+					}
+				} catch (PermissionException | IdUnusedException e) {
+					log.error("Unable to load announcement channel {} while reordering announcements", state.getChannelId(), e);
 				}
 			}
 		}
@@ -4304,7 +4457,7 @@ public class AnnouncementAction extends PagedResourceActionII
 			sortedBy = isOnWorkspaceTab() ? SORT_DATE : getCurrentOrder();
 			asc = false;
 		}
-		SortedIterator<AnnouncementWrapper> rvSorted = new SortedIterator<>(rv.iterator(), new AnnouncementWrapperComparator(sortedBy, asc));
+		SortedIterator<AnnouncementWrapper> rvSorted = new SortedIterator<>(rv.iterator(), new AnnouncementWrapperComparator(sortedBy, asc, getLocale()));
 
 		PagingPosition page = new PagingPosition(first, last);
 		page.validate(rv.size());

@@ -109,6 +109,7 @@ import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueries;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueriesAPI;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
+import org.sakaiproject.tool.assessment.util.AssessmentFeedbackDateRules;
 import org.sakaiproject.user.api.PreferencesService;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
@@ -286,6 +287,16 @@ public class DateManagerServiceImpl implements DateManagerService {
 		if (instant == null) return "";
 		ZonedDateTime userDate = ZonedDateTime.ofInstant(instant, userTimeService.getLocalTimeZone().toZoneId());
         return userDate.format(outputDatePickerFormat);
+	}
+
+	private ZoneId getGradebookZoneId() {
+		// Gradebook treats due dates as date-only values in the server timezone.
+		return ZoneId.systemDefault();
+	}
+
+	private String formatToGradebookDateFormat(Date date) {
+		if (date == null) return "";
+		return date.toInstant().atZone(getGradebookZoneId()).format(outputDatePickerFormat);
 	}
 
 	@Override
@@ -592,9 +603,7 @@ public class DateManagerServiceImpl implements DateManagerService {
 
 				Integer feedbackMode = isDraft ? ((AssessmentFacade) assessment).getAssessmentFeedback().getFeedbackDelivery()
 												: ((PublishedAssessmentFacade) assessment).getAssessmentFeedback().getFeedbackDelivery();
-				if (AssessmentFeedbackIfc.FEEDBACK_BY_DATE.equals(feedbackMode) && feedbackStart == null) {
-					errored = errors.add(new DateManagerError(DateManagerConstants.JSON_FEEDBACKSTART_PARAM_NAME, resourceLoader.getString("error.feedback.start.not.found"), "assessments", toolTitle, idx));
-				}
+				errored |= validateAssessmentFeedbackDates(errors, toolTitle, idx, feedbackMode, control.getLateHandling(), dueDate, acceptUntil, feedbackStart, feedbackEnd);
 
 				if (errored) {
 					continue;
@@ -617,11 +626,6 @@ public class DateManagerServiceImpl implements DateManagerService {
 					continue;
 				}
 
-				if (AssessmentFeedbackIfc.FEEDBACK_BY_DATE.equals(feedbackMode) && feedbackStart != null && feedbackEnd != null && feedbackEnd.isBefore(feedbackStart)) {
-					errors.add(new DateManagerError(DateManagerConstants.JSON_FEEDBACKEND_PARAM_NAME, resourceLoader.getString("error.feedback.start.before.feedback.end"), "assessments", toolTitle, idx));
-					continue;
-				}
-
 				updates.add(update);
 
 			} catch (Exception ex) {
@@ -633,6 +637,33 @@ public class DateManagerServiceImpl implements DateManagerService {
 		assessmentValidate.setErrors(errors);
 		assessmentValidate.setUpdates(updates);
 		return assessmentValidate;
+	}
+
+	private boolean validateAssessmentFeedbackDates(List<DateManagerError> errors, String toolTitle, int idx, Integer feedbackMode,
+			Integer lateHandling, Instant dueDate, Instant acceptUntil, Instant feedbackStart, Instant feedbackEnd) {
+		if (!AssessmentFeedbackIfc.FEEDBACK_BY_DATE.equals(feedbackMode)) {
+			return false;
+		}
+
+		boolean errored = false;
+		if (feedbackStart == null) {
+			errors.add(new DateManagerError(DateManagerConstants.JSON_FEEDBACKSTART_PARAM_NAME, resourceLoader.getString("error.feedback.start.not.found"), "assessments", toolTitle, idx));
+			errored = true;
+		}
+
+		Date dueDateForValidation = dueDate != null ? Date.from(dueDate) : null;
+		Date acceptUntilForValidation = acceptUntil != null ? Date.from(acceptUntil) : null;
+		Date feedbackStartForValidation = feedbackStart != null ? Date.from(feedbackStart) : null;
+		Date feedbackEndForValidation = feedbackEnd != null ? Date.from(feedbackEnd) : null;
+		for (AssessmentFeedbackDateRules.Violation violation : AssessmentFeedbackDateRules.validate(dueDateForValidation, acceptUntilForValidation,
+				lateHandling, feedbackStartForValidation, feedbackEndForValidation)) {
+			errors.add(new DateManagerError(AssessmentFeedbackDateValidationSupport.dateManagerField(violation.getField()),
+					resourceLoader.getString(AssessmentFeedbackDateValidationSupport.dateManagerMessageKey(violation.getError())),
+					"assessments", toolTitle, idx));
+			errored = true;
+		}
+
+		return errored;
 	}
 
 	@Override
@@ -655,10 +686,10 @@ public class DateManagerServiceImpl implements DateManagerService {
 					}
 				}
 				if (AssessmentFeedbackIfc.FEEDBACK_BY_DATE.equals(assessment.getAssessmentFeedback().getFeedbackDelivery())) {
-					control.setFeedbackDate(Date.from(update.feedbackStartDate));
-					Date feedbackEndDateTemp = 
-                                        update.feedbackEndDate != null ? Date.from(update.feedbackEndDate) : null;
-                                        control.setFeedbackEndDate(feedbackEndDateTemp);
+					Date feedbackStartDateTemp = update.feedbackStartDate != null ? Date.from(update.feedbackStartDate) : null;
+					control.setFeedbackDate(feedbackStartDateTemp);
+					Date feedbackEndDateTemp = update.feedbackEndDate != null ? Date.from(update.feedbackEndDate) : null;
+					control.setFeedbackEndDate(feedbackEndDateTemp);
 				}
 				assessment.setAssessmentAccessControl(control);
 				assessmentServiceQueries.saveOrUpdate(assessment);
@@ -681,9 +712,9 @@ public class DateManagerServiceImpl implements DateManagerService {
 					}
 				}
 				if (AssessmentFeedbackIfc.FEEDBACK_BY_DATE.equals(assessment.getAssessmentFeedback().getFeedbackDelivery())) {
-					control.setFeedbackDate(Date.from(update.feedbackStartDate));
-					Date feedbackEndDateTemp = 
-						update.feedbackEndDate != null ? Date.from(update.feedbackEndDate) : null;
+					Date feedbackStartDateTemp = update.feedbackStartDate != null ? Date.from(update.feedbackStartDate) : null;
+					control.setFeedbackDate(feedbackStartDateTemp);
+					Date feedbackEndDateTemp = update.feedbackEndDate != null ? Date.from(update.feedbackEndDate) : null;
 					control.setFeedbackEndDate(feedbackEndDateTemp);
 				}
 				assessment.setAssessmentAccessControl(control);
@@ -751,7 +782,7 @@ public class DateManagerServiceImpl implements DateManagerService {
 					JSONObject gobj = new JSONObject();
 					gobj.put(DateManagerConstants.JSON_ID_PARAM_NAME, gbitem.getId());
 					gobj.put(DateManagerConstants.JSON_TITLE_PARAM_NAME, gbitem.getName());
-					gobj.put(DateManagerConstants.JSON_DUEDATE_PARAM_NAME, formatToUserDateFormat(gbitem.getDueDate()));
+					gobj.put(DateManagerConstants.JSON_DUEDATE_PARAM_NAME, formatToGradebookDateFormat(gbitem.getDueDate()));
 					gobj.put(DateManagerConstants.JSON_TOOLTITLE_PARAM_NAME, toolTitle);
 					gobj.put(DateManagerConstants.JSON_URL_PARAM_NAME, url);
 					gobj.put(DateManagerConstants.JSON_EXTRAINFO_PARAM_NAME, "false");
@@ -801,7 +832,7 @@ public class DateManagerServiceImpl implements DateManagerService {
 						} else {
 							date = LocalDate.parse(dueDateRaw, inputDateFormatter);
 						}
-						ZoneId zone = userTimeService.getLocalTimeZone().toZoneId();
+						ZoneId zone = getGradebookZoneId();
 						dueDate = date.atStartOfDay(zone).toInstant();
 					} catch (DateTimeParseException e) {
 						log.warn("Could not parse due date [{}], {}", dueDateRaw, e);
@@ -1814,14 +1845,6 @@ public class DateManagerServiceImpl implements DateManagerService {
 				assessmentJsonObject.remove("accept_until");
 				assessmentJsonObject.put("accept_until", ZonedDateTime.now().toString());
 			}
-			if (StringUtils.isBlank((String)assessmentJsonObject.get("feedback_start"))) {
-				assessmentJsonObject.remove("feedback_start");
-				assessmentJsonObject.put("feedback_start", ZonedDateTime.now().toString());
-			}
-			if (StringUtils.isBlank((String)assessmentJsonObject.get("feedback_end"))) {
-				assessmentJsonObject.remove("feedback_end");
-				assessmentJsonObject.put("feedback_end", ZonedDateTime.now().toString());
-			}
 			if (pubAssessmentServiceQueries.isPublishedAssessmentIdValid(Long.parseLong(id))) {
 				PublishedAssessmentFacade pubAssessment = pubAssessmentServiceQueries.getPublishedAssessment(Long.parseLong(id));
 				assessmentJsonObject.put("is_draft", false);
@@ -2064,7 +2087,7 @@ public class DateManagerServiceImpl implements DateManagerService {
 						date = LocalDate.parse(columns[2], inputDateFormatter);
 					}
 					columns[2] = date.format(outputDateFormatter);
-					ZoneId zone = userTimeService.getLocalTimeZone().toZoneId();
+					ZoneId zone = getGradebookZoneId();
 					if (gbitem.getDueDate() != null) {
 						changed = !gbitem.getDueDate().toInstant().atZone(zone).toLocalDate().equals(date);
 					} else {

@@ -99,6 +99,7 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
+import org.sakaiproject.util.api.LocaleService;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
 import uk.org.ponder.localeutil.LocaleGetter;
 import uk.org.ponder.messageutil.MessageLocator;
@@ -155,6 +156,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 	private FormatAwareDateInputEvolver dateevolver;
 	@Setter private UserTimeService userTimeService;
 	@Setter private FormattedText formattedText;
+	@Setter private LocaleService localeService;
 	private HttpServletRequest httpServletRequest;
 	private HttpServletResponse httpServletResponse;
 	// have to do it here because we need it in urlCache. It has to happen before Spring initialization
@@ -3795,7 +3797,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 			    simplePageBean.checkItemPermissions(i, true);
 			}
 			LessonEntity lessonEntity = assignmentEntity.getEntity(i.getSakaiId(), simplePageBean);
-			if (usable && lessonEntity != null && (canEditPage || !lessonEntity.notPublished())) {
+			if (usable && lessonEntity != null && lessonEntity.objectExists() && (canEditPage || !lessonEntity.notPublished())) {
 
 				GeneralViewParameters params = new GeneralViewParameters(ShowItemProducer.VIEW_ID);
 				params.setSendingPage(currentPage.getPageId());
@@ -3899,7 +3901,7 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 			    simplePageBean.checkItemPermissions(i, true);
 			}
 			LessonEntity lessonEntity = forumEntity.getEntity(i.getSakaiId());
-			if (usable && lessonEntity != null && (canEditPage || !lessonEntity.notPublished())) {
+			if (usable && lessonEntity != null && lessonEntity.objectExists() && (canEditPage || !lessonEntity.notPublished())) {
 				if (i.isPrerequisite()) {
 					simplePageBean.checkItemPermissions(i, true);
 				}
@@ -5101,9 +5103,9 @@ public class ShowPageProducer implements ViewComponentProducer, DefaultView, Nav
 
 				// Sort the site member list before filling the "possOwners" list
 				List<Member> siteMemberList = new ArrayList<Member>(simplePageBean.getCurrentSite().getMembers());
+				UserSortNameComparator userComparator = new UserSortNameComparator(localeService.getLocaleForCurrentSiteAndUser());
 				Collections.sort(siteMemberList, new Comparator<Member>() {
 					public int compare(Member lhs, Member rhs) {
-						UserSortNameComparator userComparator = new UserSortNameComparator();
 						return userComparator.compare(getUser(lhs.getUserId()), getUser(rhs.getUserId()));
 					}
 				});

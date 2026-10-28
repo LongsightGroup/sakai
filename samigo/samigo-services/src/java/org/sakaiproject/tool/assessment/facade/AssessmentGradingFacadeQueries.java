@@ -20,8 +20,6 @@ import java.io.File;
 import java.text.Collator;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
-import java.text.RuleBasedCollator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -58,6 +57,7 @@ import org.hibernate.query.Query;
 import org.sakaiproject.antivirus.api.VirusFoundException;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.api.SecurityService;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.content.api.ContentCollection;
 import org.sakaiproject.content.api.ContentCollectionEdit;
 import org.sakaiproject.content.api.ContentHostingService;
@@ -103,6 +103,8 @@ import org.sakaiproject.tool.assessment.services.ItemService;
 import org.sakaiproject.tool.assessment.services.PersistenceHelper;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.util.api.LocaleService;
+import org.sakaiproject.util.comparator.SakaiCollators;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
@@ -2617,7 +2619,9 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
                 dataList.add(responseList);
             }
         }
-        Collections.sort(dataList, new ResponsesComparator(anonymous));
+        Collator collator = SakaiCollators.getCollatorWithUnderscoreAfterSpace(
+                ComponentManager.get(LocaleService.class).getLocaleForCurrentSiteAndUser(), Collator.TERTIARY);
+        Collections.sort(dataList, new ResponsesComparator(anonymous, collator));
         finalList.add(dataList);
         finalList.add(headerList);
         return finalList;
@@ -2791,60 +2795,54 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
 	 separate with each user, so we need to use the hash to find the
 	 published question
 	 */
-    @Slf4j
     private static class ResponsesComparator implements Comparator {
+        private final Collator collator;
         boolean anonymous;
 
-        public ResponsesComparator(boolean anony) {
+        public ResponsesComparator(boolean anony, Collator collator) {
             anonymous = anony;
+            this.collator = collator;
         }
 
 		public int compare(Object a, Object b) {
-			RuleBasedCollator collator_ini = (RuleBasedCollator)Collator.getInstance();
-			try{
-				RuleBasedCollator collator = new RuleBasedCollator(collator_ini.getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-				// For anonymous, it should return after the first element comparison
-				if (anonymous) {
-					Long aFirstElement = (Long) ((ArrayList) a).get(0);
-					Long bFirstElement = (Long) ((ArrayList) b).get(0);
-					if (aFirstElement.compareTo(bFirstElement) < 0)
-						return -1;
-					else if (aFirstElement.compareTo(bFirstElement) > 0)
-						return 1;
-					else
-						return 0;
-				}
-				// For non-anonymous, it compares last names first, if it is the same,
-				// compares first name, and then Eid
+			// For anonymous, it should return after the first element comparison
+			if (anonymous) {
+				Long aFirstElement = (Long) ((ArrayList) a).get(0);
+				Long bFirstElement = (Long) ((ArrayList) b).get(0);
+				if (aFirstElement.compareTo(bFirstElement) < 0)
+					return -1;
+				else if (aFirstElement.compareTo(bFirstElement) > 0)
+					return 1;
+				else
+					return 0;
+			}
+			// For non-anonymous, it compares last names first, if it is the same,
+			// compares first name, and then Eid
+			else {
+				String aFirstElement = (String) ((ArrayList) a).get(0);
+				String bFirstElement = (String) ((ArrayList) b).get(0);
+				if (collator.compare(aFirstElement, bFirstElement) < 0)
+					return -1;
+				else if (collator.compare(aFirstElement, bFirstElement) > 0)
+					return 1;
 				else {
-					String aFirstElement = (String) ((ArrayList) a).get(0);
-					String bFirstElement = (String) ((ArrayList) b).get(0);
-					if (collator.compare(aFirstElement, bFirstElement) < 0)
+					String aSecondElement = (String) ((ArrayList) a).get(1);
+					String bSecondElement = (String) ((ArrayList) b).get(1);
+					if (collator.compare(aSecondElement,bSecondElement) < 0)
 						return -1;
-					else if (collator.compare(aFirstElement, bFirstElement) > 0)
+					else if (collator.compare(aSecondElement,bSecondElement) > 0)
 						return 1;
 					else {
-						String aSecondElement = (String) ((ArrayList) a).get(1);
-						String bSecondElement = (String) ((ArrayList) b).get(1);
-						if (collator.compare(aSecondElement,bSecondElement) < 0)
+						String aThirdElement = (String) ((ArrayList) a).get(2);
+						String bThirdElement = (String) ((ArrayList) b).get(2);
+						if (collator.compare(aThirdElement,bThirdElement) < 0)
 							return -1;
-						else if (collator.compare(aSecondElement,bSecondElement) > 0)
+						else if (collator.compare(aThirdElement,bThirdElement) > 0)
 							return 1;
-						else {
-							String aThirdElement = (String) ((ArrayList) a).get(2);
-							String bThirdElement = (String) ((ArrayList) b).get(2);
-							if (collator.compare(aThirdElement,bThirdElement) < 0)
-								return -1;
-							else if (collator.compare(aThirdElement,bThirdElement) > 0)
-								return 1;
-						}
 					}
-					return 0;
 				}
-			} catch (ParseException e) {
-	  			log.error("ERROR compare: ",e);
-	  		}
-			return Collator.getInstance().compare(a, b);	
+				return 0;
+			}
 		}
 	}
 
@@ -3043,34 +3041,41 @@ public class AssessmentGradingFacadeQueries extends HibernateDaoSupport implemen
         }
     }
 
-    public List getUpdatedAssessmentList(String agentId, String siteId) {
-        List finalList = new ArrayList();
-        List updatedAssessmentList = new ArrayList();
-        List updatedAssessmentNeedResubmitListList = new ArrayList();
+    // This method returns a list of two lists.
+    // The first list contains the assessment ids with status ASSESSMENT_UPDATED_NEED_RESUBMIT
+    // The second list contains the assessment ids with status ASSESSMENT_UPDATED.
+    public List<Set<Long>> getUpdatedAssessmentList(String agentId, String siteId) {
+        Set<Long> updatedAssessmentIds = new LinkedHashSet<>();
+        Set<Long> needResubmitAssessmentIds = new LinkedHashSet<>();
 
-        List list = getHibernateTemplate()
+        List<Object[]> results = (List<Object[]>) getHibernateTemplate()
                 .findByNamedParam(
-                        "select a.publishedAssessmentId, a.status from AssessmentGradingData a, AuthorizationData az " +
+                        "select distinct a.publishedAssessmentId, a.status from AssessmentGradingData a, AuthorizationData az " +
                                 " where a.agentId = :agent and az.agentIdString = :site and az.functionId = :fid " +
                                 " and az.qualifierId=a.publishedAssessmentId and a.forGrade = :forgrade and (a.status = :status1 or a.status = :status2) " +
                                 " order by a.status",
                         new String[]{"agent", "site", "fid", "forgrade", "status1", "status2"},
                         new Object[]{agentId, siteId, "OWN_PUBLISHED_ASSESSMENT", false, AssessmentGradingData.ASSESSMENT_UPDATED, AssessmentGradingData.ASSESSMENT_UPDATED_NEED_RESUBMIT});
-        if (list.isEmpty()) {
-            return updatedAssessmentList;
-        }
 
-        Iterator iter = list.iterator();
-        while (iter.hasNext()) {
-            Object o[] = (Object[]) iter.next();
-            if (AssessmentGradingData.ASSESSMENT_UPDATED_NEED_RESUBMIT.compareTo((Integer) o[1]) == 0) {
-                updatedAssessmentNeedResubmitListList.add(o[0]);
-            } else {
-                updatedAssessmentList.add(o[0]);
+        if (results != null) {
+            for (Object[] row : results) {
+                Long assessmentId = (Long) row[0];
+                Integer status = (Integer) row[1];
+
+                if (AssessmentGradingData.ASSESSMENT_UPDATED_NEED_RESUBMIT.equals(status)) {
+                    updatedAssessmentIds.remove(assessmentId);
+                    needResubmitAssessmentIds.add(assessmentId);
+                } else if (AssessmentGradingData.ASSESSMENT_UPDATED.equals(status)
+                        && !needResubmitAssessmentIds.contains(assessmentId)){
+                    updatedAssessmentIds.add(assessmentId);
+                }
             }
         }
-        finalList.add(updatedAssessmentNeedResubmitListList);
-        finalList.add(updatedAssessmentList);
+
+        List<Set<Long>> finalList = new ArrayList<>(2);
+        finalList.add(needResubmitAssessmentIds);
+        finalList.add(updatedAssessmentIds);
+
         return finalList;
     }
 

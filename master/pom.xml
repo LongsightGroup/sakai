@@ -66,7 +66,7 @@
     <sakai.spring.hateoas.version>1.5.6</sakai.spring.hateoas.version>
     <sakai.spring.plugin.version>2.0.0.RELEASE</sakai.spring.plugin.version>
     <sakai.tika.version>3.0.0-BETA</sakai.tika.version>
-    <sakai.tomcat.version>9.0.105</sakai.tomcat.version>
+    <sakai.tomcat.version>9.0.123</sakai.tomcat.version>
     <sakai.thymeleaf.version>3.1.5.RELEASE</sakai.thymeleaf.version>
     <sakai.velocity.version>1.6.4</sakai.velocity.version>
     <sakai.log4j.version>2.24.3</sakai.log4j.version>
@@ -1315,6 +1315,12 @@
         </exclusions>
       </dependency>
       <dependency>
+        <groupId>org.opensearch</groupId>
+        <artifactId>opensearch-ssl-config</artifactId>
+        <version>${sakai.opensearch.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
         <groupId>org.opensearch.plugin</groupId>
         <artifactId>transport-netty4-client</artifactId>
         <version>${sakai.opensearch.version}</version>
@@ -1323,6 +1329,12 @@
       <dependency>
         <groupId>org.opensearch.plugin</groupId>
         <artifactId>analysis-common</artifactId>
+        <version>${sakai.opensearch.version}</version>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.opensearch.plugin</groupId>
+        <artifactId>reindex-client</artifactId>
         <version>${sakai.opensearch.version}</version>
         <scope>provided</scope>
       </dependency>
@@ -2318,6 +2330,12 @@
       <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
+        <version>${sakai.mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-inline</artifactId>
         <version>${sakai.mockito.version}</version>
         <scope>test</scope>
       </dependency>

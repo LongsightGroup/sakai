@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -43,23 +42,22 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.lang3.StringUtils;
-import org.sakaiproject.component.cover.ComponentManager;
-import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.component.api.ServerConfigurationService;
 import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tool.assessment.contentpackaging.ImportService;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.EvaluationModelIfc;
-import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacade;
+import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.AssessmentFacadeQueries;
 import org.sakaiproject.tool.assessment.facade.AssessmentTemplateFacade;
 import org.sakaiproject.tool.assessment.facade.QuestionPoolFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.qti.constants.QTIVersion;
+import org.sakaiproject.tool.assessment.qti.helper.AuthoringHelper;
 import org.sakaiproject.tool.assessment.qti.util.XmlUtil;
 import org.sakaiproject.tool.assessment.services.QuestionPoolService;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.services.qti.QTIService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
@@ -70,6 +68,9 @@ import org.sakaiproject.tool.assessment.ui.listener.util.TimeUtil;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
 import org.w3c.dom.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,7 +80,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @ManagedBean(name="xmlImport")
 @SessionScoped
-public class XMLImportBean implements Serializable {
+public class XMLImportBean extends SpringBeanAutowiringSupport implements Serializable {
 	  /** Use serialVersionUID for interoperability. */
 	  private final static long serialVersionUID = 418920360211039758L;
 	  private static final ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.AuthorImportExport");
@@ -88,6 +89,12 @@ public class XMLImportBean implements Serializable {
   private String uploadFileName;
   private String importType;
   private String pathToData;
+  @Autowired
+  @Qualifier("org.sakaiproject.component.api.ServerConfigurationService")
+  private transient ServerConfigurationService serverConfigurationService;
+  @Autowired
+  @Qualifier("org.sakaiproject.util.api.FormattedText")
+  private transient FormattedText formattedText;
   @ManagedProperty(value="#{author}")
   private AuthorBean authorBean;
   @ManagedProperty(value="#{assessmentBean}")
@@ -124,7 +131,7 @@ public class XMLImportBean implements Serializable {
 	  String uploadFile = (String) e.getNewValue();
 
 	  if (uploadFile!= null && uploadFile.startsWith("SizeTooBig:")) {
-		  Long sizeMax = Long.valueOf(ServerConfigurationService.getString("samigo.sizeMax", "20480"));
+		  Long sizeMax = Long.valueOf(serverConfigurationService.getString("samigo.sizeMax", "20480"));
 		  String sizeTooBigMessage = MessageFormat.format(rb.getString("import_size_too_big"), uploadFile.substring(11), Math.round(sizeMax.floatValue()/1024));
 	      FacesMessage message = new FacesMessage(sizeTooBigMessage);
 	      FacesContext.getCurrentInstance().addMessage(null, message);
@@ -166,16 +173,19 @@ public class XMLImportBean implements Serializable {
   
   public void importAssessment(String uploadFile, boolean isCP, boolean isRespondus)
   {
+	if (!authorizationBean.isUserAllowedToCreateAssessment()) {
+		throw new SecurityException("Assessment import requires assessment.createAssessment");
+	}
 	String filename = uploadFile;
 	String unzipLocation = null;
 	boolean fileNotFound = false;
-	if (isCP) {
-		ImportService importService = new ImportService();
-		unzipLocation = importService.unzipImportFile(uploadFile);
-		filename = unzipLocation + "/" + importService.getQtiFilename();
-	}
     try
     {
+      if (isCP) {
+        ImportService importService = new ImportService(serverConfigurationService, AgentFacade.getAgentString());
+        unzipLocation = importService.unzipImportFile(uploadFile);
+        filename = Path.of(unzipLocation).resolve(importService.getQtiFilename()).toString();
+      }
       processFile(filename, uploadFile, isRespondus);
     }
     catch (FileNotFoundException fnfex)
@@ -186,13 +196,14 @@ public class XMLImportBean implements Serializable {
     }
     catch (Exception ex)
     {
+      log.warn("QTI assessment import failed for user {}", AgentFacade.getAgentString(), ex);
       FacesMessage message = new FacesMessage( rb.getString("import_err") );
       FacesContext.getCurrentInstance().addMessage(null, message);
     }
     finally {
       boolean success = false;    	
       // remove unsuccessful file
-      if (!fileNotFound) {
+      if (!fileNotFound && (!isCP || unzipLocation != null)) {
         log.debug("****Clean up file: "+filename);
         File f1 = new File(filename);
         success = f1.delete();
@@ -206,8 +217,9 @@ public class XMLImportBean implements Serializable {
           if (!success) {
         	  log.error ("Failed to delete file " + uploadFile);
           }
-    	  File f3 = new File(unzipLocation);
-    	  deleteDirectory(f3);
+          if (unzipLocation != null) {
+            deleteDirectory(new File(unzipLocation));
+          }
       }
     }
   }
@@ -291,7 +303,8 @@ public class XMLImportBean implements Serializable {
     AssessmentService assessmentService = new AssessmentService();
     // Create an assessment based on the uploaded file
     List failedMatchingQuestions = new ArrayList();
-    AssessmentFacade assessment = createImportedAssessment(fileName, qtiVersion, isRespondus, failedMatchingQuestions);
+    List<String> skippedAttachments = new ArrayList<>();
+    AssessmentFacade assessment = createImportedAssessment(fileName, qtiVersion, isRespondus, failedMatchingQuestions, skippedAttachments);
     if (failedMatchingQuestions.size() > 0)
     {
       String importedFilename = getImportedFilename(uploadFile);	
@@ -309,6 +322,21 @@ public class XMLImportBean implements Serializable {
       sb.append(". ");
       sb.append(rb.getString("respondus_matching_err_2"));
       FacesMessage message = new FacesMessage(sb.toString());
+      FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    if (!skippedAttachments.isEmpty()) {
+      String importedFilename = getImportedFilename(uploadFile);
+      String warningText = MessageFormat.format(
+          rb.getString("import_attachment_warning"),
+          importedFilename,
+          buildSkippedAttachmentList(skippedAttachments));
+      if (skippedAttachments.size() > 5) {
+        warningText = warningText + MessageFormat.format(
+            rb.getString("import_attachment_warning_more"),
+            skippedAttachments.size() - 5);
+      }
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, warningText, null);
       FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
@@ -352,7 +380,7 @@ public class XMLImportBean implements Serializable {
     Iterator iter = list.iterator();
 	while (iter.hasNext()) {
 		AssessmentFacade assessmentFacade= (AssessmentFacade) iter.next();
-		assessmentFacade.setTitle(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(assessmentFacade.getTitle()));
+		assessmentFacade.setTitle(formattedText.convertFormattedTextToPlaintext(assessmentFacade.getTitle()));
 		try {
 			String lastModifiedDateDisplay = tu.getDateTimeWithTimezoneConversion(assessmentFacade.getLastModifiedDate());
 			assessmentFacade.setLastModifiedDateForDisplay(lastModifiedDateDisplay);  
@@ -378,6 +406,26 @@ public class XMLImportBean implements Serializable {
 	  String final_filename = temp_filename_3 + temp_filename_2;
 	  return final_filename;
   }
+
+  private String extractAttachmentName(String attachmentReference) {
+    if (attachmentReference == null) {
+      return "";
+    }
+    int lastSlash = attachmentReference.lastIndexOf('/');
+    return lastSlash > -1 ? attachmentReference.substring(lastSlash + 1) : attachmentReference;
+  }
+
+  private String buildSkippedAttachmentList(List<String> skippedAttachments) {
+    StringBuilder skippedList = new StringBuilder();
+    int displayed = Math.min(skippedAttachments.size(), 5);
+    for (int i = 0; i < displayed; i++) {
+      if (i > 0) {
+        skippedList.append(", ");
+      }
+      skippedList.append(extractAttachmentName(skippedAttachments.get(i)));
+    }
+    return skippedList.toString();
+  }
   
   private void deleteDirectory(File directory) {
 	try (Stream<Path> walk = Files.walk(directory.toPath())) {
@@ -402,7 +450,7 @@ public class XMLImportBean implements Serializable {
    * @return
    */
   
-  private AssessmentFacade createImportedAssessment(String fullFileName, int qti, boolean isRespondus, List failedMatchingQuestions) throws Exception
+  private AssessmentFacade createImportedAssessment(String fullFileName, int qti, boolean isRespondus, List failedMatchingQuestions, List<String> skippedAttachments) throws Exception
   {
     //trim = true so that xml processing instruction at top line, even if not.
     Document document = null;
@@ -411,13 +459,12 @@ public class XMLImportBean implements Serializable {
 	} catch (Exception e) {
 		throw(e);
 	}
-    QTIService qtiService = new QTIService();
-    if (isCP) {
-    	return qtiService.createImportedAssessment(document, qti, fullFileName.substring(0, fullFileName.lastIndexOf("/")), isRespondus, failedMatchingQuestions, null);
-    }
-    else {
-    	return qtiService.createImportedAssessment(document, qti, null, isRespondus, failedMatchingQuestions, null);
-    }
+    AuthoringHelper authoringHelper = new AuthoringHelper(qti);
+    AssessmentFacade assessment = isCP
+        ? authoringHelper.createImportedAssessment(document, new File(fullFileName).getParent(), isRespondus, failedMatchingQuestions)
+        : authoringHelper.createImportedAssessment(document, null, isRespondus, failedMatchingQuestions);
+    skippedAttachments.addAll(authoringHelper.getSkippedAttachments());
+    return assessment;
   }
 
   public AuthorBean getAuthorBean()
@@ -469,7 +516,7 @@ public class XMLImportBean implements Serializable {
     String uploadFile = (String) e.getNewValue();
 
     if (StringUtils.isNotBlank(uploadFile) && StringUtils.startsWith(uploadFile, "SizeTooBig:")) {
-        Long sizeMax = Long.valueOf(ServerConfigurationService.getString("samigo.sizeMax", "20480"));
+        Long sizeMax = Long.valueOf(serverConfigurationService.getString("samigo.sizeMax", "20480"));
         String sizeTooBigMessage = MessageFormat.format(rb.getString("import_size_too_big"), uploadFile.substring(11), Math.round(sizeMax.floatValue()/1024));
         FacesMessage message = new FacesMessage(sizeTooBigMessage);
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -507,30 +554,34 @@ public class XMLImportBean implements Serializable {
    */
   private void importPool(String uploadFile, boolean isCP, boolean isRespondus) {
 
+    if (!authorizationBean.getCreateQuestionPool()) {
+        throw new SecurityException("Question pool import requires assessment.questionpool.create");
+    }
+
     // Get the file name
     String fileName = uploadFile;
     String unzipLocation = null;
     boolean fileNotFound = false;
-    if (isCP) {
-        ImportService importService = new ImportService();
-        unzipLocation = importService.unzipImportFile(uploadFile);
-        fileName = unzipLocation + File.separator + importService.getQtiFilename();
-    }
-
     try {
+        if (isCP) {
+            ImportService importService = new ImportService(serverConfigurationService, AgentFacade.getAgentString());
+            unzipLocation = importService.unzipImportFile(uploadFile);
+            fileName = Path.of(unzipLocation).resolve(importService.getQtiFilename()).toString();
+        }
         processPoolFile(fileName, uploadFile, isRespondus);
     } catch (FileNotFoundException fnfex) {
         fileNotFound = true;
         FacesMessage message = new FacesMessage( rb.getString("import_qti_not_found") );
         FacesContext.getCurrentInstance().addMessage(null, message);
     } catch (Exception ex) {
+        log.warn("QTI question pool import failed for user {}", AgentFacade.getAgentString(), ex);
         FacesMessage message = new FacesMessage( rb.getString("import_err") );
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
     finally {
         boolean success = false;
         // remove unsuccessful file
-        if (!fileNotFound) {
+        if (!fileNotFound && (!isCP || unzipLocation != null)) {
           log.debug("****Clean up file: {}", fileName);
           File f1 = new File(fileName);
           success = f1.delete();
@@ -544,8 +595,9 @@ public class XMLImportBean implements Serializable {
             if (!success) {
                 log.warn("Failed to delete file {}", uploadFile);
             }
-            File f3 = new File(unzipLocation);
-            deleteDirectory(f3);
+            if (unzipLocation != null) {
+                deleteDirectory(new File(unzipLocation));
+            }
         }
     }
   }
@@ -559,7 +611,7 @@ public class XMLImportBean implements Serializable {
    * @return
  * @throws Exception 
    */
-  private QuestionPoolFacade createImportedQuestionPool(String fullFileName, int qti, boolean isRespondus, List failedMatchingQuestions) throws Exception {
+  private QuestionPoolFacade createImportedQuestionPool(String fullFileName, int qti, boolean isRespondus, List failedMatchingQuestions, List<String> skippedAttachments) throws Exception {
     //trim = true so that xml processing instruction at top line, even if not.
     Document document;
 	try {
@@ -567,12 +619,12 @@ public class XMLImportBean implements Serializable {
 	} catch (Exception e) {
 		throw(e);
 	}
-    QTIService qtiService = new QTIService();
-    if (isCP) {
-        return qtiService.createImportedQuestionPool(document, qti, fullFileName.substring(0, fullFileName.lastIndexOf("/")), isRespondus, failedMatchingQuestions);
-    } else {
-        return qtiService.createImportedQuestionPool(document, qti, null, isRespondus, failedMatchingQuestions);
-    }
+    AuthoringHelper authoringHelper = new AuthoringHelper(qti);
+    QuestionPoolFacade questionPool = isCP
+        ? authoringHelper.createImportedQuestionPool(document, new File(fullFileName).getParent(), isRespondus, failedMatchingQuestions)
+        : authoringHelper.createImportedQuestionPool(document, null, isRespondus, failedMatchingQuestions);
+    skippedAttachments.addAll(authoringHelper.getSkippedAttachments());
+    return questionPool;
   }
   
   public QuestionPoolBean getQuestionPoolBean()
@@ -601,7 +653,8 @@ public class XMLImportBean implements Serializable {
     QuestionPoolService questionPoolService = new QuestionPoolService();
     // Create a pool based on the uploaded file
     List failedMatchingQuestions = new ArrayList();
-    QuestionPoolFacade questionPool = createImportedQuestionPool(fileName, qtiVersion, isRespondus, failedMatchingQuestions);
+    List<String> skippedAttachments = new ArrayList<>();
+    QuestionPoolFacade questionPool = createImportedQuestionPool(fileName, qtiVersion, isRespondus, failedMatchingQuestions, skippedAttachments);
     if (failedMatchingQuestions.size() > 0) {
       String importedFilename = getImportedFilename(uploadFile);
       StringBuffer sb = new StringBuffer("\"");
@@ -618,6 +671,21 @@ public class XMLImportBean implements Serializable {
       sb.append(". ");
       sb.append(rb.getString("respondus_matching_err_2"));
       FacesMessage message = new FacesMessage(sb.toString());
+      FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    if (!skippedAttachments.isEmpty()) {
+      String importedFilename = getImportedFilename(uploadFile);
+      String warningText = MessageFormat.format(
+          rb.getString("import_attachment_warning"),
+          importedFilename,
+          buildSkippedAttachmentList(skippedAttachments));
+      if (skippedAttachments.size() > 5) {
+        warningText = warningText + MessageFormat.format(
+            rb.getString("import_attachment_warning_more"),
+            skippedAttachments.size() - 5);
+      }
+      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, warningText, null);
       FacesContext.getCurrentInstance().addMessage(null, message);
     }
 

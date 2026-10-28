@@ -26,8 +26,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.text.Collator;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.RuleBasedCollator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,6 +113,8 @@ import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
+import org.sakaiproject.util.api.LocaleService;
+import org.sakaiproject.util.comparator.SakaiCollators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
@@ -235,6 +235,8 @@ public class QuestionPoolBean implements Serializable {
 
   @Autowired
   private SecurityService securityService;
+  @Autowired
+  private LocaleService localeService;
 
   /**
    * Creates a new QuestionPoolBean object.
@@ -326,13 +328,13 @@ public class QuestionPoolBean implements Serializable {
 		  if (i2.getTitle() == null && i1.getTitle() == null) {
 			  return 0;
 		  }
-		  RuleBasedCollator collator_ini = (RuleBasedCollator)Collator.getInstance();
-		  try {
-			RuleBasedCollator collator= new RuleBasedCollator(collator_ini.getRules().replaceAll("<'\u005f'", "<' '<'\u005f'"));
-			return collator.compare(i1.getTitle(), i2.getTitle());
-		  } catch (ParseException e) {}
-		  return Collator.getInstance().compare(i1.getTitle(), i2.getTitle());
+		  return getCollator().compare(i1.getTitle(), i2.getTitle());
 	  }
+  }
+
+  private Collator getCollator() {
+	  return SakaiCollators.getCollatorWithUnderscoreAfterSpace(
+			  localeService.getLocaleForCurrentSiteAndUser(), Collator.TERTIARY);
   }
 
   class QuestionSizeComparator implements Comparator<QuestionPoolFacade> {
@@ -1400,9 +1402,8 @@ public String getAddOrEdit()
 					// return to an irrelevant screen. I think it's better
 					// just to skip that item. One could argue for a warning
 					// message.
-					if (!hasItemInDestPool(sourceItemId, destId)) {
-						delegate.moveItemToPool(sourceItemId, sourceId, destId);
-					}
+					addMessageIfDuplicatedInSameDestPool(sourceItemId, destId);
+					delegate.moveItemToPool(sourceItemId, sourceId, destId);
 					EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SAVEITEM, "/sam/" + AgentFacade.getCurrentSiteId() + "/moved, itemId=" + sourceItemId, true));
 				}
 			} catch (Exception e) {
@@ -1478,25 +1479,13 @@ public String getAddOrEdit()
 
 		return EDIT_ASSESSMENT;
 	}
-     
-  public boolean hasItemInDestPool(Long sourceItemId, Long destId){
-  
-              QuestionPoolService delegate = new QuestionPoolService();
-              // check if the item already exists in the destPool
-              if (delegate.hasItem(sourceItemId, destId)){
-                // we do not want to add duplicated items, show message
 
-                FacesContext context=FacesContext.getCurrentInstance();
-                String err;
-                err=rb.getString("copy_duplicate_error");
-                context.addMessage(null,new FacesMessage(err));
-                return true;
-              }
-  	      else {	
-                return false;
- 	      } 
+  public void addMessageIfDuplicatedInSameDestPool(Long sourceItemId, Long destId){
+      QuestionPoolService delegate = new QuestionPoolService();
+      // check if the item already exists in the destPool
+      // if has duplicated items, show message
+      if (delegate.hasItem(sourceItemId, destId)) FacesContext.getCurrentInstance().getExternalContext().getFlash().put("infoDuplicatedQuestion", rb.getString("copy_duplicate_error"));
   }
-
 
   public String copyQuestion() {
 		if (getSourcePart() != null)
@@ -1526,12 +1515,11 @@ public String getAddOrEdit()
 						// return to an irrelevant screen. I think it's better
 						// just to skip that item. One could argue for a warning
 						// message.
-						if (!hasItemInDestPool(sourceItemId, destId)) {
-							Long copyItemFacadeId = questionPoolService
-									.copyItemFacade(sourceItem.getData());
-							delegate.addItemToPool(copyItemFacadeId, new Long(
-									destId));
-						}
+						addMessageIfDuplicatedInSameDestPool(sourceItemId, destId);
+						Long copyItemFacadeId = questionPoolService
+								.copyItemFacade(sourceItem.getData());
+						delegate.addItemToPool(copyItemFacadeId, new Long(
+								destId));
 						EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SAVEITEM, "/sam/" + AgentFacade.getCurrentSiteId() + "/copied, itemId=" + sourceItemId, true));
 					}
 				} catch (Exception e) {

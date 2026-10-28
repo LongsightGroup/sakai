@@ -21,155 +21,72 @@
 
 package org.sakaiproject.userauditservice.tool;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.Collator;
 import java.text.DateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TimeZone;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import org.sakaiproject.component.cover.ComponentManager;
-import org.sakaiproject.db.api.SqlService;
 import org.sakaiproject.jsf2.util.LocaleUtil;
-import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.time.api.UserTimeService;
 import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.userauditservice.api.UserAuditRegistration;
 import org.sakaiproject.userauditservice.api.UserAuditService;
+import org.sakaiproject.userauditservice.api.model.UserAuditLog;
 import org.sakaiproject.util.ResourceLoader;
 
 @Slf4j
 public class UserAuditEventLog {
+	private static final int DEFAULT_PAGE_SIZE = 200;
+
 	protected List<EventLog> eventLog = new ArrayList<EventLog>();
-	// Static comparators
-	public static final Comparator<EventLog> userIdComparatorEL;
-	public static final Comparator<EventLog> roleNameComparatorEL;
-	public static final Comparator<EventLog> auditStampComparatorEL;
-	public static final Comparator<EventLog> actionTextComparatorEL;
-	public static final Comparator<EventLog> sourceTextComparatorEL;
-	public static final String GET_EVENTS_SQL = "select user_id, role_name, action_taken, audit_stamp, source, action_user_id from user_audits_log where site_id=? order by audit_stamp desc";
 	@Setter protected String sortColumn;
 	@Getter @Setter protected boolean sortAscending;
 	@Getter @Setter private int totalItems = -1;
 	@Getter @Setter private int firstItem = 0;
-	@Getter @Setter private int pageSize = 0;
-	private transient SqlService sqlService = (SqlService) ComponentManager.get(SqlService.class.getName());
-	private transient UserAuditRegistration userAuditRegistration = (UserAuditRegistration) ComponentManager.get(UserAuditRegistration.class.getName());
-	private transient UserAuditService userAuditService = (UserAuditService) ComponentManager.get(UserAuditService.class.getName());
-	private transient UserDirectoryService userDirectoryService = (UserDirectoryService) ComponentManager.get(UserDirectoryService.class.getName());
-	private transient SiteService siteService = (SiteService) ComponentManager.get(SiteService.class.getName());
-	private transient ToolManager toolManager = (ToolManager) ComponentManager.get(ToolManager.class.getName());
-	private transient SessionManager sessionManager = (SessionManager) ComponentManager.get(SessionManager.class.getName());
+	@Getter @Setter private int pageSize = DEFAULT_PAGE_SIZE;
+	@Getter @Setter private String userIdFilter;
+	@Getter @Setter private String fromDateFilter;
+	@Getter @Setter private String toDateFilter;
+	private Optional<EventLogFilter> activeFilter = Optional.of(EventLogFilter.empty());
+	private transient UserAuditService userAuditService;
+	@Setter private transient UserDirectoryService userDirectoryService;
+	@Setter private transient UserTimeService userTimeService;
+	@Setter private transient ToolManager toolManager;
+	@Setter private transient SessionManager sessionManager;
+	private transient Map<String, UserAuditRegistration> sourceRegistrationsBySource = new HashMap<String, UserAuditRegistration>();
+	private transient int sourceRegistrationCount = -1;
 
 	private ResourceLoader rb = new ResourceLoader("UserAuditMessages");
 	private final String STATE_SITE_ID = "site.instance.id";
-	
-	static {
-
-		userIdComparatorEL = new Comparator<EventLog>() {
-			public int compare(EventLog one, EventLog another) {
-				return Collator.getInstance().compare(one.getUserEid(), another.getUserEid());
-			}
-		};
-		
-		roleNameComparatorEL = new Comparator<EventLog>() {
-			public int compare(EventLog one, EventLog another) {
-				int comparison = Collator.getInstance().compare(one.getRoleName(),another.getRoleName());
-				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
-			}
-		};
-		
-		auditStampComparatorEL = new Comparator<EventLog>() {
-			public int compare(EventLog one, EventLog another) {
-				// calling auditStamp directly so it does a comparison to the actual date versus a string style comparison, which isn't quite right.
-				int comparison = (one.auditStamp.compareTo(another.auditStamp));
-				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
-			}
-		};
-
-		actionTextComparatorEL = new Comparator<EventLog>() {
-			public int compare(EventLog one, EventLog another) {
-				int comparison = Collator.getInstance().compare(one.getActionText(),another.getActionText());
-				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
-			}
-		};
-		
-		sourceTextComparatorEL = new Comparator<EventLog>() {
-			public int compare(EventLog one, EventLog another) {
-				int comparison = Collator.getInstance().compare(one.getSourceText(),another.getSourceText());
-				return comparison == 0 ? userIdComparatorEL.compare(one,another) : comparison;
-			}
-		};
-	}
-
-	protected Comparator<EventLog> getComparatorEL()
-	{
-    	String sortColumn = getSortColumn();
-        Comparator<EventLog> comparator;
-        if ("userId".equals(sortColumn))
-        {
-            comparator = userIdComparatorEL;
-        }
-        else if("roleName".equals(sortColumn))
-        {
-            comparator = roleNameComparatorEL;
-        }
-        else if("auditStamp".equals(sortColumn))
-        {
-        	comparator = auditStampComparatorEL;
-        }
-        else if("actionText".equals(sortColumn))
-        {
-        	comparator = actionTextComparatorEL;
-        }
-        else if("sourceText".equals(sortColumn))
-        {
-        	comparator = sourceTextComparatorEL;
-        }
-        else
-        {
-            // Default to the sort name
-            comparator = auditStampComparatorEL;
-        }
-        return comparator;
-    }
 
     @Getter @Setter
 	public class EventLog {
 		protected String actionTaken;
-		protected String actionText;
 		protected String actionUserEid;
-		protected Date auditStamp;
+		protected Instant auditStamp;
 		protected String roleName;
 		protected String source;
 		protected String sourceText;
 		protected String userEid;
-		
-		/**
-		 * Constructs a EventLogImpl.
-		 * 
-		 * @param userEid - this is the userEid for who was add/dropped from a site
-		 * @param roleName - the user's role in the site
-		 * @param actionTaken - this interprets the A, D, and U and return the appropriate text from the bundle
-		 * @param auditStamp - will return a String, although a Date object is passed in.  This is the date and time the user was added or dropped from the site
-		 * @param source - interprets the letter key registered from a tool and returns the appropriate text from the bundle
-		 * @param actionUserEid - User object for who performed the add/drop action
-		 */
-		public EventLog(String userEid, String roleName, String actionTaken, Date auditStamp, String source, String actionUserEid) {
+
+		public EventLog(String userEid, String roleName, String actionTaken, Instant auditStamp, String source, String actionUserEid) {
 			this.userEid = userEid;
 			this.roleName = roleName;
 			this.actionTaken = actionTaken;
@@ -177,170 +94,226 @@ public class UserAuditEventLog {
 			this.source = source;
 			this.actionUserEid = actionUserEid;
 		}
-		
+
 		public String getActionTaken() {
 			return actionTaken;
 		}
-		
+
 		public String getActionText() {
-			if (userAuditService.USER_AUDIT_ACTION_ADD.equals(actionTaken))
-			{
-				actionText = LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(),"UserAuditMessages", "event_log_add");
-			}
-			else if (userAuditService.USER_AUDIT_ACTION_REMOVE.equals(actionTaken))
-			{
-				actionText = LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(),"UserAuditMessages", "event_log_remove");
-			}
-			else if (userAuditService.USER_AUDIT_ACTION_UPDATE.equals(actionTaken))
-			{
-				actionText = LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(),"UserAuditMessages", "event_log_update");
-			}
-			return actionText;
+			return switch (actionTaken) {
+				case UserAuditService.USER_AUDIT_ACTION_ADD ->
+					LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(), "UserAuditMessages", "event_log_add");
+				case UserAuditService.USER_AUDIT_ACTION_REMOVE ->
+					LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(), "UserAuditMessages", "event_log_remove");
+				case UserAuditService.USER_AUDIT_ACTION_UPDATE ->
+					LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(), "UserAuditMessages", "event_log_update");
+				default -> null;
+			};
 		}
-	
+
 		public String getAuditStamp() {
 			DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.FULL, rb.getLocale());
-			return df.format(auditStamp);
+			df.setTimeZone(userTimeService.getLocalTimeZone());
+			return df.format(Date.from(auditStamp));
 		}
-		
-		public String getSourceText() {
-			for(UserAuditRegistration uar : userAuditService.getRegisteredItems())
-			{
-				if (uar.getDatabaseSourceKey().equals(source))
-				{
-					sourceText = uar.getSourceText(actionUserEid);
-					break;
-				}
-				else
-				{
-					// if we didn't find an appropriate source, use the not available option
-					sourceText = LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(),"UserAuditMessages", "event_log_not_available");
-				}
-			}
 
+		public String getSourceText() {
+			sourceText = LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(), "UserAuditMessages", "event_log_not_available");
+			refreshSourceRegistrationCacheIfNeeded();
+			UserAuditRegistration uar = sourceRegistrationsBySource.get(source);
+			if (uar != null) {
+				sourceText = uar.getSourceText(actionUserEid);
+			}
 			return sourceText;
 		}
 	}
-	    
+
+	public void setUserAuditService(UserAuditService userAuditService) {
+		this.userAuditService = userAuditService;
+		refreshSourceRegistrationCache();
+	}
+
 	public List<EventLog> getEventLog() {
 		return eventLog;
 	}
-	
-	private void getEvents()
-	{
-		if (this.eventLog == null || this.eventLog.isEmpty())
-		{
-			eventLog = new ArrayList<EventLog>();
-			Connection conn = null;
-			PreparedStatement statement = null;
-			ResultSet result = null;
-			String siteId;
-			try {
-				siteId = sessionManager.getCurrentToolSession().getAttribute(STATE_SITE_ID).toString();
-			} catch (Exception ex) {
-				siteId = toolManager.getCurrentPlacement().getContext();
-			}
-			try
-			{
-				conn = sqlService.borrowConnection();
-				statement = conn.prepareStatement(GET_EVENTS_SQL);
-				statement.setString(1, siteId);
-				result = statement.executeQuery();
-				while (result.next())
-				{
-					String userId = result.getString("user_id");
-					String actionUserId = result.getString("action_user_id");
-					try {
-						userId = userDirectoryService.getUserEid(result.getString("user_id"));
-						actionUserId = userDirectoryService.getUserEid(result.getString("action_user_id"));
-					} catch (UserNotDefinedException ex) {
 
-					}
-					String roleName = result.getString("role_name");
-					String actionTaken = result.getString("action_taken");
-					Timestamp auditStamp = result.getTimestamp("audit_stamp");
-					String source = result.getString("source");
+	private void refreshSourceRegistrationCacheIfNeeded() {
+		if (userAuditService == null) {
+			return;
+		}
+		List<UserAuditRegistration> registeredItems = userAuditService.getRegisteredItems();
+		if (sourceRegistrationsBySource == null || registeredItems.size() != sourceRegistrationCount) {
+			refreshSourceRegistrationCache(registeredItems);
+		}
+	}
 
-					eventLog.add(new EventLog(userId,roleName,actionTaken,auditStamp,source,actionUserId));
+	private void refreshSourceRegistrationCache() {
+		if (userAuditService != null) {
+			refreshSourceRegistrationCache(userAuditService.getRegisteredItems());
+		}
+	}
+
+	private void refreshSourceRegistrationCache(List<UserAuditRegistration> registeredItems) {
+		sourceRegistrationsBySource = new HashMap<String, UserAuditRegistration>();
+		for (UserAuditRegistration uar : registeredItems) {
+			sourceRegistrationsBySource.put(uar.getDatabaseSourceKey(), uar);
+		}
+		sourceRegistrationCount = registeredItems.size();
+	}
+
+	private void loadEvents() {
+		eventLog = new ArrayList<EventLog>();
+		String siteId = resolveSiteId();
+		Optional<EventLogFilter> activeFilter = getActiveFilter();
+		if (activeFilter.isEmpty()) {
+			totalItems = 0;
+			firstItem = 0;
+			return;
+		}
+		EventLogFilter filter = activeFilter.get();
+		try {
+			totalItems = (int) Math.min(userAuditService.countUserAuditLogs(
+					EventLogQueryBuilder.build(siteId, filter, getSortColumn(), sortAscending, 0, 0)),
+					Integer.MAX_VALUE);
+			if (totalItems <= 0) {
+				totalItems = 0;
+				return;
+			}
+
+			normalizeFirstItem();
+			int fetchSize = getRowsNumber();
+			if (fetchSize <= 0) {
+				return;
+			}
+
+			List<UserAuditLog> rows = userAuditService.getUserAuditLogs(
+					EventLogQueryBuilder.build(siteId, filter, getSortColumn(), sortAscending, firstItem, fetchSize));
+			Set<String> userIds = new HashSet<String>();
+			for (UserAuditLog row : rows) {
+				if (row.getUserId() != null) {
+					userIds.add(row.getUserId());
+				}
+				if (row.getActionUserId() != null) {
+					userIds.add(row.getActionUserId());
 				}
 			}
-			catch (SQLException e)
-			{
-				log.warn("ERROR getting the user audit logs!", e);
+			Map<String, String> eidsById = new HashMap<String, String>();
+			if (!userIds.isEmpty()) {
+				for (User user : userDirectoryService.getUsers(userIds)) {
+					eidsById.put(user.getId(), user.getEid());
+				}
 			}
-			finally
-			{
-				try
-				{
-					if (result!=null)
-					{
-						result.close();
-					}
-				}
-		 		catch (SQLException e)
-		 		{
-					log.warn("Error trying to close the result set in the Roster Event Logger!", e);
-		 		}
-				try
-				{
-					if (statement!=null)
-					{
-						statement.close();
-					}
-				}
-		 		catch (SQLException e)
-		 		{
-					log.warn("Error trying to close the statement in the Roster Event Logger!", e);
-		 		}
-				try
-				{
-					if (conn!=null)
-					{
-						conn.close();
-					}
-				}
-		 		catch (SQLException e)
-		 		{
-					log.warn("Error trying to close the database connection in the Roster Event Logger!", e);
-		 		}
+			for (UserAuditLog row : rows) {
+				String userEid = eidsById.get(row.getUserId());
+				String actionUserEid = eidsById.get(row.getActionUserId());
+				eventLog.add(new EventLog(userEid != null ? userEid : row.getUserId(), row.getRoleName(),
+						row.getActionTaken(), row.getAuditStamp(), row.getSource(),
+						actionUserEid != null ? actionUserEid : row.getActionUserId()));
 			}
 		}
-		this.totalItems = eventLog.size();
+		catch (RuntimeException e) {
+			log.warn("ERROR loading user audit logs for site {}", siteId, e);
+			totalItems = 0;
+			firstItem = 0;
+			addErrorMessage("event_log_load_error");
+		}
 	}
-	
+
+	private Optional<EventLogFilter> resolveEventFilter() {
+		EventLogFilterResolver.Result result = EventLogFilterResolver.resolve(userIdFilter, fromDateFilter, toDateFilter,
+				userDirectoryService, userTimeService);
+		userIdFilter = result.userIdFilter;
+		fromDateFilter = result.fromDateFilter;
+		toDateFilter = result.toDateFilter;
+		result.messageKey.ifPresent(this::addErrorMessage);
+		return result.filter;
+	}
+
+	private void addErrorMessage(String messageKey) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (context != null) {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, rb.getString(messageKey), null));
+		}
+	}
+
+	private Optional<EventLogFilter> getActiveFilter() {
+		if (activeFilter == null) {
+			activeFilter = Optional.of(EventLogFilter.empty());
+		}
+		return activeFilter;
+	}
+
+	private String resolveSiteId() {
+		try {
+			return sessionManager.getCurrentToolSession().getAttribute(STATE_SITE_ID).toString();
+		}
+		catch (Exception ex) {
+			return toolManager.getCurrentPlacement().getContext();
+		}
+	}
+
+	private void normalizeFirstItem() {
+		if (pageSize <= 0) {
+			firstItem = 0;
+			return;
+		}
+		if (firstItem < 0) {
+			firstItem = 0;
+		}
+		if (firstItem >= totalItems) {
+			int lastPage = (totalItems - 1) / pageSize;
+			firstItem = lastPage * pageSize;
+		}
+	}
+
 	public String getInitValues() {
-		getEvents();
-		
-		if (eventLog != null && eventLog.size() >= 1) {
-			Collections.sort(eventLog, getComparatorEL());
-			if(!isSortAscending()) {
-				Collections.reverse(eventLog);
-			}
-	    }
-		
+		loadEvents();
 		return "";
 	}
-	
+
+	public String processActionSearch() {
+		activeFilter = resolveEventFilter();
+		firstItem = 0;
+		return "";
+	}
+
+	public String processActionClearSearch() {
+		userIdFilter = null;
+		fromDateFilter = null;
+		toDateFilter = null;
+		activeFilter = Optional.of(EventLogFilter.empty());
+		firstItem = 0;
+		return "";
+	}
+
 	public String getPageTitle() {
 	    return LocaleUtil.getLocalizedString(FacesContext.getCurrentInstance(),
 				"UserAuditMessages", "title_event_log");
 	}
-	
+
 	public String getSortColumn() {
 		if (this.sortColumn == null) {
 			this.sortColumn = "auditStamp";
 		}
 		return this.sortColumn;
 	}
-	
+
 	public boolean isExportablePage() {
 		return false;
 	}
-	
+
 	public int getRowsNumber() {
-		if(totalItems <= pageSize){
+		if (totalItems <= 0) {
+			return 0;
+		}
+		if (pageSize <= 0) {
 			return totalItems;
 		}
-		return pageSize;
+		int remaining = totalItems - firstItem;
+		if (remaining <= 0) {
+			return 0;
+		}
+		return Math.min(pageSize, remaining);
 	}
+
 }

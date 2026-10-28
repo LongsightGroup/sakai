@@ -174,6 +174,19 @@ public class PublishedAssessmentService extends AssessmentService{
 		}
 	}
 
+	public Map<Long, String> getAssessmentMetaDataEntriesByLabel(List<Long> publishedAssessmentIds, String label) {
+		if (publishedAssessmentIds == null || publishedAssessmentIds.isEmpty() || StringUtils.isBlank(label)) {
+			return Collections.emptyMap();
+		}
+		try {
+			return PersistenceService.getInstance().getPublishedAssessmentFacadeQueries()
+					.getAssessmentMetaDataEntriesByLabel(publishedAssessmentIds, label);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new RuntimeException(e);
+		}
+	}
+
   public PublishedAssessmentFacade getPublishedAssessment(String assessmentId, boolean withGroupsInfo) {
 	    try {
 	      return PersistenceService.getInstance().
@@ -250,6 +263,38 @@ public class PublishedAssessmentService extends AssessmentService{
   public void removeAssessment(String assessmentId, String action) {
 	    PersistenceService.getInstance().getPublishedAssessmentFacadeQueries().
 	        removeAssessment(new Long(assessmentId), action);
+  }
+
+  /**
+   * Move a published assessment to Trash and remove its externally maintained Gradebook item.
+   * Gradebook cleanup is best effort so an unavailable Gradebook does not prevent the assessment
+   * from being removed.
+   *
+   * @param assessmentId the published assessment id
+   * @param gradebookUid the root Gradebook uid for the assessment's site
+   */
+  public void removeAssessmentAndExternalGradebookItem(String assessmentId, String gradebookUid) {
+    removeAssessment(assessmentId, "remove");
+
+    try {
+      IntegrationContextFactory integrationContext = IntegrationContextFactory.getInstance();
+      if (integrationContext == null || !integrationContext.isIntegrated()) {
+        return;
+      }
+
+      org.sakaiproject.grading.api.GradingService gradingService
+          = (org.sakaiproject.grading.api.GradingService) SpringBeanLocator.getInstance().getBean(
+              "org.sakaiproject.grading.api.GradingService");
+      GradebookServiceHelper gradebookServiceHelper = integrationContext.getGradebookServiceHelper();
+
+      if (!gradebookServiceHelper.removeExternalAssessment(gradebookUid, assessmentId, gradingService)) {
+        log.debug("Published assessment {} was not linked to gradebook {}, nothing to remove",
+            assessmentId, gradebookUid);
+      }
+    } catch (Exception e) {
+      log.warn("Failed to remove gradebook item for published assessment {} from gradebook {}",
+          assessmentId, gradebookUid, e);
+    }
   }
   
   public List<PublishedAssessmentFacade> getBasicInfoOfAllActivePublishedAssessments(String orderBy,boolean ascending) {
@@ -765,8 +810,7 @@ public class PublishedAssessmentService extends AssessmentService{
         try {
           gbsHelper.removeExternalAssessment(GradebookFacade.getGradebookUId(), assessment.getPublishedAssessmentId().toString(), gradingService);
         } catch (Exception e1) {
-          // Should be the external assessment doesn't exist in GB. So we quiet swallow the exception. Please check the log for the actual error.
-          log.info("Exception thrown in updateGB():" + e1.getMessage());
+          log.warn("Failed to remove gradebook item for published assessment {}", assessment.getPublishedAssessmentId(), e1);
         }
 
         gbsHelper.manageScoresToNewGradebook(new GradingService(), gradingService, assessmentFacade, evaluation);
@@ -870,7 +914,7 @@ public class PublishedAssessmentService extends AssessmentService{
       try {
         gbsHelper.removeExternalAssessment(GradebookFacade.getGradebookUId(), assessment.getPublishedAssessmentId().toString(), gradingService);
       } catch(Exception e) {
-        log.warn("Something happened while removing the external assessment {}", e.getMessage());
+        log.warn("Failed to remove gradebook item for published assessment {}", assessment.getPublishedAssessmentId(), e);
       }
     }
 }
@@ -1049,5 +1093,34 @@ public class PublishedAssessmentService extends AssessmentService{
 	public void restorePublishedAssessment(Long publishedAssessmentId) {
 		PersistenceService.getInstance().getPublishedAssessmentFacadeQueries().restorePublishedAssessment(publishedAssessmentId);
 	}
+
+  /**
+    * Get the list of updated assessments for a given agent and site.
+    * @param agentId the agent id
+    * @param siteId the site id
+    * @return a map contains two sets:
+      * The first set is the list of assessment that are updated and need resubmit
+      * The second set is the list of assessment that are updated but do not need resubmit.
+  */
+  public Map<String, Set<Long>> getUpdatedAssessmentLists(String agentId, String siteId) {
+        GradingService gradingService = new GradingService();
+        // It contains two lists:
+        // The first one is the list of assessment that are updated and need resubmit
+        // The second one is the list of assessment that are updated but do not need resubmit
+        List<Set<Long>> updatedAssessmentList = gradingService.getUpdatedAssessmentList(agentId, siteId);
+
+        Set<Long> needResubmit = new LinkedHashSet<>();
+        Set<Long> updated = new LinkedHashSet<>();
+        if (updatedAssessmentList != null && updatedAssessmentList.size() == 2) {
+            needResubmit = updatedAssessmentList.get(0);
+            updated = updatedAssessmentList.get(1);
+        }
+
+        // Return the two sets in a map
+        Map<String, Set<Long>> map = new HashMap<>();
+        map.put("needResubmit", needResubmit);
+        map.put("updated", updated);
+        return map;
+  }
 
 }

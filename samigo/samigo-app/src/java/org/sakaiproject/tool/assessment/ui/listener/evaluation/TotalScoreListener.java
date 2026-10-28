@@ -83,6 +83,7 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.UserDirectoryService;
 import org.sakaiproject.util.api.FormattedText;
+import org.sakaiproject.util.api.LocaleService;
 import org.sakaiproject.util.comparator.UserSortNameComparator;
 
 /**
@@ -103,6 +104,7 @@ import org.sakaiproject.util.comparator.UserSortNameComparator;
   private BeanSort bs;
 
   private RubricsService rubricsService = ComponentManager.get(RubricsService.class);
+  private LocaleService localeService = ComponentManager.get(LocaleService.class);
 
   //private SectionAwareness sectionAwareness;
   // private List availableSections;
@@ -363,20 +365,19 @@ import org.sakaiproject.util.comparator.UserSortNameComparator;
 			while (itemIter.hasNext()) {
 				PublishedItemData item = (PublishedItemData) itemIter.next();
 				Long typeId = item.getTypeId();
-				if (typeId.equals(TypeIfc.ESSAY_QUESTION) 
-						|| typeId.equals(TypeIfc.AUDIO_RECORDING))
-				{ 
-					bean.setIsAutoScored(false); 
+				if (typeId.equals(TypeIfc.ESSAY_QUESTION)
+						|| typeId.equals(TypeIfc.AUDIO_RECORDING)
+						|| typeId.equals(TypeIfc.FILE_UPLOAD))
+				{
+					bean.setIsAutoScored(false);
 					isAutoScored = false;
 				}
-				
-				if (typeId.equals(TypeIfc.FILE_UPLOAD))
-				{ 
-					bean.setIsAutoScored(false); 
-					isAutoScored = false;
+
+				if (typeId.equals(TypeIfc.FILE_UPLOAD) || typeId.equals(TypeIfc.AUDIO_RECORDING))
+				{
 					bean.setHasFileUpload(true);
 					hasFileUpload = true;
-					break; 
+					break;
 				}
 			}
 		}
@@ -802,6 +803,9 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     if ((sortProperty).equals("totalOverrideScore")) bs.toNumericSort();
     if ((sortProperty).equals("finalScore")) bs.toNumericSort();
     if ((sortProperty).equals("timeElapsed")) bs.toNumericSort();
+
+    UserSortNameComparator userComparator = sortProperty.equals("lastName")
+        ? new UserSortNameComparator(localeService.getLocaleForCurrentSiteAndUser()) : null;
     
     if (sortAscending) {
     	log.debug("TotalScoreListener: setRoleAndSortSection() :: sortAscending");
@@ -811,7 +815,6 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     		if (!agents.isEmpty()) {
     			Collections.sort(agents, new Comparator<AgentResults>() {
     				public int compare(AgentResults a1, AgentResults a2) {
-    					UserSortNameComparator userComparator = new UserSortNameComparator();
     					return userComparator.compare(getUser(a1.getAgentId()), getUser(a2.getAgentId()));
     				}
     			});
@@ -826,7 +829,6 @@ log.debug("totallistener: firstItem = " + bean.getFirstItem());
     		if (!agents.isEmpty()) {
     			Collections.sort(agents, new Comparator<AgentResults>() {
     				public int compare(AgentResults a1, AgentResults a2) {
-    					UserSortNameComparator userComparator = new UserSortNameComparator();
     					return userComparator.compare(getUser(a2.getAgentId()), getUser(a1.getAgentId()));
     				}
     			});

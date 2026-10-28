@@ -89,6 +89,7 @@ import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.util.IframeUrlUtil;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.api.FormattedText;
 import org.sakaiproject.util.foorm.SakaiFoorm;
 import org.sakaiproject.time.api.UserTimeService;
 
@@ -543,17 +544,10 @@ public class LTIAdminTool extends VelocityPortletPaneledAction {
 				}
 
 				// Format the date for display
-				Object created_at = contentBean.getCreatedAt();
-				String formattedDate = null;
-				if (created_at instanceof Date) {
-					formattedDate = userTimeService.dateTimeFormat(((Date) created_at), rb.getLocale(), java.text.DateFormat.MEDIUM);
-				} else if (created_at instanceof LocalDateTime) {
-					LocalDateTime ldt = (LocalDateTime) created_at;
-					// Form stores these as UTC
-					Instant ldtInstant = ldt.toInstant(ZoneOffset.UTC);
-					formattedDate = userTimeService.dateTimeFormat(ldtInstant, FormatStyle.MEDIUM, FormatStyle.SHORT);
-				} else {
-					formattedDate = created_at.toString();
+				Date created_at = contentBean.getCreatedAt();
+				String formattedDate = "";
+				if (created_at != null) {
+					formattedDate = userTimeService.dateTimeFormat(created_at, rb.getLocale(), java.text.DateFormat.MEDIUM);
 				}
 				formattedDateMap.put(contentId, formattedDate);
 
@@ -3501,6 +3495,11 @@ public List<LtiToolBean> getAvailableToolsAsBeans(String ourSite, String context
 			item.put("tool_newpage", toolNewPage);
 		}
 
+		String contentDescription = sanitizeLtiDescription((String) content.get(LTIService.LTI_DESCRIPTION));
+		if ( contentDescription != null ) {
+			item.put(ContentItem.TEXT, contentDescription);
+		}
+
 		new_content.add(item);
 
 		context.put("new_content", new_content);
@@ -3510,6 +3509,7 @@ public List<LtiToolBean> getAvailableToolsAsBeans(String ourSite, String context
 		if ( FLOW_PARAMETER_ASSIGNMENT.equals(flow) ) {
 			context.put("contentId",  contentKey);
 			context.put("contentTitle", (String) content.get(LTIService.LTI_TITLE));
+			context.put("contentDescription", contentDescription);
 			context.put("contentLaunchNewWindow", contentNewPage);
 			context.put("contentToolNewpage", toolNewPage);
 
@@ -3578,9 +3578,48 @@ public List<LtiToolBean> getAvailableToolsAsBeans(String ourSite, String context
 			context.put("contentId", LTIUtil.toLong(job.get("content_key")));
 			context.put("contentTitle", (String) job.get("title"));
 			context.put("toolTitle", (String) job.get("tool_title"));
+			// CI / DL use "text" for the description; sanitize before returning to Assignments
+			String contentDescription = applySanitizedDescriptionToJob(job,
+					sanitizeLtiDescription(getString(job, ContentItem.TEXT)));
+			if ( contentDescription != null ) {
+				context.put("contentDescription", contentDescription);
+			}
 		}
 
 		return "lti_assignment_return";
+	}
+
+	/**
+	 * Replace ContentItem.TEXT on a content-item job with a sanitized description.
+	 * Always removes any prior text first so unsafe HTML cannot remain on the serialized job
+	 * (which is passed to the assignment UI via returnContentItem). Puts the sanitized value
+	 * back only when non-null.
+	 *
+	 * @return the sanitized description when applied, otherwise null
+	 */
+	static String applySanitizedDescriptionToJob(JSONObject job, String sanitizedDescription) {
+		job.remove(ContentItem.TEXT);
+		if ( sanitizedDescription == null ) {
+			return null;
+		}
+		job.put(ContentItem.TEXT, sanitizedDescription);
+		return sanitizedDescription;
+	}
+
+	/**
+	 * Run LTI content-item / deep-link description HTML through FormattedText (AntiSamy).
+	 * Returns null when there is nothing useful to return to the assignment UI.
+	 */
+	private String sanitizeLtiDescription(String description) {
+		if ( StringUtils.isBlank(description) ) {
+			return null;
+		}
+		FormattedText formattedText = ComponentManager.get(FormattedText.class);
+		String cleaned = formattedText.processFormattedText(description, new StringBuilder());
+		if ( StringUtils.isBlank(cleaned) ) {
+			return null;
+		}
+		return cleaned;
 	}
 
 

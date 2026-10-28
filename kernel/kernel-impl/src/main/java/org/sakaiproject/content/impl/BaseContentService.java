@@ -7727,6 +7727,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, HardDeleteAware
 							// add collection
 							try {
 								ContentCollectionEdit edit = addCollection(nId);
+								copyImportedRoleAccess(oResource, edit);
 								// import properties
 								ResourcePropertiesEdit p = edit.getPropertiesEdit();
 								p.clear();
@@ -7747,6 +7748,7 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, HardDeleteAware
 							try {
 								// add resource
 								ContentResourceEdit edit = addResource(nId);
+								copyImportedRoleAccess(oResource, edit);
 								edit.setContentType(((ContentResource) oResource).getContentType());
 								edit.setContentSha256(((ContentResource) oResource).getContentSha256());
 								edit.setResourceType(((ContentResource) oResource).getResourceType());
@@ -7792,6 +7794,19 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, HardDeleteAware
 		return traversalMap;
 	} // importResources
  
+    private void copyImportedRoleAccess(GroupAwareEntity source, GroupAwareEdit target)
+            throws PermissionException, InconsistentException {
+        Set<String> sourceRoles = new LinkedHashSet<>(source.getRoleAccessIds());
+        sourceRoles.addAll(source.getInheritedRoleAccessIds());
+        Set<String> inheritedRoles = target.getInheritedRoleAccessIds();
+        // Preserve site-independent visibility without copying source-site group permissions.
+        for (String role : List.of(AuthzGroupService.ANON_ROLE, AuthzGroupService.AUTH_ROLE)) {
+            if (sourceRoles.contains(role) && !inheritedRoles.contains(role)) {
+                target.addRoleAccess(role);
+            }
+        }
+    }
+
 	@Override
 	public List<Map<String, String>> getEntityMap(String siteId) {
 
@@ -13598,17 +13613,20 @@ SiteContentAdvisorProvider, SiteContentAdvisorTypeRegistry, HardDeleteAware
 
             // Get a context
             ContentResourceEdit resource = editResource(resourceId);
-            // Set the updated length for quota checking
-            resource.setContentLength(totalSize);
-            log.debug("Resource is: [{}] Size is [{}]", resourceId, totalSize);
-            // check for over quota.
-            if (overQuota(resource)) {
-                log.error("Zip file for resource ("+resourceId+") would be too large after unzip so it cannot be expanded, totalSize("+totalSize+") exceeds the resource quota");
-                throw new OverQuotaException(resource.getReference());
+            try {
+                // Set the updated length for quota checking
+                resource.setContentLength(totalSize);
+                log.debug("Resource is: [{}] Size is [{}]", resourceId, totalSize);
+                // check for over quota.
+                if (overQuota(resource)) {
+                    log.error("Zip file for resource ("+resourceId+") would be too large after unzip so it cannot be expanded, totalSize("+totalSize+") exceeds the resource quota");
+                    throw new OverQuotaException(resource.getReference());
+                }
+                // zip files are not too large to extract so do the extract
+                extractZipArchive.extractArchive(resourceId);
+            } finally {
+                cancelResource(resource);
             }
-            // zip files are not too large to extract so do the extract
-            extractZipArchive.extractArchive(resourceId);
-            cancelResource(resource); //commitResource(resource); // KNL-1220
         }
     }
     

@@ -36,18 +36,13 @@ import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.samigo.api.SamigoAvailableNotificationService;
 import org.sakaiproject.samigo.util.SamigoConstants;
-import org.sakaiproject.spring.SpringBeanLocator;
 import org.sakaiproject.tasks.api.Task;
 import org.sakaiproject.tasks.api.TaskService;
-import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedSectionData;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentMetaDataIfc;
-import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemDataIfc;
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
-import org.sakaiproject.tool.assessment.facade.GradebookFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacade;
 import org.sakaiproject.tool.assessment.integration.context.IntegrationContextFactory;
 import org.sakaiproject.tool.assessment.integration.helper.ifc.CalendarServiceHelper;
-import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceHelper;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentEntityProducer;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
@@ -64,8 +59,6 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 public class RemovePublishedAssessmentListener
     implements ActionListener
 {
-  private static final GradebookServiceHelper gbsHelper = IntegrationContextFactory.getInstance().getGradebookServiceHelper();
-  private static final boolean integrated = IntegrationContextFactory.getInstance().isIntegrated();
   private CalendarServiceHelper calendarService = IntegrationContextFactory.getInstance().getCalendarServiceHelper();
   private TaskService taskService;
   private SamigoAvailableNotificationService samigoAvailableNotificationService;
@@ -84,31 +77,25 @@ public class RemovePublishedAssessmentListener
     {
       log.debug("assessmentId = " + assessmentId); 	    
       PublishedAssessmentService assessmentService = new PublishedAssessmentService();
-      //get assessment to see if it has a calendar event
-      PublishedAssessmentFacade assessment = assessmentService.getPublishedAssessment(assessmentId.toString());
+      // get settings without loading sections/items
+      PublishedAssessmentFacade assessment = assessmentService.getSettingsOfPublishedAssessment(assessmentId);
+      if (assessment == null) {
+        return;
+      }
 
       AuthorizationBean authzBean = (AuthorizationBean) ContextUtil.lookupBean("authorization"); 
       if (!authzBean.isUserAllowedToDeleteAssessment(assessmentId, assessment.getCreatedBy(), true)) {
         throw new IllegalArgumentException("User does not have permission to delete assessmentId " + assessmentId);
       }
 
-      assessmentService.removeAssessment(assessmentId, "remove");
-      removeFromGradebook(assessmentId);
+      assessmentService.removeAssessmentAndExternalGradebookItem(assessmentId, AgentFacade.getCurrentSiteId());
       
       String calendarDueDateEventId = assessment.getAssessmentMetaDataByLabel(AssessmentMetaDataIfc.CALENDAR_DUE_DATE_EVENT_ID);
       if(calendarDueDateEventId != null){
     	  calendarService.removeCalendarEvent(AgentFacade.getCurrentSiteId(), calendarDueDateEventId);
       }
       EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_PUBLISHED_ASSESSMENT_REMOVE, "siteId=" + AgentFacade.getCurrentSiteId() + ", publishedAssessmentId=" + assessmentId, true));
-      Iterator<PublishedSectionData> sectionDataIterator = assessment.getSectionSet().iterator();
-        while (sectionDataIterator.hasNext()){
-            PublishedSectionData sectionData = sectionDataIterator.next();
-            Iterator<ItemDataIfc> itemDataIfcIterator = sectionData.getItemSet().iterator();
-            while (itemDataIfcIterator.hasNext()){
-                ItemDataIfc itemDataIfc = itemDataIfcIterator.next();
-                EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_PUBLISHED_ASSESSMENT_UNINDEXITEM, "/sam/" + AgentFacade.getCurrentSiteId() + "/unindexed, publishedItemId=" + itemDataIfc.getItemIdString(), true));
-            }
-        }
+      EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_PUBLISHED_ASSESSMENT_UNINDEXITEM, "/sam/" + AgentFacade.getCurrentSiteId() + "/unindexed, publishedAssessmentId=" + assessmentId, true));
 
       // Delete task
       String reference = AssessmentEntityProducer.REFERENCE_ROOT + "/" + AgentFacade.getCurrentSiteId() + "/" + assessment.getPublishedAssessmentId();
@@ -157,19 +144,4 @@ public class RemovePublishedAssessmentListener
     }
   }
   
-  private void removeFromGradebook(String assessmentId) {
-	  org.sakaiproject.grading.api.GradingService g = null;
-	  if (integrated)
-	  {
-		  g = (org.sakaiproject.grading.api.GradingService) SpringBeanLocator.getInstance().
-		  getBean("org.sakaiproject.grading.api.GradingService");
-	  }
-	  try {
-		  log.debug("before gbsHelper.removeGradebook()");
-		  gbsHelper.removeExternalAssessment(GradebookFacade.getGradebookUId(), assessmentId, g);
-	  } catch (Exception e1) {
-		  // Should be the external assessment doesn't exist in GB. So we quiet swallow the exception. Please check the log for the actual error.
-		  log.info("Exception thrown in updateGB():" + e1.getMessage());
-	  }
-  }
 }

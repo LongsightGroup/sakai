@@ -445,6 +445,9 @@ public class DeliveryBean implements Serializable {
   
   private ExtendedTimeDeliveryService extendedTimeDeliveryService = null;
 
+  @Getter
+  private boolean itemTimersDisabled;
+
   @Getter @Setter
   private boolean showTimeWarning;
   @Getter @Setter
@@ -624,7 +627,6 @@ public class DeliveryBean implements Serializable {
       if (session != null) {
         sb.append("         - User EID  : ").append(session.getUserEid()).append("\n");
         sb.append("         - User ID   : ").append(session.getUserId()).append("\n");
-        sb.append("         - Session ID: ").append(session.getId()).append("\n");
       } else {
         sb.append("         - Session is null. Cannot determine user.\n");
       }
@@ -1290,9 +1292,6 @@ public class DeliveryBean implements Serializable {
   }
 
   public String validatePassword() {
-    log.debug("**** password={}", password);
-    log.debug("**** setting password={}", getSettings().getPassword());
-    
     if (StringUtils.isBlank(password)) {
     	return "passwordAccessError";
     }
@@ -1793,11 +1792,20 @@ public class DeliveryBean implements Serializable {
 
   public void setPublishedAssessment(PublishedAssessmentFacade publishedAssessment) {
 	  this.publishedAssessment = publishedAssessment;
-	  //Setup extendedTimeDeliveryService
-	  if ((extendedTimeDeliveryService == null || StringUtils.isBlank(extendedTimeDeliveryService.getAgentId())) &&
-			  (publishedAssessment != null && publishedAssessment.getPublishedAssessmentId() != null)) {
+	  itemTimersDisabled = false;
+	  if (publishedAssessment == null || publishedAssessment.getPublishedAssessmentId() == null) {
+		  extendedTimeDeliveryService = null;
+		  return;
+	  }
+
+	  // Setup extendedTimeDeliveryService
+	  if (extendedTimeDeliveryService == null
+			  || StringUtils.isBlank(extendedTimeDeliveryService.getAgentId())
+			  || !Objects.equals(extendedTimeDeliveryService.getPublishedAssessmentId(), publishedAssessment.getPublishedAssessmentId())) {
 		  extendedTimeDeliveryService = new ExtendedTimeDeliveryService(publishedAssessment);
 	  }
+
+	  itemTimersDisabled = extendedTimeDeliveryService.shouldDisableItemTimers();
   }
 
   public String doit() {
@@ -2021,12 +2029,24 @@ public class DeliveryBean implements Serializable {
   }
 
   public boolean getShowFeedbackLink() {
-      return ("reviewAssessment".equals(getActionString())
-              || "takeAssessment".equals(getActionString())
-              || "takeAssessmentViaUrl".equals(getActionString())
-              || "previewAssessment".equals(getActionString()))
-             && ! ("1".equals(getNavigation()) && getPageContents().getIsNoParts())
-             && (getFeedbackComponent().getShowImmediate() || feedbackOnDate);
+      boolean takingAssessment = "takeAssessment".equals(getActionString())
+              || "takeAssessmentViaUrl".equals(getActionString());
+      boolean reviewingOrPreviewing = "reviewAssessment".equals(getActionString())
+              || "previewAssessment".equals(getActionString());
+      if (!takingAssessment && !reviewingOrPreviewing) {
+          return false;
+      }
+      if ("1".equals(getNavigation()) && getPageContents().getIsNoParts()) {
+          return false;
+      }
+      // While a student is actively taking the assessment, only Immediate Feedback shows
+      // feedback mid-take. "On specific dates" feedback is for review after submission, so
+      // feedbackOnDate must not surface the Feedback link during a take (also covers post-deadline
+      // retakes/resubmits, where feedbackOnDate has since flipped true).
+      if (takingAssessment) {
+          return getFeedbackComponent().getShowImmediate();
+      }
+      return getFeedbackComponent().getShowImmediate() || feedbackOnDate;
   }
 
   public boolean getShowReturnToAssessmentLink() {

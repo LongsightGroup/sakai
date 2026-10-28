@@ -26,10 +26,7 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.time.Instant;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
@@ -51,7 +48,6 @@ import org.sakaiproject.tool.api.ToolManager;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.api.UserDirectoryService;
-import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.api.FormattedText;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,26 +62,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ErrorReporter
 {
-	/** messages. */
-	private static ResourceLoader rb = new ResourceLoader("portal-util");
-	private static final ResourceBundle rbDefault = ResourceBundle.getBundle("portal-util", Locale.getDefault());
 	private static final String TOMCAT_CLIENT_ABORT_EXCEPTION_CLASS = "org.apache.catalina.connector.ClientAbortException";
 	private static final Class<?> TOMCAT_CLIENT_ABORT_EXCEPTION = loadTomcatClientAbortException();
-
-	private Map<String, String> censoredHeaders = new HashMap<String, String>();
-
-	private Map<String, String> censoredParameters = new HashMap<String, String>();
-
-	private Map<String, String> censoredAttributes = new HashMap<String, String>();
-
-	public ErrorReporter()
-	{
-		censoredParameters.put("pw", "pw");
-		censoredParameters.put("eid", "eid");
-		censoredParameters.put("javax.faces.ViewState", "javax.faces.ViewState");
-		censoredHeaders.put("cookie","cookie");
-		censoredHeaders.put("authorization","authorization");
-	}
 
 	private static Class<?> loadTomcatClientAbortException()
 	{
@@ -313,7 +291,7 @@ public class ErrorReporter
 			String requestDisplay, String placementDisplay, String userReport)
 	{
 		// logging and emailing should use the system default locale instead of the user's locale
-		ResourceBundle rb = rbDefault;
+		ResourceBundle rb = ResourceBundle.getBundle("portal-util", Locale.getDefault());
 		
 		// log
 		log.warn(rb.getString("bugreport.bugreport") + " "
@@ -456,8 +434,10 @@ public class ErrorReporter
 		String headInclude = (String) req.getAttribute("sakai.html.head");
 		String bodyOnload = (String) req.getAttribute("sakai.html.body.onload");
 		Instant reportTime = Instant.now();
+		Locale userLocale = req.getLocale();
+		ResourceBundle rb = ResourceBundle.getBundle("portal-util", userLocale);
 		UserTimeService userTimeService = ComponentManager.get(UserTimeService.class);
-		String time = userTimeService.shortPreciseLocalizedTimestamp(reportTime, rb.getLocale());
+		String time = userTimeService.shortPreciseLocalizedTimestamp(reportTime, userLocale);
 		String usageSessionId = ComponentManager.get(UsageSessionService.class).getSessionId();
 		String userId = ComponentManager.get(SessionManager.class).getCurrentSessionUserId();
 		boolean isAuthenticated = userId != null && userId.length() > 0 && usageSessionId != null;
@@ -597,13 +577,13 @@ public class ErrorReporter
 		}
 		catch (Throwable any)
 		{
-			log.warn(rbDefault.getString("bugreport.troublereporting"), any);
+			log.warn(rb.getString("bugreport.troublereporting"), any);
 		}
 	}
 
 	private String placementDisplay()
 	{
-		ResourceBundle rb = rbDefault;
+		ResourceBundle rb = ResourceBundle.getBundle("portal-util", Locale.getDefault());
 		StringBuilder sb = new StringBuilder();
 		try
 		{
@@ -633,10 +613,9 @@ public class ErrorReporter
 		return sb.toString();
 	}
 
-	@SuppressWarnings("rawtypes")
 	private String requestDisplay(HttpServletRequest request)
 	{
-		ResourceBundle rb = rbDefault;
+		ResourceBundle rb = ResourceBundle.getBundle("portal-util", request.getLocale());
 		StringBuilder sb = new StringBuilder();
 		try
 		{
@@ -657,8 +636,6 @@ public class ErrorReporter
 					request.getPathInfo()).append("\n");
 			sb.append(rb.getString("bugreport.request.protocol")).append(
 					request.getProtocol()).append("\n");
-			sb.append(rb.getString("bugreport.request.querystring")).append(
-					request.getQueryString()).append("\n");
 			sb.append(rb.getString("bugreport.request.remoteaddr")).append(
 					request.getRemoteAddr()).append("\n");
 			sb.append(rb.getString("bugreport.request.remotehost")).append(
@@ -671,43 +648,7 @@ public class ErrorReporter
 					request.getScheme()).append("\n");
 			sb.append(rb.getString("bugreport.request.servername")).append(
 					request.getServerName()).append("\n");
-			sb.append(rb.getString("bugreport.request.headers")).append("\n");
-			for (Enumeration e = request.getHeaderNames(); e.hasMoreElements();)
-			{
-				String headerName = (String) e.nextElement();
-				boolean censor =  ( censoredHeaders.get(headerName) != null );
-				for (Enumeration he = request.getHeaders(headerName); he
-						.hasMoreElements();)
-				{
-					String headerValue = (String) he.nextElement();
-					sb.append(rb.getString("bugreport.request.header"))
-							.append(headerName).append(":").append(censor?"---censored---":headerValue).append(
-									"\n");
-				}
-			}
-			sb.append(rb.getString("bugreport.request.parameters")).append("\n");
-			for (Enumeration e = request.getParameterNames(); e.hasMoreElements();)
-			{
-				
-				String parameterName = (String) e.nextElement();
-				boolean censor =  ( censoredParameters.get(parameterName) != null );
-				String[] paramvalues = request.getParameterValues(parameterName);
-				for (int i = 0; i < paramvalues.length; i++)
-				{
-					sb.append(rb.getString("bugreport.request.parameter")).append(
-							parameterName).append(":").append(i).append(":").append(
-							censor?"----censored----":paramvalues[i]).append("\n");
-				}
-			}
-			sb.append(rb.getString("bugreport.request.attributes")).append("\n");
-			for (Enumeration e = request.getAttributeNames(); e.hasMoreElements();)
-			{
-				String attributeName = (String) e.nextElement();
-				Object attribute = request.getAttribute(attributeName);
-				boolean censor =  ( censoredAttributes.get(attributeName) != null );
-				sb.append(rb.getString("bugreport.request.attribute")).append(
-						attributeName).append(":").append(censor?"----censored----":attribute).append("\n");
-			}
+			// Headers, parameters and attributes can contain authentication credentials.
 			HttpSession session = request.getSession(false);
 			if (session != null)
 			{
@@ -723,16 +664,6 @@ public class ErrorReporter
 						serverLocaleDateFormat.format(session.getLastAccessedTime())).append("\n");
 				sb.append(rb.getString("bugreport.session.maxinactive")).append(
 						session.getMaxInactiveInterval()).append("\n");
-				sb.append(rb.getString("bugreport.session.attributes")).append("\n");
-				for (Enumeration e = session.getAttributeNames(); e.hasMoreElements();)
-				{
-					String attributeName = (String) e.nextElement();
-					Object attribute = session.getAttribute(attributeName);
-					boolean censor =  ( censoredAttributes.get(attributeName) != null );
-					sb.append(rb.getString("bugreport.session.attribute")).append(
-							attributeName).append(":").append(censor?"----censored----":attribute).append("\n");
-				}
-
 			}
 		}
 		catch (Exception ex)
@@ -777,7 +708,8 @@ public class ErrorReporter
 		}
 		catch (IOException e)
 		{
-			log.warn(rbDefault.getString("bugreport.troubleredirecting"), e);
+			ResourceBundle rb = ResourceBundle.getBundle("portal-util", Locale.getDefault());
+			log.warn(rb.getString("bugreport.troubleredirecting"), e);
 		}
 	}
 
@@ -802,6 +734,7 @@ public class ErrorReporter
 		{
 			bodyOnload = " onload=\"" + bodyOnload + "\"";
 		}
+		ResourceBundle rb = ResourceBundle.getBundle("portal-util", req.getLocale());
 		try
 		{
 			// headers
@@ -837,7 +770,7 @@ public class ErrorReporter
 		}
 		catch (Throwable any)
 		{
-			log.warn(rbDefault.getString("bugreport.troublethanks"), any);
+			log.warn(rb.getString("bugreport.troublethanks"), any);
 		}
 	}
 }

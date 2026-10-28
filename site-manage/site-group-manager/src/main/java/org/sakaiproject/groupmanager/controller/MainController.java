@@ -94,7 +94,7 @@ public class MainController {
         // List of groups of the site, excluding the ones which GROUP_PROP_WSETUP_CREATED property is false.
         List<Group> groupList = site.getGroups().stream().filter(group -> group.getProperties().getProperty(Group.GROUP_PROP_WSETUP_CREATED) != null && Boolean.valueOf(group.getProperties().getProperty(Group.GROUP_PROP_WSETUP_CREATED)).booleanValue()).collect(Collectors.toList());
         // Sort the group list by title.
-        Collections.sort(groupList, new GroupTitleComparator());
+        Collections.sort(groupList, new GroupTitleComparator(locale));
 
         // Control the groups that are locked by entities
         boolean anyGroupLocked = false;
@@ -114,7 +114,7 @@ public class MainController {
                     groupMemberList.add(memberUserOptional.get());
                 }
             });
-            Collections.sort(groupMemberList, new UserSortNameComparator());
+            Collections.sort(groupMemberList, new UserSortNameComparator(locale));
             groupMemberList.forEach(u -> stringJoiner.add(u.getDisplayName()));
             groupMemberMap.put(group.getId(), stringJoiner.toString());
             // Get the joinable sets and add them to the Map
@@ -162,6 +162,7 @@ public class MainController {
         model.addAttribute("lockedForDeletionGroupList", lockedForDeletionGroupList);
         model.addAttribute("anyGroupLocked", anyGroupLocked);
         model.addAttribute("lockedGroupsEntityMap", lockedGroupsEntityMap);
+        model.addAttribute("assignmentTrashUrl", sakaiService.getAssignmentTrashUrl(site));
         model.addAttribute("groupMemberMap", groupMemberMap);
         model.addAttribute("groupJoinableSetMap", groupJoinableSetMap);
         model.addAttribute("joinableSetOpenDateMap", joinableSetOpenDateMap);

@@ -43,6 +43,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import java.security.Key;
 import java.security.KeyPairGenerator;
 import java.util.logging.Level;
@@ -134,8 +135,10 @@ public class LTI13Servlet extends HttpServlet {
 
     private CacheManager cacheManager;
     private Cache cache;
+    private Cache clientAssertionReplayCache;
 
 	private static final String CACHE_NAME = LTI13Servlet.class.getName() + "_cache";
+	private static final String CLIENT_ASSERTION_REPLAY_CACHE_NAME = "org.sakaiproject.lti13.ClientAssertionReplay_cache";
 	private static final String CACHE_PUBLIC = "key::public";
 	private static final String CACHE_PRIVATE = "key::private";
 
@@ -150,6 +153,7 @@ public class LTI13Servlet extends HttpServlet {
 
         cacheManager = (CacheManager) ComponentManager.get("org.sakaiproject.ignite.SakaiCacheManager");
         cache = cacheManager.getCache(CACHE_NAME);
+        clientAssertionReplayCache = cacheManager.getCache(CLIENT_ASSERTION_REPLAY_CACHE_NAME);
 
 		// Lets try to load from properties
 		if (tokenKeyPair == null) {
@@ -278,11 +282,6 @@ public class LTI13Servlet extends HttpServlet {
 			return;
 		}
 
-		// /imsblis/lti13/proxy
-		if (parts.length == 4 && "proxy".equals(parts[3])) {
-			handleProxy(request, response);
-			return;
-		}
 
 		// /imsblis/lti13/postverify/{signed-placement}
 		if (SakaiLTIUtil.checkSendPostVerify() && parts.length == 5 && "postverify".equals(parts[3])) {
@@ -410,66 +409,6 @@ public class LTI13Servlet extends HttpServlet {
 		log.error("Unrecognized POST request parts={} request={}", parts.length, uri);
 		LTI13Util.return400(response, "Unrecognized POST request parts="+parts.length+" request="+uri);
 
-	}
-
-	// A very locked down proxy - JSON Only
-	protected void handleProxy(HttpServletRequest request, HttpServletResponse response) {
-		String proxyUrl = request.getParameter("proxyUrl");
-		if ( proxyUrl == null ) {
-			LTI13Util.return400(response, "Missing proxyUrl");
-			return;
-		}
-
-		Session sess = SessionManager.getCurrentSession();
-		if ( sess == null || sess.getUserId() == null ) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-
-		// https://stackoverflow.com/a/43708457/1994792
-		try {
-			java.net.URL url = new java.net.URL(proxyUrl);
-			java.net.HttpURLConnection con = (java.net.HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			con.setConnectTimeout(3000);
-			con.setReadTimeout(3000);
-			con.setInstanceFollowRedirects(true);
-
-			try ( java.io.BufferedReader in = new java.io.BufferedReader(
-				new java.io.InputStreamReader(con.getInputStream())) )
-			{
-				String inputLine;
-				StringBuffer content = new StringBuffer();
-				while ((inputLine = in.readLine()) != null) {
-					content.append(inputLine);
-				}
-				if ( content.length() > 10000 ) {
-					LTI13Util.return400(response, "Content too long");
-					return;
-				}
-
-				String jsonString = content.toString();
-
-				Object js = JSONValue.parse(jsonString);
-				if (js == null || !(js instanceof JSONObject)) {
-					LTI13Util.return400(response, "Badly formatted JSON");
-					return;
-				}
-
-				response.setContentType(APPLICATION_JSON);
-				PrintWriter out = response.getWriter();
-
-				out.println(((JSONObject) js).toJSONString());
-			} catch (Exception e) {
-				log.error("Error in proxy request", e);
-				LTI13Util.return400(response, "Proxy request failed");
-				return;
-			}
-		} catch (Exception e) {
-			log.error("Error in proxy request", e);
-			LTI13Util.return400(response, "Proxy request failed");
-			return;
-		}
 	}
 
 	// LTI PostVerify
@@ -817,11 +756,15 @@ public class LTI13Servlet extends HttpServlet {
 		}
 
 		String grant_type = request.getParameter(ClientAssertion.GRANT_TYPE);
+		String client_assertion_type = request.getParameter(ClientAssertion.CLIENT_ASSERTION_TYPE);
 		String client_assertion = request.getParameter(ClientAssertion.CLIENT_ASSERTION);
 		String scope = request.getParameter(ClientAssertion.SCOPE);
 		String missing = "";
 		if (grant_type == null) {
 			missing += " " + "grant_type";
+		}
+		if (client_assertion_type == null) {
+			missing += " " + "client_assertion_type";
 		}
 		if (client_assertion == null) {
 			missing += " " + "client_assertion";
@@ -835,17 +778,26 @@ public class LTI13Servlet extends HttpServlet {
 			return;
 		}
 
+		String tokenRequestError = LTI13TokenRequestValidator.validateTokenRequest(grant_type, client_assertion_type);
+		if (tokenRequestError != null) {
+			LTI13Util.return400(response, "invalid_request", tokenRequestError);
+			log.error("Invalid token request for tool {}: {}", tool_id, tokenRequestError);
+			return;
+		}
+
 		String body = LTI13JwtUtil.rawJwtBody(client_assertion);
 		if (body == null) {
 			LTI13Util.return400(response, "Could not find Jwt Body in client_assertion");
-			log.error("Could not find Jwt Body in client_assertion\n{}", client_assertion);
+			log.error("Could not find Jwt Body in client_assertion");
+
 			return;
 		}
 
 		JSONObject jsonHeader = LTI13JwtUtil.jsonJwtHeader(client_assertion);
 		if (jsonHeader == null) {
 			LTI13Util.return400(response, "Could not parse Jwt Header in client_assertion");
-			log.error("Could not parse Jwt Header in client_assertion\n{}", client_assertion);
+			log.error("Could not parse Jwt Header in client_assertion");
+
 			return;
 		}
 
@@ -874,11 +826,36 @@ public class LTI13Servlet extends HttpServlet {
 			return;
 		}
 
-		Jws<Claims> claims = Jwts.parser().setAllowedClockSkewSeconds(60).setSigningKey(publicKey).parseClaimsJws(client_assertion);
+		Jws<Claims> claims = null;
+		try {
+			claims = Jwts.parser().setAllowedClockSkewSeconds(60).setSigningKey(publicKey).parseClaimsJws(client_assertion);
+		} catch (JwtException | IllegalArgumentException e) {
+			log.error("Could not verify client_assertion for tool {}", tool_id, e);
+			LTI13Util.return400(response, "invalid_client", "Could not verify client_assertion");
+			return;
+		}
 
 		if (claims == null) {
 			LTI13Util.return400(response, "Could not verify signature");
 			log.error("Could not verify signature {}", tool_id);
+			return;
+		}
+
+		String tokenAudience = getOurServerUrl() + LTI13_PATH + "token/" + toolKey;
+		String claimError = LTI13TokenRequestValidator.validateClientAssertionClaims(claims.getBody(), tool.lti13ClientId, tokenAudience);
+		if (claimError != null) {
+			LTI13Util.return400(response, "invalid_client", claimError);
+			log.error("Invalid client_assertion for tool {}: {}", tool_id, claimError);
+			return;
+		}
+
+		LTI13TokenRequestValidator.ClientAssertionReplayResult replayResult =
+				LTI13TokenRequestValidator.validateClientAssertionReplay(clientAssertionReplayCache, claims.getBody(), tool.lti13ClientId);
+		if (replayResult == LTI13TokenRequestValidator.ClientAssertionReplayResult.CACHE_UNAVAILABLE) {
+			log.warn("Client assertion replay cache unavailable for tool {} client {}; continuing without replay cache", tool_id, tool.lti13ClientId);
+		} else if (replayResult == LTI13TokenRequestValidator.ClientAssertionReplayResult.REPLAYED) {
+			LTI13Util.return400(response, "invalid_client", replayResult.getClientMessage());
+			log.error("Invalid client_assertion replay state for tool {}: {}", tool_id, replayResult.getClientMessage());
 			return;
 		}
 
@@ -1154,7 +1131,7 @@ public class LTI13Servlet extends HttpServlet {
 		String authorization = request.getHeader("authorization");
 
 		if (authorization == null || !authorization.startsWith("Bearer")) {
-			log.error("Invalid authorization {}", authorization);
+			log.error("Invalid authorization header");
 			LTI13Util.return400(response, "invalid_authorization");
 			return;
 		}
@@ -1162,7 +1139,7 @@ public class LTI13Servlet extends HttpServlet {
 		// https://stackoverflow.com/questions/7899525/how-to-split-a-string-by-space/7899558
 		String[] parts = authorization.split("\\s+");
 		if (parts.length != 2 || parts[1].length() < 1) {
-			log.error("Bad authorization {}", authorization);
+			log.error("Malformed authorization header");
 			LTI13Util.return400(response, "invalid_authorization");
 			return;
 		}
@@ -1231,7 +1208,8 @@ public class LTI13Servlet extends HttpServlet {
 		// Check the one time use token expiration
 		int delta = 60*60; // An hour
 		if ( ! LTI13Util.timeStampCheck(registration_token, delta) ) {
-			log.error("Expired registration_token \n"+registration_token+":\n tool_token=\n"+tool_token+":");
+			log.error("Expired registration_token");
+
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
@@ -2082,6 +2060,7 @@ public class LTI13Servlet extends HttpServlet {
 		if ( item == null )  {
 			return; // Error already handled
 		}
+		log.debug("item={}; resourceLinkId={}", item, item.resourceLinkId);
 
 		Site site = null;
 		org.sakaiproject.lti.beans.LtiToolBean tool = null;
@@ -2132,7 +2111,12 @@ public class LTI13Servlet extends HttpServlet {
 
 		Assignment retval;
 		try {
-			retval = LineItemUtil.createLineItem(site, sat.tool_id, null /*content*/, item);
+			Map<String, Object> content = null;
+			Long contentKey = LineItemUtil.getContentIdFromResourceLinkId(item.resourceLinkId);
+			if (contentKey != null) {
+			    content = ltiService.getContent(contentKey, site.getId());
+			}
+			retval = LineItemUtil.createLineItem(site, sat.tool_id, content, item);
 		} catch (Exception e) {
 			log.error("Could not create lineitem: "+e.getMessage());
 			LTI13Util.return400(response, "Could not create lineitem: "+e.getMessage());

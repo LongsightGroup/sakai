@@ -1,5 +1,7 @@
 package org.tsugi.lti;
 
+import org.sakaiproject.serialization.MapperFactory;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
@@ -16,7 +18,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.xml.stream.XMLInputFactory;
 
 public class POXJacksonParser {
     
@@ -30,7 +31,7 @@ public class POXJacksonParser {
     public static final XmlMapper XML_MAPPER;
     
     static {
-        XML_MAPPER = new XmlMapper();
+        XML_MAPPER = MapperFactory.xmlBuilder().setStreamReadLimits(64, 262144).build();
         // Deserialization configuration
         XML_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         XML_MAPPER.setDefaultUseWrapper(false);
@@ -38,13 +39,6 @@ public class POXJacksonParser {
         // Serialization configuration (doesn't affect deserialization)
         XML_MAPPER.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         XML_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        
-        // Harden against XXE (XML External Entity) attacks
-        XMLInputFactory xmlInputFactory = XML_MAPPER.getFactory().getXMLInputFactory();
-        xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-        xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", Boolean.FALSE);
-        XML_MAPPER.getFactory().setXMLInputFactory(xmlInputFactory);
     }
 
     /**

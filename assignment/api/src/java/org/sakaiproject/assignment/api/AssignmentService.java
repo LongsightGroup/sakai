@@ -57,6 +57,21 @@ import org.sakaiproject.util.api.FormattedText;
 
 public interface AssignmentService extends EntityProducer {
 
+    public enum OpenDateNotification {
+        NONE,
+        OPTIONAL,
+        REQUIRED;
+
+        public static OpenDateNotification fromProperty(String value) {
+            if (AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_LOW.equals(value)) {
+                return OPTIONAL;
+            } else if (AssignmentConstants.ASSIGNMENT_OPENDATE_NOTIFICATION_HIGH.equals(value)) {
+                return REQUIRED;
+            }
+            return NONE;
+        }
+    }
+
     Entity createAssignmentEntity(String assignmentId);
 
     /**
@@ -325,6 +340,18 @@ public interface AssignmentService extends EntityProducer {
     public void softDeleteAssignment(Assignment assignment) throws PermissionException;
 
     /**
+     * Whether deleting this group assignment can release its locks. Student work and grading
+     * keep the locks in place; empty grading placeholders do not, unless linked to a rubric.
+     */
+    boolean canReleaseGroupLocks(Assignment assignment);
+
+    /**
+     * Restore an assignment from Trash. Empty group assignments return as drafts so that
+     * instructors can review current groups before publishing. Missing groups are removed.
+     */
+    Assignment restoreAssignment(String assignmentId) throws IdUnusedException, PermissionException;
+
+    /**
      * Softly delete this Assignment and remove all references to it.
      *
      * @param assignment - The Assignment to softly delete.
@@ -358,10 +385,56 @@ public interface AssignmentService extends EntityProducer {
     public void updateAssignment(Assignment assignment) throws PermissionException;
 
     /**
+     * Publishes an assignment, synchronizes its peer review schedule, and performs first-publish integrations.
+     *
+     * @param assignment the Assignment to publish.
+     * @throws PermissionException if current User does not have permission to update the assignment.
+     */
+    public void publishAssignment(Assignment assignment) throws PermissionException;
+
+    /**
+     * Returns an assignment to draft and removes its scheduled peer review.
+     *
+     * @param assignment the Assignment to unpublish.
+     * @throws PermissionException if the current user cannot update the assignment.
+     */
+    public void unpublishAssignment(Assignment assignment) throws PermissionException;
+
+    /**
+     * Integrates assignment availability and due dates with Announcement and Calendar tools.
+     * Caller must ensure the current user is allowed to update the assignment; assignment property persistence
+     * re-checks update permission through {@link #updateAssignment(Assignment)}.
+     *
+     * @param assignment the Assignment to integrate.
+     * @param title the assignment title.
+     * @param openTime the assignment open date.
+     * @param dueTime the assignment due date.
+     * @param oldOpenTime the previous assignment open date.
+     * @param oldDueTime the previous assignment due date.
+     * @param checkAddDueTime true to add the due date to calendar.
+     * @param checkAutoAnnounce true to announce the open date.
+     * @param openDateNotification open date notification level.
+     */
+    public void integrateAssignmentWithCalendarAndAnnouncement(Assignment assignment, String title, Instant openTime, Instant dueTime,
+            Instant oldOpenTime, Instant oldDueTime, boolean checkAddDueTime, boolean checkAutoAnnounce,
+            OpenDateNotification openDateNotification);
+
+    /**
      * @param submission
      * @throws PermissionException
      */
     public void updateSubmission(AssignmentSubmission submission) throws PermissionException;
+
+    /**
+     * Archives the current feedback text and visible submitted attachments in the existing HTML history.
+     * Call before changing the submission's submitted flag, date, feedback, or attachments, including
+     * when saving the first draft of a resubmission. Draft attachments are not archived.
+     * This only changes the supplied submission; the caller remains responsible for saving it through
+     * {@link #updateSubmission(AssignmentSubmission)} and its permission checks.
+     *
+     * @param submission the existing submission before the resubmission changes
+     */
+    void archiveSubmissionHistory(AssignmentSubmission submission);
 
     /**
      * @param reference
@@ -429,6 +502,17 @@ public interface AssignmentService extends EntityProducer {
      * @return All submittable Assignments in the site mapped to the User IDs of those who can submit them.
      */
     public Map<Assignment, List<String>> getSubmittableAssignmentsForContext(String context);
+
+    /**
+     * Get eligible submitters visible to the current user and their gradable,
+     * non-anonymous assignments. Applies the site/group visibility rules and
+     * configured non-submitter permissions.
+     *
+     * @param context the site ID
+     * @param groupReference a group reference, or {@link AssignmentConstants#ALL} for all visible groups
+     * @return visible students mapped to their assignments; a student's list may be empty
+     */
+    Map<User, List<Assignment>> getAssignmentsByStudent(String context, String groupReference);
 
     /**
      * Access a User's AssignmentSubmission to a particular Assignment.

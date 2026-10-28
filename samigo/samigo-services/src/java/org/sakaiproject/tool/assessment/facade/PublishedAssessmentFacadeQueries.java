@@ -51,6 +51,7 @@ import org.sakaiproject.grading.api.model.Gradebook;
 import org.sakaiproject.rubrics.api.RubricsConstants;
 import org.sakaiproject.rubrics.api.RubricsService;
 import org.sakaiproject.samigo.api.SamigoReferenceReckoner;
+import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.site.api.Group;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
@@ -77,8 +78,6 @@ import org.sakaiproject.tool.assessment.integration.helper.ifc.GradebookServiceH
 import org.sakaiproject.tool.assessment.osid.shared.impl.IdImpl;
 import org.sakaiproject.tool.assessment.services.PersistenceService;
 import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
-import org.sakaiproject.tool.assessment.shared.api.grading.GradingSectionAwareServiceAPI;
-import org.sakaiproject.tool.assessment.shared.impl.grading.GradingSectionAwareServiceImpl;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.springframework.context.annotation.DeferredImportSelector.Group.Entry;
 import org.springframework.dao.DataAccessException;
@@ -1413,13 +1412,14 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport implem
 		AgentFacade agent = null;
 		Long assessmentId;
 		String userId = AgentFacade.getAnonymousId();
-		GradingSectionAwareServiceAPI service = new GradingSectionAwareServiceImpl();
+		boolean hasAllGroupsPrivilege = PersistenceService.getInstance().getAuthzQueriesFacade()
+			.hasPrivilege(SamigoConstants.AUTHZ_ASSESSMENT_ALL_GROUPS, siteAgentId);
 		Site site = null;
 		Collection<Group> siteGroups = new ArrayList<>();
 		Set<String> keysGroupIdsMap = new HashSet<>();
 		try {
 			site = siteService.getSite(siteAgentId);
-			if (service.isUserAbleToGradeAll(site.getId(), userId)) {
+			if (hasAllGroupsPrivilege) {
 				siteGroups = site.getGroups();
 			} else {
 				siteGroups = site.getGroupsWithMember(userId);
@@ -1452,7 +1452,7 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport implem
 				Set<String> commonKeys = new HashSet<>(keysReleaseToGroups);
 				commonKeys.retainAll(keysGroupIdsMap);
 
-				if (!commonKeys.isEmpty() || (siteGroups.isEmpty() && service.isUserAbleToGradeAll(site.getId(), userId))) {
+				if (!commonKeys.isEmpty() || (siteGroups.isEmpty() && hasAllGroupsPrivilege)) {
 					PublishedAssessmentFacade f = new PublishedAssessmentFacade(p.getPublishedAssessmentId(), p.getTitle(),
 							p.getReleaseTo(), p.getStartDate(), p.getDueDate(), p.getRetractDate(), p.getStatus(), releaseToGroups, 
 							p.getLastModifiedDate(), lastModifiedBy, p.getLateHandling(), p.getUnlimitedSubmissions(), p.getSubmissionsAllowed());
@@ -1606,6 +1606,37 @@ public class PublishedAssessmentFacadeQueries extends HibernateDaoSupport implem
         }
         return null;
     }
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Map<Long, String> getAssessmentMetaDataEntriesByLabel(List<Long> publishedAssessmentIds, String label) {
+		if (publishedAssessmentIds == null || publishedAssessmentIds.isEmpty() || org.apache.commons.lang3.StringUtils.isBlank(label)) {
+			return Collections.emptyMap();
+		}
+
+			HibernateCallback<Map<Long, String>> hcb = session -> {
+				Query<Object[]> query = session.createQuery(
+						"select m.assessment.publishedAssessmentId, m.entry "
+								+ "from PublishedMetaData m "
+								+ "where m.assessment.publishedAssessmentId in (:publishedAssessmentIds) "
+								+ "and m.label = :label "
+								+ "order by m.assessment.publishedAssessmentId asc, m.id asc",
+						Object[].class);
+			query.setParameterList("publishedAssessmentIds", publishedAssessmentIds);
+			query.setParameter("label", label);
+
+			return query.list().stream()
+				.collect(Collectors.toMap(
+					row -> (Long) row[0],
+					row -> (String) row[1],
+					// Keep the latest value to preserve prior behavior and avoid page failures when historical duplicate rows exist.
+					(existing, replacement) -> replacement,
+					LinkedHashMap::new
+				));
+		};
+
+		return getHibernateTemplate().execute(hcb);
+	}
 
 	public void saveOrUpdateMetaData(PublishedMetaData meta) {
 		int retryCount = PersistenceService.getInstance().getPersistenceHelper().getRetryCount();
