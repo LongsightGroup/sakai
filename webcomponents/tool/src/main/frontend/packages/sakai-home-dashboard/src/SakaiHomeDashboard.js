@@ -46,7 +46,7 @@ export class SakaiHomeDashboard extends SakaiElement {
       .then(r => {
 
         this._data = r;
-        this._showMotd = this._data.motd;
+        this._showMotd = false;
       })
       .catch(error => console.error(error));
   }
